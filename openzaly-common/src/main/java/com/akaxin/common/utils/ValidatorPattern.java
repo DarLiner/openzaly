@@ -2,19 +2,6 @@ package com.akaxin.common.utils;
 
 import java.util.regex.Pattern;
 
-/**
- * 正则表达式，验证 <br>
- * 1.momoid <br>
- * 2.手机号 <br>
- * 3.email <br>
- * 4.汉子 <br>
- * 5.身份证 <br>
- * 6.url <br>
- * 7.IP <br>
- * 
- * @author Sam
- * @since 2016.12.22
- */
 public class ValidatorPattern {
 	/**
 	 * 正则表达式：验证手机号
