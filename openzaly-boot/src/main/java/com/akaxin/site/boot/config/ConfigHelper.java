@@ -27,6 +27,11 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.boot.utils.PropertiesUtils;
 
+/**
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-01-24 12:50:20
+ */
 public class ConfigHelper implements ConfigKey {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigHelper.class);
 	private static final String CONFIG_PROPERTIES = "openzaly.properties";

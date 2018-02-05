@@ -49,7 +49,7 @@ import com.akaxin.site.storage.sqlite.manager.DBConfigBean;
  * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
- * @since 2017.11.04 11:23:42
+ * @since 2018.01.01 11:23:42
  */
 public class Bootstrap {
 	private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);

@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * 简单的加载properties
+ * 简单的加载properties文件内容
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-24 19:45:17
