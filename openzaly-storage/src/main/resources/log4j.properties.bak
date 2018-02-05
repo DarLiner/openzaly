@@ -1,0 +1,40 @@
+# log4j
+log4j.rootLogger=INFO,info-out,warn-out,error-out
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p [%c] \r\n\t%m%n
+
+log4j.appender.debug-out=org.apache.log4j.RollingFileAppender
+log4j.appender.debug-out.File=debug.log
+log4j.appender.debug-out.MaxFileSize=102400KB
+log4j.appender.debug-out.MaxBackupIndex=1
+log4j.appender.debug-out.Threshold=DEBUG
+log4j.appender.debug-out.layout=org.apache.log4j.PatternLayout
+log4j.appender.debug-out.layout.ConversionPattern=%d %p [%c] \r\n\t%m%n
+
+log4j.appender.info-out=org.apache.log4j.RollingFileAppender
+log4j.appender.info-out.File=info.log
+log4j.appender.info-out.MaxFileSize=102400KB
+log4j.appender.info-out.MaxBackupIndex=1
+log4j.appender.info-out.Threshold=INFO
+log4j.appender.info-out.layout=org.apache.log4j.PatternLayout
+log4j.appender.info-out.layout.ConversionPattern=%d %p [%c] \r\n\t%m%n
+
+log4j.appender.warn-out=org.apache.log4j.RollingFileAppender
+log4j.appender.warn-out.File=warn.log
+log4j.appender.warn-out.MaxFileSize=102400KB
+log4j.appender.warn-out.MaxBackupIndex=1
+log4j.appender.warn-out.Threshold=WARN
+log4j.appender.warn-out.layout=org.apache.log4j.PatternLayout
+log4j.appender.warn-out.layout.ConversionPattern=%d %p [%c] \r\n\t%m%n
+
+log4j.appender.error-out=org.apache.log4j.RollingFileAppender
+log4j.appender.error-out.File=error.log
+log4j.appender.error-out.MaxFileSize=102400KB
+log4j.appender.error-out.MaxBackupIndex=1
+log4j.appender.error-out.Threshold=ERROR
+log4j.appender.error-out.layout=org.apache.log4j.PatternLayout
+log4j.appender.error-out.layout.ConversionPattern=%d %p [%c] \r\n\t%m%n
+
+

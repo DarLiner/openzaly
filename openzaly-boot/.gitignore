@@ -1,0 +1,7 @@
+/target/
+/.classpath
+/.DS_Store
+/.project
+/openzalyDB.sqlite3
+/uic.txt
+/uicUsed.txt
