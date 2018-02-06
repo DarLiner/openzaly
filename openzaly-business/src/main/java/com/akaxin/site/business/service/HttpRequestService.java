@@ -76,7 +76,9 @@ public class HttpRequestService implements IRequest {
 				break;
 			case HAI_SITE_GETCONFIG:
 			case HAI_SITE_UPDATECONFIG:
-				response = new HttpSiteConfigService().execute(command);
+				if (checkPermissions(command.getSiteUserId())) {
+					response = new HttpSiteConfigService().execute(command);
+				}
 				break;
 			case HAI_PLUGIN_ADD:
 			case HAI_PLUGIN_DELETE:
