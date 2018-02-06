@@ -42,6 +42,7 @@ import com.akaxin.site.storage.sqlite.sql.SQLConst;
 public class SQLiteUserProfileDao {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteUserProfileDao.class);
 	private final String USER_PROFILE_TABLE = SQLConst.SITE_USER_PROFILE;
+	private final String USER_FRIEND_TABLE = SQLConst.SITE_USER_FRIEND;
 	private static SQLiteUserProfileDao instance = new SQLiteUserProfileDao();
 
 	public static SQLiteUserProfileDao getInstance() {
@@ -340,9 +341,9 @@ public class SQLiteUserProfileDao {
 		long startTime = System.currentTimeMillis();
 		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
 
-		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM site_user_friend AS a LEFT JOIN "
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + USER_FRIEND_TABLE + " AS a LEFT JOIN "
 				+ USER_PROFILE_TABLE + " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
-
+		
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, userId);
 

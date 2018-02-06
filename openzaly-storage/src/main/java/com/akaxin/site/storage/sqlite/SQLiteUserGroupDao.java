@@ -29,6 +29,7 @@ import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
@@ -217,6 +218,44 @@ public class SQLiteUserGroupDao {
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, membersList.toString(), sql + "," + groupId);
 		return membersList;
+	}
+
+	/**
+	 * 查询用户好友中非群成员用户
+	 * 
+	 * @param groupId
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<SimpleUserBean> queryUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
+			int pageSize) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
+		int startNum = (pageNum - 1) * pageSize;
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + SQLConst.SITE_USER_FRIEND
+				+ " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=? AND a.site_friend_id NOT IN (SELECT DISTINCT site_user_id FROM "
+				+ SQLConst.SITE_USER_GROUP + " WHERE site_group_id=?) LIMIT ?,?;";
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setString(2, groupId);
+		preStatement.setInt(3, startNum);
+		preStatement.setInt(4, pageSize);
+
+		ResultSet rs = preStatement.executeQuery();
+		while (rs.next()) {
+			SimpleUserBean userBean = new SimpleUserBean();
+			userBean.setUserId(rs.getString(1));
+			userBean.setUserName(rs.getString(2));
+			userBean.setUserPhoto(rs.getString(3));
+			userList.add(userBean);
+		}
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, userList.toString(),
+				sql + "," + groupId + "," + startNum + "," + pageSize);
+		return userList;
 	}
 
 	public GroupMemberBean getGroupMember(String siteUserId, String groupId) throws SQLException {

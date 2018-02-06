@@ -6,6 +6,7 @@ import java.util.List;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 
 public interface IGroupDao {
 
@@ -40,5 +41,8 @@ public interface IGroupDao {
 	public boolean deleteGroupMember(String groupId, List<String> userIds);
 
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException;
+
+	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
+			int pageSize) throws SQLException;
 
 }

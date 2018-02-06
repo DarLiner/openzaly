@@ -22,6 +22,7 @@ import com.akaxin.site.storage.api.IGroupDao;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.sqlite.SQLiteGroupProfileDao;
 import com.akaxin.site.storage.sqlite.SQLiteUserGroupDao;
 
@@ -60,6 +61,13 @@ public class GroupDaoService implements IGroupDao {
 	@Override
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberList(groupId, pageNum, pageSize);
+	}
+
+	@Override
+	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
+			int pageSize) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberList(siteUserId, groupId, pageNum,
+				pageSize);
 	}
 
 	@Override

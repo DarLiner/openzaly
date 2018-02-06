@@ -30,6 +30,7 @@ import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.service.GroupDaoService;
 import com.akaxin.site.storage.service.MessageDaoService;
 
@@ -91,9 +92,20 @@ public class UserGroupDao {
 		try {
 			membersList = groupDao.getNonGroupMemberList(groupId, pageNum, pageSize);
 		} catch (Exception e) {
-			logger.error("get group members error.", e);
+			logger.error("get non group members error.", e);
 		}
 		return membersList;
+	}
+
+	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
+			int pageSize) {
+		List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
+		try {
+			userList = groupDao.getUserFriendNonGroupMemberList(siteUserId, groupId, pageNum, pageSize);
+		} catch (Exception e) {
+			logger.error("get user friend non group members error.", e);
+		}
+		return userList;
 	}
 
 	public int getGroupMemberCount(String groupId) {

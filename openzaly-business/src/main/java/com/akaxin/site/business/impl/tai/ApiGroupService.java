@@ -32,6 +32,7 @@ import com.akaxin.proto.site.ApiGroupCreateProto;
 import com.akaxin.proto.site.ApiGroupDeleteProto;
 import com.akaxin.proto.site.ApiGroupListProto;
 import com.akaxin.proto.site.ApiGroupMembersProto;
+import com.akaxin.proto.site.ApiGroupNonMembersProto;
 import com.akaxin.proto.site.ApiGroupProfileProto;
 import com.akaxin.proto.site.ApiGroupQuitProto;
 import com.akaxin.proto.site.ApiGroupRemoveMemberProto;
@@ -464,6 +465,47 @@ public class ApiGroupService extends AbstractRequest {
 			logger.error("get group members error.", e);
 		}
 		logger.info("api.group.members result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 获取用户群组中，不存在的好友用户
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse nonMembers(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupNonMembersProto.ApiGroupNonMembersRequest request = ApiGroupNonMembersProto.ApiGroupNonMembersRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String groupId = request.getGroupId();
+			int pageNum = request.getPageNumber();
+			int pageSize = request.getPageSize();
+
+			if (pageNum == 0 && pageSize == 0) {
+				pageSize = 100;
+			}
+
+			List<SimpleUserBean> userFriendList = UserGroupDao.getInstance().getUserFriendNonGroupMemberList(siteUserId,
+					groupId, pageNum, pageSize);
+			ApiGroupNonMembersProto.ApiGroupNonMembersResponse.Builder responseBuilder = ApiGroupNonMembersProto.ApiGroupNonMembersResponse
+					.newBuilder();
+			for (SimpleUserBean friendBean : userFriendList) {
+				UserProto.SimpleUserProfile friendProfile = UserProto.SimpleUserProfile.newBuilder()
+						.setSiteUserId(friendBean.getUserId()).setUserName(String.valueOf(friendBean.getUserName()))
+						.setUserPhoto(String.valueOf(friendBean.getUserPhoto())).build();
+				responseBuilder.addProfile(friendProfile);
+			}
+			commandResponse.setParams(responseBuilder.build().toByteArray());
+			errCode = ErrorCode2.SUCCESS;
+
+		} catch (Exception e) {
+			logger.error("api.group.nonMembers exception", e);
+		}
+		logger.info("api.group.nonMembers result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
