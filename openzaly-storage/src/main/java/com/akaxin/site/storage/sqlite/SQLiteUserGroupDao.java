@@ -148,7 +148,7 @@ public class SQLiteUserGroupDao {
 		long startTime = System.currentTimeMillis();
 		List<String> userIdList = new ArrayList<String>();
 
-		String sql = "SELECT site_user_id FROM " + USER_GROUP_TABLE + " WHERE site_group_id=?;";
+		String sql = "SELECT DISTINCT site_user_id FROM " + USER_GROUP_TABLE + " WHERE site_group_id=?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, groupId);
 
@@ -168,7 +168,7 @@ public class SQLiteUserGroupDao {
 		long startTime = System.currentTimeMillis();
 		List<GroupMemberBean> membersList = new ArrayList<GroupMemberBean>();
 		int startNum = (pageNum - 1) * pageSize;
-		String sql = "SELECT a.site_user_id,b.user_name,b.user_photo,a.user_role FROM " + USER_GROUP_TABLE
+		String sql = "SELECT DISTINCT a.site_user_id,b.user_name,b.user_photo,a.user_role FROM " + USER_GROUP_TABLE
 				+ " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
 				+ " AS b WHERE a.site_user_id=b.site_user_id AND a.site_group_id=? limit ?,?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
