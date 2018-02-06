@@ -137,7 +137,7 @@ public class Bootstrap {
 	 * </pre>
 	 */
 	private static void addConfigListener() {
-		logger.info("-------add config listener--------");
+		logger.info("add config listener");
 		ConfigListener.startListenning();
 	}
 

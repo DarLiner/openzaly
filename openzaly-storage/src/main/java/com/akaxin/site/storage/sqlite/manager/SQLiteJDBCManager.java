@@ -104,9 +104,9 @@ public class SQLiteJDBCManager {
 				if (oldMap.get(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE) != null) {
 					configMap.remove(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE);
 				}
-
-				// #TODO
-				configMap.remove(ConfigProto.ConfigKey.REGISTER_WAY_VALUE);
+				if (oldMap.get(ConfigProto.ConfigKey.REGISTER_WAY_VALUE) != null) {
+					configMap.remove(ConfigProto.ConfigKey.REGISTER_WAY_VALUE);
+				}
 			}
 			SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap);
 		} catch (SQLException e) {
