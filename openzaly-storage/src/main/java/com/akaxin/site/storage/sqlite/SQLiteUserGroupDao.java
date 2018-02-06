@@ -70,7 +70,7 @@ public class SQLiteUserGroupDao {
 	 */
 	public boolean addGroupMember(String siteUserId, String groupId, int status) throws SQLException {
 		GroupMemberBean bean = getGroupMember(siteUserId, groupId);
-		if (bean != null && StringUtils.isNotBlank(bean.getUserId())) {
+		if (bean == null || StringUtils.isAllBlank(bean.getUserId())) {
 			return insertGroupMember(siteUserId, groupId, status);
 		}
 		return false;
