@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +56,11 @@ public class SQLiteUserGroupDao {
 	}
 
 	/**
-	 * 添加群组新成员
+	 * <pre>
+	 * 	添加群组新成员,分为两步
+	 * 		1.select，防止已经为群成员
+	 * 		2.insert，如果select不到用户
+	 * </pre>
 	 * 
 	 * @param createUserId
 	 * @param groupId
@@ -64,6 +69,14 @@ public class SQLiteUserGroupDao {
 	 * @throws SQLException
 	 */
 	public boolean addGroupMember(String siteUserId, String groupId, int status) throws SQLException {
+		GroupMemberBean bean = getGroupMember(siteUserId, groupId);
+		if (bean != null && StringUtils.isNotBlank(bean.getUserId())) {
+			return insertGroupMember(siteUserId, groupId, status);
+		}
+		return false;
+	}
+
+	public boolean insertGroupMember(String siteUserId, String groupId, int status) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + USER_GROUP_TABLE
 				+ "(site_user_id,site_group_id,user_role,add_time) VALUES(?,?,?,?);";
