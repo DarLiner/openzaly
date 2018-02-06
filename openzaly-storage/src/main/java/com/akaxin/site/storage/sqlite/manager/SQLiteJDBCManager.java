@@ -55,6 +55,7 @@ public class SQLiteJDBCManager {
 	private static String sqliteDriverName = "org.sqlite.JDBC";
 	private static Connection sqlitConnection = null;
 	private static final String checkTableSql = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=? AND tbl_name=?;";
+	private static final String DB_FILE_PATH = "openzalyDB.sqlite3";
 
 	public static void initSqliteDB(DBConfigBean bean) {
 		loadDatabaseDriver(bean.getDbDir());
@@ -71,12 +72,12 @@ public class SQLiteJDBCManager {
 			String dbUrl = "jdbc:sqlite:";
 			if (dbDir != null) {
 				if (dbDir.endsWith("/")) {
-					dbUrl += dbDir + "openzalyDB.sqlite3";
+					dbUrl += dbDir + DB_FILE_PATH;
 				} else {
-					dbUrl += dbDir + "/" + "openzalyDB.sqlite3";
+					dbUrl += dbDir + "/" + DB_FILE_PATH;
 				}
 			} else {
-				dbUrl += "./openzalyDB.sqlite3";
+				dbUrl += "./" + DB_FILE_PATH;
 			}
 			logger.info("load data base connectionUrl={}", dbUrl);
 			sqlitConnection = DriverManager.getConnection(dbUrl);
