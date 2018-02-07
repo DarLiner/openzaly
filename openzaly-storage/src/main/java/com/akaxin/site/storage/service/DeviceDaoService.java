@@ -54,13 +54,16 @@ public class DeviceDaoService implements IUserDeviceDao {
 	}
 
 	@Override
-	public List<UserDeviceBean> getOnlineDeviceList(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryOnlineDeviceList(siteUserId);
+	public List<UserDeviceBean> getActiveDeviceList(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryActiveDeviceList(siteUserId);
 	}
 
+	/**
+	 * 获取最近的设备
+	 */
 	@Override
-	public UserDeviceBean getDefaultDeviceInfo(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryDefaultDevice(siteUserId);
+	public UserDeviceBean getLatestDevice(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryLatestDevice(siteUserId);
 	}
 
 	@Override

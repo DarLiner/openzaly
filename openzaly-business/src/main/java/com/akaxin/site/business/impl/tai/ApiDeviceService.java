@@ -86,12 +86,13 @@ public class ApiDeviceService extends AbstractRequest {
 			if (StringUtils.isNotBlank(siteFriendId)) {
 				ApiDeviceListProto.DeviceListInfoResponse.Builder responseBuilder = ApiDeviceListProto.DeviceListInfoResponse
 						.newBuilder();
-				List<UserDeviceBean> deviceList = UserDeviceDao.getInstance().getOnlineDeviceList(siteFriendId);
+				List<UserDeviceBean> deviceList = UserDeviceDao.getInstance().getActiveDeviceList(siteFriendId);
 				for (UserDeviceBean device : deviceList) {
 					DeviceProto.SimpleDeviceProfile deviceProfile = DeviceProto.SimpleDeviceProfile.newBuilder()
 							.setDeviceId(String.valueOf(device.getDeviceId()))
 							.setDeviceName(String.valueOf(device.getDeviceName()))
 							.setUserDevicePubk(String.valueOf(device.getUserDevicePubk()))
+							// 这里使用活跃时间，上次活跃时间
 							.setLastLoginTime(device.getActiveTime()).build();
 					responseBuilder.addList(deviceProfile);
 				}

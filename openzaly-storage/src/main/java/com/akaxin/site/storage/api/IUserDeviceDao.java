@@ -17,11 +17,11 @@ public interface IUserDeviceDao {
 
 	public String getDeviceId(String siteUserId, String devicePuk) throws SQLException;
 
-	public UserDeviceBean getDefaultDeviceInfo(String siteUserId) throws SQLException;
+	public UserDeviceBean getLatestDevice(String siteUserId) throws SQLException;
 
 	public List<UserDeviceBean> getUserDeviceList(String siteUserId) throws SQLException;
 
-	public List<UserDeviceBean> getOnlineDeviceList(String siteUserId) throws SQLException;
+	public List<UserDeviceBean> getActiveDeviceList(String siteUserId) throws SQLException;
 
 	public String getUserToken(String siteUserId) throws SQLException;
 }
