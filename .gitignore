@@ -5,5 +5,3 @@
 *.swp
 *.iml
 target/
-log/
-logs/
