@@ -95,7 +95,6 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command> {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 			String sessionId = request.getSiteSessionId();
-
 			logger.info("siteUserId={},sessionId={}", siteUserId, sessionId);
 
 			SimpleAuthBean authSessionBean = SessionManager.getInstance().getAuthSession(sessionId);

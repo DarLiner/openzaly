@@ -47,7 +47,6 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
 
 	public boolean handle(Command command) {
-		logger.info("http request handler executing....");
 		try {
 			ChannelHandlerContext context = command.getChannelContext();
 			if (context == null) {

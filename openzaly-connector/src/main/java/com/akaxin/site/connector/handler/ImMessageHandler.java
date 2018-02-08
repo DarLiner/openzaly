@@ -35,7 +35,6 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(ImMessageHandler.class);
 
 	public boolean handle(Command command) {
-		logger.info("execute IM request from client command={}", command.toString());
 		try {
 			ChannelSession channelSession = command.getChannelSession();
 			String deviceId = channelSession.getDeviceId();
