@@ -27,7 +27,6 @@ import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -39,6 +38,12 @@ import com.google.protobuf.ByteString;
 
 import io.netty.channel.Channel;
 
+/**
+ * 用户同步个人消息处理类
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-02-08 17:08:47
+ */
 public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(SyncU2MessageHandler.class);
 	private IMessageDao syncDao = new MessageDaoService();
@@ -49,29 +54,30 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 		try {
 			ImSyncMessageProto.ImSyncMessageRequest syncRequest = ImSyncMessageProto.ImSyncMessageRequest
 					.parseFrom(command.getParams());
-
 			String siteUserId = command.getSiteUserId();
 			String deviceId = command.getDeviceId();
-
-			logger.info("siteUserId={} deviceId={} sync U2 Message.", siteUserId, deviceId);
+			logger.info("[Start sync u2]siteUserId={} deviceId={} sync U2 Message.", siteUserId, deviceId);
 
 			long clientu2Pointer = syncRequest.getU2Pointer();
 			long u2Pointer = syncDao.queryU2Pointer(siteUserId, deviceId);
 			long startPointer = clientu2Pointer > u2Pointer ? clientu2Pointer : u2Pointer;
+			int syncCount = 0;
 
 			while (true) {
 				List<U2MessageBean> u2MessageList = syncDao.queryU2Message(siteUserId, deviceId, startPointer,
 						SYNC_MAX_MESSAGE_COUNT);
-
-				logger.info("siteUserId={} deviceId={} sync U2 Message pointer={} Result={}", siteUserId, deviceId,
-						clientu2Pointer, GsonUtils.toJson(u2MessageList));
-
-				startPointer = u2MessageToClient(channelSession.getChannel(), u2MessageList);
+				// 有二人消息才会发送给客户端
+				if (u2MessageList != null && u2MessageList.size() > 0) {
+					startPointer = u2MessageToClient(channelSession.getChannel(), u2MessageList);
+				}
+				// 判断跳出循环的条件
 				if (u2MessageList == null || u2MessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
 					break;
 				}
 			}
 
+			logger.info("[End sync u2]siteUserId={} deviceId={} sync U2 Message from pointer={} count={}.", siteUserId,
+					deviceId, startPointer, syncCount);
 		} catch (Exception e) {
 			logger.error("sync u2 message error", e);
 		}
@@ -80,7 +86,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 	}
 
 	private long u2MessageToClient(Channel channel, List<U2MessageBean> u2MessageList) {
-		logger.info("sync U2 Message to Client");
 		long maxPointer = 0;
 		ImStcMessageProto.ImStcMessageRequest.Builder requestBuilder = ImStcMessageProto.ImStcMessageRequest
 				.newBuilder();
@@ -95,7 +100,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setText(ByteString.copyFromUtf8(u2Bean.getContent())).setTime(u2Bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer textMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.TEXT).setPointer(u2Bean.getId()).setText(MsgText).build();
-					logger.info("sync text message OK. bean={}", u2Bean.toString());
+					logger.info("[Syncing U2] text message OK. bean={}", u2Bean.toString());
 					requestBuilder.addList(textMsg);
 				} catch (Exception et) {
 					logger.error("sync text message error", et);
@@ -111,7 +116,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setTime(u2Bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_TEXT).setPointer(u2Bean.getId()).setSecretText(secretText).build();
-					logger.info("sync secret text message OK. bean={}", u2Bean.toString());
+					logger.info("[Syncing U2] secret text message OK. bean={}", u2Bean.toString());
 					requestBuilder.addList(secretTextMsg);
 				} catch (Exception est) {
 					logger.error("sync secret text message error.", est);
@@ -125,7 +130,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setImageId(u2Bean.getContent()).build();
 					ImStcMessageProto.MsgWithPointer imageMsgWithPointer = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.IMAGE).setPointer(u2Bean.getId()).setImage(msgImage).build();
-					logger.info("sync image message OK. bean={}", u2Bean.toString());
+					logger.info("[Syncing U2] image message OK. bean={}", u2Bean.toString());
 					requestBuilder.addList(imageMsgWithPointer);
 				} catch (Exception ei) {
 					logger.error("synce image message error.", ei);
@@ -141,7 +146,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_IMAGE).setPointer(u2Bean.getId()).setSecretImage(secretImage)
 							.build();
-					logger.info("sync secret image message OK. bean={}", u2Bean.toString());
+					logger.info("[Syncing U2] secret image message OK. bean={}", u2Bean.toString());
 					requestBuilder.addList(secretImageMsg);
 				} catch (Exception esi) {
 					logger.error("sync secret image message error.", esi);
@@ -154,7 +159,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setVoiceId(u2Bean.getContent()).setTime(u2Bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer voiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.VOICE).setPointer(u2Bean.getId()).setVoice(voice).build();
-					logger.info("sync voice message OK. bean={0}", u2Bean.toString());
+					logger.info("[Syncing U2] voice message OK. bean={0}", u2Bean.toString());
 					requestBuilder.addList(voiceMsg);
 				} catch (Exception ev) {
 					logger.error("sync voice message error.", ev);
@@ -170,7 +175,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_VOICE).setPointer(u2Bean.getId()).setSecretVoice(secretVoice)
 							.build();
-					logger.info("sync secret voice message OK. bean={}", u2Bean.toString());
+					logger.info("[Syncing U2] secret voice message OK. bean={}", u2Bean.toString());
 					requestBuilder.addList(secretVoiceMsg);
 				} catch (Exception esv) {
 					logger.error("sync secret voice message error.", esv);

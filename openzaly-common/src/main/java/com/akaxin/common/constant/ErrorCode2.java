@@ -65,6 +65,7 @@ public enum ErrorCode2 {
 	ERROR2_PHONE_EXIST("error.alter", "该手机号码已经其他账号实名"), //
 	ERROR2_PHONE_VERIFYCODE("error.alter", "验证码验证失败"), //
 	ERROR2_PHONE_GETVERIFYCODE("error.alter", "获取验证码失败"), //
+	ERROR2_PHONE_FORMATTING("error.alter", "不支持的手机号"), //
 
 	ERROR2_PLUGIN_STATUS("error.alter", "扩展状态错误"), //
 
