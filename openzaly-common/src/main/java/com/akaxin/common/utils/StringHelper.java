@@ -1,7 +1,10 @@
 package com.akaxin.common.utils;
 
+import org.slf4j.helpers.FormattingTuple;
+import org.slf4j.helpers.MessageFormatter;
+
 public class StringHelper {
-	
+
 	public static String getSubString(String str, int length) {
 		int count = 0;
 		int offset = 0;
@@ -27,5 +30,18 @@ public class StringHelper {
 			return str;
 		}
 		return "";
+	}
+
+	/**
+	 * 
+	 * @param messagePattern
+	 *            "hello,nice {} see {}"
+	 * @param objects
+	 *            ["to","see"]
+	 * @return hello,nice to see you
+	 */
+	public static String format(String messagePattern, Object... objects) {
+		FormattingTuple format = MessageFormatter.arrayFormat(messagePattern, objects);
+		return format.getMessage();
 	}
 }

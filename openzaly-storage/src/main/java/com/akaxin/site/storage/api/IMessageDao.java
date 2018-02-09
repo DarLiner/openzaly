@@ -22,6 +22,8 @@ public interface IMessageDao {
 
 	long queryU2Pointer(String userId, String deviceId) throws SQLException;
 
+	long queryMaxU2Pointer(String userId) throws SQLException;
+
 	// group message
 	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException;
 

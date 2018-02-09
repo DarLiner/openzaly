@@ -52,6 +52,11 @@ public class MessageDaoService implements IMessageDao {
 	}
 
 	@Override
+	public long queryMaxU2Pointer(String userId) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().queryMaxU2MessagePointer(userId);
+	}
+
+	@Override
 	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException {
 		return SQLiteGroupMessageDao.getInstance().saveGroupMessage(gmsgBean);
 	}

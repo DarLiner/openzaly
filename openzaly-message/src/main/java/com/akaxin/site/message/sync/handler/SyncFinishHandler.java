@@ -42,6 +42,11 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 
 			logger.info("siteUserId={} U2Message syncFinish u2Pointer={}", siteUserId, u2Pointer);
 
+			// 如果客户端上传的游标大于数据库里最大的游标，使用数据库理的最大游标值
+			long maxU2Pointer = syncDao.queryMaxU2Pointer(siteUserId);
+			if (u2Pointer > maxU2Pointer) {
+				u2Pointer = maxU2Pointer;
+			}
 			syncDao.updateU2Pointer(siteUserId, deviceId, u2Pointer);
 
 			logger.info("siteUserId={} GroupMessage syncFinish groupPointer={}", siteUserId, groupPointer);
