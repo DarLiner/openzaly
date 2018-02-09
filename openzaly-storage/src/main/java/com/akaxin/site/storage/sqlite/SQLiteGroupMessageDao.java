@@ -83,7 +83,7 @@ public class SQLiteGroupMessageDao {
 		List<GroupMessageBean> gmsgList = new ArrayList<GroupMessageBean>();
 		String querySql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
 				+ GROUP_MESSAGE_TABLE
-				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id!=?;";
+				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id IS NOT ?;";
 
 		start = queryGroupPointer(groupId, userId, deviceId, start);
 
@@ -94,6 +94,7 @@ public class SQLiteGroupMessageDao {
 		PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
 		statement.setString(1, groupId);
 		statement.setLong(2, start);
+		statement.setString(3, deviceId);
 
 		ResultSet rs = statement.executeQuery();
 

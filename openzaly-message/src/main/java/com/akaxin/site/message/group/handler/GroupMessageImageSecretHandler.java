@@ -43,9 +43,10 @@ public class GroupMessageImageSecretHandler extends AbstractGroupHandler<Command
 			int type = request.getType().getNumber();
 
 			if (CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE == type) {
-
+				String siteUserId = command.getSiteUserId();
+				String deviceId = command.getDeviceId();
+				// String group_user_id = request.getGroupSecretText().getSiteUserId();
 				String gmsg_id = request.getGroupSecretText().getMsgId();
-				String group_user_id = request.getGroupSecretText().getSiteUserId();
 				String group_id = request.getGroupSecretText().getSiteGroupId();
 				String group_text = request.getGroupSecretText().getText().toStringUtf8();
 
@@ -53,12 +54,13 @@ public class GroupMessageImageSecretHandler extends AbstractGroupHandler<Command
 				// command.setField("group_id", group_id);
 
 				System.out.println(
-						"GroupMsg = id=" + gmsg_id + "," + group_user_id + "," + group_id + "," + group_text + ",");
+						"GroupMsg = id=" + gmsg_id + "," + siteUserId + "," + group_id + "," + group_text + ",");
 
 				GroupMessageBean gmsgBean = new GroupMessageBean();
+				gmsgBean.setSendDeviceId(deviceId);
 				messageDao.saveGroupMessage(gmsgBean);
 
-				msgResponse(channelSession.getChannel(), command, group_user_id, group_id, gmsg_id);
+				msgResponse(channelSession.getChannel(), command, siteUserId, group_id, gmsg_id);
 
 				return true;
 			}
@@ -82,8 +84,8 @@ public class GroupMessageImageSecretHandler extends AbstractGroupHandler<Command
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 

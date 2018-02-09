@@ -40,11 +40,13 @@ public class GroupMsgNoticeHandler extends AbstractGroupHandler<Command> {
 			int type = request.getType().getNumber();
 			if (CoreProto.MsgType.GROUP_NOTICE_VALUE == type) {
 				String siteUserId = command.getSiteUserId();
+				String deviceId = command.getDeviceId();
 				String groupId = request.getGroupMsgNotice().getSiteGroupId();
 				String groupNoticeText = request.getGroupMsgNotice().getText().toStringUtf8();
-
+				
 				GroupMessageBean bean = new GroupMessageBean();
 				bean.setSendUserId(siteUserId);
+				bean.setSendDeviceId(deviceId);
 				bean.setSiteGroupId(groupId);
 				bean.setContent(groupNoticeText);
 				bean.setMsgType(type);

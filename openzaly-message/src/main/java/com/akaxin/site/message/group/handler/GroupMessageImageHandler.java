@@ -45,15 +45,16 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 
 			int type = request.getType().getNumber();
 			if (CoreProto.MsgType.GROUP_IMAGE_VALUE == type) {
-
+				String siteUserId = command.getSiteUserId();
+				String deviceId = command.getDeviceId();
 				String gmsgId = request.getGroupImage().getMsgId();
-				String siteUserId = request.getGroupImage().getSiteUserId();
 				String groupId = request.getGroupImage().getSiteGroupId();
 				String groupImageId = request.getGroupImage().getImageId();
 
 				GroupMessageBean gmsgBean = new GroupMessageBean();
 				gmsgBean.setMsgId(gmsgId);
 				gmsgBean.setSendUserId(siteUserId);
+				gmsgBean.setSendDeviceId(deviceId);
 				gmsgBean.setSiteGroupId(groupId);
 				gmsgBean.setContent(groupImageId);
 				gmsgBean.setMsgType(type);
@@ -85,8 +86,8 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 
