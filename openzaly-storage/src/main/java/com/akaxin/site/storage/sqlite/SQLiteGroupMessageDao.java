@@ -48,14 +48,15 @@ public class SQLiteGroupMessageDao {
 	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String insertSql = "INSERT INTO " + GROUP_MESSAGE_TABLE
-				+ "(site_group_id,msg_id,send_user_id,msg_type,content,msg_time) VALUES(?,?,?,?,?,?);";
+				+ "(site_group_id,msg_id,send_user_id,send_device_id,msg_type,content,msg_time) VALUES(?,?,?,?,?,?,?);";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(insertSql);
 		preStatement.setString(1, gmsgBean.getSiteGroupId());
 		preStatement.setString(2, gmsgBean.getMsgId());
 		preStatement.setString(3, gmsgBean.getSendUserId());
-		preStatement.setLong(4, gmsgBean.getMsgType());
-		preStatement.setString(5, gmsgBean.getContent());
-		preStatement.setLong(6, gmsgBean.getMsgTime());
+		preStatement.setString(4, gmsgBean.getSendDeviceId());
+		preStatement.setLong(5, gmsgBean.getMsgType());
+		preStatement.setString(6, gmsgBean.getContent());
+		preStatement.setLong(7, gmsgBean.getMsgTime());
 
 		int insertResult = preStatement.executeUpdate();
 
@@ -66,13 +67,23 @@ public class SQLiteGroupMessageDao {
 
 	}
 
+	/**
+	 * 查询的结果，排除发送者的deviceId
+	 * 
+	 * @param groupId
+	 * @param userId
+	 * @param deviceId
+	 * @param start
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start)
 			throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<GroupMessageBean> gmsgList = new ArrayList<GroupMessageBean>();
-		String querySql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.msg_type,a.content,a.msg_time FROM "
+		String querySql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
 				+ GROUP_MESSAGE_TABLE
-				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id = ? AND a.id > ? AND b.group_status=1;";
+				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id!=?;";
 
 		start = queryGroupPointer(groupId, userId, deviceId, start);
 
@@ -92,9 +103,10 @@ public class SQLiteGroupMessageDao {
 			gmsgBean.setSiteGroupId(rs.getString(2));
 			gmsgBean.setMsgId(rs.getString(3));
 			gmsgBean.setSendUserId(rs.getString(4));
-			gmsgBean.setMsgType(rs.getInt(5));
-			gmsgBean.setContent(rs.getString(6));
-			gmsgBean.setMsgTime(rs.getLong(7));
+			gmsgBean.setSendDeviceId(rs.getString(5));
+			gmsgBean.setMsgType(rs.getInt(6));
+			gmsgBean.setContent(rs.getString(7));
+			gmsgBean.setMsgTime(rs.getLong(8));
 			gmsgList.add(gmsgBean);
 		}
 
