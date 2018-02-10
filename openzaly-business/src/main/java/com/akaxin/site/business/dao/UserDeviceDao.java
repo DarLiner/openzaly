@@ -51,9 +51,9 @@ public class UserDeviceDao {
 		return null;
 	}
 
-	public List<UserDeviceBean> getOnlineDeviceList(String siteUserId) {
+	public List<UserDeviceBean> getActiveDeviceList(String siteUserId) {
 		try {
-			return userDeviceDaoService.getOnlineDeviceList(siteUserId);
+			return userDeviceDaoService.getActiveDeviceList(siteUserId);
 		} catch (SQLException e) {
 			logger.error("get user devices error.", e);
 		}

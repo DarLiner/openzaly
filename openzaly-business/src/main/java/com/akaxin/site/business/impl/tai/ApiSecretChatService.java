@@ -63,7 +63,7 @@ public class ApiSecretChatService extends AbstractRequest {
 				logger.info("siteUserId={} apply encryption chat to siteFriendId={} status={}", siteUserId,
 						siteFriendId, status);
 				if (ConfigProto.U2EncryptionStatus.U2_OPEN == status) {
-					UserDeviceBean deviceBean = userDeviceDao.getDefaultDeviceInfo(siteFriendId);
+					UserDeviceBean deviceBean = userDeviceDao.getLatestDevice(siteFriendId);
 					logger.info("开始获取好友的默认设备信息 get user:{} deviceInfo:{}", siteFriendId, deviceBean.toString());
 
 					DeviceProto.SimpleDeviceProfile deviceProfile = DeviceProto.SimpleDeviceProfile.newBuilder()

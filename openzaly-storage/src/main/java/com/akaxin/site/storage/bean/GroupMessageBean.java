@@ -7,6 +7,7 @@ public class GroupMessageBean {
 	private String siteGroupId;
 	private String msgId;
 	private String sendUserId;
+	private String sendDeviceId;
 	private int msgType;
 	private String content;
 	private long msgTime;
@@ -41,6 +42,14 @@ public class GroupMessageBean {
 
 	public void setSendUserId(String sendUserId) {
 		this.sendUserId = sendUserId;
+	}
+
+	public String getSendDeviceId() {
+		return sendDeviceId;
+	}
+
+	public void setSendDeviceId(String sendDeviceId) {
+		this.sendDeviceId = sendDeviceId;
 	}
 
 	public int getMsgType() {

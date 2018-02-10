@@ -49,7 +49,7 @@ public class GroupPsnHandler extends AbstractGroupHandler<Command> {
 				for (String deviceId : deivceIds) {
 					if (StringUtils.isNotEmpty(deviceId) && !deviceId.equals(siteDeviceId)) {
 						writePSN(deviceId);
-						logger.info("psh to group={} user={} deviceId={}", siteGroupId, siteUserId, deviceId);
+						logger.info("psn to group={} user={} deviceId={}", siteGroupId, siteUserId, deviceId);
 					}
 				}
 

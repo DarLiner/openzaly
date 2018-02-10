@@ -185,7 +185,14 @@ public class SQLiteUserDeviceDao {
 		return deviceId;
 	}
 
-	public UserDeviceBean queryDefaultDevice(String site_user_id) throws SQLException {
+	/**
+	 * 最新的用户设备，用户最近一次活跃时间算
+	 * 
+	 * @param site_user_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public UserDeviceBean queryLatestDevice(String site_user_id) throws SQLException {
 		UserDeviceBean deviceBean = new UserDeviceBean();
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,device_id,user_device_pubk,device_name,max(active_time) FROM "
@@ -234,12 +241,12 @@ public class SQLiteUserDeviceDao {
 		return devicesBean;
 	}
 
-	public List<UserDeviceBean> queryOnlineDeviceList(String siteUserId) throws SQLException {
+	public List<UserDeviceBean> queryActiveDeviceList(String siteUserId) throws SQLException {
 		List<UserDeviceBean> devicesBean = new ArrayList<UserDeviceBean>();
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT a.site_user_id,a.device_id,a.login_time,b.user_device_pubk,b.device_name,b.active_time FROM "
 				+ USER_SESSION_TABLE + " AS a LEFT JOIN " + USER_DEVICE_TABLE
-				+ " AS b WHERE a.device_id=b.device_id and a.site_user_id=b.site_user_id and a.site_user_id=?;";
+				+ " AS b WHERE a.device_id=b.device_id AND a.site_user_id=b.site_user_id AND a.site_user_id=? ORDER BY b.active_time DESC;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);

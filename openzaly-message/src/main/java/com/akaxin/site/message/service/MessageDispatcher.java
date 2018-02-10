@@ -28,13 +28,11 @@ public class MessageDispatcher {
 	private static final Logger logger = LoggerFactory.getLogger(MessageDispatcher.class);
 
 	public static boolean dispatch(Command command) {
-		logger.info("IM request dispatch command={}", command.toString());
 		String action = command.getAction();
 		if (action.equalsIgnoreCase(RequestAction.IM_CTS_MESSAGE.getName())) {
 			try {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
-				logger.info("IM message dispatcher type:{0}", request.getType().getNumber());
 
 				switch (request.getType().getNumber()) {
 				case CoreProto.MsgType.NOTICE_VALUE:

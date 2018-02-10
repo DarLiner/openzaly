@@ -43,14 +43,17 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 					.parseFrom(command.getParams());
 			int type = request.getType().getNumber();
 			if (CoreProto.MsgType.GROUP_TEXT_VALUE == type) {
+				// String siteUserId = request.getGroupText().getSiteUserId();
+				String siteUserId = command.getSiteUserId();
+				String deviceId = command.getDeviceId();
 				String gmsgId = request.getGroupText().getMsgId();
-				String siteUserId = request.getGroupText().getSiteUserId();
 				String groupId = request.getGroupText().getSiteGroupId();
 				String groupText = request.getGroupText().getText().toStringUtf8();
 
 				GroupMessageBean gmsgBean = new GroupMessageBean();
 				gmsgBean.setMsgId(gmsgId);
 				gmsgBean.setSendUserId(siteUserId);
+				gmsgBean.setSendDeviceId(deviceId);
 				gmsgBean.setSiteGroupId(groupId);
 				gmsgBean.setContent(groupText);
 				gmsgBean.setMsgType(type);
@@ -82,8 +85,8 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 
