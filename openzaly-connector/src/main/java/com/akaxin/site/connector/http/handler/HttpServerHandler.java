@@ -16,6 +16,7 @@
 package com.akaxin.site.connector.http.handler;
 
 import java.net.InetSocketAddress;
+import java.util.Base64;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -116,7 +117,10 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				}
 				command.setChannelContext(ctx);
 				command.setUri(request.uri());
-				command.setParams(proxyPack.getDataBytes().toByteArray());
+
+
+
+				command.setParams(Base64.getDecoder().decode(proxyPack.getData()));
 
 				logger.info("http server handler command={}", command.toString());
 
