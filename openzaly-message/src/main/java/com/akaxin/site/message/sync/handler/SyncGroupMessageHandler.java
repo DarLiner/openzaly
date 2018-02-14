@@ -176,7 +176,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder().putAllHeader(header)
 				.setData(ByteString.copyFrom(request.toByteArray())).build();
 
-		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_FINISH)
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
 				.add(data.toByteArray()));
 		logger.info("[End Msg Finish] siteUserId={} deviceId={}", siteUserId, deviceId);
 	}

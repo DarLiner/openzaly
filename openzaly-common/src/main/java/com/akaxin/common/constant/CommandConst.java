@@ -27,7 +27,8 @@ public interface CommandConst {
 	public String IM_MSG_TOCLIENT = "im.stc.message";
 	public String IM_MSG_TOSITE = "im.cts.message";
 
-	public String IM_MSG_FINISH = "im.msg.finish";
+	//im.msg.finish 是im.stc.message一种消息类型
+//	public String IM_MSG_FINISH = "im.msg.finish";
 
 	public String IM_STC_PSN = "im.stc.psn";
 
