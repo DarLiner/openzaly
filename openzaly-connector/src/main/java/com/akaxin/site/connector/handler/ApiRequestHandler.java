@@ -28,6 +28,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.business.service.ApiRequestService;
@@ -54,6 +55,12 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 	public boolean handle(Command command) {
 		logger.info("api request handler executing....");
 		try {
+			ChannelSession channelSession = command.getChannelSession();
+			if (channelSession == null) {
+				logger.error("api request handler error.channelSession={}", channelSession);
+				return false;
+			}
+
 			switch (RequestAction.getAction(command.getAction())) {
 			case API_SITE:
 			case API_SITE_CONFIG:
@@ -69,11 +76,11 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 
 				IUserSessionDao sessionDao = new UserSessionDaoService();
 				SimpleAuthBean authBean = sessionDao.getUserSession(siteSessionId);
-
 				logger.info("api session auth result {}", authBean.toString());
 
 				if (authBean == null || StringUtils.isEmpty(authBean.getSiteUserId())
 						|| StringUtils.isEmpty(authBean.getDeviceId())) {
+					this.tellClientSessionError(channelSession.getChannel());
 					logger.info("api session auth fail.authBean={}", authBean.toString());
 					return false;
 				}
@@ -81,14 +88,8 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 				command.setSiteUserId(authBean.getSiteUserId());
 				command.setDeviceId(authBean.getDeviceId());
 			}
-
-			ChannelSession channelSession = command.getChannelSession();
-			if (channelSession == null) {
-				logger.error("api request handler error.channelSession={}", channelSession);
-				return false;
-			}
 			// 执行业务操作
-			this.execute(channelSession.getChannel(), command);
+			this.doApiRequest(channelSession.getChannel(), command);
 
 			return true;
 		} catch (SQLException e) {
@@ -98,7 +99,7 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 		return false;
 	}
 
-	private void execute(final Channel channel, Command command) {
+	private void doApiRequest(final Channel channel, Command command) {
 		logger.info("execute api request from client");
 		CommandResponse comamndResponse = new ApiRequestService().process(command);
 		// response
@@ -129,6 +130,33 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 					}
 				});
 
+	}
+
+	private void tellClientSessionError(final Channel channel) {
+		// response
+		CoreProto.TransportPackageData.Builder packageBuilder = CoreProto.TransportPackageData.newBuilder();
+		// header
+		Map<Integer, String> header = new HashMap<Integer, String>();
+		// 站点业务版本（proto版本）
+		header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
+		packageBuilder.putAllHeader(header);
+		// errCode
+		CoreProto.ErrorInfo errInfo = CoreProto.ErrorInfo.newBuilder().setCode(ErrorCode2.ERROR_SESSION.getCode())
+				.setInfo(ErrorCode2.ERROR_SESSION.getInfo()).build();
+		packageBuilder.setErr(errInfo);
+
+		// 协议版本 CommandConst.PROTOCOL_VERSION=1.0
+		String protocolVersion = CommandConst.PROTOCOL_VERSION;
+		String action = CommandConst.ACTION_RES;
+		channel.writeAndFlush(
+				new RedisCommand().add(protocolVersion).add(action).add(packageBuilder.build().toByteArray()))
+				.addListener(new GenericFutureListener<Future<? super Void>>() {
+
+					public void operationComplete(Future<? super Void> future) throws Exception {
+						channel.close();
+						channel.disconnect();
+					}
+				});
 	}
 
 }
