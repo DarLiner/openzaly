@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.storage.sqlite.manager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.akaxin.common.utils.GsonUtils;
@@ -24,7 +25,7 @@ import com.akaxin.common.utils.GsonUtils;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-31 12:13:35
  */
-public class DBConfigBean {
+public class DBConfig {
 	private String dbDir;
 	private String adminServerName;
 	private String adminAddress;
@@ -33,6 +34,8 @@ public class DBConfigBean {
 	private String adminUic;
 	private String adminApi = "/manage/index";
 	private Map<Integer, String> configMap;
+	// 扩展参数
+	private Map<String, Object> params = new HashMap<String, Object>();
 
 	public String getDbDir() {
 		return dbDir;
@@ -100,6 +103,26 @@ public class DBConfigBean {
 
 	public void setConfigMap(Map<Integer, String> configMap) {
 		this.configMap = configMap;
+	}
+
+	public Map<String, Object> getParams() {
+		return params;
+	}
+
+	public DBConfig setParams(Map<String, Object> map) {
+		this.params.putAll(map);
+		return this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getParam(String k, Class<T> t) {
+		Object obj = params.get(k);
+		return obj == null ? null : (T) obj;
+	}
+
+	public DBConfig setParam(String k, Object v) {
+		this.params.put(k, v);
+		return this;
 	}
 
 	public String toString() {

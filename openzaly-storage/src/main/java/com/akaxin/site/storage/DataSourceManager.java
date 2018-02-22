@@ -18,7 +18,7 @@ package com.akaxin.site.storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.site.storage.sqlite.manager.DBConfigBean;
+import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
 /**
@@ -34,9 +34,9 @@ public class DataSourceManager {
 
 	}
 
-	public static void init(DBConfigBean bean) {
+	public static void init(DBConfig config) {
 		try {
-			SQLiteJDBCManager.initSqliteDB(bean);
+			SQLiteJDBCManager.initSqliteDB(config);
 			logger.info("init sqlite datasource finish.");
 		} catch (Exception e) {
 			logger.error("init sqlite datasource error.", e);

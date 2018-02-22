@@ -40,7 +40,8 @@ import com.akaxin.site.connector.handler.ImSiteAuthHandler;
 import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.storage.DataSourceManager;
-import com.akaxin.site.storage.sqlite.manager.DBConfigBean;
+import com.akaxin.site.storage.sqlite.manager.DBConfig;
+import com.akaxin.site.storage.sqlite.manager.PluginArgs;
 
 /**
  * <pre>
@@ -67,18 +68,19 @@ public class Bootstrap {
 			String adminUic = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_UIC);
 			Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
 
-			DBConfigBean bean = new DBConfigBean();
-			bean.setDbDir(dbDir);
-			bean.setAdminAddress(adminAddress);
-			bean.setAdminPort(adminPort);
-			bean.setAdminUic(adminUic);
-			bean.setAdminAddress(adminAddress);
-			bean.setAdminServerName("管理后台");
-			bean.setConfigMap(siteConfigMap);
+			DBConfig config = new DBConfig();
+			config.setDbDir(dbDir);
+			config.setAdminAddress(adminAddress);
+			config.setAdminPort(adminPort);
+			config.setAdminUic(adminUic);
+			config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
+			config.setConfigMap(siteConfigMap);
 			// 设置后台管理默认图片
-			bean.setAdminIcon(getDefaultSiteAdminIcon());
+			config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
+			// 设置用户广场默认图片
+			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.FRIEND_MAIDAN_ICON));
 
-			initDataSource(bean);
+			initDataSource(config);
 			startHttpServer(httpAddress, httpPort);
 			startNettyServer(siteAddress, sitePort);
 			addConfigListener();
@@ -90,9 +92,9 @@ public class Bootstrap {
 	/**
 	 * 初始化数据源
 	 */
-	private static void initDataSource(DBConfigBean bean) {
-		logger.info("start init datasource bean={}", bean.toString());
-		DataSourceManager.init(bean);
+	private static void initDataSource(DBConfig config) {
+		logger.info("start init datasource bean={}", config.toString());
+		DataSourceManager.init(config);
 	}
 
 	/**
@@ -141,7 +143,7 @@ public class Bootstrap {
 		ConfigListener.startListenning();
 	}
 
-	private static String getDefaultSiteAdminIcon() {
+	private static String getDefaultIcon(String base64Str) {
 		try {
 			byte[] iconBytes = Base64.getDecoder().decode(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON);
 			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(""),
@@ -152,4 +154,5 @@ public class Bootstrap {
 		}
 		return "";
 	}
+
 }

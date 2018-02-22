@@ -67,13 +67,16 @@ public class SQLiteJDBCManager {
 		checkDatabaseIndex();
 	}
 
-	public static void initSqliteDB(DBConfigBean bean) {
-		loadDatabaseDriver(bean.getDbDir());
+	public static void initSqliteDB(DBConfig config) {
+		loadDatabaseDriver(config.getDbDir());
 		checkDatabaseTable();
 		checkDatabaseIndex();
-		initSiteConfig(bean.getConfigMap());
-		addSiteManagerPlugin(bean.getAdminServerName(), bean.getSiteServer(), bean.getAdminApi(), bean.getAdminIcon());
-		initAdminUic(bean.getAdminUic());
+		initSiteConfig(config.getConfigMap());
+		addSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getSiteServer(), config.getAdminApi(),
+				config.getAdminIcon());
+		addSitePlugin(2, PluginArgs.FRIEND_SQUARE_NAME, PluginArgs.FRIEND_SQUARE_ADDRESS, PluginArgs.FRIEND_SQUARE_API,
+				config.getParam(PluginArgs.FRIEND_SQUARE, String.class));
+		initAdminUic(config.getAdminUic());
 	}
 
 	private static void loadDatabaseDriver(String dbDir) {
@@ -185,15 +188,16 @@ public class SQLiteJDBCManager {
 		return result;
 	}
 
-	private static void addSiteManagerPlugin(String siteName, String urlPage, String urlApi, String siteIcon) {
+	private static void addSitePlugin(int id, String siteName, String urlPage, String urlApi, String siteIcon) {
 		boolean result = false;
-		String updateSql = "UPDATE site_plugin_manager SET name=?,url_page=?,url_api=? WHERE id=1;";
-		String insertSql = "INSERT INTO site_plugin_manager(id,name,icon,url_page,url_api,status) VALUES(1,?,?,?,?,?);";
+		String updateSql = "UPDATE site_plugin_manager SET name=?,url_page=?,url_api=? WHERE id=?;";
+		String insertSql = "INSERT INTO site_plugin_manager(id,name,icon,url_page,url_api,status) VALUES(?,?,?,?,?,?);";
 		try {
 			PreparedStatement pst = sqlitConnection.prepareStatement(updateSql);
 			pst.setString(1, siteName);
 			pst.setString(2, urlPage);
 			pst.setString(3, urlApi);
+			pst.setInt(4, id);
 
 			result = (pst.executeUpdate() > 0);
 			logger.info("update site management result={} SQL={} name={} url_page={} url_api={}", result, updateSql,
@@ -205,11 +209,16 @@ public class SQLiteJDBCManager {
 		try {
 			if (!result) {
 				PreparedStatement pst = sqlitConnection.prepareStatement(insertSql);
-				pst.setString(1, siteName);
-				pst.setString(2, siteIcon);
-				pst.setString(3, urlPage);
-				pst.setString(4, urlApi);
-				pst.setInt(5, PluginProto.PluginStatus.ADMIN_HOME_PAGE_SEE_VALUE);
+				pst.setInt(1, id);
+				pst.setString(2, siteName);
+				pst.setString(3, siteIcon);
+				pst.setString(4, urlPage);
+				pst.setString(5, urlApi);
+				if (id == 1) {
+					pst.setInt(6, PluginProto.PluginStatus.ADMIN_HOME_PAGE_SEE_VALUE);
+				} else {
+					pst.setInt(6, PluginProto.PluginStatus.DISABLED_VALUE);
+				}
 				result = (pst.executeUpdate() > 0);
 				logger.info("insert site management result={} SQL={} name={} url_page={} url_api={}", result, insertSql,
 						siteName, urlPage, urlApi);
