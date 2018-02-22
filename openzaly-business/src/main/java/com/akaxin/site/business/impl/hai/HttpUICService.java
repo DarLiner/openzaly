@@ -63,17 +63,12 @@ public class HttpUICService extends AbstractRequest {
 			logger.info("/hai/uic/create command={},request={}", command.toString(), request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && num > 0) {
-				for (int i = 0; i < num; i++) {
-					int uic = (int) ((Math.random() * 9 + 1) * 100000);
-					UicBean bean = new UicBean();
-					bean.setUic(uic + "");
-					bean.setStatus(UicStatus.UNUSED_VALUE);
-					bean.setCreateTime(System.currentTimeMillis());
-					if (SiteUicDao.getInstance().addUic(bean)) {
-						successCount++;
-					}
+				UicBean bean = new UicBean();
+				bean.setStatus(UicStatus.UNUSED_VALUE);
+				bean.setCreateTime(System.currentTimeMillis());
+				if (SiteUicDao.getInstance().batchAddUic(bean, num)) {
+					errorCode = ErrorCode2.SUCCESS;
 				}
-				errorCode = ErrorCode2.SUCCESS;
 			} else {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
 			}

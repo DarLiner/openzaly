@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.site.storage.bean.UicBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
@@ -67,6 +68,48 @@ public class SQLiteUICDao {
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, result, sql + bean.toString());
 		return result > 0;
+	}
+
+	/**
+	 * 批量新增UIC
+	 * 
+	 * @param bean
+	 * @param num
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean batchAddUIC(UicBean bean, int num) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "INSERT INTO " + UIC_TABLE + "(uic,status,create_time) VALUES(?,?,?);";
+		int successCount = 0;
+
+		try {
+			SQLiteJDBCManager.getConnection().setAutoCommit(false);
+
+			for (int i = 0; i < num; i++) {
+				int uic0 = 0;
+				try {
+					int uic = (int) ((Math.random() * 9 + 1) * 100000);
+					uic0 = uic;
+					PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+					preStatement.setString(1, String.valueOf(uic));
+					preStatement.setInt(2, bean.getStatus());
+					preStatement.setLong(3, System.currentTimeMillis());
+					preStatement.executeUpdate();
+					successCount++;
+				} catch (Exception e) {
+					logger.error(StringHelper.format("add uic={} error bean={}", uic0, bean.toString()), e);
+				}
+			}
+			SQLiteJDBCManager.getConnection().commit();
+			SQLiteJDBCManager.getConnection().setAutoCommit(true);
+		} catch (Exception e) {
+			SQLiteJDBCManager.getConnection().rollback();
+			logger.error(StringHelper.format("batch add uic error bean={} num={}", bean.toString(), num), e);
+		}
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, successCount, sql + bean.toString());
+		return successCount > 0;
 	}
 
 	/**

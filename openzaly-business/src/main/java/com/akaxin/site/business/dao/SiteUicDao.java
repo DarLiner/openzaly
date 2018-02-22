@@ -49,6 +49,22 @@ public class SiteUicDao {
 		return false;
 	}
 
+	/**
+	 * 批量增加UIC
+	 * 
+	 * @param bean
+	 * @param num
+	 * @return
+	 */
+	public boolean batchAddUic(UicBean bean, int num) {
+		try {
+			return uicDao.batchAddUic(bean, num);
+		} catch (SQLException e) {
+			logger.error("add uic error.", e);
+		}
+		return false;
+	}
+
 	public UicBean getUicInfo(String uic) {
 		try {
 			return uicDao.getUicInfo(uic);
