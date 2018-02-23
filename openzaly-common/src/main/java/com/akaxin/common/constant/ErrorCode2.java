@@ -63,7 +63,9 @@ public enum ErrorCode2 {
 
 	ERROR2_IMAUTH_FAIL("error.alter", "im连接认证失败"), // 用户需要在该站点注册
 
-	ERROR2_PHONE_EXIST("error.alter", "该手机号码已经其他账号实名"), //
+	ERROR2_PHONE_SAME("error.phone.same", "本机身份已与此号码实名绑定"), //
+	ERROR2_PHONE_EXIST("error.alter", "该手机号码已经绑定其他账号"), //
+	ERROR2_PHONE_REALNAME_EXIST("error.alter", "此账号已经绑定手机号码"), //
 	ERROR2_PHONE_VERIFYCODE("error.alter", "验证码验证失败"), //
 	ERROR2_PHONE_GETVERIFYCODE("error.alter", "获取验证码失败"), //
 	ERROR2_PHONE_FORMATTING("error.alter", "不支持的手机号"), //
