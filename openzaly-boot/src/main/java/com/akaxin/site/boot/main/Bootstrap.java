@@ -78,7 +78,7 @@ public class Bootstrap {
 			// 设置后台管理默认图片
 			config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
 			// 设置用户广场默认图片
-			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.FRIEND_MAIDAN_ICON));
+			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
 
 			initDataSource(config);
 			startHttpServer(httpAddress, httpPort);
@@ -145,7 +145,7 @@ public class Bootstrap {
 
 	private static String getDefaultIcon(String base64Str) {
 		try {
-			byte[] iconBytes = Base64.getDecoder().decode(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON);
+			byte[] iconBytes = Base64.getDecoder().decode(base64Str);
 			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(""),
 					FileType.SITE_PLUGIN_VALUE);
 			return fileId;

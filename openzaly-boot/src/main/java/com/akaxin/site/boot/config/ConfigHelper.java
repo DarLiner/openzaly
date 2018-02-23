@@ -85,7 +85,7 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.DB_PATH_VALUE, getStringConfig(SITE_BASE_DIR));
 		configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
 				ConfigProto.U2EncryptionStatus.U2_OPEN_VALUE + "");
-		configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, ConfigProto.RegisterWay.ANONYMOUS_VALUE + "");
+		configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, ConfigProto.RegisterWay.USERUIC_VALUE + "");
 		configMap.put(ConfigProto.ConfigKey.SITE_ADMIN_VALUE, getStringConfig(SITE_ADMINISTRATORS));
 		configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, getStringConfig(GROUP_MEMBERS_COUNT));
 		return configMap;
