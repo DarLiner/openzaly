@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.message.user2.handler;
 
+import java.nio.charset.Charset;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PushProto;
 import com.akaxin.proto.platform.ApiPushNotificationProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
@@ -29,7 +32,8 @@ import com.akaxin.site.message.dao.ImUserProfileDao;
 import com.akaxin.site.message.push.WritePackage;
 import com.akaxin.site.message.threads.MultiPushThreadExecutor;
 import com.akaxin.site.message.utils.SiteConfigHelper;
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.google.protobuf.ByteString;
 
 public class UserPushHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPushHandler.class);
@@ -37,21 +41,20 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 	public boolean handle(Command command) {
 		// 多线程处理push
 		MultiPushThreadExecutor.getExecutor().execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
-
-				logger.info("-----------u2 message push----------");
 				try {
 					ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 							.parseFrom(command.getParams());
-					String siteFriendId = command.getSiteFriendId();// 这里是用户生成的站点ID
+					String siteUserId = command.getSiteUserId();// 发送者
+					String siteFromId = siteUserId; // 为什么这样写了，保持读者的阅读性
+					String siteFriendId = command.getSiteFriendId();// 接受者 这里是用户生成的站点ID
 					String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(siteFriendId);
-					logger.info("globalUserId={} command={}", globalUserId, command.toString());
+					logger.info("u2 message push globalUserId={} command={}", globalUserId, command.toString());
 
 					ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
 							.newBuilder();
-					requestBuilder.setPushType(request.getType());
 					PushProto.Notification.Builder notification = PushProto.Notification.newBuilder();
 					notification.setUserId(globalUserId);
 					notification.setPushBadge(1);
@@ -62,11 +65,20 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					String address = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_ADDRESS);
 					String port = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_PORT);
 					notification.setSiteServer(address + ":" + port);
-
+					notification.setPushFromId(siteFromId);
+					if (CoreProto.MsgType.TEXT == request.getType()) {
+						ByteString byteStr = request.getText().getText();
+						notification.setPushAlert(byteStr.toString(Charset.forName("UTF-8")));
+						SimpleUserBean bean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFromId);
+						if (bean != null && StringUtils.isNotEmpty(bean.getUserName())) {
+							notification.setPushFromName(bean.getUserName());
+						}
+					}
 					String userToken = ImUserProfileDao.getInstance().getUserToken(siteFriendId);
 					if (StringUtils.isNotBlank(userToken)) {
 						notification.setUserToken(userToken);
 						requestBuilder.setNotification(notification.build());
+						requestBuilder.setPushType(request.getType());
 						logger.info("Akaxin Push: {}", requestBuilder.toString());
 
 						WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
@@ -74,7 +86,7 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					} else {
 						logger.warn("Akaxin Push error,usertoken={}", userToken);
 					}
-				} catch (InvalidProtocolBufferException e) {
+				} catch (Exception e) {
 					logger.error("u2 message push error", e);
 				}
 			}
