@@ -35,8 +35,8 @@ public enum ErrorCode2 {
 	ERROR_UNSUPPORT_PROTOCOL("error.alter", "协议版本错误"), // 服务端不支持该功能
 	ERROR_ILLEGALREQUEST("error.alter", "非法请求"), // 非法的请求
 	ERROR_INVALIDPACKAGEACTION("error.alter", "无效的包名称"), // 无效的包action
-	
-	ERROR_SESSION("error.session", ""), // session验证失败
+
+	ERROR_SESSION("error.session", "用户身份认证失败"), // session验证失败
 
 	ERROR_REGISTER("error.alter", "用户注册失败"), // 用户注册失败
 	ERROR_REGISTER_SAVEPROFILE("error.alter", "保存用户数据失败"), // 用户注册失败
