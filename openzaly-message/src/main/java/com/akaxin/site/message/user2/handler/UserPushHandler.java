@@ -39,6 +39,13 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPushHandler.class);
 
 	public boolean handle(Command command) {
+		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
+
+		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
+			logger.warn("push to client error. cause: pushClientStatus={}", ConfigProto.PushClientStatus.PUSH_NO);
+			return true;
+		}
+
 		// 多线程处理push
 		MultiPushThreadExecutor.getExecutor().execute(new Runnable() {
 
@@ -66,7 +73,10 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					String port = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_PORT);
 					notification.setSiteServer(address + ":" + port);
 					notification.setPushFromId(siteFromId);
-					if (CoreProto.MsgType.TEXT == request.getType()) {
+					// 条件1:站点是否支持push展示消息内容
+					// 条件2:站点只支持文本消息展示消息内容
+					if (ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT == pcs
+							&& CoreProto.MsgType.TEXT == request.getType()) {
 						ByteString byteStr = request.getText().getText();
 						notification.setPushAlert(byteStr.toString(Charset.forName("UTF-8")));
 						SimpleUserBean bean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFromId);

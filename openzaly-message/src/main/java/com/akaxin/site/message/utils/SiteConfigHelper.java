@@ -63,4 +63,27 @@ public class SiteConfigHelper {
 		return null;
 	}
 
+	/**
+	 * <pre>
+	 * 站点发送PUSH的状态值
+	 * 		PUSH_NO
+	 * 		PUSH_HIDDEN_TEXT
+	 * 		PUSH_HIDDEN_TEXT
+	 * 
+	 * </pre>
+	 * 
+	 * @return
+	 */
+	public static ConfigProto.PushClientStatus getPushClientStatus() {
+		try {
+			String status = getConfig(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS);
+			if (status != null) {
+				return ConfigProto.PushClientStatus.forNumber(Integer.valueOf(status));
+			}
+		} catch (Exception e) {
+			logger.error("get push client status error.", e);
+		}
+		return ConfigProto.PushClientStatus.PUSH_HIDDEN_TEXT;
+	}
+
 }

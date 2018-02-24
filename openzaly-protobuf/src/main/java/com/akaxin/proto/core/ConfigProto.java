@@ -155,6 +155,10 @@ public final class ConfigProto {
      * <code>DB_PATH = 16;</code>
      */
     DB_PATH(16),
+    /**
+     * <code>PUSH_CLIENT_STATUS = 17;</code>
+     */
+    PUSH_CLIENT_STATUS(17),
     UNRECOGNIZED(-1),
     ;
 
@@ -294,6 +298,10 @@ public final class ConfigProto {
      * <code>DB_PATH = 16;</code>
      */
     public static final int DB_PATH_VALUE = 16;
+    /**
+     * <code>PUSH_CLIENT_STATUS = 17;</code>
+     */
+    public static final int PUSH_CLIENT_STATUS_VALUE = 17;
 
 
     public final int getNumber() {
@@ -331,6 +339,7 @@ public final class ConfigProto {
         case 14: return SITE_HTTP_PORT;
         case 15: return U2_ENCRYPTION_STATUS;
         case 16: return DB_PATH;
+        case 17: return PUSH_CLIENT_STATUS;
         default: return null;
       }
     }
@@ -748,6 +757,141 @@ public final class ConfigProto {
     }
 
     // @@protoc_insertion_point(enum_scope:core.U2EncryptionStatus)
+  }
+
+  /**
+   * <pre>
+   *站点发送PUSH给客户端的三种状态
+   * </pre>
+   *
+   * Protobuf enum {@code core.PushClientStatus}
+   */
+  public enum PushClientStatus
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *站点不发送push给客户端
+     * </pre>
+     *
+     * <code>PUSH_NO = 0;</code>
+     */
+    PUSH_NO(0),
+    /**
+     * <pre>
+     *站点发送PUSH不展示文本内容
+     * </pre>
+     *
+     * <code>PUSH_HIDDEN_TEXT = 1;</code>
+     */
+    PUSH_HIDDEN_TEXT(1),
+    /**
+     * <pre>
+     *站点发送PUSH显示文本内容
+     * </pre>
+     *
+     * <code>PUSH_DISPLAY_TEXT = 2;</code>
+     */
+    PUSH_DISPLAY_TEXT(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *站点不发送push给客户端
+     * </pre>
+     *
+     * <code>PUSH_NO = 0;</code>
+     */
+    public static final int PUSH_NO_VALUE = 0;
+    /**
+     * <pre>
+     *站点发送PUSH不展示文本内容
+     * </pre>
+     *
+     * <code>PUSH_HIDDEN_TEXT = 1;</code>
+     */
+    public static final int PUSH_HIDDEN_TEXT_VALUE = 1;
+    /**
+     * <pre>
+     *站点发送PUSH显示文本内容
+     * </pre>
+     *
+     * <code>PUSH_DISPLAY_TEXT = 2;</code>
+     */
+    public static final int PUSH_DISPLAY_TEXT_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static PushClientStatus valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static PushClientStatus forNumber(int value) {
+      switch (value) {
+        case 0: return PUSH_NO;
+        case 1: return PUSH_HIDDEN_TEXT;
+        case 2: return PUSH_DISPLAY_TEXT;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<PushClientStatus>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        PushClientStatus> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<PushClientStatus>() {
+            public PushClientStatus findValueByNumber(int number) {
+              return PushClientStatus.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(4);
+    }
+
+    private static final PushClientStatus[] VALUES = values();
+
+    public static PushClientStatus valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private PushClientStatus(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.PushClientStatus)
   }
 
   public interface SiteConfigOrBuilder extends
@@ -3381,7 +3525,7 @@ public final class ConfigProto {
       "\013 \001(\005\"~\n\016SiteBackConfig\0229\n\013site_config\030\001" +
       " \003(\0132$.core.SiteBackConfig.SiteConfigEnt" +
       "ry\0321\n\017SiteConfigEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005va",
-      "lue\030\002 \001(\t:\0028\001*\303\002\n\tConfigKey\022\020\n\014SITE_ADDR" +
+      "lue\030\002 \001(\t:\0028\001*\333\002\n\tConfigKey\022\020\n\014SITE_ADDR" +
       "ESS\020\000\022\r\n\tSITE_PORT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tS" +
       "ITE_LOGO\020\003\022\020\n\014SITE_VERSION\020\004\022\025\n\021SITE_INT" +
       "RODUCTION\020\005\022\020\n\014REGISTER_WAY\020\006\022\027\n\023GROUP_M" +
@@ -3389,12 +3533,14 @@ public final class ConfigProto {
       "\020\t\022\017\n\013SITE_STATUS\020\n\022\024\n\020SITE_STATUS_INFO\020" +
       "\013\022\016\n\nSITE_ADMIN\020\014\022\025\n\021SITE_HTTP_ADDRESS\020\r" +
       "\022\022\n\016SITE_HTTP_PORT\020\016\022\030\n\024U2_ENCRYPTION_ST" +
-      "ATUS\020\017\022\013\n\007DB_PATH\020\020*7\n\013RegisterWay\022\r\n\tAN" +
-      "ONYMOUS\020\000\022\014\n\010REALNAME\020\001\022\013\n\007USERUIC\020\002*!\n\n",
-      "SiteStatus\022\t\n\005CLOSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2Enc" +
-      "ryptionStatus\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001" +
-      "B$\n\025com.akaxin.proto.coreB\013ConfigProtob\006" +
-      "proto3"
+      "ATUS\020\017\022\013\n\007DB_PATH\020\020\022\026\n\022PUSH_CLIENT_STATU" +
+      "S\020\021*7\n\013RegisterWay\022\r\n\tANONYMOUS\020\000\022\014\n\010REA",
+      "LNAME\020\001\022\013\n\007USERUIC\020\002*!\n\nSiteStatus\022\t\n\005CL" +
+      "OSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2EncryptionStatus\022\014\n" +
+      "\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*L\n\020PushClientSt" +
+      "atus\022\013\n\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022" +
+      "\025\n\021PUSH_DISPLAY_TEXT\020\002B$\n\025com.akaxin.pro" +
+      "to.coreB\013ConfigProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

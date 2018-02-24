@@ -120,6 +120,9 @@ public class SQLiteJDBCManager {
 				if (oldMap.get(ConfigProto.ConfigKey.REGISTER_WAY_VALUE) != null) {
 					configMap.remove(ConfigProto.ConfigKey.REGISTER_WAY_VALUE);
 				}
+				if (oldMap.get(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE) != null) {
+					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
+				}
 			}
 			SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap);
 		} catch (SQLException e) {
