@@ -86,6 +86,7 @@ public class UserProfileDao {
 		UserProfileBean userBean = null;
 		try {
 			userBean = userProfileDao.getUserProfileByGlobalUserId(id);
+			userBean.setGlobalUserId(id);
 		} catch (SQLException e) {
 			logger.error("get user profile by userId error.", e);
 		}

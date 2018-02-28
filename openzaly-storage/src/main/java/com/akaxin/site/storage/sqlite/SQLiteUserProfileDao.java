@@ -195,7 +195,7 @@ public class SQLiteUserProfileDao {
 	public UserProfileBean queryUserProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		UserProfileBean userBean = new UserProfileBean();
-		String sql = "SELECT site_user_id,user_name,user_photo,self_introduce,user_status,register_time FROM "
+		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -205,11 +205,12 @@ public class SQLiteUserProfileDao {
 
 		if (rs.next()) {
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserName(rs.getString(2));
-			userBean.setUserPhoto(rs.getString(3));
-			userBean.setSelfIntroduce(rs.getString(4));
-			userBean.setUserStatus(rs.getInt(5));
-			userBean.setRegisterTime(rs.getLong(6));
+			userBean.setUserIdPubk(rs.getString(2));
+			userBean.setUserName(rs.getString(3));
+			userBean.setUserPhoto(rs.getString(4));
+			userBean.setSelfIntroduce(rs.getString(5));
+			userBean.setUserStatus(rs.getInt(6));
+			userBean.setRegisterTime(rs.getLong(7));
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -247,7 +248,7 @@ public class SQLiteUserProfileDao {
 	public UserProfileBean queryUserProfileByGlobalUserId(String id) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		UserProfileBean userBean = new UserProfileBean();
-		String sql = "SELECT site_user_id, user_name,user_photo,self_introduce,user_status,register_time FROM "
+		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE global_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -257,11 +258,12 @@ public class SQLiteUserProfileDao {
 
 		if (rs.next()) {
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserName(rs.getString(2));
-			userBean.setUserPhoto(rs.getString(3));
-			userBean.setSelfIntroduce(rs.getString(4));
-			userBean.setUserStatus(rs.getInt(5));
-			userBean.setRegisterTime(rs.getLong(6));
+			userBean.setUserIdPubk(rs.getString(2));
+			userBean.setUserName(rs.getString(3));
+			userBean.setUserPhoto(rs.getString(4));
+			userBean.setSelfIntroduce(rs.getString(5));
+			userBean.setUserStatus(rs.getInt(6));
+			userBean.setRegisterTime(rs.getLong(7));
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -272,7 +274,7 @@ public class SQLiteUserProfileDao {
 	public UserProfileBean queryUserProfileByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		UserProfileBean userBean = new UserProfileBean();
-		String sql = "SELECT site_user_id,user_name,user_photo,user_status,self_introduce,register_time FROM "
+		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,user_status,self_introduce,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE user_id_pubk=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -281,11 +283,12 @@ public class SQLiteUserProfileDao {
 		ResultSet rs = preStatement.executeQuery();
 		if (rs.next()) {
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserName(rs.getString(2));
-			userBean.setUserPhoto(rs.getString(3));
-			userBean.setUserStatus(rs.getInt(4));
-			userBean.setSelfIntroduce(rs.getString(5));
-			userBean.setRegisterTime(rs.getLong(6));
+			userBean.setUserIdPubk(rs.getString(2));
+			userBean.setUserName(rs.getString(3));
+			userBean.setUserPhoto(rs.getString(4));
+			userBean.setUserStatus(rs.getInt(5));
+			userBean.setSelfIntroduce(rs.getString(6));
+			userBean.setRegisterTime(rs.getLong(7));
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -343,7 +346,7 @@ public class SQLiteUserProfileDao {
 
 		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + USER_FRIEND_TABLE + " AS a LEFT JOIN "
 				+ USER_PROFILE_TABLE + " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
-		
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, userId);
 

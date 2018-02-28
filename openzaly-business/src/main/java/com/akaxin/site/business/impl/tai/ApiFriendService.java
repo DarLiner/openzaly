@@ -66,22 +66,22 @@ public class ApiFriendService extends AbstractRequest {
 			ApiFriendProfileProto.ApiFriendProfileRequest request = ApiFriendProfileProto.ApiFriendProfileRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
-			String siteFriendId = request.getSiteUserId();
-			String userIdPubk = request.getUserIdPubk();
+			String globalOrSiteFriendId = request.getSiteUserId();// 等待查询的站点用户ID || globalUserId
+			String userIdPubk = request.getUserIdPubk(); // 等待查询的用户公钥，优先级高
 			logger.info("api.friend.profile request={}", request.toString());
 
-			if (userIdPubk == null && siteFriendId == null) {
+			if (userIdPubk == null && globalOrSiteFriendId == null) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
 				return commandResponse.setErrCode2(errCode);
 			}
 
-			UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(siteFriendId);
+			UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(globalOrSiteFriendId);
 			if (null == userBean || StringUtils.isBlank(userBean.getSiteUserId())) {
 				// 直接复用之前的接口了。
-				userBean = UserProfileDao.getInstance().getUserProfileByGlobalUserId(siteFriendId);
+				userBean = UserProfileDao.getInstance().getUserProfileByGlobalUserId(globalOrSiteFriendId);
 			}
 
-			logger.info("api.friend.profile siteUserId={} result={}", siteFriendId, userBean.getSiteUserId());
+			logger.info("api.friend.profile siteUserId={} result={}", globalOrSiteFriendId, userBean.getSiteUserId());
 
 			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {
 				UserProto.UserProfile userProfileProto = UserProto.UserProfile.newBuilder()
@@ -90,9 +90,10 @@ public class ApiFriendService extends AbstractRequest {
 						.setUserPhoto(String.valueOf(userBean.getUserPhoto()))
 						.setUserStatusValue(userBean.getUserStatus()).build();
 				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
-						siteFriendId);
+						userBean.getSiteUserId());
 				ApiFriendProfileProto.ApiFriendProfileResponse response = ApiFriendProfileProto.ApiFriendProfileResponse
-						.newBuilder().setProfile(userProfileProto).setRelation(userRelation).build();
+						.newBuilder().setProfile(userProfileProto).setRelation(userRelation)
+						.setUserIdPubk(userBean.getUserIdPubk()).build();
 				commandResponse.setParams(response.toByteArray());
 				errCode = ErrorCode2.SUCCESS;
 			}
