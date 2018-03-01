@@ -70,11 +70,11 @@ public class ApiGroupService extends AbstractRequest {
 		try {
 			ApiGroupListProto.ApiGroupListRequest request = ApiGroupListProto.ApiGroupListRequest
 					.parseFrom(command.getParams());
-			String currentUserId = command.getSiteUserId();
-			String siteUserId = request.getSiteUserId();
+			String siteUserId = command.getSiteUserId();
+//			String siteUserId = request.getSiteUserId();
 			logger.info("api.group.list command={} request={}", command.toString(), request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(currentUserId)) {
+			if (StringUtils.isNotBlank(siteUserId)) {
 				List<SimpleGroupBean> groupBeanList = UserGroupDao.getInstance().getUserGroups(siteUserId);
 				ApiGroupListProto.ApiGroupListResponse.Builder responseBuilder = ApiGroupListProto.ApiGroupListResponse
 						.newBuilder();
