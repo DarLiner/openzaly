@@ -163,19 +163,9 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 
 	private void msgFinishToClient(Channel channel, String siteUserId, String deviceId) {
 		logger.info("[Start Msg Finish] siteUserId={} deviceId={}", siteUserId, deviceId);
-
-		CoreProto.MsgFinish msgFinish = CoreProto.MsgFinish.newBuilder().build();
-		ImStcMessageProto.MsgWithPointer msgWithFinish = ImStcMessageProto.MsgWithPointer.newBuilder()
-				.setType(MsgType.MSG_FINISH).setFinish(msgFinish).build();
-
-		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-				.addList(msgWithFinish).build();
-
 		Map<Integer, String> header = new HashMap<Integer, String>();
 		header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
-		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder().putAllHeader(header)
-				.setData(ByteString.copyFrom(request.toByteArray())).build();
-
+		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder().putAllHeader(header).build();
 		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_FINISH)
 				.add(data.toByteArray()));
 		logger.info("[End Msg Finish] siteUserId={} deviceId={}", siteUserId, deviceId);
