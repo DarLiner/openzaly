@@ -28,6 +28,7 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PushProto;
 import com.akaxin.proto.platform.ApiPushNotificationProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
+import com.akaxin.site.message.dao.ImUserFriendDao;
 import com.akaxin.site.message.dao.ImUserProfileDao;
 import com.akaxin.site.message.push.WritePackage;
 import com.akaxin.site.message.threads.MultiPushThreadExecutor;
@@ -59,6 +60,11 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					String siteFriendId = command.getSiteFriendId();// 接受者 这里是用户生成的站点ID
 					String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(siteFriendId);
 					logger.info("u2 message push globalUserId={} command={}", globalUserId, command.toString());
+
+					// 首先判断，该接受者是否对发送者，设置了消息免打扰
+					if (ImUserFriendDao.getInstance().isMesageMute(siteFriendId, siteFromId)) {
+						return;
+					}
 
 					ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
 							.newBuilder();

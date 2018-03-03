@@ -252,7 +252,7 @@ public class ApiGroupService extends AbstractRequest {
 						responseBuilder.addGroupLastestMember(groupMemberProfile);
 					}
 					// 是否可以邀请群聊（除了群主以外）
-					responseBuilder.setInviteGroupChat(groupBean.isInviteGroupChat());
+					responseBuilder.setCloseInviteGroupChat(groupBean.isCloseInviteGroupChat());
 					ApiGroupProfileProto.ApiGroupProfileResponse response = responseBuilder.build();
 
 					commandResponse.setParams(response.toByteArray());
@@ -290,7 +290,7 @@ public class ApiGroupService extends AbstractRequest {
 			// 新的群群主
 			String newGroupOwner = request.getNewGroupOwner();
 			// 是否可以邀请群聊（除了群主以外的其他群成员）
-			boolean inviteGroupChat = request.getInviteGroupChat();
+			boolean closeInviteGroupChat = request.getCloseInviteGroupChat();
 			logger.info("api.group.updateProfile cmd={} request={}", command.toString(), request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
@@ -303,7 +303,7 @@ public class ApiGroupService extends AbstractRequest {
 					gprofileBean.setGroupPhoto(photoId);
 					gprofileBean.setGroupNotice(groupNotice);
 					gprofileBean.setCreateUserId(newGroupOwner);
-					gprofileBean.setInviteGroupChat(inviteGroupChat);
+					gprofileBean.setCloseInviteGroupChat(closeInviteGroupChat);
 
 					if (StringUtils.isNotEmpty(groupName)) {
 						if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
@@ -347,14 +347,21 @@ public class ApiGroupService extends AbstractRequest {
 			logger.info("api.group.addMember comamnd={} request={}", command.toString(), request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId) && addMemberList != null) {
-				int currentSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
-				int maxSize = SiteConfig.getMaxGroupMemberSize();
-				if (currentSize + addMemberList.size() <= maxSize) {
-					if (UserGroupDao.getInstance().addGroupMember(siteUserId, groupId, addMemberList)) {
-						errCode = ErrorCode2.SUCCESS;
+				// 先校验权限
+				GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
+
+				if (bean != null && !bean.isCloseInviteGroupChat()) {
+					int currentSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
+					int maxSize = SiteConfig.getMaxGroupMemberSize();
+					if (currentSize + addMemberList.size() <= maxSize) {
+						if (UserGroupDao.getInstance().addGroupMember(siteUserId, groupId, addMemberList)) {
+							errCode = ErrorCode2.SUCCESS;
+						}
+					} else {
+						errCode = ErrorCode2.ERROR_GROUP_MAXMEMBERCOUNT;
 					}
 				} else {
-					errCode = ErrorCode2.ERROR_GROUP_MAXMEMBERCOUNT;
+					errCode = ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE;
 				}
 			}
 		} catch (Exception e) {

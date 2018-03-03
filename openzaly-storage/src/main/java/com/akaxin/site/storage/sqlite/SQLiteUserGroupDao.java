@@ -323,6 +323,25 @@ public class SQLiteUserGroupDao {
 		return bean;
 	}
 
+	public boolean queryMuteStatus(String siteUserId, String siteGroupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		boolean result = true;
+		String sql = "SELECT mute FROM " + USER_GROUP_TABLE + " WHERE site_user_id=? AND site_group_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setString(2, siteGroupId);
+		ResultSet rs = preStatement.executeQuery();
+
+		if (rs.next()) {
+			result = rs.getBoolean(1);
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + siteGroupId);
+		return result;
+	}
+
 	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_GROUP_TABLE + " SET  mute=? WHERE site_user_id=? AND site_group_id=?;";

@@ -51,6 +51,7 @@ public enum ErrorCode2 {
 	ERROR2_FRIEND_APPLYSELF("error.alter", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alter", "添加好友最多为5次"), //
 
+	ERROR_GROUP_INVITE_CHAT_CLOSE("error.alter", "群主已关闭添加新人功能"), //
 	ERROR_GROUP_MAXMEMBERCOUNT("error.alter", "超过群人数上限"), // 添加群成员，人数超过上限
 	ERROR_GROUP_MEMBERLESS3("error.alter", "创建群成员少于三人"), //
 

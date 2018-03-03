@@ -37,4 +37,9 @@ public class UserGroupDaoService implements IUserGroupDao {
 	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean);
 	}
+
+	@Override
+	public boolean isMute(String siteUserId, String siteGroupId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryMuteStatus(siteUserId, siteGroupId);
+	}
 }

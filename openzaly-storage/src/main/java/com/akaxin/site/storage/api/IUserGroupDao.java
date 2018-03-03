@@ -10,4 +10,6 @@ public interface IUserGroupDao {
 
 	boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException;
 
+	public boolean isMute(String siteUserId, String siteGroupId) throws SQLException;
+
 }

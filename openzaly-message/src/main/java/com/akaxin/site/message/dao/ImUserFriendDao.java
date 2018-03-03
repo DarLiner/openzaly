@@ -48,4 +48,18 @@ public class ImUserFriendDao {
 		}
 		return false;
 	}
+
+	/**
+	 * 是否设置了消息免打扰功能,默认是静音状态
+	 * 
+	 * @return
+	 */
+	public boolean isMesageMute(String siteUserId, String siteFriendId) {
+		try {
+			return userFriendDao.isMute(siteUserId, siteFriendId);
+		} catch (SQLException e) {
+			logger.error("query message mutet status error", e);
+		}
+		return true;
+	}
 }

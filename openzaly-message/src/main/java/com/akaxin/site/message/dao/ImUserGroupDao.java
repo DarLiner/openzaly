@@ -22,13 +22,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.site.storage.api.IGroupDao;
+import com.akaxin.site.storage.api.IUserGroupDao;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.service.GroupDaoService;
+import com.akaxin.site.storage.service.UserGroupDaoService;
 
 public class ImUserGroupDao {
 	private static final Logger logger = LoggerFactory.getLogger(ImUserGroupDao.class);
 	private IGroupDao groupDao = new GroupDaoService();
+	private IUserGroupDao userGroupDao = new UserGroupDaoService();
 
 	private ImUserGroupDao() {
 	}
@@ -62,4 +65,23 @@ public class ImUserGroupDao {
 		}
 		return null;
 	}
+
+	public GroupProfileBean getSimpleGroupProfile(String groupId) {
+		try {
+			return groupDao.querySimpleGroupProfile(groupId);
+		} catch (SQLException e) {
+			logger.error("get group profile error.");
+		}
+		return null;
+	}
+
+	public boolean isMesageMute(String siteUserId, String siteGroupId) {
+		try {
+			return userGroupDao.isMute(siteUserId, siteGroupId);
+		} catch (SQLException e) {
+			logger.error("query message mutet status error", e);
+		}
+		return true;
+	}
+
 }

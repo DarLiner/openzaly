@@ -662,12 +662,12 @@ public final class ApiGroupProfileProto {
 
     /**
      * <pre>
-     *群聊邀请确认
+     *关闭邀请新用户群聊 true：打开  false：关闭
      * </pre>
      *
-     * <code>optional bool invite_group_chat = 5;</code>
+     * <code>optional bool close_invite_group_chat = 5;</code>
      */
-    boolean getInviteGroupChat();
+    boolean getCloseInviteGroupChat();
   }
   /**
    * Protobuf type {@code site.ApiGroupProfileResponse}
@@ -683,7 +683,7 @@ public final class ApiGroupProfileProto {
     private ApiGroupProfileResponse() {
       groupMemberCount_ = 0;
       groupLastestMember_ = java.util.Collections.emptyList();
-      inviteGroupChat_ = false;
+      closeInviteGroupChat_ = false;
     }
 
     @java.lang.Override
@@ -753,7 +753,7 @@ public final class ApiGroupProfileProto {
             }
             case 40: {
 
-              inviteGroupChat_ = input.readBool();
+              closeInviteGroupChat_ = input.readBool();
               break;
             }
           }
@@ -917,17 +917,17 @@ public final class ApiGroupProfileProto {
       return groupLastestMember_.get(index);
     }
 
-    public static final int INVITE_GROUP_CHAT_FIELD_NUMBER = 5;
-    private boolean inviteGroupChat_;
+    public static final int CLOSE_INVITE_GROUP_CHAT_FIELD_NUMBER = 5;
+    private boolean closeInviteGroupChat_;
     /**
      * <pre>
-     *群聊邀请确认
+     *关闭邀请新用户群聊 true：打开  false：关闭
      * </pre>
      *
-     * <code>optional bool invite_group_chat = 5;</code>
+     * <code>optional bool close_invite_group_chat = 5;</code>
      */
-    public boolean getInviteGroupChat() {
-      return inviteGroupChat_;
+    public boolean getCloseInviteGroupChat() {
+      return closeInviteGroupChat_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -954,8 +954,8 @@ public final class ApiGroupProfileProto {
       for (int i = 0; i < groupLastestMember_.size(); i++) {
         output.writeMessage(4, groupLastestMember_.get(i));
       }
-      if (inviteGroupChat_ != false) {
-        output.writeBool(5, inviteGroupChat_);
+      if (closeInviteGroupChat_ != false) {
+        output.writeBool(5, closeInviteGroupChat_);
       }
     }
 
@@ -980,9 +980,9 @@ public final class ApiGroupProfileProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, groupLastestMember_.get(i));
       }
-      if (inviteGroupChat_ != false) {
+      if (closeInviteGroupChat_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(5, inviteGroupChat_);
+          .computeBoolSize(5, closeInviteGroupChat_);
       }
       memoizedSize = size;
       return size;
@@ -1014,8 +1014,8 @@ public final class ApiGroupProfileProto {
           == other.getGroupMemberCount());
       result = result && getGroupLastestMemberList()
           .equals(other.getGroupLastestMemberList());
-      result = result && (getInviteGroupChat()
-          == other.getInviteGroupChat());
+      result = result && (getCloseInviteGroupChat()
+          == other.getCloseInviteGroupChat());
       return result;
     }
 
@@ -1040,9 +1040,9 @@ public final class ApiGroupProfileProto {
         hash = (37 * hash) + GROUP_LASTEST_MEMBER_FIELD_NUMBER;
         hash = (53 * hash) + getGroupLastestMemberList().hashCode();
       }
-      hash = (37 * hash) + INVITE_GROUP_CHAT_FIELD_NUMBER;
+      hash = (37 * hash) + CLOSE_INVITE_GROUP_CHAT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getInviteGroupChat());
+          getCloseInviteGroupChat());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1182,7 +1182,7 @@ public final class ApiGroupProfileProto {
         } else {
           groupLastestMemberBuilder_.clear();
         }
-        inviteGroupChat_ = false;
+        closeInviteGroupChat_ = false;
 
         return this;
       }
@@ -1228,7 +1228,7 @@ public final class ApiGroupProfileProto {
         } else {
           result.groupLastestMember_ = groupLastestMemberBuilder_.build();
         }
-        result.inviteGroupChat_ = inviteGroupChat_;
+        result.closeInviteGroupChat_ = closeInviteGroupChat_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1306,8 +1306,8 @@ public final class ApiGroupProfileProto {
             }
           }
         }
-        if (other.getInviteGroupChat() != false) {
-          setInviteGroupChat(other.getInviteGroupChat());
+        if (other.getCloseInviteGroupChat() != false) {
+          setCloseInviteGroupChat(other.getCloseInviteGroupChat());
         }
         onChanged();
         return this;
@@ -1992,40 +1992,40 @@ public final class ApiGroupProfileProto {
         return groupLastestMemberBuilder_;
       }
 
-      private boolean inviteGroupChat_ ;
+      private boolean closeInviteGroupChat_ ;
       /**
        * <pre>
-       *群聊邀请确认
+       *关闭邀请新用户群聊 true：打开  false：关闭
        * </pre>
        *
-       * <code>optional bool invite_group_chat = 5;</code>
+       * <code>optional bool close_invite_group_chat = 5;</code>
        */
-      public boolean getInviteGroupChat() {
-        return inviteGroupChat_;
+      public boolean getCloseInviteGroupChat() {
+        return closeInviteGroupChat_;
       }
       /**
        * <pre>
-       *群聊邀请确认
+       *关闭邀请新用户群聊 true：打开  false：关闭
        * </pre>
        *
-       * <code>optional bool invite_group_chat = 5;</code>
+       * <code>optional bool close_invite_group_chat = 5;</code>
        */
-      public Builder setInviteGroupChat(boolean value) {
+      public Builder setCloseInviteGroupChat(boolean value) {
         
-        inviteGroupChat_ = value;
+        closeInviteGroupChat_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *群聊邀请确认
+       *关闭邀请新用户群聊 true：打开  false：关闭
        * </pre>
        *
-       * <code>optional bool invite_group_chat = 5;</code>
+       * <code>optional bool close_invite_group_chat = 5;</code>
        */
-      public Builder clearInviteGroupChat() {
+      public Builder clearCloseInviteGroupChat() {
         
-        inviteGroupChat_ = false;
+        closeInviteGroupChat_ = false;
         onChanged();
         return this;
       }
@@ -2099,16 +2099,17 @@ public final class ApiGroupProfileProto {
     java.lang.String[] descriptorData = {
       "\n\034site/api_group_profile.proto\022\004site\032\017co" +
       "re/user.proto\032\020core/group.proto\"*\n\026ApiGr" +
-      "oupProfileRequest\022\020\n\010group_id\030\001 \001(\t\"\317\001\n\027" +
+      "oupProfileRequest\022\020\n\010group_id\030\001 \001(\t\"\325\001\n\027" +
       "ApiGroupProfileResponse\022#\n\007profile\030\001 \001(\013" +
       "2\022.core.GroupProfile\022 \n\005owner\030\002 \001(\0132\021.co" +
       "re.UserProfile\022\032\n\022group_member_count\030\003 \001" +
       "(\005\0226\n\024group_lastest_member\030\004 \003(\0132\030.core." +
-      "GroupMemberProfile\022\031\n\021invite_group_chat\030" +
-      "\005 \001(\0102`\n\026ApiGroupProfileService\022F\n\007profi" +
-      "le\022\034.site.ApiGroupProfileRequest\032\035.site.",
-      "ApiGroupProfileResponseB-\n\025com.akaxin.pr" +
-      "oto.siteB\024ApiGroupProfileProtob\006proto3"
+      "GroupMemberProfile\022\037\n\027close_invite_group" +
+      "_chat\030\005 \001(\0102`\n\026ApiGroupProfileService\022F\n" +
+      "\007profile\022\034.site.ApiGroupProfileRequest\032\035",
+      ".site.ApiGroupProfileResponseB-\n\025com.aka" +
+      "xin.proto.siteB\024ApiGroupProfileProtob\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2135,7 +2136,7 @@ public final class ApiGroupProfileProto {
     internal_static_site_ApiGroupProfileResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiGroupProfileResponse_descriptor,
-        new java.lang.String[] { "Profile", "Owner", "GroupMemberCount", "GroupLastestMember", "InviteGroupChat", });
+        new java.lang.String[] { "Profile", "Owner", "GroupMemberCount", "GroupLastestMember", "CloseInviteGroupChat", });
     com.akaxin.proto.core.UserProto.getDescriptor();
     com.akaxin.proto.core.GroupProto.getDescriptor();
   }

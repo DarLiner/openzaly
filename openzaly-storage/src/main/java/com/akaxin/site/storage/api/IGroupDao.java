@@ -30,6 +30,8 @@ public interface IGroupDao {
 
 	public GroupProfileBean queryGroupProfile(String groupId) throws SQLException;
 
+	public GroupProfileBean querySimpleGroupProfile(String groupId) throws SQLException;
+
 	public List<String> getUserGroupsId(String userId) throws SQLException;
 
 	public List<SimpleGroupBean> getUserGroups(String userId) throws SQLException;
@@ -46,7 +48,5 @@ public interface IGroupDao {
 			int pageSize) throws SQLException;
 
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException;
-	
-	
 
 }

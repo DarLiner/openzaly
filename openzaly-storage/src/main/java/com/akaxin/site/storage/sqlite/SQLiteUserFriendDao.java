@@ -119,7 +119,7 @@ public class SQLiteUserFriendDao {
 	public UserFriendBean queryUserFriendSetting(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT mute FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";
-		
+
 		UserFriendBean bean = null;
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setString(1, siteUserId);
@@ -135,6 +135,26 @@ public class SQLiteUserFriendDao {
 		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + siteFriendId);
 
 		return bean;
+	}
+
+	public boolean queryMuteStatus(String siteUserId, String siteFriendId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT mute FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";
+
+		UserFriendBean bean = null;
+		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preState.setString(1, siteUserId);
+		preState.setString(2, siteFriendId);
+
+		ResultSet rs = preState.executeQuery();
+		if (rs.next()) {
+			return rs.getBoolean(1);
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + siteFriendId);
+
+		return true;
 	}
 
 	public boolean updateUserFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {

@@ -89,7 +89,7 @@ public class SQLiteGroupProfileDao {
 			bean.setGroupId(this.getMaxGroupId());
 		}
 		String sql = "INSERT INTO " + GROUP_PROFILE_TABLE
-				+ "(site_group_id,group_name,group_photo,group_notice,group_status,create_user_id,invite_group_chat,create_time) VALUES(?,?,?,?,1,?,?,?);";
+				+ "(site_group_id,group_name,group_photo,group_notice,group_status,create_user_id,close_invite_group_chat,create_time) VALUES(?,?,?,?,1,?,?,?);";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getGroupId());
@@ -110,7 +110,7 @@ public class SQLiteGroupProfileDao {
 		long startTime = System.currentTimeMillis();
 		GroupProfileBean profileBean = null;
 
-		String querySql = "SELECT site_group_id,group_name,group_photo,group_notice,ts_status,create_user_id,group_status,invite_group_chat,create_time FROM "
+		String querySql = "SELECT site_group_id,group_name,group_photo,group_notice,ts_status,create_user_id,group_status,close_invite_group_chat,create_time FROM "
 				+ GROUP_PROFILE_TABLE + " WHERE site_group_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
@@ -127,8 +127,33 @@ public class SQLiteGroupProfileDao {
 			profileBean.setTsStatus(rs.getInt(5));
 			profileBean.setCreateUserId(rs.getString(6));
 			profileBean.setGroupStatus(rs.getInt(7));
-			profileBean.setInviteGroupChat(rs.getBoolean(8));
+			profileBean.setCloseInviteGroupChat(rs.getBoolean(8));
 			profileBean.setCreateTime(rs.getLong(9));
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, profileBean.toString(), querySql + "," + groupId);
+
+		return profileBean;
+	}
+
+	public GroupProfileBean querySimpleGroupProfile(String groupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		GroupProfileBean profileBean = null;
+
+		String querySql = "SELECT site_group_id,group_name,group_photo FROM " + GROUP_PROFILE_TABLE
+				+ " WHERE site_group_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
+		preStatement.setString(1, groupId);
+
+		ResultSet rs = preStatement.executeQuery();
+
+		if (rs.next()) {
+			profileBean = new GroupProfileBean();
+			profileBean.setGroupId(rs.getString(1));
+			profileBean.setGroupName(rs.getString(2));
+			profileBean.setGroupPhoto(rs.getString(3));
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -165,11 +190,11 @@ public class SQLiteGroupProfileDao {
 	 */
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "UPDATE " + GROUP_PROFILE_TABLE + " SET invite_group_chat=? WHERE site_group_id=?;";
+		String sql = "UPDATE " + GROUP_PROFILE_TABLE + " SET close_invite_group_chat=? WHERE site_group_id=?;";
 		int result = 0;
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setBoolean(1, bean.isInviteGroupChat());
+		preStatement.setBoolean(1, bean.isCloseInviteGroupChat());
 		preStatement.setString(2, bean.getGroupId());
 
 		result = preStatement.executeUpdate();

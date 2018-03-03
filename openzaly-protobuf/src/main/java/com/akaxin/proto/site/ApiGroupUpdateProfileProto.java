@@ -63,12 +63,12 @@ public final class ApiGroupUpdateProfileProto {
 
     /**
      * <pre>
-     *群聊邀请确认
+     *是否关闭群聊邀请 true：打开 false：关闭
      * </pre>
      *
-     * <code>optional bool invite_group_chat = 3;</code>
+     * <code>optional bool close_invite_group_chat = 3;</code>
      */
-    boolean getInviteGroupChat();
+    boolean getCloseInviteGroupChat();
   }
   /**
    * Protobuf type {@code site.ApiGroupUpdateProfileRequest}
@@ -83,7 +83,7 @@ public final class ApiGroupUpdateProfileProto {
     }
     private ApiGroupUpdateProfileRequest() {
       newGroupOwner_ = "";
-      inviteGroupChat_ = false;
+      closeInviteGroupChat_ = false;
     }
 
     @java.lang.Override
@@ -132,7 +132,7 @@ public final class ApiGroupUpdateProfileProto {
             }
             case 24: {
 
-              inviteGroupChat_ = input.readBool();
+              closeInviteGroupChat_ = input.readBool();
               break;
             }
           }
@@ -233,17 +233,17 @@ public final class ApiGroupUpdateProfileProto {
       }
     }
 
-    public static final int INVITE_GROUP_CHAT_FIELD_NUMBER = 3;
-    private boolean inviteGroupChat_;
+    public static final int CLOSE_INVITE_GROUP_CHAT_FIELD_NUMBER = 3;
+    private boolean closeInviteGroupChat_;
     /**
      * <pre>
-     *群聊邀请确认
+     *是否关闭群聊邀请 true：打开 false：关闭
      * </pre>
      *
-     * <code>optional bool invite_group_chat = 3;</code>
+     * <code>optional bool close_invite_group_chat = 3;</code>
      */
-    public boolean getInviteGroupChat() {
-      return inviteGroupChat_;
+    public boolean getCloseInviteGroupChat() {
+      return closeInviteGroupChat_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -264,8 +264,8 @@ public final class ApiGroupUpdateProfileProto {
       if (!getNewGroupOwnerBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, newGroupOwner_);
       }
-      if (inviteGroupChat_ != false) {
-        output.writeBool(3, inviteGroupChat_);
+      if (closeInviteGroupChat_ != false) {
+        output.writeBool(3, closeInviteGroupChat_);
       }
     }
 
@@ -281,9 +281,9 @@ public final class ApiGroupUpdateProfileProto {
       if (!getNewGroupOwnerBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, newGroupOwner_);
       }
-      if (inviteGroupChat_ != false) {
+      if (closeInviteGroupChat_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(3, inviteGroupChat_);
+          .computeBoolSize(3, closeInviteGroupChat_);
       }
       memoizedSize = size;
       return size;
@@ -308,8 +308,8 @@ public final class ApiGroupUpdateProfileProto {
       }
       result = result && getNewGroupOwner()
           .equals(other.getNewGroupOwner());
-      result = result && (getInviteGroupChat()
-          == other.getInviteGroupChat());
+      result = result && (getCloseInviteGroupChat()
+          == other.getCloseInviteGroupChat());
       return result;
     }
 
@@ -326,9 +326,9 @@ public final class ApiGroupUpdateProfileProto {
       }
       hash = (37 * hash) + NEW_GROUP_OWNER_FIELD_NUMBER;
       hash = (53 * hash) + getNewGroupOwner().hashCode();
-      hash = (37 * hash) + INVITE_GROUP_CHAT_FIELD_NUMBER;
+      hash = (37 * hash) + CLOSE_INVITE_GROUP_CHAT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getInviteGroupChat());
+          getCloseInviteGroupChat());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -455,7 +455,7 @@ public final class ApiGroupUpdateProfileProto {
         }
         newGroupOwner_ = "";
 
-        inviteGroupChat_ = false;
+        closeInviteGroupChat_ = false;
 
         return this;
       }
@@ -485,7 +485,7 @@ public final class ApiGroupUpdateProfileProto {
           result.profile_ = profileBuilder_.build();
         }
         result.newGroupOwner_ = newGroupOwner_;
-        result.inviteGroupChat_ = inviteGroupChat_;
+        result.closeInviteGroupChat_ = closeInviteGroupChat_;
         onBuilt();
         return result;
       }
@@ -534,8 +534,8 @@ public final class ApiGroupUpdateProfileProto {
           newGroupOwner_ = other.newGroupOwner_;
           onChanged();
         }
-        if (other.getInviteGroupChat() != false) {
-          setInviteGroupChat(other.getInviteGroupChat());
+        if (other.getCloseInviteGroupChat() != false) {
+          setCloseInviteGroupChat(other.getCloseInviteGroupChat());
         }
         onChanged();
         return this;
@@ -805,40 +805,40 @@ public final class ApiGroupUpdateProfileProto {
         return this;
       }
 
-      private boolean inviteGroupChat_ ;
+      private boolean closeInviteGroupChat_ ;
       /**
        * <pre>
-       *群聊邀请确认
+       *是否关闭群聊邀请 true：打开 false：关闭
        * </pre>
        *
-       * <code>optional bool invite_group_chat = 3;</code>
+       * <code>optional bool close_invite_group_chat = 3;</code>
        */
-      public boolean getInviteGroupChat() {
-        return inviteGroupChat_;
+      public boolean getCloseInviteGroupChat() {
+        return closeInviteGroupChat_;
       }
       /**
        * <pre>
-       *群聊邀请确认
+       *是否关闭群聊邀请 true：打开 false：关闭
        * </pre>
        *
-       * <code>optional bool invite_group_chat = 3;</code>
+       * <code>optional bool close_invite_group_chat = 3;</code>
        */
-      public Builder setInviteGroupChat(boolean value) {
+      public Builder setCloseInviteGroupChat(boolean value) {
         
-        inviteGroupChat_ = value;
+        closeInviteGroupChat_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *群聊邀请确认
+       *是否关闭群聊邀请 true：打开 false：关闭
        * </pre>
        *
-       * <code>optional bool invite_group_chat = 3;</code>
+       * <code>optional bool close_invite_group_chat = 3;</code>
        */
-      public Builder clearInviteGroupChat() {
+      public Builder clearCloseInviteGroupChat() {
         
-        inviteGroupChat_ = false;
+        closeInviteGroupChat_ = false;
         onChanged();
         return this;
       }
@@ -1276,15 +1276,16 @@ public final class ApiGroupUpdateProfileProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\"site/api_group_updateProfile.proto\022\004si" +
-      "te\032\020core/group.proto\"w\n\034ApiGroupUpdatePr" +
+      "te\032\020core/group.proto\"}\n\034ApiGroupUpdatePr" +
       "ofileRequest\022#\n\007profile\030\001 \001(\0132\022.core.Gro" +
-      "upProfile\022\027\n\017new_group_owner\030\002 \001(\t\022\031\n\021in" +
-      "vite_group_chat\030\003 \001(\010\"\037\n\035ApiGroupUpdateP" +
-      "rofileResponse2x\n\034ApiGroupUpdateProfileS" +
-      "ervice\022X\n\rupdateProfile\022\".site.ApiGroupU" +
-      "pdateProfileRequest\032#.site.ApiGroupUpdat" +
-      "eProfileResponseB3\n\025com.akaxin.proto.sit" +
-      "eB\032ApiGroupUpdateProfileProtob\006proto3"
+      "upProfile\022\027\n\017new_group_owner\030\002 \001(\t\022\037\n\027cl" +
+      "ose_invite_group_chat\030\003 \001(\010\"\037\n\035ApiGroupU" +
+      "pdateProfileResponse2x\n\034ApiGroupUpdatePr" +
+      "ofileService\022X\n\rupdateProfile\022\".site.Api" +
+      "GroupUpdateProfileRequest\032#.site.ApiGrou" +
+      "pUpdateProfileResponseB3\n\025com.akaxin.pro" +
+      "to.siteB\032ApiGroupUpdateProfileProtob\006pro",
+      "to3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1304,7 +1305,7 @@ public final class ApiGroupUpdateProfileProto {
     internal_static_site_ApiGroupUpdateProfileRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiGroupUpdateProfileRequest_descriptor,
-        new java.lang.String[] { "Profile", "NewGroupOwner", "InviteGroupChat", });
+        new java.lang.String[] { "Profile", "NewGroupOwner", "CloseInviteGroupChat", });
     internal_static_site_ApiGroupUpdateProfileResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_site_ApiGroupUpdateProfileResponse_fieldAccessorTable = new

@@ -12,7 +12,7 @@ public class GroupProfileBean {
 	private int groupStatus;
 	private String createUserId;
 	private long createTime;
-	private boolean inviteGroupChat;
+	private boolean closeInviteGroupChat;
 
 	public int getId() {
 		return id;
@@ -86,12 +86,12 @@ public class GroupProfileBean {
 		this.createTime = createTime;
 	}
 
-	public boolean isInviteGroupChat() {
-		return inviteGroupChat;
+	public boolean isCloseInviteGroupChat() {
+		return closeInviteGroupChat;
 	}
 
-	public void setInviteGroupChat(boolean inviteGroupChat) {
-		this.inviteGroupChat = inviteGroupChat;
+	public void setCloseInviteGroupChat(boolean closeInviteGroupChat) {
+		this.closeInviteGroupChat = closeInviteGroupChat;
 	}
 
 	public String toString() {

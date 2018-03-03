@@ -65,4 +65,9 @@ public class UserFriendDaoService implements IUserFriendDao {
 	public boolean updateFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
 		return SQLiteUserFriendDao.getInstance().updateUserFriendSetting(siteUserId, bean);
 	}
+
+	@Override
+	public boolean isMute(String siteUserId, String siteFriendId) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().queryMuteStatus(siteUserId, siteFriendId);
+	}
 }

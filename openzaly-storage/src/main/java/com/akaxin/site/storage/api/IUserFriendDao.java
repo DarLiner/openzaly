@@ -22,4 +22,6 @@ public interface IUserFriendDao {
 
 	public boolean updateFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException;
 
+	public boolean isMute(String siteUserId, String siteFriendId) throws SQLException;
+
 }
