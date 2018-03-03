@@ -17,7 +17,7 @@ package com.akaxin.common.constant;
 
 public interface CommandConst {
 	public String PROTOCOL_VERSION = "1.0";// 网络协议版本
-	public String SITE_VERSION = "0.1.1";// 站点版本（特指proto版本）
+	public String SITE_VERSION = "0.2.2";// 站点版本（特指proto版本）
 
 	public String SITE_FRIEND_ID = "site_friend_id";
 	public String SITE_GROUP_ID = "site_group_id";
