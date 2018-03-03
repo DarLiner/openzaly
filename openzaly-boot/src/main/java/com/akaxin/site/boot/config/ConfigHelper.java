@@ -77,6 +77,7 @@ public class ConfigHelper implements ConfigKey {
 
 	public static Map<Integer, String> getConfigMap() {
 		Map<Integer, String> configMap = new HashMap<Integer, String>();
+		configMap.put(ConfigProto.ConfigKey.SITE_VERSION_VALUE, getStringConfig(SITE_VERSION));
 		configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, getStringConfig(SITE_ADDRESS));
 		configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, getStringConfig(SITE_PORT));
 		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_ADDRESS_VALUE, getStringConfig(HTTP_ADDRESS));

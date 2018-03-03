@@ -45,4 +45,8 @@ public interface IGroupDao {
 	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
 			int pageSize) throws SQLException;
 
+	public int updateGroupIGC(GroupProfileBean bean) throws SQLException;
+	
+	
+
 }

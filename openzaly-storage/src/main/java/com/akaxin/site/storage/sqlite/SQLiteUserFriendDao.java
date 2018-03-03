@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
@@ -111,6 +112,44 @@ public class SQLiteUserFriendDao {
 
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + siteUserId + "," + siteFriendId);
+
+		return result > 0;
+	}
+
+	public UserFriendBean queryUserFriendSetting(String siteUserId, String siteFriendId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT mute FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";
+		
+		UserFriendBean bean = null;
+		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preState.setString(1, siteUserId);
+		preState.setString(2, siteFriendId);
+
+		ResultSet rs = preState.executeQuery();
+		if (rs.next()) {
+			bean = new UserFriendBean();
+			bean.setMute(rs.getBoolean(1));
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + siteFriendId);
+
+		return bean;
+	}
+
+	public boolean updateUserFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "UPDATE " + USER_FRIEND_TABLE + " SET mute=? WHERE site_user_id=? AND site_friend_id=?;";
+
+		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preState.setBoolean(1, bean.isMute());
+		preState.setString(2, siteUserId);
+		preState.setString(3, bean.getSiteUserId());
+		result = preState.executeUpdate();
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + bean.toString());
 
 		return result > 0;
 	}

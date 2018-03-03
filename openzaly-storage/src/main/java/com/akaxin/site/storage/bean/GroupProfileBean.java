@@ -12,6 +12,7 @@ public class GroupProfileBean {
 	private int groupStatus;
 	private String createUserId;
 	private long createTime;
+	private boolean inviteGroupChat;
 
 	public int getId() {
 		return id;
@@ -83,6 +84,14 @@ public class GroupProfileBean {
 
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
+	}
+
+	public boolean isInviteGroupChat() {
+		return inviteGroupChat;
+	}
+
+	public void setInviteGroupChat(boolean inviteGroupChat) {
+		this.inviteGroupChat = inviteGroupChat;
 	}
 
 	public String toString() {

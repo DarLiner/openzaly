@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IUserFriendDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.sqlite.SQLiteUserFriendDao;
 import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
 
@@ -49,9 +50,19 @@ public class UserFriendDaoService implements IUserFriendDao {
 	public boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException {
 		return SQLiteUserFriendDao.getInstance().deleteRelation(siteUserId, siteFriendId);
 	}
-	
+
 	@Override
 	public List<SimpleUserBean> getUserFriends(String userId) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().queryUserFriends(userId);
+	}
+
+	@Override
+	public UserFriendBean getFriendSetting(String siteUserId, String siteFriendId) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().queryUserFriendSetting(siteUserId, siteFriendId);
+	}
+
+	@Override
+	public boolean updateFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().updateUserFriendSetting(siteUserId, bean);
 	}
 }

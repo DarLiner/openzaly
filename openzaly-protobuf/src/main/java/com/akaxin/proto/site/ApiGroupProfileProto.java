@@ -659,6 +659,15 @@ public final class ApiGroupProfileProto {
      */
     com.akaxin.proto.core.GroupProto.GroupMemberProfileOrBuilder getGroupLastestMemberOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     *群聊邀请确认
+     * </pre>
+     *
+     * <code>optional bool invite_group_chat = 5;</code>
+     */
+    boolean getInviteGroupChat();
   }
   /**
    * Protobuf type {@code site.ApiGroupProfileResponse}
@@ -674,6 +683,7 @@ public final class ApiGroupProfileProto {
     private ApiGroupProfileResponse() {
       groupMemberCount_ = 0;
       groupLastestMember_ = java.util.Collections.emptyList();
+      inviteGroupChat_ = false;
     }
 
     @java.lang.Override
@@ -739,6 +749,11 @@ public final class ApiGroupProfileProto {
               }
               groupLastestMember_.add(
                   input.readMessage(com.akaxin.proto.core.GroupProto.GroupMemberProfile.parser(), extensionRegistry));
+              break;
+            }
+            case 40: {
+
+              inviteGroupChat_ = input.readBool();
               break;
             }
           }
@@ -902,6 +917,19 @@ public final class ApiGroupProfileProto {
       return groupLastestMember_.get(index);
     }
 
+    public static final int INVITE_GROUP_CHAT_FIELD_NUMBER = 5;
+    private boolean inviteGroupChat_;
+    /**
+     * <pre>
+     *群聊邀请确认
+     * </pre>
+     *
+     * <code>optional bool invite_group_chat = 5;</code>
+     */
+    public boolean getInviteGroupChat() {
+      return inviteGroupChat_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -926,6 +954,9 @@ public final class ApiGroupProfileProto {
       for (int i = 0; i < groupLastestMember_.size(); i++) {
         output.writeMessage(4, groupLastestMember_.get(i));
       }
+      if (inviteGroupChat_ != false) {
+        output.writeBool(5, inviteGroupChat_);
+      }
     }
 
     public int getSerializedSize() {
@@ -948,6 +979,10 @@ public final class ApiGroupProfileProto {
       for (int i = 0; i < groupLastestMember_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, groupLastestMember_.get(i));
+      }
+      if (inviteGroupChat_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, inviteGroupChat_);
       }
       memoizedSize = size;
       return size;
@@ -979,6 +1014,8 @@ public final class ApiGroupProfileProto {
           == other.getGroupMemberCount());
       result = result && getGroupLastestMemberList()
           .equals(other.getGroupLastestMemberList());
+      result = result && (getInviteGroupChat()
+          == other.getInviteGroupChat());
       return result;
     }
 
@@ -1003,6 +1040,9 @@ public final class ApiGroupProfileProto {
         hash = (37 * hash) + GROUP_LASTEST_MEMBER_FIELD_NUMBER;
         hash = (53 * hash) + getGroupLastestMemberList().hashCode();
       }
+      hash = (37 * hash) + INVITE_GROUP_CHAT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getInviteGroupChat());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1142,6 +1182,8 @@ public final class ApiGroupProfileProto {
         } else {
           groupLastestMemberBuilder_.clear();
         }
+        inviteGroupChat_ = false;
+
         return this;
       }
 
@@ -1186,6 +1228,7 @@ public final class ApiGroupProfileProto {
         } else {
           result.groupLastestMember_ = groupLastestMemberBuilder_.build();
         }
+        result.inviteGroupChat_ = inviteGroupChat_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1262,6 +1305,9 @@ public final class ApiGroupProfileProto {
               groupLastestMemberBuilder_.addAllMessages(other.groupLastestMember_);
             }
           }
+        }
+        if (other.getInviteGroupChat() != false) {
+          setInviteGroupChat(other.getInviteGroupChat());
         }
         onChanged();
         return this;
@@ -1945,6 +1991,44 @@ public final class ApiGroupProfileProto {
         }
         return groupLastestMemberBuilder_;
       }
+
+      private boolean inviteGroupChat_ ;
+      /**
+       * <pre>
+       *群聊邀请确认
+       * </pre>
+       *
+       * <code>optional bool invite_group_chat = 5;</code>
+       */
+      public boolean getInviteGroupChat() {
+        return inviteGroupChat_;
+      }
+      /**
+       * <pre>
+       *群聊邀请确认
+       * </pre>
+       *
+       * <code>optional bool invite_group_chat = 5;</code>
+       */
+      public Builder setInviteGroupChat(boolean value) {
+        
+        inviteGroupChat_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *群聊邀请确认
+       * </pre>
+       *
+       * <code>optional bool invite_group_chat = 5;</code>
+       */
+      public Builder clearInviteGroupChat() {
+        
+        inviteGroupChat_ = false;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -2015,16 +2099,16 @@ public final class ApiGroupProfileProto {
     java.lang.String[] descriptorData = {
       "\n\034site/api_group_profile.proto\022\004site\032\017co" +
       "re/user.proto\032\020core/group.proto\"*\n\026ApiGr" +
-      "oupProfileRequest\022\020\n\010group_id\030\001 \001(\t\"\264\001\n\027" +
+      "oupProfileRequest\022\020\n\010group_id\030\001 \001(\t\"\317\001\n\027" +
       "ApiGroupProfileResponse\022#\n\007profile\030\001 \001(\013" +
       "2\022.core.GroupProfile\022 \n\005owner\030\002 \001(\0132\021.co" +
       "re.UserProfile\022\032\n\022group_member_count\030\003 \001" +
       "(\005\0226\n\024group_lastest_member\030\004 \003(\0132\030.core." +
-      "GroupMemberProfile2`\n\026ApiGroupProfileSer" +
-      "vice\022F\n\007profile\022\034.site.ApiGroupProfileRe" +
-      "quest\032\035.site.ApiGroupProfileResponseB-\n\025",
-      "com.akaxin.proto.siteB\024ApiGroupProfilePr" +
-      "otob\006proto3"
+      "GroupMemberProfile\022\031\n\021invite_group_chat\030" +
+      "\005 \001(\0102`\n\026ApiGroupProfileService\022F\n\007profi" +
+      "le\022\034.site.ApiGroupProfileRequest\032\035.site.",
+      "ApiGroupProfileResponseB-\n\025com.akaxin.pr" +
+      "oto.siteB\024ApiGroupProfileProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2051,7 +2135,7 @@ public final class ApiGroupProfileProto {
     internal_static_site_ApiGroupProfileResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiGroupProfileResponse_descriptor,
-        new java.lang.String[] { "Profile", "Owner", "GroupMemberCount", "GroupLastestMember", });
+        new java.lang.String[] { "Profile", "Owner", "GroupMemberCount", "GroupLastestMember", "InviteGroupChat", });
     com.akaxin.proto.core.UserProto.getDescriptor();
     com.akaxin.proto.core.GroupProto.getDescriptor();
   }

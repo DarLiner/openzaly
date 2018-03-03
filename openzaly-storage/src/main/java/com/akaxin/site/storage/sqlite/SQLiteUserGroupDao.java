@@ -30,6 +30,7 @@ import com.akaxin.proto.core.GroupProto;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserGroupBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
@@ -301,4 +302,40 @@ public class SQLiteUserGroupDao {
 		return result >= userIds.size();
 	}
 
+	public UserGroupBean getUserGroupSetting(String siteUserId, String siteGroupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT mute FROM " + USER_GROUP_TABLE + " WHERE site_user_id=? AND site_group_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setString(2, siteGroupId);
+		ResultSet rs = preStatement.executeQuery();
+
+		UserGroupBean bean = null;
+		if (rs.next()) {
+			bean = new UserGroupBean();
+			bean.setMute(rs.getBoolean(1));
+			bean.setSiteGroupId(siteGroupId);
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + siteGroupId);
+		return bean;
+	}
+
+	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "UPDATE " + USER_GROUP_TABLE + " SET  mute=? WHERE site_user_id=? AND site_group_id=?;";
+		int result = 0;
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setBoolean(1, bean.isMute());
+		preStatement.setString(2, siteUserId);
+		preStatement.setString(3, bean.getSiteGroupId());
+		result = preStatement.executeUpdate();
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + bean);
+		return result > 0;
+	}
 }

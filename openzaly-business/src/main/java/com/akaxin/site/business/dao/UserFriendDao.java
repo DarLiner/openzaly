@@ -27,6 +27,7 @@ import com.akaxin.site.storage.api.IFriendApplyDao;
 import com.akaxin.site.storage.api.IUserFriendDao;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.service.FriendApplyDaoService;
 import com.akaxin.site.storage.service.UserFriendDaoService;
 
@@ -159,5 +160,23 @@ public class UserFriendDao {
 			logger.error("delete friend error.", e);
 		}
 		return result;
+	}
+
+	public UserFriendBean getFriendSetting(String siteUserId, String siteFriendId) {
+		try {
+			return userFriendDao.getFriendSetting(siteUserId, siteFriendId);
+		} catch (SQLException e) {
+			logger.error("get friend setting error", e);
+		}
+		return null;
+	}
+
+	public boolean updateFriendSetting(String siteUserId, UserFriendBean bean) {
+		try {
+			return userFriendDao.updateFriendSetting(siteUserId, bean);
+		} catch (SQLException e) {
+			logger.error("update friend setting error", e);
+		}
+		return false;
 	}
 }

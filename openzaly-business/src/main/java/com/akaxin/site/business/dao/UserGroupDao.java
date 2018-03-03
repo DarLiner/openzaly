@@ -27,12 +27,15 @@ import com.akaxin.proto.core.GroupProto;
 import com.akaxin.site.business.impl.notice.GroupNotice;
 import com.akaxin.site.storage.api.IGroupDao;
 import com.akaxin.site.storage.api.IMessageDao;
+import com.akaxin.site.storage.api.IUserGroupDao;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserGroupBean;
 import com.akaxin.site.storage.service.GroupDaoService;
 import com.akaxin.site.storage.service.MessageDaoService;
+import com.akaxin.site.storage.service.UserGroupDaoService;
 
 /**
  * 群组相关数据源操作
@@ -45,6 +48,7 @@ public class UserGroupDao {
 
 	private IGroupDao groupDao = new GroupDaoService();
 	private IMessageDao messageDao = new MessageDaoService();
+	private IUserGroupDao userGroupDao = new UserGroupDaoService();
 
 	private UserGroupDao() {
 
@@ -186,6 +190,16 @@ public class UserGroupDao {
 		return result > 0;
 	}
 
+	public boolean updateGroupIGC(GroupProfileBean bean) {
+		int result = 0;
+		try {
+			result = groupDao.updateGroupIGC(bean);
+		} catch (SQLException e) {
+			logger.error("update group profile error.");
+		}
+		return result > 0;
+	}
+
 	public boolean deleteGroup(String groupId) {
 		try {
 			return groupDao.deleteGroupProfile(groupId);
@@ -222,4 +236,21 @@ public class UserGroupDao {
 		return false;
 	}
 
+	public UserGroupBean getUserGroupSetting(String siteUserId, String siteGroupId) {
+		try {
+			return userGroupDao.getUserGroupSetting(siteUserId, siteGroupId);
+		} catch (SQLException e) {
+			logger.error("get user group setting error", e);
+		}
+		return null;
+	}
+
+	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) {
+		try {
+			return userGroupDao.updateUserGroupSetting(siteUserId, bean);
+		} catch (SQLException e) {
+			logger.error("update user group setting error", e);
+		}
+		return false;
+	}
 }

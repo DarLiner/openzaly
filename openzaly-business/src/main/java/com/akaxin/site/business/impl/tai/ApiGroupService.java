@@ -36,7 +36,9 @@ import com.akaxin.proto.site.ApiGroupNonMembersProto;
 import com.akaxin.proto.site.ApiGroupProfileProto;
 import com.akaxin.proto.site.ApiGroupQuitProto;
 import com.akaxin.proto.site.ApiGroupRemoveMemberProto;
+import com.akaxin.proto.site.ApiGroupSettingProto;
 import com.akaxin.proto.site.ApiGroupUpdateProfileProto;
+import com.akaxin.proto.site.ApiGroupUpdateSettingProto;
 import com.akaxin.site.business.constant.GroupConfig;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
@@ -46,6 +48,7 @@ import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserGroupBean;
 import com.google.protobuf.ProtocolStringList;
 
 /**
@@ -71,7 +74,7 @@ public class ApiGroupService extends AbstractRequest {
 			ApiGroupListProto.ApiGroupListRequest request = ApiGroupListProto.ApiGroupListRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
-//			String siteUserId = request.getSiteUserId();
+			// String siteUserId = request.getSiteUserId();
 			logger.info("api.group.list command={} request={}", command.toString(), request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(siteUserId)) {
@@ -248,6 +251,8 @@ public class ApiGroupService extends AbstractRequest {
 								.setProfile(memberProfile).build();
 						responseBuilder.addGroupLastestMember(groupMemberProfile);
 					}
+					// 是否可以邀请群聊（除了群主以外）
+					responseBuilder.setInviteGroupChat(groupBean.isInviteGroupChat());
 					ApiGroupProfileProto.ApiGroupProfileResponse response = responseBuilder.build();
 
 					commandResponse.setParams(response.toByteArray());
@@ -282,6 +287,10 @@ public class ApiGroupService extends AbstractRequest {
 			String photoId = request.getProfile().getIcon();
 			String groupName = request.getProfile().getName();
 			String groupNotice = request.getProfile().getGroupNotice();
+			// 新的群群主
+			String newGroupOwner = request.getNewGroupOwner();
+			// 是否可以邀请群聊（除了群主以外的其他群成员）
+			boolean inviteGroupChat = request.getInviteGroupChat();
 			logger.info("api.group.updateProfile cmd={} request={}", command.toString(), request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
@@ -293,8 +302,17 @@ public class ApiGroupService extends AbstractRequest {
 					gprofileBean.setGroupName(groupName);
 					gprofileBean.setGroupPhoto(photoId);
 					gprofileBean.setGroupNotice(groupNotice);
-					if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
-						errCode = ErrorCode2.SUCCESS;
+					gprofileBean.setCreateUserId(newGroupOwner);
+					gprofileBean.setInviteGroupChat(inviteGroupChat);
+
+					if (StringUtils.isNotEmpty(groupName)) {
+						if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
+							errCode = ErrorCode2.SUCCESS;
+						}
+					} else {
+						if (UserGroupDao.getInstance().updateGroupIGC(gprofileBean)) {
+							errCode = ErrorCode2.SUCCESS;
+						}
 					}
 				} else {
 					errCode = ErrorCode2.ERROR_NOPERMISSION;
@@ -312,7 +330,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 添加群成员，支持群成员拉取好友进群，因此无群主权限限制<br>
-	 * 无管理员权限限制
+	 * 无管理员权限限制 -> 添加群资料中是否允许添加成员
 	 * 
 	 * @param command
 	 * @return
@@ -506,6 +524,80 @@ public class ApiGroupService extends AbstractRequest {
 			logger.error("api.group.nonMembers exception", e);
 		}
 		logger.info("api.group.nonMembers result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 获取个人对群的设置
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse setting(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupSettingProto.ApiGroupSettingRequest request = ApiGroupSettingProto.ApiGroupSettingRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String groupId = request.getGroupId();
+			logger.info("api.group.setting command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
+				UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, groupId);
+				if (bean != null) {
+					ApiGroupSettingProto.ApiGroupSettingResponse response = ApiGroupSettingProto.ApiGroupSettingResponse
+							.newBuilder().setMessageMute(bean.isMute()).build();
+					commandResponse.setParams(response.toByteArray());
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.group.setting error", e);
+		}
+		logger.info("api.group.setting result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 个人更新群设置信息
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse updateSetting(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest request = ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String groupId = request.getGroupId();
+			boolean isMute = request.getMessageMute();
+			logger.info("api.group.updateSetting command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
+				UserGroupBean bean = new UserGroupBean();
+				bean.setSiteGroupId(groupId);
+				bean.setMute(isMute);
+				if (UserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean)) {
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.group.updateSetting error", e);
+		}
+		logger.info("api.group.updateSetting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

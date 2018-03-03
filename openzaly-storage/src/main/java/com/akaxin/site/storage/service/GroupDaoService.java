@@ -91,6 +91,11 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public int updateGroupIGC(GroupProfileBean bean) throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().updateGroupIGC(bean);
+	}
+
+	@Override
 	public int updateGroupOwner(String siteUserId, String groupId) throws SQLException {
 		return SQLiteGroupProfileDao.getInstance().updateGroupOwer(siteUserId, groupId);
 	}

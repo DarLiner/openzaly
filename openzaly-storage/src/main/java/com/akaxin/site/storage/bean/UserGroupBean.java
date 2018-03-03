@@ -1,5 +1,7 @@
 package com.akaxin.site.storage.bean;
 
+import com.akaxin.common.utils.GsonUtils;
+
 /**
  * 用户对应群的bean
  * 
@@ -13,6 +15,7 @@ public class UserGroupBean {
 	private String userRole;
 	private String tsKey;
 	private String deviceId;
+	private boolean mute;
 	private long addTime;
 
 	public String getId() {
@@ -71,10 +74,16 @@ public class UserGroupBean {
 		this.addTime = addTime;
 	}
 
-	public String toString() {
-		return "id=" + id + ",siteUserId=" + siteUserId + ",siteGroupId=" + siteGroupId + ",userRole=" + userRole
-				+ ",tsKey=" + tsKey + ",deviceId" + deviceId + ",addTime=" + addTime;
+	public boolean isMute() {
+		return mute;
+	}
 
+	public void setMute(boolean mute) {
+		this.mute = mute;
+	}
+
+	public String toString() {
+		return GsonUtils.toJson(this);
 	}
 
 }

@@ -34,12 +34,15 @@ import com.akaxin.proto.site.ApiFriendApplyResultProto;
 import com.akaxin.proto.site.ApiFriendDeleteProto;
 import com.akaxin.proto.site.ApiFriendListProto;
 import com.akaxin.proto.site.ApiFriendProfileProto;
+import com.akaxin.proto.site.ApiFriendSettingProto;
+import com.akaxin.proto.site.ApiFriendUpdateSettingProto;
 import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 
 /**
@@ -319,6 +322,82 @@ public class ApiFriendService extends AbstractRequest {
 			logger.error("api.friend.delete error.", e);
 		}
 		logger.info("api.friend.delete result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 获取好友的设置信息
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse setting(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiFriendSettingProto.ApiFriendSettingRequest request = ApiFriendSettingProto.ApiFriendSettingRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+			logger.info("api.friend.setting command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneEmpty(siteUserId, siteFriendId)) {
+				UserFriendBean bean = UserFriendDao.getInstance().getFriendSetting(siteUserId, siteFriendId);
+				if (bean != null) {
+					ApiFriendSettingProto.ApiFriendSettingResponse response = ApiFriendSettingProto.ApiFriendSettingResponse
+							.newBuilder().setMessageMute(bean.isMute()).build();
+					commandResponse.setParams(response.toByteArray());
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;// 数据库执行错误
+				}
+
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.friend.setting error", e);
+		}
+		logger.info("api.friend.setting result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 对用户设置消息免打扰功能
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse updateSetting(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiFriendUpdateSettingProto.ApiFriendUpdateSettingRequest request = ApiFriendUpdateSettingProto.ApiFriendUpdateSettingRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+			boolean messageMute = request.getMessageMute();
+			logger.info("api.friend.updateSetting command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneBlank(siteUserId, siteFriendId)) {
+				UserFriendBean friendBean = new UserFriendBean();
+				friendBean.setSiteUserId(siteFriendId);
+				friendBean.setMute(messageMute);
+				if (UserFriendDao.getInstance().updateFriendSetting(siteUserId, friendBean)) {
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.friend.updateSetting exception", e);
+		}
+
+		logger.info("api.friend.updateSetting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

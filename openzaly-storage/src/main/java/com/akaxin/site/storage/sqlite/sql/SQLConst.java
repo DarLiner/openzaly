@@ -35,7 +35,7 @@ public interface SQLConst {
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, session_id VARCHAR(100), is_online boolean, device_id VARCHAR(50), login_time DATETIME);";
 
 	String CREATE_SITE_USER_FRIEND_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_FRIEND
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, relation INTEGER, add_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, relation INTEGER,mute BOOLEAN, add_time DATETIME);";
 
 	String CREATE_SITE_FRIEND_APPLY_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_FRIEND_APPLY
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, apply_reason TEXT, apply_time DATETIME);";
@@ -47,10 +47,10 @@ public interface SQLConst {
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
 
 	String CREATE_SITE_USER_GROUP_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_GROUP
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, user_role INTEGER, add_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, user_role INTEGER, mute BOOLEAN, add_time DATETIME);";
 
 	String CREATE_SITE_GROUP_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_PROFILE
-			+ "(id INTEGER primary key not null, site_group_id INTEGER UNIQUE NOT NULL, group_name VARCHAR(50), group_photo TEXT, group_notice TEXT, ts_status INTEGER, create_user_id VARCHAR(20), group_status INTEGER, create_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_group_id INTEGER UNIQUE NOT NULL, group_name VARCHAR(50), group_photo TEXT, group_notice TEXT, ts_status INTEGER, create_user_id VARCHAR(20), group_status INTEGER,invite_group_chat BOOLEAN, create_time DATETIME);";
 
 	String CREATE_SITE_GROUP_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE
 			+ "(id INTEGER primary key not null, site_group_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), send_device_id VARCHAR(50), msg_type INTEGER, content TEXT, msg_time DATETIME);";
