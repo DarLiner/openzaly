@@ -45,7 +45,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 	private IGroupDao groupDao = new GroupDaoService();
 
 	public boolean handle(Command command) {
-		logger.info("---------group message push---------");
+		logger.info("开始发送群PUSH command={}", command.toString());
 		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 
 		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
@@ -89,7 +89,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							PushProto.Notification.Builder notification = PushProto.Notification.newBuilder();
 
 							notification.setUserId(memberUserId);
-							notification.setPushBadge(1);
+//							notification.setPushBadge(1);
 							String siteName = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_NAME);
 							if (StringUtils.isNotBlank(siteName)) {
 								notification.setPushTitle(siteName);

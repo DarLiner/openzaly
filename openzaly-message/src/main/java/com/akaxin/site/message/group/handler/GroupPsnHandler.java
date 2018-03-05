@@ -54,6 +54,7 @@ public class GroupPsnHandler extends AbstractGroupHandler<Command> {
 				}
 
 			}
+			return true;
 		} catch (SQLException e) {
 			logger.error("send group psn error.", e);
 		}
