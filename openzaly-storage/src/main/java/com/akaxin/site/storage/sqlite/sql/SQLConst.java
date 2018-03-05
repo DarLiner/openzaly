@@ -29,31 +29,31 @@ public interface SQLConst {
 			+ "(id INTEGER primary key not null, config_key INTEGER UNIQUE NOT NULL, config_value TEXT);";
 
 	String CREATE_SITE_USER_PROFILE_TABLE = "create table IF NOT EXISTS " + SITE_USER_PROFILE
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) UNIQUE NOT NULL, global_user_id VARCHAR(100) UNIQUE NOT NULL, user_id_pubk TEXT UNIQUE, user_name VARCHAR(50), user_photo TEXT, phone_id VARCHAR(20), self_introduce TEXT, apply_info varchar(100), user_status INTEGER, register_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) UNIQUE NOT NULL, global_user_id VARCHAR(100) UNIQUE NOT NULL, user_id_pubk TEXT UNIQUE, user_name VARCHAR(50), user_photo TEXT, phone_id VARCHAR(20), self_introduce TEXT, apply_info varchar(100), user_status INTEGER, register_time LONG);";
 
 	String CREATE_SITE_USER_SESSION_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_SESSION
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, session_id VARCHAR(100), is_online boolean, device_id VARCHAR(50), login_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, session_id VARCHAR(100), is_online boolean, device_id VARCHAR(50), login_time LONG);";
 
 	String CREATE_SITE_USER_FRIEND_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_FRIEND
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, relation INTEGER,mute BOOLEAN, add_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, relation INTEGER,mute BOOLEAN, add_time LONG);";
 
 	String CREATE_SITE_FRIEND_APPLY_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_FRIEND_APPLY
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, apply_reason TEXT, apply_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, apply_reason TEXT, apply_time LONG);";
 
 	String CREATE_SITE_USER_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_MESSAGE
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), msg_type INTEGER, content TEXT, device_id VARCHAR(50), ts_key VARCHAR(50), msg_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), msg_type INTEGER, content TEXT, device_id VARCHAR(50), ts_key VARCHAR(50), msg_time LONG);";
 
 	String CREATE_SITE_MESSAGE_POINTER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_MESSAGE_POINTER
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
 
 	String CREATE_SITE_USER_GROUP_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_GROUP
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, user_role INTEGER, mute BOOLEAN, add_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, user_role INTEGER, mute BOOLEAN, add_time LONG);";
 
 	String CREATE_SITE_GROUP_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_PROFILE
-			+ "(id INTEGER primary key not null, site_group_id INTEGER UNIQUE NOT NULL, group_name VARCHAR(50), group_photo TEXT, group_notice TEXT, ts_status INTEGER, create_user_id VARCHAR(20), group_status INTEGER,close_invite_group_chat BOOLEAN, create_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_group_id INTEGER UNIQUE NOT NULL, group_name VARCHAR(50), group_photo TEXT, group_notice TEXT, ts_status INTEGER, create_user_id VARCHAR(20), group_status INTEGER,close_invite_group_chat BOOLEAN, create_time LONG);";
 
 	String CREATE_SITE_GROUP_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE
-			+ "(id INTEGER primary key not null, site_group_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), send_device_id VARCHAR(50), msg_type INTEGER, content TEXT, msg_time DATETIME);";
+			+ "(id INTEGER primary key not null, site_group_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), send_device_id VARCHAR(50), msg_type INTEGER, content TEXT, msg_time LONG);";
 
 	String CREATE_SITE_GROUP_MESSAGE_POINTER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE_POINTER
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
