@@ -42,11 +42,16 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 
 			logger.info("siteUserId={} U2Message syncFinish u2Pointer={}", siteUserId, u2Pointer);
 
-			// 如果客户端上传的游标大于数据库里最大的游标，使用数据库里的最大游标值
+			// 如果客户端上传的游标大于数据库里最大消息的游标，说明客户端上传的游标错误
+			long maxU2MessageId = syncDao.queryMaxU2MessageId(siteUserId);
 			long maxU2Pointer = syncDao.queryMaxU2Pointer(siteUserId);
-			if (u2Pointer > maxU2Pointer) {
+			if (u2Pointer > maxU2MessageId) {
+				u2Pointer = maxU2MessageId;
+			}
+			if (u2Pointer < maxU2Pointer) {
 				u2Pointer = maxU2Pointer;
 			}
+
 			syncDao.updateU2Pointer(siteUserId, deviceId, u2Pointer);
 
 			logger.info("siteUserId={} GroupMessage syncFinish groupPointer={}", siteUserId, groupPointer);
@@ -60,6 +65,10 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 		}
 
 		return false;
+	}
+
+	private long getMax(long lon1, long lon2) {
+		return lon1 > lon2 ? lon1 : lon2;
 	}
 
 }

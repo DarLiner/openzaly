@@ -143,6 +143,29 @@ public class SQLiteU2MessageDao {
 		return pointer;
 	}
 
+	/**
+	 * 查找最大的消息id，消息id在游标表中为游标
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	public long queryMaxU2MessageId(String userId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		long maxPointer = 0;
+		String sql = "SELECT max(id) FROM " + USER2_MESSAGE_TABLE + " WHERE site_user_id=?;";
+		PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		pStatement.setString(1, userId);
+
+		ResultSet prs = pStatement.executeQuery();
+		if (prs.next()) {
+			maxPointer = prs.getLong(1);
+		}
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, "maxPointer=" + maxPointer, sql + ",userId=" + userId);
+		return maxPointer;
+	}
+
 	public boolean updateU2MessagePointer(String userId, String deviceId, long finish) throws SQLException {
 		if (checkMsgPointer(userId, deviceId)) {
 			return updateU2Pointer(userId, deviceId, finish);
