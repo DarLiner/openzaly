@@ -64,8 +64,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					String siteUserId = command.getSiteUserId();
 					String siteFromId = siteUserId;
 					String siteGroupId = command.getSiteGroupId();
-
-					logger.info("push command={}", command.toString());
+					logger.info("group push command={}", command.toString());
 
 					GroupProfileBean groupBean = ImUserGroupDao.getInstance().getSimpleGroupProfile(siteGroupId);
 
@@ -83,13 +82,15 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 								break;
 							}
 
+							String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(memberUserId);
+
 							ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
 									.newBuilder();
 							requestBuilder.setPushType(request.getType());
 							PushProto.Notification.Builder notification = PushProto.Notification.newBuilder();
 
-							notification.setUserId(memberUserId);
-//							notification.setPushBadge(1);
+							notification.setUserId(globalUserId);
+							// notification.setPushBadge(1);
 							String siteName = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_NAME);
 							if (StringUtils.isNotBlank(siteName)) {
 								notification.setPushTitle(siteName);
