@@ -72,14 +72,24 @@ public class MessageDaoService implements IMessageDao {
 	}
 
 	@Override
-	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start)
-			throws SQLException {
-		return SQLiteGroupMessageDao.getInstance().queryGroupMessage(groupId, userId, deviceId, start);
+	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
+			int limit) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryGroupMessage(groupId, userId, deviceId, start, limit);
+	}
+
+	@Override
+	public long queryGroupMessagePointer(String groupId, String siteUserId, String deviceId) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryGroupPointer(groupId, siteUserId, deviceId, 0);
 	}
 
 	@Override
 	public long queryMaxGroupPointer(String groupId) throws SQLException {
 		return SQLiteGroupMessageDao.getInstance().queryMaxGroupPointer(groupId);
+	}
+
+	@Override
+	public long queryMaxUserGroupPointer(String groupId, String siteUserId) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryMaxUserGroupPointer(groupId, siteUserId);
 	}
 
 }

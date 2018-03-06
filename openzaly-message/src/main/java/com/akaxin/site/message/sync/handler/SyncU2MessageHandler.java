@@ -31,6 +31,7 @@ import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImSyncMessageProto;
+import com.akaxin.site.message.utils.NumUtils;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
@@ -58,9 +59,9 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 			String deviceId = command.getDeviceId();
 			logger.info("[Start sync u2]siteUserId={} deviceId={} sync U2 Message.", siteUserId, deviceId);
 
-			long clientu2Pointer = syncRequest.getU2Pointer();
+			long clientU2Pointer = syncRequest.getU2Pointer();
 			long u2Pointer = syncDao.queryU2Pointer(siteUserId, deviceId);
-			long startPointer = clientu2Pointer > u2Pointer ? clientu2Pointer : u2Pointer;
+			long startPointer = NumUtils.getMax(clientU2Pointer, u2Pointer);
 			int syncCount = 0;
 
 			while (true) {
@@ -86,12 +87,13 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 	}
 
 	private long u2MessageToClient(Channel channel, List<U2MessageBean> u2MessageList) {
-		long maxPointer = 0;
+		long nestPointer = 0;
 		ImStcMessageProto.ImStcMessageRequest.Builder requestBuilder = ImStcMessageProto.ImStcMessageRequest
 				.newBuilder();
 
 		for (U2MessageBean u2Bean : u2MessageList) {
-			maxPointer = maxPointer < u2Bean.getId() ? u2Bean.getId() : maxPointer;
+			nestPointer = NumUtils.getMax(nestPointer, u2Bean.getId());
+
 			switch (u2Bean.getMsgType()) {
 			case CoreProto.MsgType.TEXT_VALUE:
 				try {
@@ -197,7 +199,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 
 		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
 				.add(data.toByteArray()));
-		return maxPointer;
+		return nestPointer;
 	}
 
 }

@@ -23,17 +23,21 @@ public interface IMessageDao {
 	long queryU2Pointer(String userId, String deviceId) throws SQLException;
 
 	long queryMaxU2Pointer(String userId) throws SQLException;
-	
+
 	long queryMaxU2MessageId(String userId) throws SQLException;
 
 	// group message
 	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException;
 
-	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start)
-			throws SQLException;
+	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
+			int limit) throws SQLException;
+
+	public long queryGroupMessagePointer(String groupId, String siteUserId, String deviceId) throws SQLException;
 
 	public boolean updateGroupPointer(String gid, String userId, String deviceId, long finish) throws SQLException;
 
 	public long queryMaxGroupPointer(String groupId) throws SQLException;
+
+	public long queryMaxUserGroupPointer(String groupId, String siteUserId) throws SQLException;
 
 }

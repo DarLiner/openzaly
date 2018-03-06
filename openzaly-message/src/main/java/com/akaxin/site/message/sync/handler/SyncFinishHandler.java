@@ -57,18 +57,28 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 			logger.info("siteUserId={} GroupMessage syncFinish groupPointer={}", siteUserId, groupPointer);
 
 			for (Map.Entry<String, Long> gidEntry : groupPointer.entrySet()) {
-				syncDao.updateGroupPointer(gidEntry.getKey(), siteUserId, deviceId, gidEntry.getValue());
+				String siteGroupId = gidEntry.getKey();
+				long groupFinishPointer = gidEntry.getValue();
+
+				long maxGroupMsgPointer = syncDao.queryMaxGroupPointer(siteGroupId);
+				long maxUserGroupPointer = syncDao.queryMaxUserGroupPointer(siteGroupId, siteUserId);
+
+				if (groupFinishPointer > maxGroupMsgPointer) {
+					groupFinishPointer = maxGroupMsgPointer;
+				}
+
+				if (groupFinishPointer < maxUserGroupPointer) {
+					groupFinishPointer = maxUserGroupPointer;
+				}
+
+				syncDao.updateGroupPointer(siteGroupId, siteUserId, deviceId, groupFinishPointer);
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("sync finish error", e);
 		}
 
 		return false;
-	}
-
-	private long getMax(long lon1, long lon2) {
-		return lon1 > lon2 ? lon1 : lon2;
 	}
 
 }

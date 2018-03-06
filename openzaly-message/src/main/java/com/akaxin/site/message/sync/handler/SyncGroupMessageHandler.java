@@ -30,6 +30,7 @@ import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImSyncMessageProto;
+import com.akaxin.site.message.utils.NumUtils;
 import com.akaxin.site.storage.api.IGroupDao;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMessageBean;
@@ -61,19 +62,33 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 			List<String> userGroups = userGroupDao.getUserGroupsId(siteUserId);
 			if (userGroups != null) {
 				for (String groupId : userGroups) {
-					long gpointer = 0;
+					long clientGroupPointer = 0;
 					if (groupPointerMap != null && groupPointerMap.get(groupId) != null) {
-						gpointer = groupPointerMap.get(groupId);
+						clientGroupPointer = groupPointerMap.get(groupId);
 					}
 					logger.info("[Syncing group={}] siteUserId={} deviceId={} gpointer={}", groupId, siteUserId,
-							deviceId, gpointer);
-					List<GroupMessageBean> groupMessageList = syncDao.queryGroupMessage(groupId, siteUserId, deviceId,
-							gpointer);
-					if (groupMessageList != null && groupMessageList.size() > 0) {
-						syncCount += groupMessageList.size();
-						groupMessageToClient(channelSession.getChannel(), siteUserId, groupMessageList);
+							deviceId, clientGroupPointer);
+
+					// 校验群消息游标
+					long maxGroupMessagePointer = syncDao.queryGroupMessagePointer(groupId, siteUserId, deviceId);
+					long startPointer = NumUtils.getMax(maxGroupMessagePointer, clientGroupPointer);
+
+					while (true) {
+						List<GroupMessageBean> groupMessageList = syncDao.queryGroupMessage(groupId, siteUserId,
+								deviceId, startPointer, SYNC_MAX_MESSAGE_COUNT);
+
+						if (groupMessageList != null && groupMessageList.size() > 0) {
+							syncCount += groupMessageList.size();
+							startPointer = groupMessageToClient(channelSession.getChannel(), siteUserId,
+									groupMessageList);
+						}
+						logger.info("[Syncing group={}] syncSize={}", groupId, groupMessageList.size());
+
+						if (groupMessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
+							break;
+						}
 					}
-					logger.info("[Syncing group={}] syncSize={}", groupId, groupMessageList.size());
+
 				}
 			}
 			logger.info("[End sync group] siteUserId={} deviceId={} syncCount={}", siteUserId, deviceId, syncCount);
@@ -87,11 +102,14 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 		return true;
 	}
 
-	private void groupMessageToClient(Channel channel, String userId, List<GroupMessageBean> groupMessageList) {
+	private long groupMessageToClient(Channel channel, String userId, List<GroupMessageBean> groupMessageList) {
+		long nextPointer = 0;
 		ImStcMessageProto.ImStcMessageRequest.Builder requestBuilder = ImStcMessageProto.ImStcMessageRequest
 				.newBuilder();
 		for (GroupMessageBean gmsgBean : groupMessageList) {
 			logger.info("[Syncing group={}] OK. bean={}", gmsgBean.getSiteGroupId(), gmsgBean.toString());
+			nextPointer = NumUtils.getMax(nextPointer, gmsgBean.getId());
+
 			switch (gmsgBean.getMsgType()) {
 			case CoreProto.MsgType.GROUP_TEXT_VALUE:
 				try {
@@ -159,6 +177,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
 				.add(datas.toByteArray()));
 
+		return nextPointer;
 	}
 
 	private void msgFinishToClient(Channel channel, String siteUserId, String deviceId) {

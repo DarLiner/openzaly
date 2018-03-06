@@ -77,13 +77,13 @@ public class SQLiteGroupMessageDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start)
-			throws SQLException {
+	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
+			int limit) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<GroupMessageBean> gmsgList = new ArrayList<GroupMessageBean>();
 		String querySql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
 				+ GROUP_MESSAGE_TABLE
-				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id IS NOT ?;";
+				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id IS NOT ? LIMIT ?;";
 
 		start = queryGroupPointer(groupId, userId, deviceId, start);
 
@@ -171,7 +171,7 @@ public class SQLiteGroupMessageDao {
 		return result;
 	}
 
-	private long queryGroupPointer(String groupId, String userId, String deviceId, long start) {
+	public long queryGroupPointer(String groupId, String userId, String deviceId, long start) {
 		long startTime = System.currentTimeMillis();
 		long pointer = 0;
 		String sql = "SELECT pointer FROM " + GROUP_POINTER_TABLE
@@ -234,6 +234,29 @@ public class SQLiteGroupMessageDao {
 			}
 		} catch (SQLException e) {
 			logger.error("query max group message pointer error.", e);
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, pointer, sql + groupId);
+
+		return pointer;
+	}
+
+	public long queryMaxUserGroupPointer(String groupId, String siteUserId) {
+		long startTime = System.currentTimeMillis();
+		long pointer = 0;
+		String sql = "SELECT MAX(pointer) FROM " + GROUP_POINTER_TABLE + " WHERE site_user_id=? AND site_group_id=?;";
+
+		try {
+			PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			pStatement.setString(1, groupId);
+
+			ResultSet prs = pStatement.executeQuery();
+			if (prs.next()) {
+				pointer = prs.getLong(1);
+			}
+		} catch (SQLException e) {
+			logger.error("query max user group message pointer error.", e);
 		}
 
 		long endTime = System.currentTimeMillis();
