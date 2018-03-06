@@ -36,13 +36,12 @@ public class HashCrypto {
 	}
 
 	public static String MD5(String key) {
-		byte[] ss = DigestUtils.md5(key);
-		StringBuilder hexString = new StringBuilder();
-		for (int i = 0; i < ss.length; i++) {
-			String shaHex = Integer.toHexString(ss[i] & 0xFF);
-			hexString.append(shaHex);
-		}
-		return hexString.toString();
+		byte[] md5Data = DigestUtils.md5(key);
+		return Hex.encodeHexString(md5Data);
+	}
+
+	public static byte[] MD5Bytes(String key) {
+		return DigestUtils.md5(key);
 	}
 
 }
