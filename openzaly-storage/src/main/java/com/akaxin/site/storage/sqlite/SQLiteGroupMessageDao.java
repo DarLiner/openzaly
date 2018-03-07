@@ -88,7 +88,7 @@ public class SQLiteGroupMessageDao {
 		start = queryGroupPointer(groupId, userId, deviceId, start);
 
 		if (start == 0) {
-			start = queryMaxGroupPointerWithUser(groupId, userId);
+			start = queryMaxGroupPointerWithUser(groupId, userId) - 10;
 		}
 
 		PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
