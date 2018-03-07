@@ -95,6 +95,7 @@ public class SQLiteGroupMessageDao {
 		statement.setString(1, groupId);
 		statement.setLong(2, start);
 		statement.setString(3, deviceId);
+		statement.setInt(4, limit);
 
 		ResultSet rs = statement.executeQuery();
 
