@@ -71,7 +71,8 @@ public class ApiFileService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String fileId = request.getFileId();
 			logger.info("api.file.download request={}", request.toString());
-			if (StringUtils.isNotBlank(fileId) && fileId != "null") {
+
+			if (StringUtils.isNotBlank(fileId) && !"null".equals(fileId)) {
 				byte[] imageBytes = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), fileId);
 
 				FileProto.File file = FileProto.File.newBuilder().setFileId(fileId)
