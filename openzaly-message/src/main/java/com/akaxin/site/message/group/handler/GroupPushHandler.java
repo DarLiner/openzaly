@@ -36,7 +36,6 @@ import com.akaxin.site.message.threads.MultiPushThreadExecutor;
 import com.akaxin.site.message.utils.SiteConfigHelper;
 import com.akaxin.site.storage.api.IGroupDao;
 import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.service.GroupDaoService;
 import com.google.protobuf.ByteString;
 
@@ -105,14 +104,9 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							// 条件1:站点是否支持push展示消息内容
 							// 条件2:站点只支持文本消息展示消息内容
 							if (ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT == pcs) {
-								SimpleUserBean bean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFromId);
-								if (CoreProto.MsgType.TEXT == request.getType() && bean != null
-										&& StringUtils.isNoneEmpty(bean.getUserName())) {
+								if (CoreProto.MsgType.GROUP_TEXT == request.getType()) {
 									ByteString byteStr = request.getText().getText();
-									String pushText = bean.getUserName() + ":"
-											+ byteStr.toString(Charset.forName("UTF-8"));
-									notification.setPushAlert(pushText);
-
+									notification.setPushAlert(byteStr.toString(Charset.forName("UTF-8")));
 								}
 								if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
 									notification.setPushFromName(groupBean.getGroupName());
