@@ -445,4 +445,38 @@ public class SQLiteUserProfileDao {
 		return userPageList;
 	}
 
+	public boolean queryMute(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		boolean mute = false;
+		String sql = "SELECT mute FROM " + USER_PROFILE_TABLE + " WHERE site_user_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+
+		ResultSet rs = preStatement.executeQuery();
+
+		if (rs.next()) {
+			mute = rs.getBoolean(1);
+		}
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, mute, sql + "," + siteUserId);
+		return mute;
+	}
+
+	public boolean updateMute(String siteUserId, boolean mute) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "UPDATE " + USER_PROFILE_TABLE + " SET mute=? WHERE site_user_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setBoolean(1, mute);
+		preStatement.setString(2, siteUserId);
+		result = preStatement.executeUpdate();
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + siteUserId + "," + mute);
+		return result > 0;
+	}
+
 }

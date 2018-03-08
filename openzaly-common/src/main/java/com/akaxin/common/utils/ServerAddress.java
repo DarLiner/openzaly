@@ -52,6 +52,10 @@ public class ServerAddress {
 		return this.host + ":" + this.port;
 	}
 
+	public String getFullAddress() {
+		return this.host + ":" + this.port;
+	}
+
 	public String getHost() {
 		return host;
 	}

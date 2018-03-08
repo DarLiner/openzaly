@@ -29,7 +29,7 @@ public interface SQLConst {
 			+ "(id INTEGER primary key not null, config_key INTEGER UNIQUE NOT NULL, config_value TEXT);";
 
 	String CREATE_SITE_USER_PROFILE_TABLE = "create table IF NOT EXISTS " + SITE_USER_PROFILE
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) UNIQUE NOT NULL, global_user_id VARCHAR(100) UNIQUE NOT NULL, user_id_pubk TEXT UNIQUE, user_name VARCHAR(50), user_photo TEXT, phone_id VARCHAR(20), self_introduce TEXT, apply_info varchar(100), user_status INTEGER, register_time LONG);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) UNIQUE NOT NULL, global_user_id VARCHAR(100) UNIQUE NOT NULL, user_id_pubk TEXT UNIQUE, user_name VARCHAR(50), user_photo TEXT, phone_id VARCHAR(20), self_introduce TEXT, apply_info varchar(100), user_status INTEGER,mute BOOLEAN, register_time LONG);";
 
 	String CREATE_SITE_USER_SESSION_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_SESSION
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, session_id VARCHAR(100), is_online boolean, device_id VARCHAR(50), login_time LONG);";

@@ -33,8 +33,10 @@ import com.akaxin.proto.site.ApiFriendApplyProto;
 import com.akaxin.proto.site.ApiFriendApplyResultProto;
 import com.akaxin.proto.site.ApiFriendDeleteProto;
 import com.akaxin.proto.site.ApiFriendListProto;
+import com.akaxin.proto.site.ApiFriendMuteProto;
 import com.akaxin.proto.site.ApiFriendProfileProto;
 import com.akaxin.proto.site.ApiFriendSettingProto;
+import com.akaxin.proto.site.ApiFriendUpdateMuteProto;
 import com.akaxin.proto.site.ApiFriendUpdateSettingProto;
 import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
@@ -398,6 +400,68 @@ public class ApiFriendService extends AbstractRequest {
 		}
 
 		logger.info("api.friend.updateSetting result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	public CommandResponse mute(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiFriendMuteProto.ApiFriendMuteRequest request = ApiFriendMuteProto.ApiFriendMuteRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+			logger.info("api.friend.mute command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneEmpty(siteUserId, siteFriendId)) {
+				boolean mute = UserFriendDao.getInstance().getFriendMute(siteUserId, siteFriendId);
+				ApiFriendSettingProto.ApiFriendSettingResponse response = ApiFriendSettingProto.ApiFriendSettingResponse
+						.newBuilder().setMessageMute(mute).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			logger.error("api.friend.mute error", e);
+		}
+		logger.info("api.friend.mute result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 对用户设置消息免打扰功能
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse updateMute(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiFriendUpdateMuteProto.ApiFriendUpdateMuteRequest request = ApiFriendUpdateMuteProto.ApiFriendUpdateMuteRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+			boolean messageMute = request.getMute();
+			logger.info("api.friend.updateMute command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneBlank(siteUserId, siteFriendId)) {
+				if (UserFriendDao.getInstance().updateFriendMute(siteUserId, siteFriendId, messageMute)) {
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.friend.updateMute exception", e);
+		}
+
+		logger.info("api.friend.updateMute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

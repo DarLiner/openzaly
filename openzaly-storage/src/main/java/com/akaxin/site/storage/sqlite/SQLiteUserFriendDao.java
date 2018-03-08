@@ -137,7 +137,24 @@ public class SQLiteUserFriendDao {
 		return bean;
 	}
 
-	public boolean queryMuteStatus(String siteUserId, String siteFriendId) throws SQLException {
+	public boolean updateUserFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "UPDATE " + USER_FRIEND_TABLE + " SET mute=? WHERE site_user_id=? AND site_friend_id=?;";
+
+		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preState.setBoolean(1, bean.isMute());
+		preState.setString(2, siteUserId);
+		preState.setString(3, bean.getSiteUserId());
+		result = preState.executeUpdate();
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + bean.toString());
+
+		return result > 0;
+	}
+
+	public boolean queryMute(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT mute FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";
 
@@ -157,19 +174,19 @@ public class SQLiteUserFriendDao {
 		return true;
 	}
 
-	public boolean updateUserFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
+	public boolean updateMute(String siteUserId, String siteFriendId, boolean mute) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		int result = 0;
 		String sql = "UPDATE " + USER_FRIEND_TABLE + " SET mute=? WHERE site_user_id=? AND site_friend_id=?;";
 
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setBoolean(1, bean.isMute());
+		preState.setBoolean(1, mute);
 		preState.setString(2, siteUserId);
-		preState.setString(3, bean.getSiteUserId());
+		preState.setString(3, siteFriendId);
 		result = preState.executeUpdate();
 
 		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + bean.toString());
+		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + siteFriendId + "," + mute);
 
 		return result > 0;
 	}

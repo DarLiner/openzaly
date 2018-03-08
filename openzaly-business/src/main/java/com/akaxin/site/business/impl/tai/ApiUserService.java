@@ -24,7 +24,9 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.proto.core.UserProto;
+import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserProfileProto;
+import com.akaxin.proto.site.ApiUserUpdateMuteProto;
 import com.akaxin.proto.site.ApiUserUpdateProfileProto;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
@@ -136,6 +138,45 @@ public class ApiUserService extends AbstractRequest {
 			logger.error("update profile error.", e);
 		}
 		logger.info("api.user.updateProfile result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	public CommandResponse mute(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			String siteUserId = command.getSiteUserId();
+			boolean mute = UserProfileDao.getInstance().getUserMute(siteUserId);
+			ApiUserMuteProto.ApiUserMuteResponse response = ApiUserMuteProto.ApiUserMuteResponse.newBuilder()
+					.setMute(mute).build();
+			commandResponse.setParams(response.toByteArray());
+			errCode = ErrorCode2.SUCCESS;
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			logger.error("api.user.mute error.", e);
+		}
+		logger.info("api.user.mute result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	public CommandResponse updateMute(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiUserUpdateMuteProto.ApiUserUpdateMuteRequest request = ApiUserUpdateMuteProto.ApiUserUpdateMuteRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			boolean mute = request.getMute();
+			if (UserProfileDao.getInstance().updateUserMute(siteUserId, mute)) {
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+			}
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			logger.error("api.user.updateMute error.", e);
+		}
+		logger.info("api.user.updateMute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

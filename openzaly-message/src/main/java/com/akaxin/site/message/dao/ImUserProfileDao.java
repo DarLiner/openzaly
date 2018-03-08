@@ -73,4 +73,13 @@ public class ImUserProfileDao {
 		}
 		return null;
 	}
+
+	public boolean isMute(String siteUserId) throws SQLException {
+		try {
+			return userProfileDao.isMute(siteUserId);
+		} catch (Exception e) {
+			logger.error("get user mute error", e);
+		}
+		return true;
+	}
 }

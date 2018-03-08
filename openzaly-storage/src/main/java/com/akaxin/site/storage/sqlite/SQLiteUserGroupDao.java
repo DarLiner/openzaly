@@ -323,7 +323,23 @@ public class SQLiteUserGroupDao {
 		return bean;
 	}
 
-	public boolean queryMuteStatus(String siteUserId, String siteGroupId) throws SQLException {
+	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "UPDATE " + USER_GROUP_TABLE + " SET  mute=? WHERE site_user_id=? AND site_group_id=?;";
+		int result = 0;
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setBoolean(1, bean.isMute());
+		preStatement.setString(2, siteUserId);
+		preStatement.setString(3, bean.getSiteGroupId());
+		result = preStatement.executeUpdate();
+
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + bean);
+		return result > 0;
+	}
+
+	public boolean queryMute(String siteUserId, String siteGroupId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		boolean result = true;
 		String sql = "SELECT mute FROM " + USER_GROUP_TABLE + " WHERE site_user_id=? AND site_group_id=?;";
@@ -342,19 +358,19 @@ public class SQLiteUserGroupDao {
 		return result;
 	}
 
-	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException {
+	public boolean updateMute(String siteUserId, String siteGroupId, boolean mute) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_GROUP_TABLE + " SET  mute=? WHERE site_user_id=? AND site_group_id=?;";
 		int result = 0;
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setBoolean(1, bean.isMute());
+		preStatement.setBoolean(1, mute);
 		preStatement.setString(2, siteUserId);
-		preStatement.setString(3, bean.getSiteGroupId());
+		preStatement.setString(3, siteGroupId);
 		result = preStatement.executeUpdate();
 
 		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + bean);
+		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + siteGroupId + "," + mute);
 		return result > 0;
 	}
 }

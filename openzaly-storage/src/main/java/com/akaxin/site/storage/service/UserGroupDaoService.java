@@ -40,6 +40,11 @@ public class UserGroupDaoService implements IUserGroupDao {
 
 	@Override
 	public boolean isMute(String siteUserId, String siteGroupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryMuteStatus(siteUserId, siteGroupId);
+		return SQLiteUserGroupDao.getInstance().queryMute(siteUserId, siteGroupId);
+	}
+
+	@Override
+	public boolean updateMute(String siteUserId, String siteGroupId, boolean mute) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().updateMute(siteUserId, siteGroupId, mute);
 	}
 }

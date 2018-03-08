@@ -747,6 +747,24 @@ public final class ImSiteAuthProto {
      */
     com.google.protobuf.ByteString
         getSiteServerBytes();
+
+    /**
+     * <pre>
+     *用户设备的uid，客户端直接计算上传，客户端使用
+     * </pre>
+     *
+     * <code>optional string device_uid = 2;</code>
+     */
+    java.lang.String getDeviceUid();
+    /**
+     * <pre>
+     *用户设备的uid，客户端直接计算上传，客户端使用
+     * </pre>
+     *
+     * <code>optional string device_uid = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getDeviceUidBytes();
   }
   /**
    * Protobuf type {@code site.ImSiteAuthResponse}
@@ -761,6 +779,7 @@ public final class ImSiteAuthProto {
     }
     private ImSiteAuthResponse() {
       siteServer_ = "";
+      deviceUid_ = "";
     }
 
     @java.lang.Override
@@ -792,6 +811,12 @@ public final class ImSiteAuthProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               siteServer_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              deviceUid_ = s;
               break;
             }
           }
@@ -859,6 +884,48 @@ public final class ImSiteAuthProto {
       }
     }
 
+    public static final int DEVICE_UID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object deviceUid_;
+    /**
+     * <pre>
+     *用户设备的uid，客户端直接计算上传，客户端使用
+     * </pre>
+     *
+     * <code>optional string device_uid = 2;</code>
+     */
+    public java.lang.String getDeviceUid() {
+      java.lang.Object ref = deviceUid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        deviceUid_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户设备的uid，客户端直接计算上传，客户端使用
+     * </pre>
+     *
+     * <code>optional string device_uid = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDeviceUidBytes() {
+      java.lang.Object ref = deviceUid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        deviceUid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -874,6 +941,9 @@ public final class ImSiteAuthProto {
       if (!getSiteServerBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteServer_);
       }
+      if (!getDeviceUidBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, deviceUid_);
+      }
     }
 
     public int getSerializedSize() {
@@ -883,6 +953,9 @@ public final class ImSiteAuthProto {
       size = 0;
       if (!getSiteServerBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteServer_);
+      }
+      if (!getDeviceUidBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, deviceUid_);
       }
       memoizedSize = size;
       return size;
@@ -902,6 +975,8 @@ public final class ImSiteAuthProto {
       boolean result = true;
       result = result && getSiteServer()
           .equals(other.getSiteServer());
+      result = result && getDeviceUid()
+          .equals(other.getDeviceUid());
       return result;
     }
 
@@ -914,6 +989,8 @@ public final class ImSiteAuthProto {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + SITE_SERVER_FIELD_NUMBER;
       hash = (53 * hash) + getSiteServer().hashCode();
+      hash = (37 * hash) + DEVICE_UID_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceUid().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1034,6 +1111,8 @@ public final class ImSiteAuthProto {
         super.clear();
         siteServer_ = "";
 
+        deviceUid_ = "";
+
         return this;
       }
 
@@ -1057,6 +1136,7 @@ public final class ImSiteAuthProto {
       public com.akaxin.proto.site.ImSiteAuthProto.ImSiteAuthResponse buildPartial() {
         com.akaxin.proto.site.ImSiteAuthProto.ImSiteAuthResponse result = new com.akaxin.proto.site.ImSiteAuthProto.ImSiteAuthResponse(this);
         result.siteServer_ = siteServer_;
+        result.deviceUid_ = deviceUid_;
         onBuilt();
         return result;
       }
@@ -1100,6 +1180,10 @@ public final class ImSiteAuthProto {
         if (other == com.akaxin.proto.site.ImSiteAuthProto.ImSiteAuthResponse.getDefaultInstance()) return this;
         if (!other.getSiteServer().isEmpty()) {
           siteServer_ = other.siteServer_;
+          onChanged();
+        }
+        if (!other.getDeviceUid().isEmpty()) {
+          deviceUid_ = other.deviceUid_;
           onChanged();
         }
         onChanged();
@@ -1216,6 +1300,95 @@ public final class ImSiteAuthProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object deviceUid_ = "";
+      /**
+       * <pre>
+       *用户设备的uid，客户端直接计算上传，客户端使用
+       * </pre>
+       *
+       * <code>optional string device_uid = 2;</code>
+       */
+      public java.lang.String getDeviceUid() {
+        java.lang.Object ref = deviceUid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          deviceUid_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户设备的uid，客户端直接计算上传，客户端使用
+       * </pre>
+       *
+       * <code>optional string device_uid = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDeviceUidBytes() {
+        java.lang.Object ref = deviceUid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          deviceUid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户设备的uid，客户端直接计算上传，客户端使用
+       * </pre>
+       *
+       * <code>optional string device_uid = 2;</code>
+       */
+      public Builder setDeviceUid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        deviceUid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户设备的uid，客户端直接计算上传，客户端使用
+       * </pre>
+       *
+       * <code>optional string device_uid = 2;</code>
+       */
+      public Builder clearDeviceUid() {
+        
+        deviceUid_ = getDefaultInstance().getDeviceUid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户设备的uid，客户端直接计算上传，客户端使用
+       * </pre>
+       *
+       * <code>optional string device_uid = 2;</code>
+       */
+      public Builder setDeviceUidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        deviceUid_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -1286,11 +1459,12 @@ public final class ImSiteAuthProto {
     java.lang.String[] descriptorData = {
       "\n\027site/im_site_auth.proto\022\004site\"B\n\021ImSit" +
       "eAuthRequest\022\024\n\014site_user_id\030\001 \001(\t\022\027\n\017si" +
-      "te_session_id\030\002 \001(\t\")\n\022ImSiteAuthRespons" +
-      "e\022\023\n\013site_server\030\001 \001(\t2N\n\021ImSiteAuthServ" +
-      "ice\0229\n\004auth\022\027.site.ImSiteAuthRequest\032\030.s" +
-      "ite.ImSiteAuthResponseB(\n\025com.akaxin.pro" +
-      "to.siteB\017ImSiteAuthProtob\006proto3"
+      "te_session_id\030\002 \001(\t\"=\n\022ImSiteAuthRespons" +
+      "e\022\023\n\013site_server\030\001 \001(\t\022\022\n\ndevice_uid\030\002 \001" +
+      "(\t2N\n\021ImSiteAuthService\0229\n\004auth\022\027.site.I" +
+      "mSiteAuthRequest\032\030.site.ImSiteAuthRespon" +
+      "seB(\n\025com.akaxin.proto.siteB\017ImSiteAuthP" +
+      "rotob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1315,7 +1489,7 @@ public final class ImSiteAuthProto {
     internal_static_site_ImSiteAuthResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ImSiteAuthResponse_descriptor,
-        new java.lang.String[] { "SiteServer", });
+        new java.lang.String[] { "SiteServer", "DeviceUid", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -61,8 +61,10 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(siteFriendId);
 					logger.info("u2 message push globalUserId={} command={}", globalUserId, command.toString());
 
-					// 首先判断，该接受者是否对发送者，设置了消息免打扰
-					if (ImUserFriendDao.getInstance().isMesageMute(siteFriendId, siteFromId)) {
+					// 一、用户对站点是否消息免打扰
+					// 二、用户对该好友是否消息免打扰
+					if (ImUserProfileDao.getInstance().isMute(siteUserId)
+							|| ImUserFriendDao.getInstance().isMesageMute(siteFriendId, siteFromId)) {
 						return;
 					}
 

@@ -68,6 +68,11 @@ public class UserFriendDaoService implements IUserFriendDao {
 
 	@Override
 	public boolean isMute(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryMuteStatus(siteUserId, siteFriendId);
+		return SQLiteUserFriendDao.getInstance().queryMute(siteUserId, siteFriendId);
+	}
+
+	@Override
+	public boolean updateMute(String siteUserId, String siteFriendId, boolean mute) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().updateMute(siteUserId, siteFriendId, mute);
 	}
 }

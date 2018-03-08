@@ -32,6 +32,7 @@ import com.akaxin.proto.site.ApiGroupCreateProto;
 import com.akaxin.proto.site.ApiGroupDeleteProto;
 import com.akaxin.proto.site.ApiGroupListProto;
 import com.akaxin.proto.site.ApiGroupMembersProto;
+import com.akaxin.proto.site.ApiGroupMuteProto;
 import com.akaxin.proto.site.ApiGroupNonMembersProto;
 import com.akaxin.proto.site.ApiGroupProfileProto;
 import com.akaxin.proto.site.ApiGroupQuitProto;
@@ -605,6 +606,74 @@ public class ApiGroupService extends AbstractRequest {
 			logger.error("api.group.updateSetting error", e);
 		}
 		logger.info("api.group.updateSetting result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	public CommandResponse mute(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupMuteProto.ApiGroupMuteRequest request = ApiGroupMuteProto.ApiGroupMuteRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteGroupId = request.getSiteGroupId();
+			logger.info("api.group.mute command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneEmpty(siteGroupId, siteUserId)) {
+				UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
+				if (bean != null) {
+					ApiGroupSettingProto.ApiGroupSettingResponse response = ApiGroupSettingProto.ApiGroupSettingResponse
+							.newBuilder().setMessageMute(bean.isMute()).build();
+					commandResponse.setParams(response.toByteArray());
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.group.setting error", e);
+		}
+		logger.info("api.group.setting result={}", errCode.toString());
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 个人更新群设置信息
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse updateMute(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest request = ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String groupId = request.getGroupId();
+			boolean isMute = request.getMessageMute();
+			logger.info("api.group.updateMute command={} request={}", command.toString(), request.toString());
+
+			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
+				UserGroupBean bean = new UserGroupBean();
+				bean.setSiteGroupId(groupId);
+				bean.setMute(isMute);
+				if (UserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean)) {
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+		} catch (Exception e) {
+			logger.error("api.group.updateMute error", e);
+		}
+		logger.info("api.group.updateMute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

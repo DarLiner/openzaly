@@ -45,7 +45,7 @@ public class UserProfileDaoService implements IUserProfileDao {
 	public String getGlobalUserId(String siteUserId) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().queryGlobalUserId(siteUserId);
 	}
-	
+
 	@Override
 	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(userId);
@@ -95,6 +95,16 @@ public class UserProfileDaoService implements IUserProfileDao {
 	@Override
 	public List<SimpleUserBean> getUserPageList(int pageNum, int pageSize) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().queryUserPageList(pageNum, pageSize);
+	}
+
+	@Override
+	public boolean isMute(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryMute(siteUserId);
+	}
+
+	@Override
+	public boolean updateMute(String siteUserId, boolean mute) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().updateMute(siteUserId, mute);
 	}
 
 }

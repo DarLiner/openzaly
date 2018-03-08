@@ -179,4 +179,17 @@ public class UserFriendDao {
 		}
 		return false;
 	}
+
+	public boolean getFriendMute(String siteUserId, String siteFriendId) throws SQLException {
+		return userFriendDao.isMute(siteUserId, siteFriendId);
+	}
+
+	public boolean updateFriendMute(String siteUserId, String siteFriendId, boolean mute) {
+		try {
+			return userFriendDao.updateMute(siteUserId, siteFriendId, mute);
+		} catch (SQLException e) {
+			logger.error("update friend mute error", e);
+		}
+		return false;
+	}
 }

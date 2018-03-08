@@ -74,17 +74,19 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 
 					List<String> groupMembers = groupDao.getGroupMembersId(siteGroupId);
 					for (String memberUserId : groupMembers) {
-						
+
 						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(siteUserId)) {
-							// 判断该用户是否对该群消息免打扰
-							if (ImUserGroupDao.getInstance().isMesageMute(memberUserId, siteGroupId)) {
+							// 一、用户是否对站点消息免打扰
+							// 二、用户是否对该群消息免打扰
+							if (ImUserProfileDao.getInstance().isMute(siteUserId)
+									|| ImUserGroupDao.getInstance().isMesageMute(memberUserId, siteGroupId)) {
 								continue;
 							}
 
 							String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(memberUserId);
 							logger.info("push from groupid={} to siteUserId={} globalUserId={}.", siteGroupId,
 									memberUserId, globalUserId);
-							
+
 							ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
 									.newBuilder();
 							requestBuilder.setPushType(request.getType());

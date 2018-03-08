@@ -12,4 +12,6 @@ public interface IUserGroupDao {
 
 	public boolean isMute(String siteUserId, String siteGroupId) throws SQLException;
 
+	public boolean updateMute(String siteUserId, String siteGroupId, boolean mute) throws SQLException;
+
 }

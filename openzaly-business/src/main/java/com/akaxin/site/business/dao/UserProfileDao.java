@@ -153,4 +153,18 @@ public class UserProfileDao {
 		}
 		return pageList;
 	}
+
+	public boolean getUserMute(String siteUserId) throws SQLException {
+		return userProfileDao.isMute(siteUserId);
+	}
+
+	public boolean updateUserMute(String siteUserId, boolean mute) {
+		try {
+			return userProfileDao.updateMute(siteUserId, mute);
+		} catch (SQLException e) {
+			logger.error("update user mute error.", e);
+		}
+		return false;
+	}
+
 }

@@ -253,4 +253,22 @@ public class UserGroupDao {
 		}
 		return false;
 	}
+
+	public boolean getUserGroupMute(String siteUserId, String siteGroupId) {
+		try {
+			return userGroupDao.isMute(siteUserId, siteGroupId);
+		} catch (SQLException e) {
+			logger.error("get user group setting error", e);
+		}
+		return true;
+	}
+
+	public boolean updateUserGroupMute(String siteUserId, UserGroupBean bean) {
+		try {
+			return userGroupDao.updateUserGroupSetting(siteUserId, bean);
+		} catch (SQLException e) {
+			logger.error("update user group setting error", e);
+		}
+		return false;
+	}
 }
