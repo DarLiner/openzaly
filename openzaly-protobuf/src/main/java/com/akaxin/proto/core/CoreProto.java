@@ -280,6 +280,10 @@ public final class CoreProto {
      */
     MSG_STATUS(1),
     /**
+     * <pre>
+     *这个不是废弃了么？
+     * </pre>
+     *
      * <code>MSG_FINISH = 2;</code>
      */
     MSG_FINISH(2),
@@ -379,6 +383,10 @@ public final class CoreProto {
      */
     public static final int MSG_STATUS_VALUE = 1;
     /**
+     * <pre>
+     *这个不是废弃了么？
+     * </pre>
+     *
      * <code>MSG_FINISH = 2;</code>
      */
     public static final int MSG_FINISH_VALUE = 2;
@@ -582,6 +590,13 @@ public final class CoreProto {
   /**
    * <pre>
    * 错误信息
+   *code="success" 请求成功
+   *code="error" 请求失败，客户端不做任何处理
+   *code="error.alter" 请求失败，客户端展示错误info
+   *code="error.session" api请求||im请求校验session失败
+   *code="error.login.need_register" 用户登陆返回此值需要告诉用户注册
+   *code="error.login.needRegister" 用户登陆返回此值需要告诉用户注册
+   *code="error.phone.same" 用户绑定身份，表示二者已经存在绑定
    * </pre>
    *
    * Protobuf type {@code core.ErrorInfo}
@@ -877,6 +892,13 @@ public final class CoreProto {
     /**
      * <pre>
      * 错误信息
+     *code="success" 请求成功
+     *code="error" 请求失败，客户端不做任何处理
+     *code="error.alter" 请求失败，客户端展示错误info
+     *code="error.session" api请求||im请求校验session失败
+     *code="error.login.need_register" 用户登陆返回此值需要告诉用户注册
+     *code="error.login.needRegister" 用户登陆返回此值需要告诉用户注册
+     *code="error.phone.same" 用户绑定身份，表示二者已经存在绑定
      * </pre>
      *
      * Protobuf type {@code core.ErrorInfo}
@@ -2721,6 +2743,20 @@ public final class CoreProto {
      * <code>optional int32 msg_status = 2;</code>
      */
     int getMsgStatus();
+
+    /**
+     * <pre>
+     * msg_server_time 等于此条消息在服务器数据库的值
+     * 如果是发送成功的状态，此值有效。
+     * 为什么不使用服务器下发这条请求时的即时时间？
+     * 这样的话，可以脱离状态，随意的重发来保证成功。
+     * &#64;since v2
+     * &#64;todo 补充v2之前版本对此字段的处理逻辑（默认使用msg_time_send的值）
+     * </pre>
+     *
+     * <code>optional int64 msg_server_time = 3;</code>
+     */
+    long getMsgServerTime();
   }
   /**
    * <pre>
@@ -2744,6 +2780,7 @@ public final class CoreProto {
     private MsgStatus() {
       msgId_ = "";
       msgStatus_ = 0;
+      msgServerTime_ = 0L;
     }
 
     @java.lang.Override
@@ -2780,6 +2817,11 @@ public final class CoreProto {
             case 16: {
 
               msgStatus_ = input.readInt32();
+              break;
+            }
+            case 24: {
+
+              msgServerTime_ = input.readInt64();
               break;
             }
           }
@@ -2848,6 +2890,24 @@ public final class CoreProto {
       return msgStatus_;
     }
 
+    public static final int MSG_SERVER_TIME_FIELD_NUMBER = 3;
+    private long msgServerTime_;
+    /**
+     * <pre>
+     * msg_server_time 等于此条消息在服务器数据库的值
+     * 如果是发送成功的状态，此值有效。
+     * 为什么不使用服务器下发这条请求时的即时时间？
+     * 这样的话，可以脱离状态，随意的重发来保证成功。
+     * &#64;since v2
+     * &#64;todo 补充v2之前版本对此字段的处理逻辑（默认使用msg_time_send的值）
+     * </pre>
+     *
+     * <code>optional int64 msg_server_time = 3;</code>
+     */
+    public long getMsgServerTime() {
+      return msgServerTime_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -2866,6 +2926,9 @@ public final class CoreProto {
       if (msgStatus_ != 0) {
         output.writeInt32(2, msgStatus_);
       }
+      if (msgServerTime_ != 0L) {
+        output.writeInt64(3, msgServerTime_);
+      }
     }
 
     public int getSerializedSize() {
@@ -2879,6 +2942,10 @@ public final class CoreProto {
       if (msgStatus_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, msgStatus_);
+      }
+      if (msgServerTime_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, msgServerTime_);
       }
       memoizedSize = size;
       return size;
@@ -2900,6 +2967,8 @@ public final class CoreProto {
           .equals(other.getMsgId());
       result = result && (getMsgStatus()
           == other.getMsgStatus());
+      result = result && (getMsgServerTime()
+          == other.getMsgServerTime());
       return result;
     }
 
@@ -2914,6 +2983,9 @@ public final class CoreProto {
       hash = (53 * hash) + getMsgId().hashCode();
       hash = (37 * hash) + MSG_STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getMsgStatus();
+      hash = (37 * hash) + MSG_SERVER_TIME_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getMsgServerTime());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3044,6 +3116,8 @@ public final class CoreProto {
 
         msgStatus_ = 0;
 
+        msgServerTime_ = 0L;
+
         return this;
       }
 
@@ -3068,6 +3142,7 @@ public final class CoreProto {
         com.akaxin.proto.core.CoreProto.MsgStatus result = new com.akaxin.proto.core.CoreProto.MsgStatus(this);
         result.msgId_ = msgId_;
         result.msgStatus_ = msgStatus_;
+        result.msgServerTime_ = msgServerTime_;
         onBuilt();
         return result;
       }
@@ -3115,6 +3190,9 @@ public final class CoreProto {
         }
         if (other.getMsgStatus() != 0) {
           setMsgStatus(other.getMsgStatus());
+        }
+        if (other.getMsgServerTime() != 0L) {
+          setMsgServerTime(other.getMsgServerTime());
         }
         onChanged();
         return this;
@@ -3236,6 +3314,59 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private long msgServerTime_ ;
+      /**
+       * <pre>
+       * msg_server_time 等于此条消息在服务器数据库的值
+       * 如果是发送成功的状态，此值有效。
+       * 为什么不使用服务器下发这条请求时的即时时间？
+       * 这样的话，可以脱离状态，随意的重发来保证成功。
+       * &#64;since v2
+       * &#64;todo 补充v2之前版本对此字段的处理逻辑（默认使用msg_time_send的值）
+       * </pre>
+       *
+       * <code>optional int64 msg_server_time = 3;</code>
+       */
+      public long getMsgServerTime() {
+        return msgServerTime_;
+      }
+      /**
+       * <pre>
+       * msg_server_time 等于此条消息在服务器数据库的值
+       * 如果是发送成功的状态，此值有效。
+       * 为什么不使用服务器下发这条请求时的即时时间？
+       * 这样的话，可以脱离状态，随意的重发来保证成功。
+       * &#64;since v2
+       * &#64;todo 补充v2之前版本对此字段的处理逻辑（默认使用msg_time_send的值）
+       * </pre>
+       *
+       * <code>optional int64 msg_server_time = 3;</code>
+       */
+      public Builder setMsgServerTime(long value) {
+        
+        msgServerTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * msg_server_time 等于此条消息在服务器数据库的值
+       * 如果是发送成功的状态，此值有效。
+       * 为什么不使用服务器下发这条请求时的即时时间？
+       * 这样的话，可以脱离状态，随意的重发来保证成功。
+       * &#64;since v2
+       * &#64;todo 补充v2之前版本对此字段的处理逻辑（默认使用msg_time_send的值）
+       * </pre>
+       *
+       * <code>optional int64 msg_server_time = 3;</code>
+       */
+      public Builder clearMsgServerTime() {
+        
+        msgServerTime_ = 0L;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -3290,6 +3421,10 @@ public final class CoreProto {
       com.google.protobuf.MessageOrBuilder {
   }
   /**
+   * <pre>
+   *这个不是废弃了么？
+   * </pre>
+   *
    * Protobuf type {@code core.MsgFinish}
    */
   public  static final class MsgFinish extends
@@ -3478,6 +3613,10 @@ public final class CoreProto {
       return builder;
     }
     /**
+     * <pre>
+     *这个不是废弃了么？
+     * </pre>
+     *
      * Protobuf type {@code core.MsgFinish}
      */
     public static final class Builder extends
@@ -3699,7 +3838,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 5;</code>
@@ -3928,7 +4067,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 5;</code>
@@ -4538,7 +4677,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 5;</code>
@@ -4548,7 +4687,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 5;</code>
@@ -4561,7 +4700,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 5;</code>
@@ -4690,7 +4829,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -5001,7 +5140,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -5783,7 +5922,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -5793,7 +5932,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -5806,7 +5945,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -5915,7 +6054,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 5;</code>
@@ -6144,7 +6283,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 5;</code>
@@ -6754,7 +6893,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 5;</code>
@@ -6764,7 +6903,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 5;</code>
@@ -6777,7 +6916,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 5;</code>
@@ -6878,7 +7017,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -6886,7 +7025,7 @@ public final class CoreProto {
     java.lang.String getTsKey();
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -6906,7 +7045,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -7141,7 +7280,7 @@ public final class CoreProto {
     private volatile java.lang.Object tsKey_;
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -7160,7 +7299,7 @@ public final class CoreProto {
     }
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -7217,7 +7356,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -7841,7 +7980,7 @@ public final class CoreProto {
       private java.lang.Object tsKey_ = "";
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -7860,7 +7999,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -7880,7 +8019,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -7897,7 +8036,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -7910,7 +8049,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -7999,7 +8138,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -8009,7 +8148,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -8022,7 +8161,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -8128,7 +8267,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -8375,7 +8514,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -9005,7 +9144,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -9015,7 +9154,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -9028,7 +9167,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -9134,7 +9273,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -9142,7 +9281,7 @@ public final class CoreProto {
     java.lang.String getTsKey();
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -9162,7 +9301,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -9423,7 +9562,7 @@ public final class CoreProto {
     private volatile java.lang.Object tsKey_;
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -9442,7 +9581,7 @@ public final class CoreProto {
     }
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -9499,7 +9638,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -10163,7 +10302,7 @@ public final class CoreProto {
       private java.lang.Object tsKey_ = "";
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -10182,7 +10321,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -10202,7 +10341,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -10219,7 +10358,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -10232,7 +10371,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -10321,7 +10460,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -10331,7 +10470,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -10344,7 +10483,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -10450,7 +10589,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -10697,7 +10836,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -11327,7 +11466,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -11337,7 +11476,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -11350,7 +11489,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -11456,7 +11595,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -11464,7 +11603,7 @@ public final class CoreProto {
     java.lang.String getTsKey();
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -11484,7 +11623,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -11745,7 +11884,7 @@ public final class CoreProto {
     private volatile java.lang.Object tsKey_;
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -11764,7 +11903,7 @@ public final class CoreProto {
     }
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -11821,7 +11960,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -12485,7 +12624,7 @@ public final class CoreProto {
       private java.lang.Object tsKey_ = "";
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -12504,7 +12643,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -12524,7 +12663,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -12541,7 +12680,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -12554,7 +12693,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -12643,7 +12782,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -12653,7 +12792,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -12666,7 +12805,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -12780,7 +12919,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -13035,7 +13174,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -13685,7 +13824,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -13695,7 +13834,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -13708,7 +13847,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -13814,7 +13953,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -13822,7 +13961,7 @@ public final class CoreProto {
     java.lang.String getTsKey();
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -13842,7 +13981,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -14103,7 +14242,7 @@ public final class CoreProto {
     private volatile java.lang.Object tsKey_;
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -14122,7 +14261,7 @@ public final class CoreProto {
     }
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -14179,7 +14318,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -14843,7 +14982,7 @@ public final class CoreProto {
       private java.lang.Object tsKey_ = "";
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -14862,7 +15001,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -14882,7 +15021,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -14899,7 +15038,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -14912,7 +15051,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -15001,7 +15140,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -15011,7 +15150,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -15024,7 +15163,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -15138,7 +15277,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -15393,7 +15532,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -16043,7 +16182,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -16053,7 +16192,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -16066,7 +16205,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -16172,7 +16311,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -16180,7 +16319,7 @@ public final class CoreProto {
     java.lang.String getTsKey();
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -16200,7 +16339,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -16461,7 +16600,7 @@ public final class CoreProto {
     private volatile java.lang.Object tsKey_;
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -16480,7 +16619,7 @@ public final class CoreProto {
     }
     /**
      * <pre>
-     *加密key
+     *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
      * <code>optional string ts_key = 5;</code>
@@ -16537,7 +16676,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 7;</code>
@@ -17201,7 +17340,7 @@ public final class CoreProto {
       private java.lang.Object tsKey_ = "";
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -17220,7 +17359,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -17240,7 +17379,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -17257,7 +17396,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -17270,7 +17409,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
        * <code>optional string ts_key = 5;</code>
@@ -17359,7 +17498,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -17369,7 +17508,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -17382,7 +17521,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 7;</code>
@@ -18985,7 +19124,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 4;</code>
@@ -19185,7 +19324,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 4;</code>
@@ -19741,7 +19880,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 4;</code>
@@ -19751,7 +19890,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 4;</code>
@@ -19764,7 +19903,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 4;</code>
@@ -19875,7 +20014,7 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 4;</code>
@@ -20075,7 +20214,7 @@ public final class CoreProto {
     private long time_;
     /**
      * <pre>
-     *消息时间
+     *消息时间，单位ms
      * </pre>
      *
      * <code>optional int64 time = 4;</code>
@@ -20631,7 +20770,7 @@ public final class CoreProto {
       private long time_ ;
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 4;</code>
@@ -20641,7 +20780,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 4;</code>
@@ -20654,7 +20793,7 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *消息时间
+       *消息时间，单位ms
        * </pre>
        *
        * <code>optional int64 time = 4;</code>
@@ -20849,71 +20988,72 @@ public final class CoreProto {
       ".core.ErrorInfo\022\014\n\004data\030\002 \001(\014\0226\n\006header\030" +
       "\003 \003(\0132&.core.TransportPackageData.Header" +
       "Entry\032-\n\013HeaderEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005val" +
-      "ue\030\002 \001(\t:\0028\001\"/\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(" +
-      "\t\022\022\n\nmsg_status\030\002 \001(\005\"\013\n\tMsgFinish\"c\n\007Ms" +
-      "gText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(",
-      "\014\022\014\n\004time\030\005 \001(\003\"\221\001\n\rMsgSecretText\022\016\n\006msg" +
-      "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_" +
-      "friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\016\n\006ts_key\030" +
-      "\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 " +
-      "\001(\003\"d\n\tGroupText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site" +
-      "_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n" +
-      "\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\222\001\n\017GroupSecre" +
-      "tText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014" +
-      "\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t",
-      "\022\014\n\004time\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg_id\030\001 \001" +
-      "(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_" +
-      "id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"" +
-      "\225\001\n\016MsgSecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014si" +
+      "ue\030\002 \001(\t:\0028\001\"H\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(" +
+      "\t\022\022\n\nmsg_status\030\002 \001(\005\022\027\n\017msg_server_time" +
+      "\030\003 \001(\003\"\013\n\tMsgFinish\"c\n\007MsgText\022\016\n\006msg_id" +
+      "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_fri",
+      "end_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003" +
+      "\"\221\001\n\rMsgSecretText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014si" +
       "te_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t" +
-      "\022\017\n\007imageId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016sit" +
-      "e_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroup" +
-      "Image\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 " +
-      "\001(\t\022\014\n\004time\030\007 \001(\003\"\226\001\n\020GroupSecretImage\022\016",
-      "\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\r" +
-      "site_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\016\n\006" +
-      "ts_key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004" +
-      "time\030\007 \001(\003\"g\n\010MsgVoice\022\016\n\006msg_id\030\001 \001(\t\022\024" +
-      "\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003" +
-      " \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\225\001\n\016" +
-      "MsgSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_u" +
-      "ser_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007" +
-      "voicdId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016site_de" +
-      "vice_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroupVoic",
-      "e\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
-      "\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022" +
-      "\014\n\004time\030\007 \001(\003\"\226\001\n\020GroupSecretVoice\022\016\n\006ms" +
-      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite" +
-      "_group_id\030\003 \001(\t\022\017\n\007voicdId\030\004 \001(\t\022\016\n\006ts_k" +
-      "ey\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004time" +
-      "\030\007 \001(\003\"\010\n\006MsgMap\"\016\n\014MsgSecretMap\"\n\n\010Grou" +
-      "pMap\"\020\n\016GroupSecretMap\"W\n\013U2MsgNotice\022\024\n" +
-      "\014site_user_id\030\001 \001(\t\022\026\n\016site_friend_id\030\002 " +
-      "\001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\"Y\n\016Group",
-      "MsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\025\n\rsite_" +
-      "group_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001" +
-      "(\003*\320\002\n\tHeaderKey\022\031\n\025CLIENT_SOCKET_VERSIO" +
-      "N\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION_ID\020\001\022%" +
-      "\n!CLIENT_SOCKET_PLATFORM_SESSION_ID\020\002\022\033\n" +
-      "\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLIENT_SOC" +
-      "KET_LANGUAGE\020\004\022\033\n\026CLIENT_REQUEST_REFERER" +
-      "\020\365\003\022\037\n\032CLIENT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032" +
-      "CLIENT_REQUEST_SERVER_PORT\020\367\003\022\030\n\023SITE_SE" +
-      "RVER_VERSION\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025",
-      "\n\020SITE_SERVER_PORT\020\353\007*\342\002\n\007MsgType\022\n\n\006NOT" +
-      "ICE\020\000\022\016\n\nMSG_STATUS\020\001\022\016\n\nMSG_FINISH\020\002\022\010\n" +
-      "\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEXT\020\005" +
-      "\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014SE" +
-      "CRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROUP_S" +
-      "ECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VOICE" +
-      "\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_VOIC" +
-      "E\020\016\022\007\n\003MAP\020\017\022\016\n\nSECRET_MAP\020\020\022\r\n\tGROUP_MA" +
-      "P\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2_NOTICE\020\023" +
-      "\022\020\n\014GROUP_NOTICE\020\024B\"\n\025com.akaxin.proto.c",
-      "oreB\tCoreProtob\006proto3"
+      "\022\014\n\004text\030\004 \001(\014\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016site_d" +
+      "evice_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"d\n\tGroupTex" +
+      "t\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
+      "\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004" +
+      "time\030\005 \001(\003\"\222\001\n\017GroupSecretText\022\016\n\006msg_id" +
+      "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_gro" +
+      "up_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\016\n\006ts_key\030\005 \001(",
+      "\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"" +
+      "g\n\010MsgImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user" +
+      "_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007ima" +
+      "geId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\225\001\n\016MsgSecretIm" +
+      "age\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(" +
+      "\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001" +
+      "(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001" +
+      "(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroupImage\022\016\n\006msg_id" +
+      "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_gro" +
+      "up_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001",
+      "(\003\"\226\001\n\020GroupSecretImage\022\016\n\006msg_id\030\001 \001(\t\022" +
+      "\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003" +
+      " \001(\t\022\017\n\007imageId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n" +
+      "\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010M" +
+      "sgVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030" +
+      "\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007voiceId" +
+      "\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\225\001\n\016MsgSecretVoice\022" +
+      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n" +
+      "\016site_friend_id\030\003 \001(\t\022\017\n\007voicdId\030\004 \001(\t\022\016" +
+      "\n\006ts_key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014",
+      "\n\004time\030\007 \001(\003\"h\n\nGroupVoice\022\016\n\006msg_id\030\001 \001" +
+      "(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_i" +
+      "d\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\226" +
+      "\001\n\020GroupSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
+      "ite_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t" +
+      "\022\017\n\007voicdId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016sit" +
+      "e_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"\010\n\006MsgMa" +
+      "p\"\016\n\014MsgSecretMap\"\n\n\010GroupMap\"\020\n\016GroupSe" +
+      "cretMap\"W\n\013U2MsgNotice\022\024\n\014site_user_id\030\001" +
+      " \001(\t\022\026\n\016site_friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001",
+      "(\014\022\014\n\004time\030\004 \001(\003\"Y\n\016GroupMsgNotice\022\024\n\014si" +
+      "te_user_id\030\001 \001(\t\022\025\n\rsite_group_id\030\002 \001(\t\022" +
+      "\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003*\320\002\n\tHeaderKe" +
+      "y\022\031\n\025CLIENT_SOCKET_VERSION\020\000\022!\n\035CLIENT_S" +
+      "OCKET_SITE_SESSION_ID\020\001\022%\n!CLIENT_SOCKET" +
+      "_PLATFORM_SESSION_ID\020\002\022\033\n\027CLIENT_SOCKET_" +
+      "DEVICE_ID\020\003\022\032\n\026CLIENT_SOCKET_LANGUAGE\020\004\022" +
+      "\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CLIENT_R" +
+      "EQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_REQUEST_" +
+      "SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERSION\020\351\007",
+      "\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SERVER_P" +
+      "ORT\020\353\007*\342\002\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_ST" +
+      "ATUS\020\001\022\016\n\nMSG_FINISH\020\002\022\010\n\004TEXT\020\003\022\017\n\013SECR" +
+      "ET_TEXT\020\004\022\016\n\nGROUP_TEXT\020\005\022\025\n\021GROUP_SECRE" +
+      "T_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014SECRET_IMAGE\020\010\022\017\n" +
+      "\013GROUP_IMAGE\020\t\022\026\n\022GROUP_SECRET_IMAGE\020\n\022\t" +
+      "\n\005VOICE\020\013\022\020\n\014SECRET_VOICE\020\014\022\017\n\013GROUP_VOI" +
+      "CE\020\r\022\026\n\022GROUP_SECRET_VOICE\020\016\022\007\n\003MAP\020\017\022\016\n" +
+      "\nSECRET_MAP\020\020\022\r\n\tGROUP_MAP\020\021\022\024\n\020GROUP_SE" +
+      "CRET_MAP\020\022\022\r\n\tU2_NOTICE\020\023\022\020\n\014GROUP_NOTIC",
+      "E\020\024B\"\n\025com.akaxin.proto.coreB\tCoreProtob" +
+      "\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -20956,7 +21096,7 @@ public final class CoreProto {
     internal_static_core_MsgStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgStatus_descriptor,
-        new java.lang.String[] { "MsgId", "MsgStatus", });
+        new java.lang.String[] { "MsgId", "MsgStatus", "MsgServerTime", });
     internal_static_core_MsgFinish_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_core_MsgFinish_fieldAccessorTable = new

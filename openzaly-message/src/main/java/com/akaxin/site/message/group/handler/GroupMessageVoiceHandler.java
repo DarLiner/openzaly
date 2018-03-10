@@ -51,6 +51,7 @@ public class GroupMessageVoiceHandler extends AbstractGroupHandler<Command> {
 				String groupId = request.getGroupVoice().getSiteGroupId();
 				String groupVoiceId = request.getGroupVoice().getVoiceId();
 
+				long msgTime = System.currentTimeMillis();
 				GroupMessageBean gmsgBean = new GroupMessageBean();
 				gmsgBean.setMsgId(gmsgId);
 				gmsgBean.setSendUserId(siteUserId);
@@ -58,12 +59,12 @@ public class GroupMessageVoiceHandler extends AbstractGroupHandler<Command> {
 				gmsgBean.setSendDeviceId(deviceId);
 				gmsgBean.setContent(groupVoiceId);
 				gmsgBean.setMsgType(type);
-				gmsgBean.setMsgTime(System.currentTimeMillis());
+				gmsgBean.setMsgTime(msgTime);
 
 				logger.info("Group Message Voice bean={}", gmsgBean.toString());
 
 				messageDao.saveGroupMessage(gmsgBean);
-				msgResponse(channelSession.getChannel(), command, siteUserId, groupId, gmsgId);
+				msgResponse(channelSession.getChannel(), command, siteUserId, groupId, gmsgId, msgTime);
 			}
 			return true;
 		} catch (Exception e) {
@@ -73,10 +74,11 @@ public class GroupMessageVoiceHandler extends AbstractGroupHandler<Command> {
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId) {
+	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
 		logger.info("group message ret to client ");
 
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
+		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+				.setMsgStatus(1).build();
 
 		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 				.setType(MsgType.MSG_STATUS).setStatus(status).build();

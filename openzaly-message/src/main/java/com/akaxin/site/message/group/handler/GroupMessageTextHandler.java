@@ -50,6 +50,7 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 				String groupId = request.getGroupText().getSiteGroupId();
 				String groupText = request.getGroupText().getText().toStringUtf8();
 
+				long msgTime = System.currentTimeMillis();
 				GroupMessageBean gmsgBean = new GroupMessageBean();
 				gmsgBean.setMsgId(gmsgId);
 				gmsgBean.setSendUserId(siteUserId);
@@ -57,12 +58,12 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 				gmsgBean.setSiteGroupId(groupId);
 				gmsgBean.setContent(groupText);
 				gmsgBean.setMsgType(type);
-				gmsgBean.setMsgTime(System.currentTimeMillis());
+				gmsgBean.setMsgTime(msgTime);
 
 				logger.info("Group Message Text bean={}", gmsgBean.toString());
 
 				messageDao.saveGroupMessage(gmsgBean);
-				msgResponse(channelSession.getChannel(), command, siteUserId, groupId, gmsgId);
+				msgResponse(channelSession.getChannel(), command, siteUserId, groupId, gmsgId, msgTime);
 
 			}
 			return true;
@@ -73,8 +74,9 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId) {
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
+	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
+		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+				.setMsgStatus(1).build();
 
 		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 				.setType(MsgType.MSG_STATUS).setStatus(status).build();

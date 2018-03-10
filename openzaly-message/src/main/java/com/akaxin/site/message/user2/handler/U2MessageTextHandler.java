@@ -57,18 +57,18 @@ public class U2MessageTextHandler extends AbstractUserHandler<Command> {
 
 				logger.info("U2 Text message siteUserId={} siteFriendId={} msgid={} text={}", siteUserId, siteFriendId,
 						msgId, msgText);
-
+				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
 				u2Bean.setSendUserId(siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(msgText);
-				u2Bean.setMsgTime(System.currentTimeMillis());
+				u2Bean.setMsgTime(msgTime);
 
 				boolean saveRes = messageDao.saveU2Message(u2Bean);
 
-				msgResponse(channelSession.getChannel(), command, siteUserId, siteFriendId, msgId);
+				msgResponse(channelSession.getChannel(), command, siteUserId, siteFriendId, msgId, msgTime);
 				// 消息保存成功，继续执行PHN，消息保存失败退出
 				return saveRes;
 			}
@@ -81,11 +81,12 @@ public class U2MessageTextHandler extends AbstractUserHandler<Command> {
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId) {
+	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
 
 		logger.info("response msg to client from:{} to:{} msgId:{}", from, to, msgId);
 
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
+		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+				.setMsgStatus(1).build();
 
 		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 				.setType(MsgType.MSG_STATUS).setStatus(status).build();
@@ -96,8 +97,8 @@ public class U2MessageTextHandler extends AbstractUserHandler<Command> {
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 }

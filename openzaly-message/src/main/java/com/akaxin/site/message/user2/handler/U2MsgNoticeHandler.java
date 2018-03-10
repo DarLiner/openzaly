@@ -43,13 +43,14 @@ public class U2MsgNoticeHandler extends AbstractGroupHandler<Command> {
 				String siteFriendId = request.getU2MsgNotice().getSiteFriendId();
 				String text = request.getU2MsgNotice().getText().toStringUtf8();
 
+				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(UUID.randomUUID().toString().substring(0, 8));
 				u2Bean.setMsgType(type);
 				u2Bean.setSendUserId(siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(text);
-				u2Bean.setMsgTime(System.currentTimeMillis());
+				u2Bean.setMsgTime(msgTime);
 
 				logger.info("save u2 message notice bean={}", u2Bean.toString());
 				return messageDao.saveU2Message(u2Bean);

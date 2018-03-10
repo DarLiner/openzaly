@@ -58,6 +58,7 @@ public class U2MessageVoiceSecretHandler extends AbstractUserHandler<Command> {
 				command.setSiteUserId(site_user_id);
 				command.setSiteFriendId(site_friend_id);
 
+				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msg_id);
 				u2Bean.setMsgType(type);
@@ -66,13 +67,13 @@ public class U2MessageVoiceSecretHandler extends AbstractUserHandler<Command> {
 				u2Bean.setContent(secretVoiceId);
 				u2Bean.setTsKey(ts_key);
 				u2Bean.setDeviceId(ts_device_id);
-				u2Bean.setMsgTime(System.currentTimeMillis());
+				u2Bean.setMsgTime(msgTime);
 
 				logger.info("U2 Message SecretVoice bean={}", u2Bean.toString());
 
 				boolean saveRes = messageDao.saveU2Message(u2Bean);
 
-				msgResponse(channelSession.getChannel(), command, site_user_id, site_friend_id, msg_id);
+				msgResponse(channelSession.getChannel(), command, site_user_id, site_friend_id, msg_id, msgTime);
 
 				return saveRes;
 			}
@@ -85,8 +86,9 @@ public class U2MessageVoiceSecretHandler extends AbstractUserHandler<Command> {
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId) {
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
+	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
+		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+				.setMsgStatus(1).build();
 
 		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 				.setType(MsgType.MSG_STATUS).setStatus(status).build();
@@ -97,8 +99,8 @@ public class U2MessageVoiceSecretHandler extends AbstractUserHandler<Command> {
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 }

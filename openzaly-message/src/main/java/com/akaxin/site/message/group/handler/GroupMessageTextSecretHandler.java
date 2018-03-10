@@ -55,10 +55,12 @@ public class GroupMessageTextSecretHandler extends AbstractGroupHandler<Command>
 				System.out.println(
 						"GroupMsg = id=" + gmsg_id + "," + group_user_id + "," + group_id + "," + group_text + ",");
 
+				long msgTime = System.currentTimeMillis();
 				GroupMessageBean gmsgBean = new GroupMessageBean();
+				gmsgBean.setMsgTime(msgTime);
 				messageDao.saveGroupMessage(gmsgBean);
 
-				msgResponse(channelSession.getChannel(), command, group_user_id, group_id, gmsg_id);
+				msgResponse(channelSession.getChannel(), command, group_user_id, group_id, gmsg_id, msgTime);
 
 				return true;
 			}
@@ -70,8 +72,9 @@ public class GroupMessageTextSecretHandler extends AbstractGroupHandler<Command>
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId) {
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
+	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
+		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+				.setMsgStatus(1).build();
 
 		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 				.setType(MsgType.MSG_STATUS).setStatus(status).build();
@@ -82,8 +85,8 @@ public class GroupMessageTextSecretHandler extends AbstractGroupHandler<Command>
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 
