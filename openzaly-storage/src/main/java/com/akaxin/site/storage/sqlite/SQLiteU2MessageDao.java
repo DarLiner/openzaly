@@ -124,7 +124,8 @@ public class SQLiteU2MessageDao {
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, "po=" + pointer,
 				sql + ",userId=" + userId + ",device_id=" + deviceId);
-		return pointer == 0 ? queryMaxU2MessagePointer(userId) - 10 : pointer;
+//		return pointer == 0 ? queryMaxU2MessagePointer(userId) - 10 : pointer;
+		return pointer;
 	}
 
 	public long queryMaxU2MessagePointer(String userId) throws SQLException {
