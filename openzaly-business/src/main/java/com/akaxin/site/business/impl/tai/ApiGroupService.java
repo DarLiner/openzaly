@@ -351,7 +351,7 @@ public class ApiGroupService extends AbstractRequest {
 				// 先校验权限
 				GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
 
-				if (bean != null && !bean.isCloseInviteGroupChat()) {
+				if (bean != null && (!bean.isCloseInviteGroupChat() || siteUserId.equals(bean.getCreateUserId()))) {
 					int currentSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
 					int maxSize = SiteConfig.getMaxGroupMemberSize();
 					if (currentSize + addMemberList.size() <= maxSize) {

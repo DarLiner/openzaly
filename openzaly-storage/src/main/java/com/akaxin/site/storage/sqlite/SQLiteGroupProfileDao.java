@@ -97,7 +97,7 @@ public class SQLiteGroupProfileDao {
 		preStatement.setString(3, bean.getGroupPhoto());
 		preStatement.setString(4, bean.getGroupNotice());
 		preStatement.setString(5, bean.getCreateUserId());
-		preStatement.setBoolean(6, true);// 默认允许群成员添加新的群聊成员
+		preStatement.setBoolean(6, false);// 默认允许群成员添加新的群聊成员
 		preStatement.setLong(7, bean.getCreateTime());
 
 		int result = preStatement.executeUpdate();
