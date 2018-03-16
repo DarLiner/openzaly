@@ -348,10 +348,9 @@ public class ApiGroupService extends AbstractRequest {
 			logger.info("api.group.addMember comamnd={} request={}", command.toString(), request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId) && addMemberList != null) {
-				// 先校验权限
 				GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
-
-				if (bean != null && !bean.isCloseInviteGroupChat()) {
+				// 先校验权限
+				if (checkAddMemberPermission(siteUserId, bean)) {
 					int currentSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
 					int maxSize = SiteConfig.getMaxGroupMemberSize();
 					if (currentSize + addMemberList.size() <= maxSize) {
@@ -371,6 +370,26 @@ public class ApiGroupService extends AbstractRequest {
 		}
 		logger.info("api.group.addMember result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * <pre>
+	 * 添加群成员权限：
+	 * 		1.关闭的开关是打开的
+	 * 		2.是管理员操作
+	 * </pre>
+	 * 
+	 * @param siteUserId
+	 * @param bean
+	 * @return
+	 */
+	private boolean checkAddMemberPermission(String siteUserId, GroupProfileBean bean) {
+		if (bean != null) {
+			if (!bean.isCloseInviteGroupChat() || siteUserId.equals(bean.getCreateUserId())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public CommandResponse removeMember(Command command) {
