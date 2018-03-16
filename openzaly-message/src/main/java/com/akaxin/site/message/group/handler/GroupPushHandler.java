@@ -75,9 +75,10 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					for (String memberUserId : groupMembers) {
 
 						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(siteUserId)) {
+							
 							// 一、用户是否对站点消息免打扰
 							// 二、用户是否对该群消息免打扰
-							if (ImUserProfileDao.getInstance().isMute(siteUserId)
+							if (ImUserProfileDao.getInstance().isMute(memberUserId)
 									|| ImUserGroupDao.getInstance().isMesageMute(memberUserId, siteGroupId)) {
 								continue;
 							}
