@@ -31,6 +31,11 @@ public class ServerAddress {
 		this.setAddress(address);
 	}
 
+	public ServerAddress(String host, int port) {
+		this.host = host;
+		this.port = port;
+	}
+
 	public ServerAddress setAddress(String address) {
 		if (StringUtils.isNoneBlank(address)) {
 			// InetAddress netAdd =InetAddress.getByName(address);
