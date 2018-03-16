@@ -106,7 +106,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							// 条件2:站点只支持文本消息展示消息内容
 							if (ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT == pcs) {
 								if (CoreProto.MsgType.GROUP_TEXT == request.getType()) {
-									ByteString byteStr = request.getText().getText();
+									ByteString byteStr = request.getGroupText().getText();
 									notification.setPushAlert(byteStr.toString(Charset.forName("UTF-8")));
 								}
 								if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
