@@ -44,10 +44,15 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 			}
 			ChannelSession acsession = ChannelManager.getChannelSession(deviceId);
 			if (acsession == null) {
+				// TODO 断开连接
+				channelSession.getChannel().close();
 				logger.info("im request fail.authedChannelSession={}", acsession);
 				return false;
 			}
+
 			if (!checkSiteUserId(command.getSiteUserId(), acsession.getUserId())) {
+				// TODO 断开连接
+				channelSession.getChannel().close();
 				logger.info("im request fail.cmdUserId={},sessionUserId={}", command.getSiteUserId(),
 						acsession.getUserId());
 				return false;

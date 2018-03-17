@@ -77,6 +77,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, RedisCommand redisCmd) throws Exception {
 		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
+
+		/**
+		 * 如果channel不活跃，关闭tcp连接
+		 */
+		if (channelSession.getChannel() == null || !channelSession.getChannel().isActive()) {
+			ctx.disconnect();// 关闭tcp连接
+		}
+
 		String version = redisCmd.getParameterByIndex(0);
 		String action = redisCmd.getParameterByIndex(1);
 		byte[] params = redisCmd.getBytesParamByIndex(2);
@@ -102,6 +110,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 				String anoRequest = command.getRety() + "." + command.getService();
 				command.setRety(anoRequest);
 			}
+
+			// TODO 改进：放在auth之后进行
 			// ping && pong
 			if (RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
 				Map<Integer, String> header = new HashMap<Integer, String>();
