@@ -15,9 +15,6 @@
  */
 package com.akaxin.site.connector.netty.handler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +23,6 @@ import com.akaxin.common.channel.ChannelManager;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
-import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.logs.LogUtils;
@@ -76,6 +72,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, RedisCommand redisCmd) throws Exception {
+		// 获取channel以及channel绑定的信息
 		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
 
 		/**
@@ -105,29 +102,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		if (RequestAction.IM.getName().equals(command.getRety())) {
 			// 如果是syncFinish，则这里需要修改channel中的syncFinTime
 			channelSession.setActionForPsn(action);
-			// 单独处理hello && auth
+			// 单独处理im.site.hello && im.site.auth
 			if (RequestAction.SITE.getName().equalsIgnoreCase(command.getService())) {
 				String anoRequest = command.getRety() + "." + command.getService();
 				command.setRety(anoRequest);
-			}
-
-			// TODO 改进：放在auth之后进行
-			// ping && pong
-			if (RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
-				Map<Integer, String> header = new HashMap<Integer, String>();
-				header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
-				CoreProto.TransportPackageData.Builder packBuilder = CoreProto.TransportPackageData.newBuilder();
-				packBuilder.putAllHeader(header);
-				ctx.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
-						.add(RequestAction.IM_STC_PONG.getName()).add(packBuilder.build().toByteArray()));
-				// 检测是否需要给用户发送PSN
-				if (channelSession.detectPsn()) {
-					logger.info("siteUserId={} deviceId={} detect psn {} {}", command.getSiteUserId(),
-							command.getDeviceId(), channelSession.getPsnTime(), channelSession.getSynFinTime());
-					ctx.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
-							.add(RequestAction.IM_STC_PSN.getName()).add(packBuilder.build().toByteArray()));
-				}
-				return;
 			}
 			this.executor.execute(command.getRety(), command);
 		} else if (RequestAction.API.getName().equalsIgnoreCase(command.getRety())) {

@@ -15,6 +15,9 @@
  */
 package com.akaxin.site.connector.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,10 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.channel.ChannelManager;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.RedisCommand;
+import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.constant.RequestAction;
+import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.message.service.ImMessageService;
 
 /**
@@ -56,6 +63,24 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 				logger.info("im request fail.cmdUserId={},sessionUserId={}", command.getSiteUserId(),
 						acsession.getUserId());
 				return false;
+			}
+
+			// PING / PONG
+			if (RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
+				Map<Integer, String> header = new HashMap<Integer, String>();
+				header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
+				CoreProto.TransportPackageData.Builder packBuilder = CoreProto.TransportPackageData.newBuilder();
+				packBuilder.putAllHeader(header);
+				channelSession.getChannel().writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
+						.add(RequestAction.IM_STC_PONG.getName()).add(packBuilder.build().toByteArray()));
+				// 检测是否需要给用户发送PSN
+				if (channelSession.detectPsn()) {
+					logger.info("siteUserId={} deviceId={} detect psn {} {}", command.getSiteUserId(),
+							command.getDeviceId(), channelSession.getPsnTime(), channelSession.getSynFinTime());
+					channelSession.getChannel().writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
+							.add(RequestAction.IM_STC_PSN.getName()).add(packBuilder.build().toByteArray()));
+				}
+
 			}
 
 			return new ImMessageService().execute(command);
