@@ -178,7 +178,7 @@ public class SQLitePluginDao {
 				+ "name,"//
 				+ "icon,"//
 				+ "url_page,"//
-				+ "url_api,"//
+				+ "api_url,"//
 				+ "sort,"//
 				+ "position,"//
 				+ "permission_status"//
@@ -225,7 +225,7 @@ public class SQLitePluginDao {
 				+ "name,"//
 				+ "icon,"//
 				+ "url_page,"//
-				+ "url_api,"//
+				+ "api_url,"//
 				+ "sort,"//
 				+ "position,"//
 				+ "permission_status"//
@@ -270,7 +270,7 @@ public class SQLitePluginDao {
 				+ "name,"//
 				+ "icon,"//
 				+ "url_page,"//
-				+ "url_api,"//
+				+ "api_url,"//
 				+ "sort,"//
 				+ "position,"//
 				+ "permission_status"//
