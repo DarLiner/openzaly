@@ -15,9 +15,13 @@ public final class PluginProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * Protobuf enum {@code core.ProxyKey}
+   * <pre>
+   *header 里面
+   * </pre>
+   *
+   * Protobuf enum {@code core.PluginHeaderKey}
    */
-  public enum ProxyKey
+  public enum PluginHeaderKey
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <code>CLIENT_VERSION = 0;</code>
@@ -39,6 +43,30 @@ public final class PluginProto {
      * <code>CLIENT_SITE_SESSION_ID = 2;</code>
      */
     CLIENT_SITE_SESSION_ID(2),
+    /**
+     * <pre>
+     *使用zaly:goto
+     * </pre>
+     *
+     * <code>PLUGIN_REFERER = 3;</code>
+     */
+    PLUGIN_REFERER(3),
+    /**
+     * <pre>
+     *单位ms
+     * </pre>
+     *
+     * <code>PLUGIN_TIMESTAMP = 4;</code>
+     */
+    PLUGIN_TIMESTAMP(4),
+    /**
+     * <pre>
+     *扩展的ID
+     * </pre>
+     *
+     * <code>PLUGIN_ID = 5;</code>
+     */
+    PLUGIN_ID(5),
     UNRECOGNIZED(-1),
     ;
 
@@ -62,6 +90,30 @@ public final class PluginProto {
      * <code>CLIENT_SITE_SESSION_ID = 2;</code>
      */
     public static final int CLIENT_SITE_SESSION_ID_VALUE = 2;
+    /**
+     * <pre>
+     *使用zaly:goto
+     * </pre>
+     *
+     * <code>PLUGIN_REFERER = 3;</code>
+     */
+    public static final int PLUGIN_REFERER_VALUE = 3;
+    /**
+     * <pre>
+     *单位ms
+     * </pre>
+     *
+     * <code>PLUGIN_TIMESTAMP = 4;</code>
+     */
+    public static final int PLUGIN_TIMESTAMP_VALUE = 4;
+    /**
+     * <pre>
+     *扩展的ID
+     * </pre>
+     *
+     * <code>PLUGIN_ID = 5;</code>
+     */
+    public static final int PLUGIN_ID_VALUE = 5;
 
 
     public final int getNumber() {
@@ -76,28 +128,31 @@ public final class PluginProto {
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
-    public static ProxyKey valueOf(int value) {
+    public static PluginHeaderKey valueOf(int value) {
       return forNumber(value);
     }
 
-    public static ProxyKey forNumber(int value) {
+    public static PluginHeaderKey forNumber(int value) {
       switch (value) {
         case 0: return CLIENT_VERSION;
         case 1: return CLIENT_SITE_USER_ID;
         case 2: return CLIENT_SITE_SESSION_ID;
+        case 3: return PLUGIN_REFERER;
+        case 4: return PLUGIN_TIMESTAMP;
+        case 5: return PLUGIN_ID;
         default: return null;
       }
     }
 
-    public static com.google.protobuf.Internal.EnumLiteMap<ProxyKey>
+    public static com.google.protobuf.Internal.EnumLiteMap<PluginHeaderKey>
         internalGetValueMap() {
       return internalValueMap;
     }
     private static final com.google.protobuf.Internal.EnumLiteMap<
-        ProxyKey> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ProxyKey>() {
-            public ProxyKey findValueByNumber(int number) {
-              return ProxyKey.forNumber(number);
+        PluginHeaderKey> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<PluginHeaderKey>() {
+            public PluginHeaderKey findValueByNumber(int number) {
+              return PluginHeaderKey.forNumber(number);
             }
           };
 
@@ -114,9 +169,9 @@ public final class PluginProto {
       return com.akaxin.proto.core.PluginProto.getDescriptor().getEnumTypes().get(0);
     }
 
-    private static final ProxyKey[] VALUES = values();
+    private static final PluginHeaderKey[] VALUES = values();
 
-    public static ProxyKey valueOf(
+    public static PluginHeaderKey valueOf(
         com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
         throw new java.lang.IllegalArgumentException(
@@ -130,21 +185,21 @@ public final class PluginProto {
 
     private final int value;
 
-    private ProxyKey(int value) {
+    private PluginHeaderKey(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:core.ProxyKey)
+    // @@protoc_insertion_point(enum_scope:core.PluginHeaderKey)
   }
 
   /**
-   * Protobuf enum {@code core.PluginStatus}
+   * Protobuf enum {@code core.PermissionStatus}
    */
-  public enum PluginStatus
+  public enum PermissionStatus
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <pre>
-     *默认禁用状态
+     *禁用状态
      * </pre>
      *
      * <code>DISABLED = 0;</code>
@@ -152,50 +207,18 @@ public final class PluginProto {
     DISABLED(0),
     /**
      * <pre>
-     *首页扩展
+     *可用状态
      * </pre>
      *
-     * <code>AVAILABLE_HOME_PAGE = 1;</code>
+     * <code>AVAILABLE = 1;</code>
      */
-    AVAILABLE_HOME_PAGE(1),
-    /**
-     * <pre>
-     *首页只对管理员可见
-     * </pre>
-     *
-     * <code>ADMIN_HOME_PAGE_SEE = 2;</code>
-     */
-    ADMIN_HOME_PAGE_SEE(2),
-    /**
-     * <pre>
-     *消息帧扩展
-     * </pre>
-     *
-     * <code>AVAILABLE_MSG_PAGE = 3;</code>
-     */
-    AVAILABLE_MSG_PAGE(3),
-    /**
-     * <pre>
-     *消息帧只对管理员可见
-     * </pre>
-     *
-     * <code>ADMIN_MSG_PAGE_SEE = 4;</code>
-     */
-    ADMIN_MSG_PAGE_SEE(4),
-    /**
-     * <pre>
-     *此状态下，可以展示所有上述状态
-     * </pre>
-     *
-     * <code>ALL_PLUGIN = 100;</code>
-     */
-    ALL_PLUGIN(100),
+    AVAILABLE(1),
     UNRECOGNIZED(-1),
     ;
 
     /**
      * <pre>
-     *默认禁用状态
+     *禁用状态
      * </pre>
      *
      * <code>DISABLED = 0;</code>
@@ -203,44 +226,12 @@ public final class PluginProto {
     public static final int DISABLED_VALUE = 0;
     /**
      * <pre>
-     *首页扩展
+     *可用状态
      * </pre>
      *
-     * <code>AVAILABLE_HOME_PAGE = 1;</code>
+     * <code>AVAILABLE = 1;</code>
      */
-    public static final int AVAILABLE_HOME_PAGE_VALUE = 1;
-    /**
-     * <pre>
-     *首页只对管理员可见
-     * </pre>
-     *
-     * <code>ADMIN_HOME_PAGE_SEE = 2;</code>
-     */
-    public static final int ADMIN_HOME_PAGE_SEE_VALUE = 2;
-    /**
-     * <pre>
-     *消息帧扩展
-     * </pre>
-     *
-     * <code>AVAILABLE_MSG_PAGE = 3;</code>
-     */
-    public static final int AVAILABLE_MSG_PAGE_VALUE = 3;
-    /**
-     * <pre>
-     *消息帧只对管理员可见
-     * </pre>
-     *
-     * <code>ADMIN_MSG_PAGE_SEE = 4;</code>
-     */
-    public static final int ADMIN_MSG_PAGE_SEE_VALUE = 4;
-    /**
-     * <pre>
-     *此状态下，可以展示所有上述状态
-     * </pre>
-     *
-     * <code>ALL_PLUGIN = 100;</code>
-     */
-    public static final int ALL_PLUGIN_VALUE = 100;
+    public static final int AVAILABLE_VALUE = 1;
 
 
     public final int getNumber() {
@@ -255,31 +246,27 @@ public final class PluginProto {
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
-    public static PluginStatus valueOf(int value) {
+    public static PermissionStatus valueOf(int value) {
       return forNumber(value);
     }
 
-    public static PluginStatus forNumber(int value) {
+    public static PermissionStatus forNumber(int value) {
       switch (value) {
         case 0: return DISABLED;
-        case 1: return AVAILABLE_HOME_PAGE;
-        case 2: return ADMIN_HOME_PAGE_SEE;
-        case 3: return AVAILABLE_MSG_PAGE;
-        case 4: return ADMIN_MSG_PAGE_SEE;
-        case 100: return ALL_PLUGIN;
+        case 1: return AVAILABLE;
         default: return null;
       }
     }
 
-    public static com.google.protobuf.Internal.EnumLiteMap<PluginStatus>
+    public static com.google.protobuf.Internal.EnumLiteMap<PermissionStatus>
         internalGetValueMap() {
       return internalValueMap;
     }
     private static final com.google.protobuf.Internal.EnumLiteMap<
-        PluginStatus> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<PluginStatus>() {
-            public PluginStatus findValueByNumber(int number) {
-              return PluginStatus.forNumber(number);
+        PermissionStatus> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<PermissionStatus>() {
+            public PermissionStatus findValueByNumber(int number) {
+              return PermissionStatus.forNumber(number);
             }
           };
 
@@ -296,9 +283,9 @@ public final class PluginProto {
       return com.akaxin.proto.core.PluginProto.getDescriptor().getEnumTypes().get(1);
     }
 
-    private static final PluginStatus[] VALUES = values();
+    private static final PermissionStatus[] VALUES = values();
 
-    public static PluginStatus valueOf(
+    public static PermissionStatus valueOf(
         com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
         throw new java.lang.IllegalArgumentException(
@@ -312,708 +299,321 @@ public final class PluginProto {
 
     private final int value;
 
-    private PluginStatus(int value) {
+    private PermissionStatus(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:core.PluginStatus)
+    // @@protoc_insertion_point(enum_scope:core.PermissionStatus)
   }
 
-  public interface PluginPackageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:core.PluginPackage)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional .core.ErrorInfo error_info = 1;</code>
-     */
-    boolean hasErrorInfo();
-    /**
-     * <code>optional .core.ErrorInfo error_info = 1;</code>
-     */
-    com.akaxin.proto.core.CoreProto.ErrorInfo getErrorInfo();
-    /**
-     * <code>optional .core.ErrorInfo error_info = 1;</code>
-     */
-    com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder getErrorInfoOrBuilder();
-
-    /**
-     * <code>optional bytes data = 2;</code>
-     */
-    com.google.protobuf.ByteString getData();
-  }
   /**
-   * <pre>
-   * 扩展请求/响应的包结构
-   * </pre>
-   *
-   * Protobuf type {@code core.PluginPackage}
+   * Protobuf enum {@code core.PluginPosition}
    */
-  public  static final class PluginPackage extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:core.PluginPackage)
-      PluginPackageOrBuilder {
-    // Use PluginPackage.newBuilder() to construct.
-    private PluginPackage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private PluginPackage() {
-      data_ = com.google.protobuf.ByteString.EMPTY;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
-    }
-    private PluginPackage(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.akaxin.proto.core.CoreProto.ErrorInfo.Builder subBuilder = null;
-              if (errorInfo_ != null) {
-                subBuilder = errorInfo_.toBuilder();
-              }
-              errorInfo_ = input.readMessage(com.akaxin.proto.core.CoreProto.ErrorInfo.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(errorInfo_);
-                errorInfo_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
-
-              data_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.akaxin.proto.core.PluginProto.internal_static_core_PluginPackage_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.akaxin.proto.core.PluginProto.internal_static_core_PluginPackage_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.akaxin.proto.core.PluginProto.PluginPackage.class, com.akaxin.proto.core.PluginProto.PluginPackage.Builder.class);
-    }
-
-    public static final int ERROR_INFO_FIELD_NUMBER = 1;
-    private com.akaxin.proto.core.CoreProto.ErrorInfo errorInfo_;
-    /**
-     * <code>optional .core.ErrorInfo error_info = 1;</code>
-     */
-    public boolean hasErrorInfo() {
-      return errorInfo_ != null;
-    }
-    /**
-     * <code>optional .core.ErrorInfo error_info = 1;</code>
-     */
-    public com.akaxin.proto.core.CoreProto.ErrorInfo getErrorInfo() {
-      return errorInfo_ == null ? com.akaxin.proto.core.CoreProto.ErrorInfo.getDefaultInstance() : errorInfo_;
-    }
-    /**
-     * <code>optional .core.ErrorInfo error_info = 1;</code>
-     */
-    public com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder getErrorInfoOrBuilder() {
-      return getErrorInfo();
-    }
-
-    public static final int DATA_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString data_;
-    /**
-     * <code>optional bytes data = 2;</code>
-     */
-    public com.google.protobuf.ByteString getData() {
-      return data_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (errorInfo_ != null) {
-        output.writeMessage(1, getErrorInfo());
-      }
-      if (!data_.isEmpty()) {
-        output.writeBytes(2, data_);
-      }
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (errorInfo_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getErrorInfo());
-      }
-      if (!data_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, data_);
-      }
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.akaxin.proto.core.PluginProto.PluginPackage)) {
-        return super.equals(obj);
-      }
-      com.akaxin.proto.core.PluginProto.PluginPackage other = (com.akaxin.proto.core.PluginProto.PluginPackage) obj;
-
-      boolean result = true;
-      result = result && (hasErrorInfo() == other.hasErrorInfo());
-      if (hasErrorInfo()) {
-        result = result && getErrorInfo()
-            .equals(other.getErrorInfo());
-      }
-      result = result && getData()
-          .equals(other.getData());
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasErrorInfo()) {
-        hash = (37 * hash) + ERROR_INFO_FIELD_NUMBER;
-        hash = (53 * hash) + getErrorInfo().hashCode();
-      }
-      hash = (37 * hash) + DATA_FIELD_NUMBER;
-      hash = (53 * hash) + getData().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.PluginProto.PluginPackage parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.akaxin.proto.core.PluginProto.PluginPackage prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
+  public enum PluginPosition
+      implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <pre>
-     * 扩展请求/响应的包结构
+     *首页位置
      * </pre>
      *
-     * Protobuf type {@code core.PluginPackage}
+     * <code>HOME_PAGE = 0;</code>
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:core.PluginPackage)
-        com.akaxin.proto.core.PluginProto.PluginPackageOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_PluginPackage_descriptor;
-      }
+    HOME_PAGE(0),
+    /**
+     * <pre>
+     *消息帧位置
+     * </pre>
+     *
+     * <code>MSG_PAGE = 1;</code>
+     */
+    MSG_PAGE(1),
+    UNRECOGNIZED(-1),
+    ;
 
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_PluginPackage_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.akaxin.proto.core.PluginProto.PluginPackage.class, com.akaxin.proto.core.PluginProto.PluginPackage.Builder.class);
-      }
-
-      // Construct using com.akaxin.proto.core.PluginProto.PluginPackage.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        if (errorInfoBuilder_ == null) {
-          errorInfo_ = null;
-        } else {
-          errorInfo_ = null;
-          errorInfoBuilder_ = null;
-        }
-        data_ = com.google.protobuf.ByteString.EMPTY;
-
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_PluginPackage_descriptor;
-      }
-
-      public com.akaxin.proto.core.PluginProto.PluginPackage getDefaultInstanceForType() {
-        return com.akaxin.proto.core.PluginProto.PluginPackage.getDefaultInstance();
-      }
-
-      public com.akaxin.proto.core.PluginProto.PluginPackage build() {
-        com.akaxin.proto.core.PluginProto.PluginPackage result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.akaxin.proto.core.PluginProto.PluginPackage buildPartial() {
-        com.akaxin.proto.core.PluginProto.PluginPackage result = new com.akaxin.proto.core.PluginProto.PluginPackage(this);
-        if (errorInfoBuilder_ == null) {
-          result.errorInfo_ = errorInfo_;
-        } else {
-          result.errorInfo_ = errorInfoBuilder_.build();
-        }
-        result.data_ = data_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.akaxin.proto.core.PluginProto.PluginPackage) {
-          return mergeFrom((com.akaxin.proto.core.PluginProto.PluginPackage)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.akaxin.proto.core.PluginProto.PluginPackage other) {
-        if (other == com.akaxin.proto.core.PluginProto.PluginPackage.getDefaultInstance()) return this;
-        if (other.hasErrorInfo()) {
-          mergeErrorInfo(other.getErrorInfo());
-        }
-        if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
-          setData(other.getData());
-        }
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.akaxin.proto.core.PluginProto.PluginPackage parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.akaxin.proto.core.PluginProto.PluginPackage) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private com.akaxin.proto.core.CoreProto.ErrorInfo errorInfo_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.ErrorInfo, com.akaxin.proto.core.CoreProto.ErrorInfo.Builder, com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder> errorInfoBuilder_;
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public boolean hasErrorInfo() {
-        return errorInfoBuilder_ != null || errorInfo_ != null;
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.ErrorInfo getErrorInfo() {
-        if (errorInfoBuilder_ == null) {
-          return errorInfo_ == null ? com.akaxin.proto.core.CoreProto.ErrorInfo.getDefaultInstance() : errorInfo_;
-        } else {
-          return errorInfoBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public Builder setErrorInfo(com.akaxin.proto.core.CoreProto.ErrorInfo value) {
-        if (errorInfoBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          errorInfo_ = value;
-          onChanged();
-        } else {
-          errorInfoBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public Builder setErrorInfo(
-          com.akaxin.proto.core.CoreProto.ErrorInfo.Builder builderForValue) {
-        if (errorInfoBuilder_ == null) {
-          errorInfo_ = builderForValue.build();
-          onChanged();
-        } else {
-          errorInfoBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public Builder mergeErrorInfo(com.akaxin.proto.core.CoreProto.ErrorInfo value) {
-        if (errorInfoBuilder_ == null) {
-          if (errorInfo_ != null) {
-            errorInfo_ =
-              com.akaxin.proto.core.CoreProto.ErrorInfo.newBuilder(errorInfo_).mergeFrom(value).buildPartial();
-          } else {
-            errorInfo_ = value;
-          }
-          onChanged();
-        } else {
-          errorInfoBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public Builder clearErrorInfo() {
-        if (errorInfoBuilder_ == null) {
-          errorInfo_ = null;
-          onChanged();
-        } else {
-          errorInfo_ = null;
-          errorInfoBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.ErrorInfo.Builder getErrorInfoBuilder() {
-        
-        onChanged();
-        return getErrorInfoFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder getErrorInfoOrBuilder() {
-        if (errorInfoBuilder_ != null) {
-          return errorInfoBuilder_.getMessageOrBuilder();
-        } else {
-          return errorInfo_ == null ?
-              com.akaxin.proto.core.CoreProto.ErrorInfo.getDefaultInstance() : errorInfo_;
-        }
-      }
-      /**
-       * <code>optional .core.ErrorInfo error_info = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.ErrorInfo, com.akaxin.proto.core.CoreProto.ErrorInfo.Builder, com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder> 
-          getErrorInfoFieldBuilder() {
-        if (errorInfoBuilder_ == null) {
-          errorInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.CoreProto.ErrorInfo, com.akaxin.proto.core.CoreProto.ErrorInfo.Builder, com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder>(
-                  getErrorInfo(),
-                  getParentForChildren(),
-                  isClean());
-          errorInfo_ = null;
-        }
-        return errorInfoBuilder_;
-      }
-
-      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>optional bytes data = 2;</code>
-       */
-      public com.google.protobuf.ByteString getData() {
-        return data_;
-      }
-      /**
-       * <code>optional bytes data = 2;</code>
-       */
-      public Builder setData(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        data_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bytes data = 2;</code>
-       */
-      public Builder clearData() {
-        
-        data_ = getDefaultInstance().getData();
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
+    /**
+     * <pre>
+     *首页位置
+     * </pre>
+     *
+     * <code>HOME_PAGE = 0;</code>
+     */
+    public static final int HOME_PAGE_VALUE = 0;
+    /**
+     * <pre>
+     *消息帧位置
+     * </pre>
+     *
+     * <code>MSG_PAGE = 1;</code>
+     */
+    public static final int MSG_PAGE_VALUE = 1;
 
 
-      // @@protoc_insertion_point(builder_scope:core.PluginPackage)
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
     }
 
-    // @@protoc_insertion_point(class_scope:core.PluginPackage)
-    private static final com.akaxin.proto.core.PluginProto.PluginPackage DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.akaxin.proto.core.PluginProto.PluginPackage();
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static PluginPosition valueOf(int value) {
+      return forNumber(value);
     }
 
-    public static com.akaxin.proto.core.PluginProto.PluginPackage getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<PluginPackage>
-        PARSER = new com.google.protobuf.AbstractParser<PluginPackage>() {
-      public PluginPackage parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new PluginPackage(input, extensionRegistry);
+    public static PluginPosition forNumber(int value) {
+      switch (value) {
+        case 0: return HOME_PAGE;
+        case 1: return MSG_PAGE;
+        default: return null;
       }
-    };
-
-    public static com.google.protobuf.Parser<PluginPackage> parser() {
-      return PARSER;
     }
 
-    @java.lang.Override
-    public com.google.protobuf.Parser<PluginPackage> getParserForType() {
-      return PARSER;
+    public static com.google.protobuf.Internal.EnumLiteMap<PluginPosition>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        PluginPosition> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<PluginPosition>() {
+            public PluginPosition findValueByNumber(int number) {
+              return PluginPosition.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.PluginProto.getDescriptor().getEnumTypes().get(2);
     }
 
-    public com.akaxin.proto.core.PluginProto.PluginPackage getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
+    private static final PluginPosition[] VALUES = values();
+
+    public static PluginPosition valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
     }
 
+    private final int value;
+
+    private PluginPosition(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.PluginPosition)
   }
 
-  public interface ProxyPackageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:core.ProxyPackage)
+  /**
+   * Protobuf enum {@code core.PluginDisplayMode}
+   */
+  public enum PluginDisplayMode
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *默认，新页面
+     * </pre>
+     *
+     * <code>NEW_PAGE = 0;</code>
+     */
+    NEW_PAGE(0),
+    /**
+     * <pre>
+     *浮屏
+     * </pre>
+     *
+     * <code>FLOATING_SCREEN = 1;</code>
+     */
+    FLOATING_SCREEN(1),
+    /**
+     * <pre>
+     *分屏
+     * </pre>
+     *
+     * <code>SPLIT_SCREEN = 2;</code>
+     */
+    SPLIT_SCREEN(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *默认，新页面
+     * </pre>
+     *
+     * <code>NEW_PAGE = 0;</code>
+     */
+    public static final int NEW_PAGE_VALUE = 0;
+    /**
+     * <pre>
+     *浮屏
+     * </pre>
+     *
+     * <code>FLOATING_SCREEN = 1;</code>
+     */
+    public static final int FLOATING_SCREEN_VALUE = 1;
+    /**
+     * <pre>
+     *分屏
+     * </pre>
+     *
+     * <code>SPLIT_SCREEN = 2;</code>
+     */
+    public static final int SPLIT_SCREEN_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static PluginDisplayMode valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static PluginDisplayMode forNumber(int value) {
+      switch (value) {
+        case 0: return NEW_PAGE;
+        case 1: return FLOATING_SCREEN;
+        case 2: return SPLIT_SCREEN;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<PluginDisplayMode>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        PluginDisplayMode> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<PluginDisplayMode>() {
+            public PluginDisplayMode findValueByNumber(int number) {
+              return PluginDisplayMode.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.PluginProto.getDescriptor().getEnumTypes().get(3);
+    }
+
+    private static final PluginDisplayMode[] VALUES = values();
+
+    public static PluginDisplayMode valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private PluginDisplayMode(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.PluginDisplayMode)
+  }
+
+  public interface ProxyPluginPackageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:core.ProxyPluginPackage)
       com.google.protobuf.MessageOrBuilder {
 
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
-    int getProxyContentCount();
+    int getPluginHeaderCount();
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
-    boolean containsProxyContent(
+    boolean containsPluginHeader(
         int key);
     /**
-     * Use {@link #getProxyContentMap()} instead.
+     * Use {@link #getPluginHeaderMap()} instead.
      */
     @java.lang.Deprecated
     java.util.Map<java.lang.Integer, java.lang.String>
-    getProxyContent();
+    getPluginHeader();
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
     java.util.Map<java.lang.Integer, java.lang.String>
-    getProxyContentMap();
+    getPluginHeaderMap();
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
 
-    java.lang.String getProxyContentOrDefault(
+    java.lang.String getPluginHeaderOrDefault(
         int key,
         java.lang.String defaultValue);
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
 
-    java.lang.String getProxyContentOrThrow(
+    java.lang.String getPluginHeaderOrThrow(
         int key);
 
     /**
      * <pre>
-     *传输的真实proto内容
+     *data在赋值之前先base64
+     *site -&gt; plugin 是开发者自定义的格式
+     *plugin -&gt; site 为具体请求的proto格式
      * </pre>
      *
      * <code>optional string data = 2;</code>
@@ -1021,30 +621,57 @@ public final class PluginProto {
     java.lang.String getData();
     /**
      * <pre>
-     *传输的真实proto内容
+     *data在赋值之前先base64
+     *site -&gt; plugin 是开发者自定义的格式
+     *plugin -&gt; site 为具体请求的proto格式
      * </pre>
      *
      * <code>optional string data = 2;</code>
      */
     com.google.protobuf.ByteString
         getDataBytes();
+
+    /**
+     * <pre>
+     *error信息
+     * </pre>
+     *
+     * <code>optional .core.ErrorInfo error_info = 3;</code>
+     */
+    boolean hasErrorInfo();
+    /**
+     * <pre>
+     *error信息
+     * </pre>
+     *
+     * <code>optional .core.ErrorInfo error_info = 3;</code>
+     */
+    com.akaxin.proto.core.CoreProto.ErrorInfo getErrorInfo();
+    /**
+     * <pre>
+     *error信息
+     * </pre>
+     *
+     * <code>optional .core.ErrorInfo error_info = 3;</code>
+     */
+    com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder getErrorInfoOrBuilder();
   }
   /**
    * <pre>
-   * 站点代理转发至扩展服务器
+   * site 与plugin之间交互传输的package包
    * </pre>
    *
-   * Protobuf type {@code core.ProxyPackage}
+   * Protobuf type {@code core.ProxyPluginPackage}
    */
-  public  static final class ProxyPackage extends
+  public  static final class ProxyPluginPackage extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:core.ProxyPackage)
-      ProxyPackageOrBuilder {
-    // Use ProxyPackage.newBuilder() to construct.
-    private ProxyPackage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:core.ProxyPluginPackage)
+      ProxyPluginPackageOrBuilder {
+    // Use ProxyPluginPackage.newBuilder() to construct.
+    private ProxyPluginPackage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private ProxyPackage() {
+    private ProxyPluginPackage() {
       data_ = "";
     }
 
@@ -1053,7 +680,7 @@ public final class PluginProto {
     getUnknownFields() {
       return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
-    private ProxyPackage(
+    private ProxyPluginPackage(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1075,20 +702,33 @@ public final class PluginProto {
             }
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                proxyContent_ = com.google.protobuf.MapField.newMapField(
-                    ProxyContentDefaultEntryHolder.defaultEntry);
+                pluginHeader_ = com.google.protobuf.MapField.newMapField(
+                    PluginHeaderDefaultEntryHolder.defaultEntry);
                 mutable_bitField0_ |= 0x00000001;
               }
               com.google.protobuf.MapEntry<java.lang.Integer, java.lang.String>
-              proxyContent = input.readMessage(
-                  ProxyContentDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              proxyContent_.getMutableMap().put(proxyContent.getKey(), proxyContent.getValue());
+              pluginHeader = input.readMessage(
+                  PluginHeaderDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              pluginHeader_.getMutableMap().put(pluginHeader.getKey(), pluginHeader.getValue());
               break;
             }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               data_ = s;
+              break;
+            }
+            case 26: {
+              com.akaxin.proto.core.CoreProto.ErrorInfo.Builder subBuilder = null;
+              if (errorInfo_ != null) {
+                subBuilder = errorInfo_.toBuilder();
+              }
+              errorInfo_ = input.readMessage(com.akaxin.proto.core.CoreProto.ErrorInfo.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(errorInfo_);
+                errorInfo_ = subBuilder.buildPartial();
+              }
+
               break;
             }
           }
@@ -1104,7 +744,7 @@ public final class PluginProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPackage_descriptor;
+      return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPluginPackage_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -1112,7 +752,7 @@ public final class PluginProto {
         int number) {
       switch (number) {
         case 1:
-          return internalGetProxyContent();
+          return internalGetPluginHeader();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -1120,98 +760,98 @@ public final class PluginProto {
     }
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPackage_fieldAccessorTable
+      return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPluginPackage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.akaxin.proto.core.PluginProto.ProxyPackage.class, com.akaxin.proto.core.PluginProto.ProxyPackage.Builder.class);
+              com.akaxin.proto.core.PluginProto.ProxyPluginPackage.class, com.akaxin.proto.core.PluginProto.ProxyPluginPackage.Builder.class);
     }
 
     private int bitField0_;
-    public static final int PROXY_CONTENT_FIELD_NUMBER = 1;
-    private static final class ProxyContentDefaultEntryHolder {
+    public static final int PLUGIN_HEADER_FIELD_NUMBER = 1;
+    private static final class PluginHeaderDefaultEntryHolder {
       static final com.google.protobuf.MapEntry<
           java.lang.Integer, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.Integer, java.lang.String>newDefaultInstance(
-                  com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPackage_ProxyContentEntry_descriptor, 
+                  com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPluginPackage_PluginHeaderEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.INT32,
                   0,
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "");
     }
     private com.google.protobuf.MapField<
-        java.lang.Integer, java.lang.String> proxyContent_;
+        java.lang.Integer, java.lang.String> pluginHeader_;
     private com.google.protobuf.MapField<java.lang.Integer, java.lang.String>
-    internalGetProxyContent() {
-      if (proxyContent_ == null) {
+    internalGetPluginHeader() {
+      if (pluginHeader_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
-            ProxyContentDefaultEntryHolder.defaultEntry);
+            PluginHeaderDefaultEntryHolder.defaultEntry);
       }
-      return proxyContent_;
+      return pluginHeader_;
     }
 
-    public int getProxyContentCount() {
-      return internalGetProxyContent().getMap().size();
+    public int getPluginHeaderCount() {
+      return internalGetPluginHeader().getMap().size();
     }
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
 
-    public boolean containsProxyContent(
+    public boolean containsPluginHeader(
         int key) {
       
-      return internalGetProxyContent().getMap().containsKey(key);
+      return internalGetPluginHeader().getMap().containsKey(key);
     }
     /**
-     * Use {@link #getProxyContentMap()} instead.
+     * Use {@link #getPluginHeaderMap()} instead.
      */
     @java.lang.Deprecated
-    public java.util.Map<java.lang.Integer, java.lang.String> getProxyContent() {
-      return getProxyContentMap();
+    public java.util.Map<java.lang.Integer, java.lang.String> getPluginHeader() {
+      return getPluginHeaderMap();
     }
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
 
-    public java.util.Map<java.lang.Integer, java.lang.String> getProxyContentMap() {
-      return internalGetProxyContent().getMap();
+    public java.util.Map<java.lang.Integer, java.lang.String> getPluginHeaderMap() {
+      return internalGetPluginHeader().getMap();
     }
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
 
-    public java.lang.String getProxyContentOrDefault(
+    public java.lang.String getPluginHeaderOrDefault(
         int key,
         java.lang.String defaultValue) {
       
       java.util.Map<java.lang.Integer, java.lang.String> map =
-          internalGetProxyContent().getMap();
+          internalGetPluginHeader().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
      * <pre>
-     *站点附加给客户端内容，如当前用户ID，sessionID
+     *header
      * </pre>
      *
-     * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+     * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
      */
 
-    public java.lang.String getProxyContentOrThrow(
+    public java.lang.String getPluginHeaderOrThrow(
         int key) {
       
       java.util.Map<java.lang.Integer, java.lang.String> map =
-          internalGetProxyContent().getMap();
+          internalGetPluginHeader().getMap();
       if (!map.containsKey(key)) {
         throw new java.lang.IllegalArgumentException();
       }
@@ -1222,7 +862,9 @@ public final class PluginProto {
     private volatile java.lang.Object data_;
     /**
      * <pre>
-     *传输的真实proto内容
+     *data在赋值之前先base64
+     *site -&gt; plugin 是开发者自定义的格式
+     *plugin -&gt; site 为具体请求的proto格式
      * </pre>
      *
      * <code>optional string data = 2;</code>
@@ -1241,7 +883,9 @@ public final class PluginProto {
     }
     /**
      * <pre>
-     *传输的真实proto内容
+     *data在赋值之前先base64
+     *site -&gt; plugin 是开发者自定义的格式
+     *plugin -&gt; site 为具体请求的proto格式
      * </pre>
      *
      * <code>optional string data = 2;</code>
@@ -1260,6 +904,39 @@ public final class PluginProto {
       }
     }
 
+    public static final int ERROR_INFO_FIELD_NUMBER = 3;
+    private com.akaxin.proto.core.CoreProto.ErrorInfo errorInfo_;
+    /**
+     * <pre>
+     *error信息
+     * </pre>
+     *
+     * <code>optional .core.ErrorInfo error_info = 3;</code>
+     */
+    public boolean hasErrorInfo() {
+      return errorInfo_ != null;
+    }
+    /**
+     * <pre>
+     *error信息
+     * </pre>
+     *
+     * <code>optional .core.ErrorInfo error_info = 3;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.ErrorInfo getErrorInfo() {
+      return errorInfo_ == null ? com.akaxin.proto.core.CoreProto.ErrorInfo.getDefaultInstance() : errorInfo_;
+    }
+    /**
+     * <pre>
+     *error信息
+     * </pre>
+     *
+     * <code>optional .core.ErrorInfo error_info = 3;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder getErrorInfoOrBuilder() {
+      return getErrorInfo();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1273,16 +950,19 @@ public final class PluginProto {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (java.util.Map.Entry<java.lang.Integer, java.lang.String> entry
-           : internalGetProxyContent().getMap().entrySet()) {
+           : internalGetPluginHeader().getMap().entrySet()) {
         com.google.protobuf.MapEntry<java.lang.Integer, java.lang.String>
-        proxyContent = ProxyContentDefaultEntryHolder.defaultEntry.newBuilderForType()
+        pluginHeader = PluginHeaderDefaultEntryHolder.defaultEntry.newBuilderForType()
             .setKey(entry.getKey())
             .setValue(entry.getValue())
             .build();
-        output.writeMessage(1, proxyContent);
+        output.writeMessage(1, pluginHeader);
       }
       if (!getDataBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, data_);
+      }
+      if (errorInfo_ != null) {
+        output.writeMessage(3, getErrorInfo());
       }
     }
 
@@ -1292,17 +972,21 @@ public final class PluginProto {
 
       size = 0;
       for (java.util.Map.Entry<java.lang.Integer, java.lang.String> entry
-           : internalGetProxyContent().getMap().entrySet()) {
+           : internalGetPluginHeader().getMap().entrySet()) {
         com.google.protobuf.MapEntry<java.lang.Integer, java.lang.String>
-        proxyContent = ProxyContentDefaultEntryHolder.defaultEntry.newBuilderForType()
+        pluginHeader = PluginHeaderDefaultEntryHolder.defaultEntry.newBuilderForType()
             .setKey(entry.getKey())
             .setValue(entry.getValue())
             .build();
         size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(1, proxyContent);
+            .computeMessageSize(1, pluginHeader);
       }
       if (!getDataBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, data_);
+      }
+      if (errorInfo_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getErrorInfo());
       }
       memoizedSize = size;
       return size;
@@ -1314,16 +998,21 @@ public final class PluginProto {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.akaxin.proto.core.PluginProto.ProxyPackage)) {
+      if (!(obj instanceof com.akaxin.proto.core.PluginProto.ProxyPluginPackage)) {
         return super.equals(obj);
       }
-      com.akaxin.proto.core.PluginProto.ProxyPackage other = (com.akaxin.proto.core.PluginProto.ProxyPackage) obj;
+      com.akaxin.proto.core.PluginProto.ProxyPluginPackage other = (com.akaxin.proto.core.PluginProto.ProxyPluginPackage) obj;
 
       boolean result = true;
-      result = result && internalGetProxyContent().equals(
-          other.internalGetProxyContent());
+      result = result && internalGetPluginHeader().equals(
+          other.internalGetPluginHeader());
       result = result && getData()
           .equals(other.getData());
+      result = result && (hasErrorInfo() == other.hasErrorInfo());
+      if (hasErrorInfo()) {
+        result = result && getErrorInfo()
+            .equals(other.getErrorInfo());
+      }
       return result;
     }
 
@@ -1334,69 +1023,73 @@ public final class PluginProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (!internalGetProxyContent().getMap().isEmpty()) {
-        hash = (37 * hash) + PROXY_CONTENT_FIELD_NUMBER;
-        hash = (53 * hash) + internalGetProxyContent().hashCode();
+      if (!internalGetPluginHeader().getMap().isEmpty()) {
+        hash = (37 * hash) + PLUGIN_HEADER_FIELD_NUMBER;
+        hash = (53 * hash) + internalGetPluginHeader().hashCode();
       }
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
+      if (hasErrorInfo()) {
+        hash = (37 * hash) + ERROR_INFO_FIELD_NUMBER;
+        hash = (53 * hash) + getErrorInfo().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(byte[] data)
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(java.io.InputStream input)
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseDelimitedFrom(java.io.InputStream input)
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseDelimitedFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage parseFrom(
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1408,7 +1101,7 @@ public final class PluginProto {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.akaxin.proto.core.PluginProto.ProxyPackage prototype) {
+    public static Builder newBuilder(com.akaxin.proto.core.PluginProto.ProxyPluginPackage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -1424,18 +1117,18 @@ public final class PluginProto {
     }
     /**
      * <pre>
-     * 站点代理转发至扩展服务器
+     * site 与plugin之间交互传输的package包
      * </pre>
      *
-     * Protobuf type {@code core.ProxyPackage}
+     * Protobuf type {@code core.ProxyPluginPackage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:core.ProxyPackage)
-        com.akaxin.proto.core.PluginProto.ProxyPackageOrBuilder {
+        // @@protoc_insertion_point(builder_implements:core.ProxyPluginPackage)
+        com.akaxin.proto.core.PluginProto.ProxyPluginPackageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPackage_descriptor;
+        return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPluginPackage_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -1443,7 +1136,7 @@ public final class PluginProto {
           int number) {
         switch (number) {
           case 1:
-            return internalGetProxyContent();
+            return internalGetPluginHeader();
           default:
             throw new RuntimeException(
                 "Invalid map field number: " + number);
@@ -1454,7 +1147,7 @@ public final class PluginProto {
           int number) {
         switch (number) {
           case 1:
-            return internalGetMutableProxyContent();
+            return internalGetMutablePluginHeader();
           default:
             throw new RuntimeException(
                 "Invalid map field number: " + number);
@@ -1462,12 +1155,12 @@ public final class PluginProto {
       }
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPackage_fieldAccessorTable
+        return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPluginPackage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.akaxin.proto.core.PluginProto.ProxyPackage.class, com.akaxin.proto.core.PluginProto.ProxyPackage.Builder.class);
+                com.akaxin.proto.core.PluginProto.ProxyPluginPackage.class, com.akaxin.proto.core.PluginProto.ProxyPluginPackage.Builder.class);
       }
 
-      // Construct using com.akaxin.proto.core.PluginProto.ProxyPackage.newBuilder()
+      // Construct using com.akaxin.proto.core.PluginProto.ProxyPluginPackage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1484,36 +1177,47 @@ public final class PluginProto {
       }
       public Builder clear() {
         super.clear();
-        internalGetMutableProxyContent().clear();
+        internalGetMutablePluginHeader().clear();
         data_ = "";
 
+        if (errorInfoBuilder_ == null) {
+          errorInfo_ = null;
+        } else {
+          errorInfo_ = null;
+          errorInfoBuilder_ = null;
+        }
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPackage_descriptor;
+        return com.akaxin.proto.core.PluginProto.internal_static_core_ProxyPluginPackage_descriptor;
       }
 
-      public com.akaxin.proto.core.PluginProto.ProxyPackage getDefaultInstanceForType() {
-        return com.akaxin.proto.core.PluginProto.ProxyPackage.getDefaultInstance();
+      public com.akaxin.proto.core.PluginProto.ProxyPluginPackage getDefaultInstanceForType() {
+        return com.akaxin.proto.core.PluginProto.ProxyPluginPackage.getDefaultInstance();
       }
 
-      public com.akaxin.proto.core.PluginProto.ProxyPackage build() {
-        com.akaxin.proto.core.PluginProto.ProxyPackage result = buildPartial();
+      public com.akaxin.proto.core.PluginProto.ProxyPluginPackage build() {
+        com.akaxin.proto.core.PluginProto.ProxyPluginPackage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.akaxin.proto.core.PluginProto.ProxyPackage buildPartial() {
-        com.akaxin.proto.core.PluginProto.ProxyPackage result = new com.akaxin.proto.core.PluginProto.ProxyPackage(this);
+      public com.akaxin.proto.core.PluginProto.ProxyPluginPackage buildPartial() {
+        com.akaxin.proto.core.PluginProto.ProxyPluginPackage result = new com.akaxin.proto.core.PluginProto.ProxyPluginPackage(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        result.proxyContent_ = internalGetProxyContent();
-        result.proxyContent_.makeImmutable();
+        result.pluginHeader_ = internalGetPluginHeader();
+        result.pluginHeader_.makeImmutable();
         result.data_ = data_;
+        if (errorInfoBuilder_ == null) {
+          result.errorInfo_ = errorInfo_;
+        } else {
+          result.errorInfo_ = errorInfoBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1546,21 +1250,24 @@ public final class PluginProto {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.akaxin.proto.core.PluginProto.ProxyPackage) {
-          return mergeFrom((com.akaxin.proto.core.PluginProto.ProxyPackage)other);
+        if (other instanceof com.akaxin.proto.core.PluginProto.ProxyPluginPackage) {
+          return mergeFrom((com.akaxin.proto.core.PluginProto.ProxyPluginPackage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.akaxin.proto.core.PluginProto.ProxyPackage other) {
-        if (other == com.akaxin.proto.core.PluginProto.ProxyPackage.getDefaultInstance()) return this;
-        internalGetMutableProxyContent().mergeFrom(
-            other.internalGetProxyContent());
+      public Builder mergeFrom(com.akaxin.proto.core.PluginProto.ProxyPluginPackage other) {
+        if (other == com.akaxin.proto.core.PluginProto.ProxyPluginPackage.getDefaultInstance()) return this;
+        internalGetMutablePluginHeader().mergeFrom(
+            other.internalGetPluginHeader());
         if (!other.getData().isEmpty()) {
           data_ = other.data_;
           onChanged();
+        }
+        if (other.hasErrorInfo()) {
+          mergeErrorInfo(other.getErrorInfo());
         }
         onChanged();
         return this;
@@ -1574,11 +1281,11 @@ public final class PluginProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.akaxin.proto.core.PluginProto.ProxyPackage parsedMessage = null;
+        com.akaxin.proto.core.PluginProto.ProxyPluginPackage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.akaxin.proto.core.PluginProto.ProxyPackage) e.getUnfinishedMessage();
+          parsedMessage = (com.akaxin.proto.core.PluginProto.ProxyPluginPackage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1590,113 +1297,113 @@ public final class PluginProto {
       private int bitField0_;
 
       private com.google.protobuf.MapField<
-          java.lang.Integer, java.lang.String> proxyContent_;
+          java.lang.Integer, java.lang.String> pluginHeader_;
       private com.google.protobuf.MapField<java.lang.Integer, java.lang.String>
-      internalGetProxyContent() {
-        if (proxyContent_ == null) {
+      internalGetPluginHeader() {
+        if (pluginHeader_ == null) {
           return com.google.protobuf.MapField.emptyMapField(
-              ProxyContentDefaultEntryHolder.defaultEntry);
+              PluginHeaderDefaultEntryHolder.defaultEntry);
         }
-        return proxyContent_;
+        return pluginHeader_;
       }
       private com.google.protobuf.MapField<java.lang.Integer, java.lang.String>
-      internalGetMutableProxyContent() {
+      internalGetMutablePluginHeader() {
         onChanged();;
-        if (proxyContent_ == null) {
-          proxyContent_ = com.google.protobuf.MapField.newMapField(
-              ProxyContentDefaultEntryHolder.defaultEntry);
+        if (pluginHeader_ == null) {
+          pluginHeader_ = com.google.protobuf.MapField.newMapField(
+              PluginHeaderDefaultEntryHolder.defaultEntry);
         }
-        if (!proxyContent_.isMutable()) {
-          proxyContent_ = proxyContent_.copy();
+        if (!pluginHeader_.isMutable()) {
+          pluginHeader_ = pluginHeader_.copy();
         }
-        return proxyContent_;
+        return pluginHeader_;
       }
 
-      public int getProxyContentCount() {
-        return internalGetProxyContent().getMap().size();
+      public int getPluginHeaderCount() {
+        return internalGetPluginHeader().getMap().size();
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
 
-      public boolean containsProxyContent(
+      public boolean containsPluginHeader(
           int key) {
         
-        return internalGetProxyContent().getMap().containsKey(key);
+        return internalGetPluginHeader().getMap().containsKey(key);
       }
       /**
-       * Use {@link #getProxyContentMap()} instead.
+       * Use {@link #getPluginHeaderMap()} instead.
        */
       @java.lang.Deprecated
-      public java.util.Map<java.lang.Integer, java.lang.String> getProxyContent() {
-        return getProxyContentMap();
+      public java.util.Map<java.lang.Integer, java.lang.String> getPluginHeader() {
+        return getPluginHeaderMap();
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
 
-      public java.util.Map<java.lang.Integer, java.lang.String> getProxyContentMap() {
-        return internalGetProxyContent().getMap();
+      public java.util.Map<java.lang.Integer, java.lang.String> getPluginHeaderMap() {
+        return internalGetPluginHeader().getMap();
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
 
-      public java.lang.String getProxyContentOrDefault(
+      public java.lang.String getPluginHeaderOrDefault(
           int key,
           java.lang.String defaultValue) {
         
         java.util.Map<java.lang.Integer, java.lang.String> map =
-            internalGetProxyContent().getMap();
+            internalGetPluginHeader().getMap();
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
 
-      public java.lang.String getProxyContentOrThrow(
+      public java.lang.String getPluginHeaderOrThrow(
           int key) {
         
         java.util.Map<java.lang.Integer, java.lang.String> map =
-            internalGetProxyContent().getMap();
+            internalGetPluginHeader().getMap();
         if (!map.containsKey(key)) {
           throw new java.lang.IllegalArgumentException();
         }
         return map.get(key);
       }
 
-      public Builder clearProxyContent() {
-        getMutableProxyContent().clear();
+      public Builder clearPluginHeader() {
+        getMutablePluginHeader().clear();
         return this;
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
 
-      public Builder removeProxyContent(
+      public Builder removePluginHeader(
           int key) {
         
-        getMutableProxyContent().remove(key);
+        getMutablePluginHeader().remove(key);
         return this;
       }
       /**
@@ -1704,42 +1411,44 @@ public final class PluginProto {
        */
       @java.lang.Deprecated
       public java.util.Map<java.lang.Integer, java.lang.String>
-      getMutableProxyContent() {
-        return internalGetMutableProxyContent().getMutableMap();
+      getMutablePluginHeader() {
+        return internalGetMutablePluginHeader().getMutableMap();
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
-      public Builder putProxyContent(
+      public Builder putPluginHeader(
           int key,
           java.lang.String value) {
         
         if (value == null) { throw new java.lang.NullPointerException(); }
-        getMutableProxyContent().put(key, value);
+        getMutablePluginHeader().put(key, value);
         return this;
       }
       /**
        * <pre>
-       *站点附加给客户端内容，如当前用户ID，sessionID
+       *header
        * </pre>
        *
-       * <code>map&lt;int32, string&gt; proxy_content = 1;</code>
+       * <code>map&lt;int32, string&gt; plugin_header = 1;</code>
        */
 
-      public Builder putAllProxyContent(
+      public Builder putAllPluginHeader(
           java.util.Map<java.lang.Integer, java.lang.String> values) {
-        getMutableProxyContent().putAll(values);
+        getMutablePluginHeader().putAll(values);
         return this;
       }
 
       private java.lang.Object data_ = "";
       /**
        * <pre>
-       *传输的真实proto内容
+       *data在赋值之前先base64
+       *site -&gt; plugin 是开发者自定义的格式
+       *plugin -&gt; site 为具体请求的proto格式
        * </pre>
        *
        * <code>optional string data = 2;</code>
@@ -1758,7 +1467,9 @@ public final class PluginProto {
       }
       /**
        * <pre>
-       *传输的真实proto内容
+       *data在赋值之前先base64
+       *site -&gt; plugin 是开发者自定义的格式
+       *plugin -&gt; site 为具体请求的proto格式
        * </pre>
        *
        * <code>optional string data = 2;</code>
@@ -1778,7 +1489,9 @@ public final class PluginProto {
       }
       /**
        * <pre>
-       *传输的真实proto内容
+       *data在赋值之前先base64
+       *site -&gt; plugin 是开发者自定义的格式
+       *plugin -&gt; site 为具体请求的proto格式
        * </pre>
        *
        * <code>optional string data = 2;</code>
@@ -1795,7 +1508,9 @@ public final class PluginProto {
       }
       /**
        * <pre>
-       *传输的真实proto内容
+       *data在赋值之前先base64
+       *site -&gt; plugin 是开发者自定义的格式
+       *plugin -&gt; site 为具体请求的proto格式
        * </pre>
        *
        * <code>optional string data = 2;</code>
@@ -1808,7 +1523,9 @@ public final class PluginProto {
       }
       /**
        * <pre>
-       *传输的真实proto内容
+       *data在赋值之前先base64
+       *site -&gt; plugin 是开发者自定义的格式
+       *plugin -&gt; site 为具体请求的proto格式
        * </pre>
        *
        * <code>optional string data = 2;</code>
@@ -1824,6 +1541,159 @@ public final class PluginProto {
         onChanged();
         return this;
       }
+
+      private com.akaxin.proto.core.CoreProto.ErrorInfo errorInfo_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.ErrorInfo, com.akaxin.proto.core.CoreProto.ErrorInfo.Builder, com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder> errorInfoBuilder_;
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public boolean hasErrorInfo() {
+        return errorInfoBuilder_ != null || errorInfo_ != null;
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.ErrorInfo getErrorInfo() {
+        if (errorInfoBuilder_ == null) {
+          return errorInfo_ == null ? com.akaxin.proto.core.CoreProto.ErrorInfo.getDefaultInstance() : errorInfo_;
+        } else {
+          return errorInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public Builder setErrorInfo(com.akaxin.proto.core.CoreProto.ErrorInfo value) {
+        if (errorInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          errorInfo_ = value;
+          onChanged();
+        } else {
+          errorInfoBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public Builder setErrorInfo(
+          com.akaxin.proto.core.CoreProto.ErrorInfo.Builder builderForValue) {
+        if (errorInfoBuilder_ == null) {
+          errorInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          errorInfoBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public Builder mergeErrorInfo(com.akaxin.proto.core.CoreProto.ErrorInfo value) {
+        if (errorInfoBuilder_ == null) {
+          if (errorInfo_ != null) {
+            errorInfo_ =
+              com.akaxin.proto.core.CoreProto.ErrorInfo.newBuilder(errorInfo_).mergeFrom(value).buildPartial();
+          } else {
+            errorInfo_ = value;
+          }
+          onChanged();
+        } else {
+          errorInfoBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public Builder clearErrorInfo() {
+        if (errorInfoBuilder_ == null) {
+          errorInfo_ = null;
+          onChanged();
+        } else {
+          errorInfo_ = null;
+          errorInfoBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.ErrorInfo.Builder getErrorInfoBuilder() {
+        
+        onChanged();
+        return getErrorInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder getErrorInfoOrBuilder() {
+        if (errorInfoBuilder_ != null) {
+          return errorInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return errorInfo_ == null ?
+              com.akaxin.proto.core.CoreProto.ErrorInfo.getDefaultInstance() : errorInfo_;
+        }
+      }
+      /**
+       * <pre>
+       *error信息
+       * </pre>
+       *
+       * <code>optional .core.ErrorInfo error_info = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.ErrorInfo, com.akaxin.proto.core.CoreProto.ErrorInfo.Builder, com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder> 
+          getErrorInfoFieldBuilder() {
+        if (errorInfoBuilder_ == null) {
+          errorInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.ErrorInfo, com.akaxin.proto.core.CoreProto.ErrorInfo.Builder, com.akaxin.proto.core.CoreProto.ErrorInfoOrBuilder>(
+                  getErrorInfo(),
+                  getParentForChildren(),
+                  isClean());
+          errorInfo_ = null;
+        }
+        return errorInfoBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -1835,151 +1705,304 @@ public final class PluginProto {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:core.ProxyPackage)
+      // @@protoc_insertion_point(builder_scope:core.ProxyPluginPackage)
     }
 
-    // @@protoc_insertion_point(class_scope:core.ProxyPackage)
-    private static final com.akaxin.proto.core.PluginProto.ProxyPackage DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:core.ProxyPluginPackage)
+    private static final com.akaxin.proto.core.PluginProto.ProxyPluginPackage DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.akaxin.proto.core.PluginProto.ProxyPackage();
+      DEFAULT_INSTANCE = new com.akaxin.proto.core.PluginProto.ProxyPluginPackage();
     }
 
-    public static com.akaxin.proto.core.PluginProto.ProxyPackage getDefaultInstance() {
+    public static com.akaxin.proto.core.PluginProto.ProxyPluginPackage getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<ProxyPackage>
-        PARSER = new com.google.protobuf.AbstractParser<ProxyPackage>() {
-      public ProxyPackage parsePartialFrom(
+    private static final com.google.protobuf.Parser<ProxyPluginPackage>
+        PARSER = new com.google.protobuf.AbstractParser<ProxyPluginPackage>() {
+      public ProxyPluginPackage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ProxyPackage(input, extensionRegistry);
+          return new ProxyPluginPackage(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<ProxyPackage> parser() {
+    public static com.google.protobuf.Parser<ProxyPluginPackage> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ProxyPackage> getParserForType() {
+    public com.google.protobuf.Parser<ProxyPluginPackage> getParserForType() {
       return PARSER;
     }
 
-    public com.akaxin.proto.core.PluginProto.ProxyPackage getDefaultInstanceForType() {
+    public com.akaxin.proto.core.PluginProto.ProxyPluginPackage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface PluginProfileOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:core.PluginProfile)
+  public interface PluginOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:core.Plugin)
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * 对于一个特定的Site，plugin.id 是唯一的。
+     * </pre>
+     *
      * <code>optional string id = 1;</code>
      */
     java.lang.String getId();
     /**
+     * <pre>
+     * 对于一个特定的Site，plugin.id 是唯一的。
+     * </pre>
+     *
      * <code>optional string id = 1;</code>
      */
     com.google.protobuf.ByteString
         getIdBytes();
 
     /**
+     * <pre>
+     * 扩展名字，会显示在界面上
+     * </pre>
+     *
      * <code>optional string name = 2;</code>
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * 扩展名字，会显示在界面上
+     * </pre>
+     *
      * <code>optional string name = 2;</code>
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
+     * <pre>
+     * 落地页地址
+     * 以http或https开头，客户端直接以url_page作为网址渲染webview
+     * 否则，为api.proxy.page 请求的page参数值，默认为空
+     * 如：
+     * value= https://www.google.com 直接以此网址加载webview。
+     * value= main，代表通过api.proxy.page接口请求main页面。
+     * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+     * </pre>
+     *
      * <code>optional string url_page = 3;</code>
      */
     java.lang.String getUrlPage();
     /**
+     * <pre>
+     * 落地页地址
+     * 以http或https开头，客户端直接以url_page作为网址渲染webview
+     * 否则，为api.proxy.page 请求的page参数值，默认为空
+     * 如：
+     * value= https://www.google.com 直接以此网址加载webview。
+     * value= main，代表通过api.proxy.page接口请求main页面。
+     * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+     * </pre>
+     *
      * <code>optional string url_page = 3;</code>
      */
     com.google.protobuf.ByteString
         getUrlPageBytes();
 
     /**
-     * <code>optional string url_api = 4;</code>
+     * <pre>
+     * api.plugin.proxy 请求转发请求时的目的URL
+     * 此URL只能以http或者https开头，如无则为http
+     * ====IMPORTANT====
+     * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+     * </pre>
+     *
+     * <code>optional string api_url = 4;</code>
      */
-    java.lang.String getUrlApi();
+    java.lang.String getApiUrl();
     /**
-     * <code>optional string url_api = 4;</code>
+     * <pre>
+     * api.plugin.proxy 请求转发请求时的目的URL
+     * 此URL只能以http或者https开头，如无则为http
+     * ====IMPORTANT====
+     * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+     * </pre>
+     *
+     * <code>optional string api_url = 4;</code>
      */
     com.google.protobuf.ByteString
-        getUrlApiBytes();
+        getApiUrlBytes();
 
     /**
+     * <pre>
+     * 扩展图标文件，会显示在界面上
+     * 如果以http开头，则代表着这是一个http协议的文件。
+     * 否则，通过site-download功能下载此图片。
+     * </pre>
+     *
      * <code>optional string icon = 5;</code>
      */
     java.lang.String getIcon();
     /**
+     * <pre>
+     * 扩展图标文件，会显示在界面上
+     * 如果以http开头，则代表着这是一个http协议的文件。
+     * 否则，通过site-download功能下载此图片。
+     * </pre>
+     *
      * <code>optional string icon = 5;</code>
      */
     com.google.protobuf.ByteString
         getIconBytes();
 
     /**
+     * <pre>
+     * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+     * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+     * site 使用auth_key 加密发送给plugin的整个proto
+     * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+     * </pre>
+     *
      * <code>optional string auth_key = 6;</code>
      */
     java.lang.String getAuthKey();
     /**
+     * <pre>
+     * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+     * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+     * site 使用auth_key 加密发送给plugin的整个proto
+     * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+     * </pre>
+     *
      * <code>optional string auth_key = 6;</code>
      */
     com.google.protobuf.ByteString
         getAuthKeyBytes();
 
     /**
+     * <pre>
+     * site server的innerAPI允许的pluginServer地址。
+     * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+     * 如果有多个ip，以英文逗号[,]隔开。
+     * </pre>
+     *
      * <code>optional string allowed_ip = 7;</code>
      */
     java.lang.String getAllowedIp();
     /**
+     * <pre>
+     * site server的innerAPI允许的pluginServer地址。
+     * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+     * 如果有多个ip，以英文逗号[,]隔开。
+     * </pre>
+     *
      * <code>optional string allowed_ip = 7;</code>
      */
     com.google.protobuf.ByteString
         getAllowedIpBytes();
 
     /**
-     * <code>optional .core.PluginStatus status = 8;</code>
+     * <pre>
+     * 扩展的位置【应该为一个枚举】
+     * 值：首页、消息帧
+     * 本次不允许首页并且消息帧这个类型。
+     * </pre>
+     *
+     * <code>optional .core.PluginPosition position = 8;</code>
      */
-    int getStatusValue();
+    int getPositionValue();
     /**
-     * <code>optional .core.PluginStatus status = 8;</code>
+     * <pre>
+     * 扩展的位置【应该为一个枚举】
+     * 值：首页、消息帧
+     * 本次不允许首页并且消息帧这个类型。
+     * </pre>
+     *
+     * <code>optional .core.PluginPosition position = 8;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginStatus getStatus();
+    com.akaxin.proto.core.PluginProto.PluginPosition getPosition();
+
+    /**
+     * <pre>
+     * 显示顺序
+     * 当一个位置，有多个扩展时，此处描述顺序，数字越小，排列越靠前（从上往下，从左往右排列）
+     * </pre>
+     *
+     * <code>optional int32 order = 9;</code>
+     */
+    int getOrder();
+
+    /**
+     * <pre>
+     * 展现方式【应该为一个枚举】
+     * 默认、浮屏、分屏
+     * 目前写死【默认】
+     * </pre>
+     *
+     * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+     */
+    int getDisplayModeValue();
+    /**
+     * <pre>
+     * 展现方式【应该为一个枚举】
+     * 默认、浮屏、分屏
+     * 目前写死【默认】
+     * </pre>
+     *
+     * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+     */
+    com.akaxin.proto.core.PluginProto.PluginDisplayMode getDisplayMode();
+
+    /**
+     * <pre>
+     * 可用状态
+     * - 禁用
+     * - 管理员可用
+     * - 全员可用
+     * </pre>
+     *
+     * <code>optional .core.PermissionStatus permission_status = 11;</code>
+     */
+    int getPermissionStatusValue();
+    /**
+     * <pre>
+     * 可用状态
+     * - 禁用
+     * - 管理员可用
+     * - 全员可用
+     * </pre>
+     *
+     * <code>optional .core.PermissionStatus permission_status = 11;</code>
+     */
+    com.akaxin.proto.core.PluginProto.PermissionStatus getPermissionStatus();
   }
   /**
-   * <pre>
-   *最简单的用户信息，用于给别人呈现
-   * </pre>
-   *
-   * Protobuf type {@code core.PluginProfile}
+   * Protobuf type {@code core.Plugin}
    */
-  public  static final class PluginProfile extends
+  public  static final class Plugin extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:core.PluginProfile)
-      PluginProfileOrBuilder {
-    // Use PluginProfile.newBuilder() to construct.
-    private PluginProfile(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:core.Plugin)
+      PluginOrBuilder {
+    // Use Plugin.newBuilder() to construct.
+    private Plugin(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private PluginProfile() {
+    private Plugin() {
       id_ = "";
       name_ = "";
       urlPage_ = "";
-      urlApi_ = "";
+      apiUrl_ = "";
       icon_ = "";
       authKey_ = "";
       allowedIp_ = "";
-      status_ = 0;
+      position_ = 0;
+      order_ = 0;
+      displayMode_ = 0;
+      permissionStatus_ = 0;
     }
 
     @java.lang.Override
@@ -1987,7 +2010,7 @@ public final class PluginProto {
     getUnknownFields() {
       return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
-    private PluginProfile(
+    private Plugin(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2028,7 +2051,7 @@ public final class PluginProto {
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              urlApi_ = s;
+              apiUrl_ = s;
               break;
             }
             case 42: {
@@ -2052,7 +2075,24 @@ public final class PluginProto {
             case 64: {
               int rawValue = input.readEnum();
 
-              status_ = rawValue;
+              position_ = rawValue;
+              break;
+            }
+            case 72: {
+
+              order_ = input.readInt32();
+              break;
+            }
+            case 80: {
+              int rawValue = input.readEnum();
+
+              displayMode_ = rawValue;
+              break;
+            }
+            case 88: {
+              int rawValue = input.readEnum();
+
+              permissionStatus_ = rawValue;
               break;
             }
           }
@@ -2068,19 +2108,23 @@ public final class PluginProto {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.akaxin.proto.core.PluginProto.internal_static_core_PluginProfile_descriptor;
+      return com.akaxin.proto.core.PluginProto.internal_static_core_Plugin_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.akaxin.proto.core.PluginProto.internal_static_core_PluginProfile_fieldAccessorTable
+      return com.akaxin.proto.core.PluginProto.internal_static_core_Plugin_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.akaxin.proto.core.PluginProto.PluginProfile.class, com.akaxin.proto.core.PluginProto.PluginProfile.Builder.class);
+              com.akaxin.proto.core.PluginProto.Plugin.class, com.akaxin.proto.core.PluginProto.Plugin.Builder.class);
     }
 
     public static final int ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object id_;
     /**
+     * <pre>
+     * 对于一个特定的Site，plugin.id 是唯一的。
+     * </pre>
+     *
      * <code>optional string id = 1;</code>
      */
     public java.lang.String getId() {
@@ -2096,6 +2140,10 @@ public final class PluginProto {
       }
     }
     /**
+     * <pre>
+     * 对于一个特定的Site，plugin.id 是唯一的。
+     * </pre>
+     *
      * <code>optional string id = 1;</code>
      */
     public com.google.protobuf.ByteString
@@ -2115,6 +2163,10 @@ public final class PluginProto {
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * 扩展名字，会显示在界面上
+     * </pre>
+     *
      * <code>optional string name = 2;</code>
      */
     public java.lang.String getName() {
@@ -2130,6 +2182,10 @@ public final class PluginProto {
       }
     }
     /**
+     * <pre>
+     * 扩展名字，会显示在界面上
+     * </pre>
+     *
      * <code>optional string name = 2;</code>
      */
     public com.google.protobuf.ByteString
@@ -2149,6 +2205,16 @@ public final class PluginProto {
     public static final int URL_PAGE_FIELD_NUMBER = 3;
     private volatile java.lang.Object urlPage_;
     /**
+     * <pre>
+     * 落地页地址
+     * 以http或https开头，客户端直接以url_page作为网址渲染webview
+     * 否则，为api.proxy.page 请求的page参数值，默认为空
+     * 如：
+     * value= https://www.google.com 直接以此网址加载webview。
+     * value= main，代表通过api.proxy.page接口请求main页面。
+     * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+     * </pre>
+     *
      * <code>optional string url_page = 3;</code>
      */
     public java.lang.String getUrlPage() {
@@ -2164,6 +2230,16 @@ public final class PluginProto {
       }
     }
     /**
+     * <pre>
+     * 落地页地址
+     * 以http或https开头，客户端直接以url_page作为网址渲染webview
+     * 否则，为api.proxy.page 请求的page参数值，默认为空
+     * 如：
+     * value= https://www.google.com 直接以此网址加载webview。
+     * value= main，代表通过api.proxy.page接口请求main页面。
+     * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+     * </pre>
+     *
      * <code>optional string url_page = 3;</code>
      */
     public com.google.protobuf.ByteString
@@ -2180,34 +2256,48 @@ public final class PluginProto {
       }
     }
 
-    public static final int URL_API_FIELD_NUMBER = 4;
-    private volatile java.lang.Object urlApi_;
+    public static final int API_URL_FIELD_NUMBER = 4;
+    private volatile java.lang.Object apiUrl_;
     /**
-     * <code>optional string url_api = 4;</code>
+     * <pre>
+     * api.plugin.proxy 请求转发请求时的目的URL
+     * 此URL只能以http或者https开头，如无则为http
+     * ====IMPORTANT====
+     * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+     * </pre>
+     *
+     * <code>optional string api_url = 4;</code>
      */
-    public java.lang.String getUrlApi() {
-      java.lang.Object ref = urlApi_;
+    public java.lang.String getApiUrl() {
+      java.lang.Object ref = apiUrl_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        urlApi_ = s;
+        apiUrl_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string url_api = 4;</code>
+     * <pre>
+     * api.plugin.proxy 请求转发请求时的目的URL
+     * 此URL只能以http或者https开头，如无则为http
+     * ====IMPORTANT====
+     * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+     * </pre>
+     *
+     * <code>optional string api_url = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getUrlApiBytes() {
-      java.lang.Object ref = urlApi_;
+        getApiUrlBytes() {
+      java.lang.Object ref = apiUrl_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        urlApi_ = b;
+        apiUrl_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -2217,6 +2307,12 @@ public final class PluginProto {
     public static final int ICON_FIELD_NUMBER = 5;
     private volatile java.lang.Object icon_;
     /**
+     * <pre>
+     * 扩展图标文件，会显示在界面上
+     * 如果以http开头，则代表着这是一个http协议的文件。
+     * 否则，通过site-download功能下载此图片。
+     * </pre>
+     *
      * <code>optional string icon = 5;</code>
      */
     public java.lang.String getIcon() {
@@ -2232,6 +2328,12 @@ public final class PluginProto {
       }
     }
     /**
+     * <pre>
+     * 扩展图标文件，会显示在界面上
+     * 如果以http开头，则代表着这是一个http协议的文件。
+     * 否则，通过site-download功能下载此图片。
+     * </pre>
+     *
      * <code>optional string icon = 5;</code>
      */
     public com.google.protobuf.ByteString
@@ -2251,6 +2353,13 @@ public final class PluginProto {
     public static final int AUTH_KEY_FIELD_NUMBER = 6;
     private volatile java.lang.Object authKey_;
     /**
+     * <pre>
+     * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+     * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+     * site 使用auth_key 加密发送给plugin的整个proto
+     * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+     * </pre>
+     *
      * <code>optional string auth_key = 6;</code>
      */
     public java.lang.String getAuthKey() {
@@ -2266,6 +2375,13 @@ public final class PluginProto {
       }
     }
     /**
+     * <pre>
+     * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+     * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+     * site 使用auth_key 加密发送给plugin的整个proto
+     * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+     * </pre>
+     *
      * <code>optional string auth_key = 6;</code>
      */
     public com.google.protobuf.ByteString
@@ -2285,6 +2401,12 @@ public final class PluginProto {
     public static final int ALLOWED_IP_FIELD_NUMBER = 7;
     private volatile java.lang.Object allowedIp_;
     /**
+     * <pre>
+     * site server的innerAPI允许的pluginServer地址。
+     * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+     * 如果有多个ip，以英文逗号[,]隔开。
+     * </pre>
+     *
      * <code>optional string allowed_ip = 7;</code>
      */
     public java.lang.String getAllowedIp() {
@@ -2300,6 +2422,12 @@ public final class PluginProto {
       }
     }
     /**
+     * <pre>
+     * site server的innerAPI允许的pluginServer地址。
+     * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+     * 如果有多个ip，以英文逗号[,]隔开。
+     * </pre>
+     *
      * <code>optional string allowed_ip = 7;</code>
      */
     public com.google.protobuf.ByteString
@@ -2316,20 +2444,104 @@ public final class PluginProto {
       }
     }
 
-    public static final int STATUS_FIELD_NUMBER = 8;
-    private int status_;
+    public static final int POSITION_FIELD_NUMBER = 8;
+    private int position_;
     /**
-     * <code>optional .core.PluginStatus status = 8;</code>
+     * <pre>
+     * 扩展的位置【应该为一个枚举】
+     * 值：首页、消息帧
+     * 本次不允许首页并且消息帧这个类型。
+     * </pre>
+     *
+     * <code>optional .core.PluginPosition position = 8;</code>
      */
-    public int getStatusValue() {
-      return status_;
+    public int getPositionValue() {
+      return position_;
     }
     /**
-     * <code>optional .core.PluginStatus status = 8;</code>
+     * <pre>
+     * 扩展的位置【应该为一个枚举】
+     * 值：首页、消息帧
+     * 本次不允许首页并且消息帧这个类型。
+     * </pre>
+     *
+     * <code>optional .core.PluginPosition position = 8;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginStatus getStatus() {
-      com.akaxin.proto.core.PluginProto.PluginStatus result = com.akaxin.proto.core.PluginProto.PluginStatus.valueOf(status_);
-      return result == null ? com.akaxin.proto.core.PluginProto.PluginStatus.UNRECOGNIZED : result;
+    public com.akaxin.proto.core.PluginProto.PluginPosition getPosition() {
+      com.akaxin.proto.core.PluginProto.PluginPosition result = com.akaxin.proto.core.PluginProto.PluginPosition.valueOf(position_);
+      return result == null ? com.akaxin.proto.core.PluginProto.PluginPosition.UNRECOGNIZED : result;
+    }
+
+    public static final int ORDER_FIELD_NUMBER = 9;
+    private int order_;
+    /**
+     * <pre>
+     * 显示顺序
+     * 当一个位置，有多个扩展时，此处描述顺序，数字越小，排列越靠前（从上往下，从左往右排列）
+     * </pre>
+     *
+     * <code>optional int32 order = 9;</code>
+     */
+    public int getOrder() {
+      return order_;
+    }
+
+    public static final int DISPLAY_MODE_FIELD_NUMBER = 10;
+    private int displayMode_;
+    /**
+     * <pre>
+     * 展现方式【应该为一个枚举】
+     * 默认、浮屏、分屏
+     * 目前写死【默认】
+     * </pre>
+     *
+     * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+     */
+    public int getDisplayModeValue() {
+      return displayMode_;
+    }
+    /**
+     * <pre>
+     * 展现方式【应该为一个枚举】
+     * 默认、浮屏、分屏
+     * 目前写死【默认】
+     * </pre>
+     *
+     * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+     */
+    public com.akaxin.proto.core.PluginProto.PluginDisplayMode getDisplayMode() {
+      com.akaxin.proto.core.PluginProto.PluginDisplayMode result = com.akaxin.proto.core.PluginProto.PluginDisplayMode.valueOf(displayMode_);
+      return result == null ? com.akaxin.proto.core.PluginProto.PluginDisplayMode.UNRECOGNIZED : result;
+    }
+
+    public static final int PERMISSION_STATUS_FIELD_NUMBER = 11;
+    private int permissionStatus_;
+    /**
+     * <pre>
+     * 可用状态
+     * - 禁用
+     * - 管理员可用
+     * - 全员可用
+     * </pre>
+     *
+     * <code>optional .core.PermissionStatus permission_status = 11;</code>
+     */
+    public int getPermissionStatusValue() {
+      return permissionStatus_;
+    }
+    /**
+     * <pre>
+     * 可用状态
+     * - 禁用
+     * - 管理员可用
+     * - 全员可用
+     * </pre>
+     *
+     * <code>optional .core.PermissionStatus permission_status = 11;</code>
+     */
+    public com.akaxin.proto.core.PluginProto.PermissionStatus getPermissionStatus() {
+      com.akaxin.proto.core.PluginProto.PermissionStatus result = com.akaxin.proto.core.PluginProto.PermissionStatus.valueOf(permissionStatus_);
+      return result == null ? com.akaxin.proto.core.PluginProto.PermissionStatus.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2353,8 +2565,8 @@ public final class PluginProto {
       if (!getUrlPageBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, urlPage_);
       }
-      if (!getUrlApiBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, urlApi_);
+      if (!getApiUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, apiUrl_);
       }
       if (!getIconBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, icon_);
@@ -2365,8 +2577,17 @@ public final class PluginProto {
       if (!getAllowedIpBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, allowedIp_);
       }
-      if (status_ != com.akaxin.proto.core.PluginProto.PluginStatus.DISABLED.getNumber()) {
-        output.writeEnum(8, status_);
+      if (position_ != com.akaxin.proto.core.PluginProto.PluginPosition.HOME_PAGE.getNumber()) {
+        output.writeEnum(8, position_);
+      }
+      if (order_ != 0) {
+        output.writeInt32(9, order_);
+      }
+      if (displayMode_ != com.akaxin.proto.core.PluginProto.PluginDisplayMode.NEW_PAGE.getNumber()) {
+        output.writeEnum(10, displayMode_);
+      }
+      if (permissionStatus_ != com.akaxin.proto.core.PluginProto.PermissionStatus.DISABLED.getNumber()) {
+        output.writeEnum(11, permissionStatus_);
       }
     }
 
@@ -2384,8 +2605,8 @@ public final class PluginProto {
       if (!getUrlPageBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, urlPage_);
       }
-      if (!getUrlApiBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, urlApi_);
+      if (!getApiUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, apiUrl_);
       }
       if (!getIconBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, icon_);
@@ -2396,9 +2617,21 @@ public final class PluginProto {
       if (!getAllowedIpBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, allowedIp_);
       }
-      if (status_ != com.akaxin.proto.core.PluginProto.PluginStatus.DISABLED.getNumber()) {
+      if (position_ != com.akaxin.proto.core.PluginProto.PluginPosition.HOME_PAGE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(8, status_);
+          .computeEnumSize(8, position_);
+      }
+      if (order_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(9, order_);
+      }
+      if (displayMode_ != com.akaxin.proto.core.PluginProto.PluginDisplayMode.NEW_PAGE.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(10, displayMode_);
+      }
+      if (permissionStatus_ != com.akaxin.proto.core.PluginProto.PermissionStatus.DISABLED.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(11, permissionStatus_);
       }
       memoizedSize = size;
       return size;
@@ -2410,10 +2643,10 @@ public final class PluginProto {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.akaxin.proto.core.PluginProto.PluginProfile)) {
+      if (!(obj instanceof com.akaxin.proto.core.PluginProto.Plugin)) {
         return super.equals(obj);
       }
-      com.akaxin.proto.core.PluginProto.PluginProfile other = (com.akaxin.proto.core.PluginProto.PluginProfile) obj;
+      com.akaxin.proto.core.PluginProto.Plugin other = (com.akaxin.proto.core.PluginProto.Plugin) obj;
 
       boolean result = true;
       result = result && getId()
@@ -2422,15 +2655,19 @@ public final class PluginProto {
           .equals(other.getName());
       result = result && getUrlPage()
           .equals(other.getUrlPage());
-      result = result && getUrlApi()
-          .equals(other.getUrlApi());
+      result = result && getApiUrl()
+          .equals(other.getApiUrl());
       result = result && getIcon()
           .equals(other.getIcon());
       result = result && getAuthKey()
           .equals(other.getAuthKey());
       result = result && getAllowedIp()
           .equals(other.getAllowedIp());
-      result = result && status_ == other.status_;
+      result = result && position_ == other.position_;
+      result = result && (getOrder()
+          == other.getOrder());
+      result = result && displayMode_ == other.displayMode_;
+      result = result && permissionStatus_ == other.permissionStatus_;
       return result;
     }
 
@@ -2447,73 +2684,79 @@ public final class PluginProto {
       hash = (53 * hash) + getName().hashCode();
       hash = (37 * hash) + URL_PAGE_FIELD_NUMBER;
       hash = (53 * hash) + getUrlPage().hashCode();
-      hash = (37 * hash) + URL_API_FIELD_NUMBER;
-      hash = (53 * hash) + getUrlApi().hashCode();
+      hash = (37 * hash) + API_URL_FIELD_NUMBER;
+      hash = (53 * hash) + getApiUrl().hashCode();
       hash = (37 * hash) + ICON_FIELD_NUMBER;
       hash = (53 * hash) + getIcon().hashCode();
       hash = (37 * hash) + AUTH_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getAuthKey().hashCode();
       hash = (37 * hash) + ALLOWED_IP_FIELD_NUMBER;
       hash = (53 * hash) + getAllowedIp().hashCode();
-      hash = (37 * hash) + STATUS_FIELD_NUMBER;
-      hash = (53 * hash) + status_;
+      hash = (37 * hash) + POSITION_FIELD_NUMBER;
+      hash = (53 * hash) + position_;
+      hash = (37 * hash) + ORDER_FIELD_NUMBER;
+      hash = (53 * hash) + getOrder();
+      hash = (37 * hash) + DISPLAY_MODE_FIELD_NUMBER;
+      hash = (53 * hash) + displayMode_;
+      hash = (37 * hash) + PERMISSION_STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + permissionStatus_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(byte[] data)
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(java.io.InputStream input)
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseDelimitedFrom(java.io.InputStream input)
+    public static com.akaxin.proto.core.PluginProto.Plugin parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseDelimitedFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.akaxin.proto.core.PluginProto.PluginProfile parseFrom(
+    public static com.akaxin.proto.core.PluginProto.Plugin parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2525,7 +2768,7 @@ public final class PluginProto {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.akaxin.proto.core.PluginProto.PluginProfile prototype) {
+    public static Builder newBuilder(com.akaxin.proto.core.PluginProto.Plugin prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -2540,29 +2783,25 @@ public final class PluginProto {
       return builder;
     }
     /**
-     * <pre>
-     *最简单的用户信息，用于给别人呈现
-     * </pre>
-     *
-     * Protobuf type {@code core.PluginProfile}
+     * Protobuf type {@code core.Plugin}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:core.PluginProfile)
-        com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder {
+        // @@protoc_insertion_point(builder_implements:core.Plugin)
+        com.akaxin.proto.core.PluginProto.PluginOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_PluginProfile_descriptor;
+        return com.akaxin.proto.core.PluginProto.internal_static_core_Plugin_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_PluginProfile_fieldAccessorTable
+        return com.akaxin.proto.core.PluginProto.internal_static_core_Plugin_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.akaxin.proto.core.PluginProto.PluginProfile.class, com.akaxin.proto.core.PluginProto.PluginProfile.Builder.class);
+                com.akaxin.proto.core.PluginProto.Plugin.class, com.akaxin.proto.core.PluginProto.Plugin.Builder.class);
       }
 
-      // Construct using com.akaxin.proto.core.PluginProto.PluginProfile.newBuilder()
+      // Construct using com.akaxin.proto.core.PluginProto.Plugin.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2585,7 +2824,7 @@ public final class PluginProto {
 
         urlPage_ = "";
 
-        urlApi_ = "";
+        apiUrl_ = "";
 
         icon_ = "";
 
@@ -2593,38 +2832,47 @@ public final class PluginProto {
 
         allowedIp_ = "";
 
-        status_ = 0;
+        position_ = 0;
+
+        order_ = 0;
+
+        displayMode_ = 0;
+
+        permissionStatus_ = 0;
 
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.akaxin.proto.core.PluginProto.internal_static_core_PluginProfile_descriptor;
+        return com.akaxin.proto.core.PluginProto.internal_static_core_Plugin_descriptor;
       }
 
-      public com.akaxin.proto.core.PluginProto.PluginProfile getDefaultInstanceForType() {
-        return com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance();
+      public com.akaxin.proto.core.PluginProto.Plugin getDefaultInstanceForType() {
+        return com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance();
       }
 
-      public com.akaxin.proto.core.PluginProto.PluginProfile build() {
-        com.akaxin.proto.core.PluginProto.PluginProfile result = buildPartial();
+      public com.akaxin.proto.core.PluginProto.Plugin build() {
+        com.akaxin.proto.core.PluginProto.Plugin result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.akaxin.proto.core.PluginProto.PluginProfile buildPartial() {
-        com.akaxin.proto.core.PluginProto.PluginProfile result = new com.akaxin.proto.core.PluginProto.PluginProfile(this);
+      public com.akaxin.proto.core.PluginProto.Plugin buildPartial() {
+        com.akaxin.proto.core.PluginProto.Plugin result = new com.akaxin.proto.core.PluginProto.Plugin(this);
         result.id_ = id_;
         result.name_ = name_;
         result.urlPage_ = urlPage_;
-        result.urlApi_ = urlApi_;
+        result.apiUrl_ = apiUrl_;
         result.icon_ = icon_;
         result.authKey_ = authKey_;
         result.allowedIp_ = allowedIp_;
-        result.status_ = status_;
+        result.position_ = position_;
+        result.order_ = order_;
+        result.displayMode_ = displayMode_;
+        result.permissionStatus_ = permissionStatus_;
         onBuilt();
         return result;
       }
@@ -2656,16 +2904,16 @@ public final class PluginProto {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.akaxin.proto.core.PluginProto.PluginProfile) {
-          return mergeFrom((com.akaxin.proto.core.PluginProto.PluginProfile)other);
+        if (other instanceof com.akaxin.proto.core.PluginProto.Plugin) {
+          return mergeFrom((com.akaxin.proto.core.PluginProto.Plugin)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.akaxin.proto.core.PluginProto.PluginProfile other) {
-        if (other == com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.akaxin.proto.core.PluginProto.Plugin other) {
+        if (other == com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance()) return this;
         if (!other.getId().isEmpty()) {
           id_ = other.id_;
           onChanged();
@@ -2678,8 +2926,8 @@ public final class PluginProto {
           urlPage_ = other.urlPage_;
           onChanged();
         }
-        if (!other.getUrlApi().isEmpty()) {
-          urlApi_ = other.urlApi_;
+        if (!other.getApiUrl().isEmpty()) {
+          apiUrl_ = other.apiUrl_;
           onChanged();
         }
         if (!other.getIcon().isEmpty()) {
@@ -2694,8 +2942,17 @@ public final class PluginProto {
           allowedIp_ = other.allowedIp_;
           onChanged();
         }
-        if (other.status_ != 0) {
-          setStatusValue(other.getStatusValue());
+        if (other.position_ != 0) {
+          setPositionValue(other.getPositionValue());
+        }
+        if (other.getOrder() != 0) {
+          setOrder(other.getOrder());
+        }
+        if (other.displayMode_ != 0) {
+          setDisplayModeValue(other.getDisplayModeValue());
+        }
+        if (other.permissionStatus_ != 0) {
+          setPermissionStatusValue(other.getPermissionStatusValue());
         }
         onChanged();
         return this;
@@ -2709,11 +2966,11 @@ public final class PluginProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.akaxin.proto.core.PluginProto.PluginProfile parsedMessage = null;
+        com.akaxin.proto.core.PluginProto.Plugin parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.akaxin.proto.core.PluginProto.PluginProfile) e.getUnfinishedMessage();
+          parsedMessage = (com.akaxin.proto.core.PluginProto.Plugin) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2725,6 +2982,10 @@ public final class PluginProto {
 
       private java.lang.Object id_ = "";
       /**
+       * <pre>
+       * 对于一个特定的Site，plugin.id 是唯一的。
+       * </pre>
+       *
        * <code>optional string id = 1;</code>
        */
       public java.lang.String getId() {
@@ -2740,6 +3001,10 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 对于一个特定的Site，plugin.id 是唯一的。
+       * </pre>
+       *
        * <code>optional string id = 1;</code>
        */
       public com.google.protobuf.ByteString
@@ -2756,6 +3021,10 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 对于一个特定的Site，plugin.id 是唯一的。
+       * </pre>
+       *
        * <code>optional string id = 1;</code>
        */
       public Builder setId(
@@ -2769,6 +3038,10 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 对于一个特定的Site，plugin.id 是唯一的。
+       * </pre>
+       *
        * <code>optional string id = 1;</code>
        */
       public Builder clearId() {
@@ -2778,6 +3051,10 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 对于一个特定的Site，plugin.id 是唯一的。
+       * </pre>
+       *
        * <code>optional string id = 1;</code>
        */
       public Builder setIdBytes(
@@ -2794,6 +3071,10 @@ public final class PluginProto {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * 扩展名字，会显示在界面上
+       * </pre>
+       *
        * <code>optional string name = 2;</code>
        */
       public java.lang.String getName() {
@@ -2809,6 +3090,10 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 扩展名字，会显示在界面上
+       * </pre>
+       *
        * <code>optional string name = 2;</code>
        */
       public com.google.protobuf.ByteString
@@ -2825,6 +3110,10 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 扩展名字，会显示在界面上
+       * </pre>
+       *
        * <code>optional string name = 2;</code>
        */
       public Builder setName(
@@ -2838,6 +3127,10 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 扩展名字，会显示在界面上
+       * </pre>
+       *
        * <code>optional string name = 2;</code>
        */
       public Builder clearName() {
@@ -2847,6 +3140,10 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 扩展名字，会显示在界面上
+       * </pre>
+       *
        * <code>optional string name = 2;</code>
        */
       public Builder setNameBytes(
@@ -2863,6 +3160,16 @@ public final class PluginProto {
 
       private java.lang.Object urlPage_ = "";
       /**
+       * <pre>
+       * 落地页地址
+       * 以http或https开头，客户端直接以url_page作为网址渲染webview
+       * 否则，为api.proxy.page 请求的page参数值，默认为空
+       * 如：
+       * value= https://www.google.com 直接以此网址加载webview。
+       * value= main，代表通过api.proxy.page接口请求main页面。
+       * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+       * </pre>
+       *
        * <code>optional string url_page = 3;</code>
        */
       public java.lang.String getUrlPage() {
@@ -2878,6 +3185,16 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 落地页地址
+       * 以http或https开头，客户端直接以url_page作为网址渲染webview
+       * 否则，为api.proxy.page 请求的page参数值，默认为空
+       * 如：
+       * value= https://www.google.com 直接以此网址加载webview。
+       * value= main，代表通过api.proxy.page接口请求main页面。
+       * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+       * </pre>
+       *
        * <code>optional string url_page = 3;</code>
        */
       public com.google.protobuf.ByteString
@@ -2894,6 +3211,16 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 落地页地址
+       * 以http或https开头，客户端直接以url_page作为网址渲染webview
+       * 否则，为api.proxy.page 请求的page参数值，默认为空
+       * 如：
+       * value= https://www.google.com 直接以此网址加载webview。
+       * value= main，代表通过api.proxy.page接口请求main页面。
+       * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+       * </pre>
+       *
        * <code>optional string url_page = 3;</code>
        */
       public Builder setUrlPage(
@@ -2907,6 +3234,16 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 落地页地址
+       * 以http或https开头，客户端直接以url_page作为网址渲染webview
+       * 否则，为api.proxy.page 请求的page参数值，默认为空
+       * 如：
+       * value= https://www.google.com 直接以此网址加载webview。
+       * value= main，代表通过api.proxy.page接口请求main页面。
+       * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+       * </pre>
+       *
        * <code>optional string url_page = 3;</code>
        */
       public Builder clearUrlPage() {
@@ -2916,6 +3253,16 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 落地页地址
+       * 以http或https开头，客户端直接以url_page作为网址渲染webview
+       * 否则，为api.proxy.page 请求的page参数值，默认为空
+       * 如：
+       * value= https://www.google.com 直接以此网址加载webview。
+       * value= main，代表通过api.proxy.page接口请求main页面。
+       * value= 空，代表通过api.proxy.page接口请求空页面（pluginServer自己把空返回默认主页）
+       * </pre>
+       *
        * <code>optional string url_page = 3;</code>
        */
       public Builder setUrlPageBytes(
@@ -2930,77 +3277,118 @@ public final class PluginProto {
         return this;
       }
 
-      private java.lang.Object urlApi_ = "";
+      private java.lang.Object apiUrl_ = "";
       /**
-       * <code>optional string url_api = 4;</code>
+       * <pre>
+       * api.plugin.proxy 请求转发请求时的目的URL
+       * 此URL只能以http或者https开头，如无则为http
+       * ====IMPORTANT====
+       * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+       * </pre>
+       *
+       * <code>optional string api_url = 4;</code>
        */
-      public java.lang.String getUrlApi() {
-        java.lang.Object ref = urlApi_;
+      public java.lang.String getApiUrl() {
+        java.lang.Object ref = apiUrl_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          urlApi_ = s;
+          apiUrl_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string url_api = 4;</code>
+       * <pre>
+       * api.plugin.proxy 请求转发请求时的目的URL
+       * 此URL只能以http或者https开头，如无则为http
+       * ====IMPORTANT====
+       * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+       * </pre>
+       *
+       * <code>optional string api_url = 4;</code>
        */
       public com.google.protobuf.ByteString
-          getUrlApiBytes() {
-        java.lang.Object ref = urlApi_;
+          getApiUrlBytes() {
+        java.lang.Object ref = apiUrl_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          urlApi_ = b;
+          apiUrl_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string url_api = 4;</code>
+       * <pre>
+       * api.plugin.proxy 请求转发请求时的目的URL
+       * 此URL只能以http或者https开头，如无则为http
+       * ====IMPORTANT====
+       * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+       * </pre>
+       *
+       * <code>optional string api_url = 4;</code>
        */
-      public Builder setUrlApi(
+      public Builder setApiUrl(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        urlApi_ = value;
+        apiUrl_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string url_api = 4;</code>
+       * <pre>
+       * api.plugin.proxy 请求转发请求时的目的URL
+       * 此URL只能以http或者https开头，如无则为http
+       * ====IMPORTANT====
+       * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+       * </pre>
+       *
+       * <code>optional string api_url = 4;</code>
        */
-      public Builder clearUrlApi() {
+      public Builder clearApiUrl() {
         
-        urlApi_ = getDefaultInstance().getUrlApi();
+        apiUrl_ = getDefaultInstance().getApiUrl();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string url_api = 4;</code>
+       * <pre>
+       * api.plugin.proxy 请求转发请求时的目的URL
+       * 此URL只能以http或者https开头，如无则为http
+       * ====IMPORTANT====
+       * 此api是给server用的，不允许传递此值到客户端。如复用此结构必须在传递给客户端之前将此值置空。
+       * </pre>
+       *
+       * <code>optional string api_url = 4;</code>
        */
-      public Builder setUrlApiBytes(
+      public Builder setApiUrlBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        urlApi_ = value;
+        apiUrl_ = value;
         onChanged();
         return this;
       }
 
       private java.lang.Object icon_ = "";
       /**
+       * <pre>
+       * 扩展图标文件，会显示在界面上
+       * 如果以http开头，则代表着这是一个http协议的文件。
+       * 否则，通过site-download功能下载此图片。
+       * </pre>
+       *
        * <code>optional string icon = 5;</code>
        */
       public java.lang.String getIcon() {
@@ -3016,6 +3404,12 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 扩展图标文件，会显示在界面上
+       * 如果以http开头，则代表着这是一个http协议的文件。
+       * 否则，通过site-download功能下载此图片。
+       * </pre>
+       *
        * <code>optional string icon = 5;</code>
        */
       public com.google.protobuf.ByteString
@@ -3032,6 +3426,12 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * 扩展图标文件，会显示在界面上
+       * 如果以http开头，则代表着这是一个http协议的文件。
+       * 否则，通过site-download功能下载此图片。
+       * </pre>
+       *
        * <code>optional string icon = 5;</code>
        */
       public Builder setIcon(
@@ -3045,6 +3445,12 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 扩展图标文件，会显示在界面上
+       * 如果以http开头，则代表着这是一个http协议的文件。
+       * 否则，通过site-download功能下载此图片。
+       * </pre>
+       *
        * <code>optional string icon = 5;</code>
        */
       public Builder clearIcon() {
@@ -3054,6 +3460,12 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * 扩展图标文件，会显示在界面上
+       * 如果以http开头，则代表着这是一个http协议的文件。
+       * 否则，通过site-download功能下载此图片。
+       * </pre>
+       *
        * <code>optional string icon = 5;</code>
        */
       public Builder setIconBytes(
@@ -3070,6 +3482,13 @@ public final class PluginProto {
 
       private java.lang.Object authKey_ = "";
       /**
+       * <pre>
+       * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+       * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+       * site 使用auth_key 加密发送给plugin的整个proto
+       * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+       * </pre>
+       *
        * <code>optional string auth_key = 6;</code>
        */
       public java.lang.String getAuthKey() {
@@ -3085,6 +3504,13 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+       * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+       * site 使用auth_key 加密发送给plugin的整个proto
+       * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+       * </pre>
+       *
        * <code>optional string auth_key = 6;</code>
        */
       public com.google.protobuf.ByteString
@@ -3101,6 +3527,13 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+       * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+       * site 使用auth_key 加密发送给plugin的整个proto
+       * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+       * </pre>
+       *
        * <code>optional string auth_key = 6;</code>
        */
       public Builder setAuthKey(
@@ -3114,6 +3547,13 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+       * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+       * site 使用auth_key 加密发送给plugin的整个proto
+       * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+       * </pre>
+       *
        * <code>optional string auth_key = 6;</code>
        */
       public Builder clearAuthKey() {
@@ -3123,6 +3563,13 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * pluginServer 在 请求 siteServer的innerAPI时，使用此值加密数据，以证明身份。
+       * 添加扩展时由SiteServer自动生成并记录，为64个[A-Za-z0-9]组成的随机字符串。
+       * site 使用auth_key 加密发送给plugin的整个proto
+       * 同时 site使用auth_key解析 plugin传递过来的具体proto值
+       * </pre>
+       *
        * <code>optional string auth_key = 6;</code>
        */
       public Builder setAuthKeyBytes(
@@ -3139,6 +3586,12 @@ public final class PluginProto {
 
       private java.lang.Object allowedIp_ = "";
       /**
+       * <pre>
+       * site server的innerAPI允许的pluginServer地址。
+       * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+       * 如果有多个ip，以英文逗号[,]隔开。
+       * </pre>
+       *
        * <code>optional string allowed_ip = 7;</code>
        */
       public java.lang.String getAllowedIp() {
@@ -3154,6 +3607,12 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * site server的innerAPI允许的pluginServer地址。
+       * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+       * 如果有多个ip，以英文逗号[,]隔开。
+       * </pre>
+       *
        * <code>optional string allowed_ip = 7;</code>
        */
       public com.google.protobuf.ByteString
@@ -3170,6 +3629,12 @@ public final class PluginProto {
         }
       }
       /**
+       * <pre>
+       * site server的innerAPI允许的pluginServer地址。
+       * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+       * 如果有多个ip，以英文逗号[,]隔开。
+       * </pre>
+       *
        * <code>optional string allowed_ip = 7;</code>
        */
       public Builder setAllowedIp(
@@ -3183,6 +3648,12 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * site server的innerAPI允许的pluginServer地址。
+       * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+       * 如果有多个ip，以英文逗号[,]隔开。
+       * </pre>
+       *
        * <code>optional string allowed_ip = 7;</code>
        */
       public Builder clearAllowedIp() {
@@ -3192,6 +3663,12 @@ public final class PluginProto {
         return this;
       }
       /**
+       * <pre>
+       * site server的innerAPI允许的pluginServer地址。
+       * 默认为127.0.0.1，如为空则代表不限制，此外：支持网络掩码的配置方式。
+       * 如果有多个ip，以英文逗号[,]隔开。
+       * </pre>
+       *
        * <code>optional string allowed_ip = 7;</code>
        */
       public Builder setAllowedIpBytes(
@@ -3206,46 +3683,270 @@ public final class PluginProto {
         return this;
       }
 
-      private int status_ = 0;
+      private int position_ = 0;
       /**
-       * <code>optional .core.PluginStatus status = 8;</code>
+       * <pre>
+       * 扩展的位置【应该为一个枚举】
+       * 值：首页、消息帧
+       * 本次不允许首页并且消息帧这个类型。
+       * </pre>
+       *
+       * <code>optional .core.PluginPosition position = 8;</code>
        */
-      public int getStatusValue() {
-        return status_;
+      public int getPositionValue() {
+        return position_;
       }
       /**
-       * <code>optional .core.PluginStatus status = 8;</code>
+       * <pre>
+       * 扩展的位置【应该为一个枚举】
+       * 值：首页、消息帧
+       * 本次不允许首页并且消息帧这个类型。
+       * </pre>
+       *
+       * <code>optional .core.PluginPosition position = 8;</code>
        */
-      public Builder setStatusValue(int value) {
-        status_ = value;
+      public Builder setPositionValue(int value) {
+        position_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional .core.PluginStatus status = 8;</code>
+       * <pre>
+       * 扩展的位置【应该为一个枚举】
+       * 值：首页、消息帧
+       * 本次不允许首页并且消息帧这个类型。
+       * </pre>
+       *
+       * <code>optional .core.PluginPosition position = 8;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginStatus getStatus() {
-        com.akaxin.proto.core.PluginProto.PluginStatus result = com.akaxin.proto.core.PluginProto.PluginStatus.valueOf(status_);
-        return result == null ? com.akaxin.proto.core.PluginProto.PluginStatus.UNRECOGNIZED : result;
+      public com.akaxin.proto.core.PluginProto.PluginPosition getPosition() {
+        com.akaxin.proto.core.PluginProto.PluginPosition result = com.akaxin.proto.core.PluginProto.PluginPosition.valueOf(position_);
+        return result == null ? com.akaxin.proto.core.PluginProto.PluginPosition.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .core.PluginStatus status = 8;</code>
+       * <pre>
+       * 扩展的位置【应该为一个枚举】
+       * 值：首页、消息帧
+       * 本次不允许首页并且消息帧这个类型。
+       * </pre>
+       *
+       * <code>optional .core.PluginPosition position = 8;</code>
        */
-      public Builder setStatus(com.akaxin.proto.core.PluginProto.PluginStatus value) {
+      public Builder setPosition(com.akaxin.proto.core.PluginProto.PluginPosition value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        status_ = value.getNumber();
+        position_ = value.getNumber();
         onChanged();
         return this;
       }
       /**
-       * <code>optional .core.PluginStatus status = 8;</code>
+       * <pre>
+       * 扩展的位置【应该为一个枚举】
+       * 值：首页、消息帧
+       * 本次不允许首页并且消息帧这个类型。
+       * </pre>
+       *
+       * <code>optional .core.PluginPosition position = 8;</code>
        */
-      public Builder clearStatus() {
+      public Builder clearPosition() {
         
-        status_ = 0;
+        position_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int order_ ;
+      /**
+       * <pre>
+       * 显示顺序
+       * 当一个位置，有多个扩展时，此处描述顺序，数字越小，排列越靠前（从上往下，从左往右排列）
+       * </pre>
+       *
+       * <code>optional int32 order = 9;</code>
+       */
+      public int getOrder() {
+        return order_;
+      }
+      /**
+       * <pre>
+       * 显示顺序
+       * 当一个位置，有多个扩展时，此处描述顺序，数字越小，排列越靠前（从上往下，从左往右排列）
+       * </pre>
+       *
+       * <code>optional int32 order = 9;</code>
+       */
+      public Builder setOrder(int value) {
+        
+        order_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 显示顺序
+       * 当一个位置，有多个扩展时，此处描述顺序，数字越小，排列越靠前（从上往下，从左往右排列）
+       * </pre>
+       *
+       * <code>optional int32 order = 9;</code>
+       */
+      public Builder clearOrder() {
+        
+        order_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int displayMode_ = 0;
+      /**
+       * <pre>
+       * 展现方式【应该为一个枚举】
+       * 默认、浮屏、分屏
+       * 目前写死【默认】
+       * </pre>
+       *
+       * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+       */
+      public int getDisplayModeValue() {
+        return displayMode_;
+      }
+      /**
+       * <pre>
+       * 展现方式【应该为一个枚举】
+       * 默认、浮屏、分屏
+       * 目前写死【默认】
+       * </pre>
+       *
+       * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+       */
+      public Builder setDisplayModeValue(int value) {
+        displayMode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 展现方式【应该为一个枚举】
+       * 默认、浮屏、分屏
+       * 目前写死【默认】
+       * </pre>
+       *
+       * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+       */
+      public com.akaxin.proto.core.PluginProto.PluginDisplayMode getDisplayMode() {
+        com.akaxin.proto.core.PluginProto.PluginDisplayMode result = com.akaxin.proto.core.PluginProto.PluginDisplayMode.valueOf(displayMode_);
+        return result == null ? com.akaxin.proto.core.PluginProto.PluginDisplayMode.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 展现方式【应该为一个枚举】
+       * 默认、浮屏、分屏
+       * 目前写死【默认】
+       * </pre>
+       *
+       * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+       */
+      public Builder setDisplayMode(com.akaxin.proto.core.PluginProto.PluginDisplayMode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        displayMode_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 展现方式【应该为一个枚举】
+       * 默认、浮屏、分屏
+       * 目前写死【默认】
+       * </pre>
+       *
+       * <code>optional .core.PluginDisplayMode display_mode = 10;</code>
+       */
+      public Builder clearDisplayMode() {
+        
+        displayMode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int permissionStatus_ = 0;
+      /**
+       * <pre>
+       * 可用状态
+       * - 禁用
+       * - 管理员可用
+       * - 全员可用
+       * </pre>
+       *
+       * <code>optional .core.PermissionStatus permission_status = 11;</code>
+       */
+      public int getPermissionStatusValue() {
+        return permissionStatus_;
+      }
+      /**
+       * <pre>
+       * 可用状态
+       * - 禁用
+       * - 管理员可用
+       * - 全员可用
+       * </pre>
+       *
+       * <code>optional .core.PermissionStatus permission_status = 11;</code>
+       */
+      public Builder setPermissionStatusValue(int value) {
+        permissionStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 可用状态
+       * - 禁用
+       * - 管理员可用
+       * - 全员可用
+       * </pre>
+       *
+       * <code>optional .core.PermissionStatus permission_status = 11;</code>
+       */
+      public com.akaxin.proto.core.PluginProto.PermissionStatus getPermissionStatus() {
+        com.akaxin.proto.core.PluginProto.PermissionStatus result = com.akaxin.proto.core.PluginProto.PermissionStatus.valueOf(permissionStatus_);
+        return result == null ? com.akaxin.proto.core.PluginProto.PermissionStatus.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 可用状态
+       * - 禁用
+       * - 管理员可用
+       * - 全员可用
+       * </pre>
+       *
+       * <code>optional .core.PermissionStatus permission_status = 11;</code>
+       */
+      public Builder setPermissionStatus(com.akaxin.proto.core.PluginProto.PermissionStatus value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        permissionStatus_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 可用状态
+       * - 禁用
+       * - 管理员可用
+       * - 全员可用
+       * </pre>
+       *
+       * <code>optional .core.PermissionStatus permission_status = 11;</code>
+       */
+      public Builder clearPermissionStatus() {
+        
+        permissionStatus_ = 0;
         onChanged();
         return this;
       }
@@ -3260,64 +3961,59 @@ public final class PluginProto {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:core.PluginProfile)
+      // @@protoc_insertion_point(builder_scope:core.Plugin)
     }
 
-    // @@protoc_insertion_point(class_scope:core.PluginProfile)
-    private static final com.akaxin.proto.core.PluginProto.PluginProfile DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:core.Plugin)
+    private static final com.akaxin.proto.core.PluginProto.Plugin DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.akaxin.proto.core.PluginProto.PluginProfile();
+      DEFAULT_INSTANCE = new com.akaxin.proto.core.PluginProto.Plugin();
     }
 
-    public static com.akaxin.proto.core.PluginProto.PluginProfile getDefaultInstance() {
+    public static com.akaxin.proto.core.PluginProto.Plugin getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<PluginProfile>
-        PARSER = new com.google.protobuf.AbstractParser<PluginProfile>() {
-      public PluginProfile parsePartialFrom(
+    private static final com.google.protobuf.Parser<Plugin>
+        PARSER = new com.google.protobuf.AbstractParser<Plugin>() {
+      public Plugin parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new PluginProfile(input, extensionRegistry);
+          return new Plugin(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<PluginProfile> parser() {
+    public static com.google.protobuf.Parser<Plugin> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<PluginProfile> getParserForType() {
+    public com.google.protobuf.Parser<Plugin> getParserForType() {
       return PARSER;
     }
 
-    public com.akaxin.proto.core.PluginProto.PluginProfile getDefaultInstanceForType() {
+    public com.akaxin.proto.core.PluginProto.Plugin getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_core_PluginPackage_descriptor;
+    internal_static_core_ProxyPluginPackage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_core_PluginPackage_fieldAccessorTable;
+      internal_static_core_ProxyPluginPackage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_core_ProxyPackage_descriptor;
+    internal_static_core_ProxyPluginPackage_PluginHeaderEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_core_ProxyPackage_fieldAccessorTable;
+      internal_static_core_ProxyPluginPackage_PluginHeaderEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_core_ProxyPackage_ProxyContentEntry_descriptor;
+    internal_static_core_Plugin_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_core_ProxyPackage_ProxyContentEntry_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_core_PluginProfile_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_core_PluginProfile_fieldAccessorTable;
+      internal_static_core_Plugin_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3328,23 +4024,27 @@ public final class PluginProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\021core/plugin.proto\022\004core\032\017core/core.pro" +
-      "to\"B\n\rPluginPackage\022#\n\nerror_info\030\001 \001(\0132" +
-      "\017.core.ErrorInfo\022\014\n\004data\030\002 \001(\014\"\216\001\n\014Proxy" +
-      "Package\022;\n\rproxy_content\030\001 \003(\0132$.core.Pr" +
-      "oxyPackage.ProxyContentEntry\022\014\n\004data\030\002 \001" +
-      "(\t\0323\n\021ProxyContentEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005" +
-      "value\030\002 \001(\t:\0028\001\"\244\001\n\rPluginProfile\022\n\n\002id\030" +
-      "\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010url_page\030\003 \001(\t\022\017\n" +
-      "\007url_api\030\004 \001(\t\022\014\n\004icon\030\005 \001(\t\022\020\n\010auth_key" +
-      "\030\006 \001(\t\022\022\n\nallowed_ip\030\007 \001(\t\022\"\n\006status\030\010 \001",
-      "(\0162\022.core.PluginStatus*S\n\010ProxyKey\022\022\n\016CL" +
-      "IENT_VERSION\020\000\022\027\n\023CLIENT_SITE_USER_ID\020\001\022" +
-      "\032\n\026CLIENT_SITE_SESSION_ID\020\002*\216\001\n\014PluginSt" +
-      "atus\022\014\n\010DISABLED\020\000\022\027\n\023AVAILABLE_HOME_PAG" +
-      "E\020\001\022\027\n\023ADMIN_HOME_PAGE_SEE\020\002\022\026\n\022AVAILABL" +
-      "E_MSG_PAGE\020\003\022\026\n\022ADMIN_MSG_PAGE_SEE\020\004\022\016\n\n" +
-      "ALL_PLUGIN\020dB$\n\025com.akaxin.proto.coreB\013P" +
-      "luginProtob\006proto3"
+      "to\"\277\001\n\022ProxyPluginPackage\022A\n\rplugin_head" +
+      "er\030\001 \003(\0132*.core.ProxyPluginPackage.Plugi" +
+      "nHeaderEntry\022\014\n\004data\030\002 \001(\t\022#\n\nerror_info" +
+      "\030\003 \001(\0132\017.core.ErrorInfo\0323\n\021PluginHeaderE" +
+      "ntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\t:\0028\001\"\222\002\n" +
+      "\006Plugin\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010url" +
+      "_page\030\003 \001(\t\022\017\n\007api_url\030\004 \001(\t\022\014\n\004icon\030\005 \001" +
+      "(\t\022\020\n\010auth_key\030\006 \001(\t\022\022\n\nallowed_ip\030\007 \001(\t" +
+      "\022&\n\010position\030\010 \001(\0162\024.core.PluginPosition",
+      "\022\r\n\005order\030\t \001(\005\022-\n\014display_mode\030\n \001(\0162\027." +
+      "core.PluginDisplayMode\0221\n\021permission_sta" +
+      "tus\030\013 \001(\0162\026.core.PermissionStatus*\223\001\n\017Pl" +
+      "uginHeaderKey\022\022\n\016CLIENT_VERSION\020\000\022\027\n\023CLI" +
+      "ENT_SITE_USER_ID\020\001\022\032\n\026CLIENT_SITE_SESSIO" +
+      "N_ID\020\002\022\022\n\016PLUGIN_REFERER\020\003\022\024\n\020PLUGIN_TIM" +
+      "ESTAMP\020\004\022\r\n\tPLUGIN_ID\020\005*/\n\020PermissionSta" +
+      "tus\022\014\n\010DISABLED\020\000\022\r\n\tAVAILABLE\020\001*-\n\016Plug" +
+      "inPosition\022\r\n\tHOME_PAGE\020\000\022\014\n\010MSG_PAGE\020\001*" +
+      "H\n\021PluginDisplayMode\022\014\n\010NEW_PAGE\020\000\022\023\n\017FL",
+      "OATING_SCREEN\020\001\022\020\n\014SPLIT_SCREEN\020\002B$\n\025com" +
+      ".akaxin.proto.coreB\013PluginProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3359,30 +4059,24 @@ public final class PluginProto {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.akaxin.proto.core.CoreProto.getDescriptor(),
         }, assigner);
-    internal_static_core_PluginPackage_descriptor =
+    internal_static_core_ProxyPluginPackage_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_core_PluginPackage_fieldAccessorTable = new
+    internal_static_core_ProxyPluginPackage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_core_PluginPackage_descriptor,
-        new java.lang.String[] { "ErrorInfo", "Data", });
-    internal_static_core_ProxyPackage_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_core_ProxyPackage_fieldAccessorTable = new
+        internal_static_core_ProxyPluginPackage_descriptor,
+        new java.lang.String[] { "PluginHeader", "Data", "ErrorInfo", });
+    internal_static_core_ProxyPluginPackage_PluginHeaderEntry_descriptor =
+      internal_static_core_ProxyPluginPackage_descriptor.getNestedTypes().get(0);
+    internal_static_core_ProxyPluginPackage_PluginHeaderEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_core_ProxyPackage_descriptor,
-        new java.lang.String[] { "ProxyContent", "Data", });
-    internal_static_core_ProxyPackage_ProxyContentEntry_descriptor =
-      internal_static_core_ProxyPackage_descriptor.getNestedTypes().get(0);
-    internal_static_core_ProxyPackage_ProxyContentEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_core_ProxyPackage_ProxyContentEntry_descriptor,
+        internal_static_core_ProxyPluginPackage_PluginHeaderEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_core_PluginProfile_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_core_PluginProfile_fieldAccessorTable = new
+    internal_static_core_Plugin_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_core_Plugin_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_core_PluginProfile_descriptor,
-        new java.lang.String[] { "Id", "Name", "UrlPage", "UrlApi", "Icon", "AuthKey", "AllowedIp", "Status", });
+        internal_static_core_Plugin_descriptor,
+        new java.lang.String[] { "Id", "Name", "UrlPage", "ApiUrl", "Icon", "AuthKey", "AllowedIp", "Position", "Order", "DisplayMode", "PermissionStatus", });
     com.akaxin.proto.core.CoreProto.getDescriptor();
   }
 

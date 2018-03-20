@@ -23,7 +23,7 @@ public final class HaiPluginUpdateProto {
      *需要更新的插件扩展
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
     boolean hasPlugin();
     /**
@@ -31,17 +31,17 @@ public final class HaiPluginUpdateProto {
      *需要更新的插件扩展
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfile getPlugin();
+    com.akaxin.proto.core.PluginProto.Plugin getPlugin();
     /**
      * <pre>
      *需要更新的插件扩展
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder();
+    com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder();
   }
   /**
    * Protobuf type {@code site.HaiPluginUpdateRequest}
@@ -83,11 +83,11 @@ public final class HaiPluginUpdateProto {
               break;
             }
             case 10: {
-              com.akaxin.proto.core.PluginProto.PluginProfile.Builder subBuilder = null;
+              com.akaxin.proto.core.PluginProto.Plugin.Builder subBuilder = null;
               if (plugin_ != null) {
                 subBuilder = plugin_.toBuilder();
               }
-              plugin_ = input.readMessage(com.akaxin.proto.core.PluginProto.PluginProfile.parser(), extensionRegistry);
+              plugin_ = input.readMessage(com.akaxin.proto.core.PluginProto.Plugin.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(plugin_);
                 plugin_ = subBuilder.buildPartial();
@@ -119,13 +119,13 @@ public final class HaiPluginUpdateProto {
     }
 
     public static final int PLUGIN_FIELD_NUMBER = 1;
-    private com.akaxin.proto.core.PluginProto.PluginProfile plugin_;
+    private com.akaxin.proto.core.PluginProto.Plugin plugin_;
     /**
      * <pre>
      *需要更新的插件扩展
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
     public boolean hasPlugin() {
       return plugin_ != null;
@@ -135,19 +135,19 @@ public final class HaiPluginUpdateProto {
      *需要更新的插件扩展
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin() {
-      return plugin_ == null ? com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance() : plugin_;
+    public com.akaxin.proto.core.PluginProto.Plugin getPlugin() {
+      return plugin_ == null ? com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance() : plugin_;
     }
     /**
      * <pre>
      *需要更新的插件扩展
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder() {
+    public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder() {
       return getPlugin();
     }
 
@@ -433,15 +433,15 @@ public final class HaiPluginUpdateProto {
         return this;
       }
 
-      private com.akaxin.proto.core.PluginProto.PluginProfile plugin_ = null;
+      private com.akaxin.proto.core.PluginProto.Plugin plugin_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> pluginBuilder_;
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> pluginBuilder_;
       /**
        * <pre>
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       public boolean hasPlugin() {
         return pluginBuilder_ != null || plugin_ != null;
@@ -451,11 +451,11 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin() {
+      public com.akaxin.proto.core.PluginProto.Plugin getPlugin() {
         if (pluginBuilder_ == null) {
-          return plugin_ == null ? com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance() : plugin_;
+          return plugin_ == null ? com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance() : plugin_;
         } else {
           return pluginBuilder_.getMessage();
         }
@@ -465,9 +465,9 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public Builder setPlugin(com.akaxin.proto.core.PluginProto.PluginProfile value) {
+      public Builder setPlugin(com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -485,10 +485,10 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       public Builder setPlugin(
-          com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           plugin_ = builderForValue.build();
           onChanged();
@@ -503,13 +503,13 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public Builder mergePlugin(com.akaxin.proto.core.PluginProto.PluginProfile value) {
+      public Builder mergePlugin(com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (plugin_ != null) {
             plugin_ =
-              com.akaxin.proto.core.PluginProto.PluginProfile.newBuilder(plugin_).mergeFrom(value).buildPartial();
+              com.akaxin.proto.core.PluginProto.Plugin.newBuilder(plugin_).mergeFrom(value).buildPartial();
           } else {
             plugin_ = value;
           }
@@ -525,7 +525,7 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       public Builder clearPlugin() {
         if (pluginBuilder_ == null) {
@@ -543,9 +543,9 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder getPluginBuilder() {
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder getPluginBuilder() {
         
         onChanged();
         return getPluginFieldBuilder().getBuilder();
@@ -555,14 +555,14 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder() {
+      public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder() {
         if (pluginBuilder_ != null) {
           return pluginBuilder_.getMessageOrBuilder();
         } else {
           return plugin_ == null ?
-              com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance() : plugin_;
+              com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance() : plugin_;
         }
       }
       /**
@@ -570,14 +570,14 @@ public final class HaiPluginUpdateProto {
        *需要更新的插件扩展
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
           getPluginFieldBuilder() {
         if (pluginBuilder_ == null) {
           pluginBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder>(
+              com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder>(
                   getPlugin(),
                   getParentForChildren(),
                   isClean());
@@ -1019,13 +1019,13 @@ public final class HaiPluginUpdateProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\036plugin/hai_plugin_update.proto\022\004site\032\021" +
-      "core/plugin.proto\"=\n\026HaiPluginUpdateRequ" +
-      "est\022#\n\006plugin\030\001 \001(\0132\023.core.PluginProfile" +
-      "\"\031\n\027HaiPluginUpdateResponse2_\n\026HaiPlugin" +
-      "UpdateService\022E\n\006update\022\034.site.HaiPlugin" +
-      "UpdateRequest\032\035.site.HaiPluginUpdateResp" +
-      "onseB/\n\027com.akaxin.proto.pluginB\024HaiPlug" +
-      "inUpdateProtob\006proto3"
+      "core/plugin.proto\"6\n\026HaiPluginUpdateRequ" +
+      "est\022\034\n\006plugin\030\001 \001(\0132\014.core.Plugin\"\031\n\027Hai" +
+      "PluginUpdateResponse2_\n\026HaiPluginUpdateS" +
+      "ervice\022E\n\006update\022\034.site.HaiPluginUpdateR" +
+      "equest\032\035.site.HaiPluginUpdateResponseB/\n" +
+      "\027com.akaxin.proto.pluginB\024HaiPluginUpdat" +
+      "eProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

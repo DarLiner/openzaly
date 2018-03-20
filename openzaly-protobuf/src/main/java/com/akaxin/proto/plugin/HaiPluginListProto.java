@@ -35,23 +35,6 @@ public final class HaiPluginListProto {
      * <code>optional int32 page_size = 2;</code>
      */
     int getPageSize();
-
-    /**
-     * <pre>
-     *查询扩展的状态
-     * </pre>
-     *
-     * <code>optional .core.PluginStatus status = 3;</code>
-     */
-    int getStatusValue();
-    /**
-     * <pre>
-     *查询扩展的状态
-     * </pre>
-     *
-     * <code>optional .core.PluginStatus status = 3;</code>
-     */
-    com.akaxin.proto.core.PluginProto.PluginStatus getStatus();
   }
   /**
    * Protobuf type {@code plugin.HaiPluginListRequest}
@@ -67,7 +50,6 @@ public final class HaiPluginListProto {
     private HaiPluginListRequest() {
       pageNumber_ = 0;
       pageSize_ = 0;
-      status_ = 0;
     }
 
     @java.lang.Override
@@ -103,12 +85,6 @@ public final class HaiPluginListProto {
             case 16: {
 
               pageSize_ = input.readInt32();
-              break;
-            }
-            case 24: {
-              int rawValue = input.readEnum();
-
-              status_ = rawValue;
               break;
             }
           }
@@ -160,30 +136,6 @@ public final class HaiPluginListProto {
       return pageSize_;
     }
 
-    public static final int STATUS_FIELD_NUMBER = 3;
-    private int status_;
-    /**
-     * <pre>
-     *查询扩展的状态
-     * </pre>
-     *
-     * <code>optional .core.PluginStatus status = 3;</code>
-     */
-    public int getStatusValue() {
-      return status_;
-    }
-    /**
-     * <pre>
-     *查询扩展的状态
-     * </pre>
-     *
-     * <code>optional .core.PluginStatus status = 3;</code>
-     */
-    public com.akaxin.proto.core.PluginProto.PluginStatus getStatus() {
-      com.akaxin.proto.core.PluginProto.PluginStatus result = com.akaxin.proto.core.PluginProto.PluginStatus.valueOf(status_);
-      return result == null ? com.akaxin.proto.core.PluginProto.PluginStatus.UNRECOGNIZED : result;
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -202,9 +154,6 @@ public final class HaiPluginListProto {
       if (pageSize_ != 0) {
         output.writeInt32(2, pageSize_);
       }
-      if (status_ != com.akaxin.proto.core.PluginProto.PluginStatus.DISABLED.getNumber()) {
-        output.writeEnum(3, status_);
-      }
     }
 
     public int getSerializedSize() {
@@ -219,10 +168,6 @@ public final class HaiPluginListProto {
       if (pageSize_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, pageSize_);
-      }
-      if (status_ != com.akaxin.proto.core.PluginProto.PluginStatus.DISABLED.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, status_);
       }
       memoizedSize = size;
       return size;
@@ -244,7 +189,6 @@ public final class HaiPluginListProto {
           == other.getPageNumber());
       result = result && (getPageSize()
           == other.getPageSize());
-      result = result && status_ == other.status_;
       return result;
     }
 
@@ -259,8 +203,6 @@ public final class HaiPluginListProto {
       hash = (53 * hash) + getPageNumber();
       hash = (37 * hash) + PAGE_SIZE_FIELD_NUMBER;
       hash = (53 * hash) + getPageSize();
-      hash = (37 * hash) + STATUS_FIELD_NUMBER;
-      hash = (53 * hash) + status_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -383,8 +325,6 @@ public final class HaiPluginListProto {
 
         pageSize_ = 0;
 
-        status_ = 0;
-
         return this;
       }
 
@@ -409,7 +349,6 @@ public final class HaiPluginListProto {
         com.akaxin.proto.plugin.HaiPluginListProto.HaiPluginListRequest result = new com.akaxin.proto.plugin.HaiPluginListProto.HaiPluginListRequest(this);
         result.pageNumber_ = pageNumber_;
         result.pageSize_ = pageSize_;
-        result.status_ = status_;
         onBuilt();
         return result;
       }
@@ -456,9 +395,6 @@ public final class HaiPluginListProto {
         }
         if (other.getPageSize() != 0) {
           setPageSize(other.getPageSize());
-        }
-        if (other.status_ != 0) {
-          setStatusValue(other.getStatusValue());
         }
         onChanged();
         return this;
@@ -561,70 +497,6 @@ public final class HaiPluginListProto {
         onChanged();
         return this;
       }
-
-      private int status_ = 0;
-      /**
-       * <pre>
-       *查询扩展的状态
-       * </pre>
-       *
-       * <code>optional .core.PluginStatus status = 3;</code>
-       */
-      public int getStatusValue() {
-        return status_;
-      }
-      /**
-       * <pre>
-       *查询扩展的状态
-       * </pre>
-       *
-       * <code>optional .core.PluginStatus status = 3;</code>
-       */
-      public Builder setStatusValue(int value) {
-        status_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *查询扩展的状态
-       * </pre>
-       *
-       * <code>optional .core.PluginStatus status = 3;</code>
-       */
-      public com.akaxin.proto.core.PluginProto.PluginStatus getStatus() {
-        com.akaxin.proto.core.PluginProto.PluginStatus result = com.akaxin.proto.core.PluginProto.PluginStatus.valueOf(status_);
-        return result == null ? com.akaxin.proto.core.PluginProto.PluginStatus.UNRECOGNIZED : result;
-      }
-      /**
-       * <pre>
-       *查询扩展的状态
-       * </pre>
-       *
-       * <code>optional .core.PluginStatus status = 3;</code>
-       */
-      public Builder setStatus(com.akaxin.proto.core.PluginProto.PluginStatus value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        status_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *查询扩展的状态
-       * </pre>
-       *
-       * <code>optional .core.PluginStatus status = 3;</code>
-       */
-      public Builder clearStatus() {
-        
-        status_ = 0;
-        onChanged();
-        return this;
-      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -683,24 +555,24 @@ public final class HaiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> 
+    java.util.List<com.akaxin.proto.core.PluginProto.Plugin> 
         getPluginList();
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfile getPlugin(int index);
+    com.akaxin.proto.core.PluginProto.Plugin getPlugin(int index);
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
     int getPluginCount();
     /**
@@ -708,18 +580,18 @@ public final class HaiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+    java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
         getPluginOrBuilderList();
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder(
+    com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder(
         int index);
   }
   /**
@@ -764,11 +636,11 @@ public final class HaiPluginListProto {
             }
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.PluginProfile>();
+                plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.Plugin>();
                 mutable_bitField0_ |= 0x00000001;
               }
               plugin_.add(
-                  input.readMessage(com.akaxin.proto.core.PluginProto.PluginProfile.parser(), extensionRegistry));
+                  input.readMessage(com.akaxin.proto.core.PluginProto.Plugin.parser(), extensionRegistry));
               break;
             }
           }
@@ -798,15 +670,15 @@ public final class HaiPluginListProto {
     }
 
     public static final int PLUGIN_FIELD_NUMBER = 1;
-    private java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> plugin_;
+    private java.util.List<com.akaxin.proto.core.PluginProto.Plugin> plugin_;
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> getPluginList() {
+    public java.util.List<com.akaxin.proto.core.PluginProto.Plugin> getPluginList() {
       return plugin_;
     }
     /**
@@ -814,9 +686,9 @@ public final class HaiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+    public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
         getPluginOrBuilderList() {
       return plugin_;
     }
@@ -825,7 +697,7 @@ public final class HaiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
     public int getPluginCount() {
       return plugin_.size();
@@ -835,9 +707,9 @@ public final class HaiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin(int index) {
+    public com.akaxin.proto.core.PluginProto.Plugin getPlugin(int index) {
       return plugin_.get(index);
     }
     /**
@@ -845,9 +717,9 @@ public final class HaiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder(
+    public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder(
         int index) {
       return plugin_.get(index);
     }
@@ -1161,26 +1033,26 @@ public final class HaiPluginListProto {
       }
       private int bitField0_;
 
-      private java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> plugin_ =
+      private java.util.List<com.akaxin.proto.core.PluginProto.Plugin> plugin_ =
         java.util.Collections.emptyList();
       private void ensurePluginIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.PluginProfile>(plugin_);
+          plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.Plugin>(plugin_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> pluginBuilder_;
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> pluginBuilder_;
 
       /**
        * <pre>
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> getPluginList() {
+      public java.util.List<com.akaxin.proto.core.PluginProto.Plugin> getPluginList() {
         if (pluginBuilder_ == null) {
           return java.util.Collections.unmodifiableList(plugin_);
         } else {
@@ -1192,7 +1064,7 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public int getPluginCount() {
         if (pluginBuilder_ == null) {
@@ -1206,9 +1078,9 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin(int index) {
+      public com.akaxin.proto.core.PluginProto.Plugin getPlugin(int index) {
         if (pluginBuilder_ == null) {
           return plugin_.get(index);
         } else {
@@ -1220,10 +1092,10 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder setPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile value) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1241,10 +1113,10 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder setPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           plugin_.set(index, builderForValue.build());
@@ -1259,9 +1131,9 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public Builder addPlugin(com.akaxin.proto.core.PluginProto.PluginProfile value) {
+      public Builder addPlugin(com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1279,10 +1151,10 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile value) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1300,10 +1172,10 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addPlugin(
-          com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           plugin_.add(builderForValue.build());
@@ -1318,10 +1190,10 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           plugin_.add(index, builderForValue.build());
@@ -1336,10 +1208,10 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addAllPlugin(
-          java.lang.Iterable<? extends com.akaxin.proto.core.PluginProto.PluginProfile> values) {
+          java.lang.Iterable<? extends com.akaxin.proto.core.PluginProto.Plugin> values) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1355,7 +1227,7 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder clearPlugin() {
         if (pluginBuilder_ == null) {
@@ -1372,7 +1244,7 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder removePlugin(int index) {
         if (pluginBuilder_ == null) {
@@ -1389,9 +1261,9 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder getPluginBuilder(
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder getPluginBuilder(
           int index) {
         return getPluginFieldBuilder().getBuilder(index);
       }
@@ -1400,9 +1272,9 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder(
+      public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder(
           int index) {
         if (pluginBuilder_ == null) {
           return plugin_.get(index);  } else {
@@ -1414,9 +1286,9 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+      public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
            getPluginOrBuilderList() {
         if (pluginBuilder_ != null) {
           return pluginBuilder_.getMessageOrBuilderList();
@@ -1429,41 +1301,41 @@ public final class HaiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder addPluginBuilder() {
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder addPluginBuilder() {
         return getPluginFieldBuilder().addBuilder(
-            com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance());
+            com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance());
       }
       /**
        * <pre>
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder addPluginBuilder(
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder addPluginBuilder(
           int index) {
         return getPluginFieldBuilder().addBuilder(
-            index, com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance());
+            index, com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance());
       }
       /**
        * <pre>
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile.Builder> 
+      public java.util.List<com.akaxin.proto.core.PluginProto.Plugin.Builder> 
            getPluginBuilderList() {
         return getPluginFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
           getPluginFieldBuilder() {
         if (pluginBuilder_ == null) {
           pluginBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder>(
+              com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder>(
                   plugin_,
                   ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
@@ -1541,15 +1413,14 @@ public final class HaiPluginListProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\034plugin/hai_plugin_list.proto\022\006plugin\032\021" +
-      "core/plugin.proto\"b\n\024HaiPluginListReques" +
+      "core/plugin.proto\">\n\024HaiPluginListReques" +
       "t\022\023\n\013page_number\030\001 \001(\005\022\021\n\tpage_size\030\002 \001(" +
-      "\005\022\"\n\006status\030\003 \001(\0162\022.core.PluginStatus\"<\n" +
-      "\025HaiPluginListResponse\022#\n\006plugin\030\001 \003(\0132\023" +
-      ".core.PluginProfile2[\n\024HaiPluginListServ" +
-      "ice\022C\n\004list\022\034.plugin.HaiPluginListReques" +
-      "t\032\035.plugin.HaiPluginListResponseB-\n\027com." +
-      "akaxin.proto.pluginB\022HaiPluginListProtob" +
-      "\006proto3"
+      "\005\"5\n\025HaiPluginListResponse\022\034\n\006plugin\030\001 \003" +
+      "(\0132\014.core.Plugin2[\n\024HaiPluginListService" +
+      "\022C\n\004list\022\034.plugin.HaiPluginListRequest\032\035" +
+      ".plugin.HaiPluginListResponseB-\n\027com.aka" +
+      "xin.proto.pluginB\022HaiPluginListProtob\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1569,7 +1440,7 @@ public final class HaiPluginListProto {
     internal_static_plugin_HaiPluginListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiPluginListRequest_descriptor,
-        new java.lang.String[] { "PageNumber", "PageSize", "Status", });
+        new java.lang.String[] { "PageNumber", "PageSize", });
     internal_static_plugin_HaiPluginListResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiPluginListResponse_fieldAccessorTable = new

@@ -40,11 +40,6 @@ public class PluginServiceDao implements IPluginDao {
 	}
 
 	@Override
-	public boolean updatePluginStatus(int pluginId, int status) throws SQLException {
-		return SQLitePluginDao.getInstance().updatePluginStatus(pluginId, status);
-	}
-
-	@Override
 	public boolean deletePlugin(int pluginId) throws SQLException {
 		return SQLitePluginDao.getInstance().deletePlugin(pluginId);
 	}
@@ -55,13 +50,14 @@ public class PluginServiceDao implements IPluginDao {
 	}
 
 	@Override
-	public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int status) throws SQLException {
-		return SQLitePluginDao.getInstance().queryPluginList(pageNum, pageSize, status);
+	public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int position, int permissionStatus)
+			throws SQLException {
+		return SQLitePluginDao.getInstance().queryPluginList(pageNum, pageSize, position, permissionStatus);
 	}
 
 	@Override
-	public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int status1, int status2) throws SQLException {
-		return SQLitePluginDao.getInstance().queryPluginList(pageNum, pageSize, status1, status2);
+	public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int position) throws SQLException {
+		return SQLitePluginDao.getInstance().queryPluginList(pageNum, pageSize, position);
 	}
 
 	@Override

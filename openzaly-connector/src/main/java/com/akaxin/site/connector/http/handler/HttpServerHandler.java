@@ -19,13 +19,16 @@ import java.net.InetSocketAddress;
 import java.util.Base64;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.HttpUriAction;
+import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.connector.session.PluginSession;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -104,28 +107,48 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 
+				String sitePluginId = request.headers().get("site-plugin-id");
 				byte[] contentBytes = new byte[httpByteBuf.readableBytes()];
 				httpByteBuf.readBytes(contentBytes);
 				httpByteBuf.release();
 
-				PluginProto.ProxyPackage proxyPack = PluginProto.ProxyPackage.parseFrom(contentBytes);
-				Map<Integer, String> proxyMap = proxyPack.getProxyContentMap();
+				// 查询扩展的auth——key
+				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
+				byte[] tsk = AESCrypto.generateTSKey(authKey);
+				byte[] decContent = AESCrypto.decrypt(tsk, contentBytes);
 
-				Command command = new Command();
-				if (proxyMap != null) {
-					command.setSiteUserId(proxyMap.get(PluginProto.ProxyKey.CLIENT_SITE_USER_ID_VALUE));
+				PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(decContent);
+				Map<Integer, String> proxyHeader = pluginPackage.getPluginHeaderMap();
+
+				String timeStampStr = proxyHeader.get(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE);
+
+				boolean isOk = false;
+				if (StringUtils.isNotEmpty(timeStampStr)) {
+					long timeMills = Long.valueOf(timeStampStr);
+					if (System.currentTimeMillis() - timeMills < 10 * 1000l) {
+						isOk = true;
+					}
 				}
-				command.setChannelContext(ctx);
-				command.setUri(request.uri());
 
+				logger.info("check timestamp result={} headTime={}", isOk, timeStampStr);
 
+				if (isOk) {
+					Command command = new Command();
+					if (proxyHeader != null) {
+						command.setSiteUserId(proxyHeader.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE));
+					}
+					command.setChannelContext(ctx);
+					command.setUri(request.uri());
 
-				command.setParams(Base64.getDecoder().decode(proxyPack.getData()));
+					command.setParams(Base64.getDecoder().decode(pluginPackage.getData()));
 
-				logger.info("http server handler command={}", command.toString());
+					logger.info("http server handler command={}", command.toString());
 
-				this.executor.execute(HttpUriAction.HTTP_ACTION.getUri(), command);
-
+					this.executor.execute(HttpUriAction.HTTP_ACTION.getUri(), command);
+				} else {
+					// 超时10s，认为此请求失效，直接断开连接
+					ctx.close();
+				}
 			}
 		} catch (Exception e) {
 			logger.error("http request error.", e);

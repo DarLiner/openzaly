@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.connector.handler;
 
+import java.util.Base64;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +26,6 @@ import com.akaxin.common.constant.CommandConst;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.service.HttpRequestService;
-import com.google.protobuf.ByteString;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -73,13 +74,14 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 	private void fullHttpResponse(ChannelHandlerContext context, CommandResponse commandResponse) {
 		FullHttpResponse response = null;
 		try {
-			PluginProto.PluginPackage.Builder packBuilder = PluginProto.PluginPackage.newBuilder();
+			PluginProto.ProxyPluginPackage.Builder packBuilder = PluginProto.ProxyPluginPackage.newBuilder();
 			CoreProto.ErrorInfo errInfo = CoreProto.ErrorInfo.newBuilder()
 					.setCode(String.valueOf(commandResponse.getErrCode())).setInfo(commandResponse.getErrInfo())
 					.build();
 			packBuilder.setErrorInfo(errInfo);
 			if (commandResponse.getParams() != null) {
-				packBuilder.setData(ByteString.copyFrom(commandResponse.getParams()));
+				String dataStr = Base64.getEncoder().encodeToString(commandResponse.getParams());
+				packBuilder.setData(dataStr);
 			}
 			response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
 					Unpooled.wrappedBuffer(packBuilder.build().toByteArray()));

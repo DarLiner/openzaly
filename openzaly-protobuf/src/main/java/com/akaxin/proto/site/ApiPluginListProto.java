@@ -41,17 +41,17 @@ public final class ApiPluginListProto {
      *查询扩展的状态
      * </pre>
      *
-     * <code>optional .core.PluginStatus status = 3;</code>
+     * <code>optional .core.PluginPosition position = 3;</code>
      */
-    int getStatusValue();
+    int getPositionValue();
     /**
      * <pre>
      *查询扩展的状态
      * </pre>
      *
-     * <code>optional .core.PluginStatus status = 3;</code>
+     * <code>optional .core.PluginPosition position = 3;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginStatus getStatus();
+    com.akaxin.proto.core.PluginProto.PluginPosition getPosition();
   }
   /**
    * Protobuf type {@code site.ApiPluginListRequest}
@@ -67,7 +67,7 @@ public final class ApiPluginListProto {
     private ApiPluginListRequest() {
       pageNumber_ = 0;
       pageSize_ = 0;
-      status_ = 0;
+      position_ = 0;
     }
 
     @java.lang.Override
@@ -108,7 +108,7 @@ public final class ApiPluginListProto {
             case 24: {
               int rawValue = input.readEnum();
 
-              status_ = rawValue;
+              position_ = rawValue;
               break;
             }
           }
@@ -160,28 +160,28 @@ public final class ApiPluginListProto {
       return pageSize_;
     }
 
-    public static final int STATUS_FIELD_NUMBER = 3;
-    private int status_;
+    public static final int POSITION_FIELD_NUMBER = 3;
+    private int position_;
     /**
      * <pre>
      *查询扩展的状态
      * </pre>
      *
-     * <code>optional .core.PluginStatus status = 3;</code>
+     * <code>optional .core.PluginPosition position = 3;</code>
      */
-    public int getStatusValue() {
-      return status_;
+    public int getPositionValue() {
+      return position_;
     }
     /**
      * <pre>
      *查询扩展的状态
      * </pre>
      *
-     * <code>optional .core.PluginStatus status = 3;</code>
+     * <code>optional .core.PluginPosition position = 3;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginStatus getStatus() {
-      com.akaxin.proto.core.PluginProto.PluginStatus result = com.akaxin.proto.core.PluginProto.PluginStatus.valueOf(status_);
-      return result == null ? com.akaxin.proto.core.PluginProto.PluginStatus.UNRECOGNIZED : result;
+    public com.akaxin.proto.core.PluginProto.PluginPosition getPosition() {
+      com.akaxin.proto.core.PluginProto.PluginPosition result = com.akaxin.proto.core.PluginProto.PluginPosition.valueOf(position_);
+      return result == null ? com.akaxin.proto.core.PluginProto.PluginPosition.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -202,8 +202,8 @@ public final class ApiPluginListProto {
       if (pageSize_ != 0) {
         output.writeInt32(2, pageSize_);
       }
-      if (status_ != com.akaxin.proto.core.PluginProto.PluginStatus.DISABLED.getNumber()) {
-        output.writeEnum(3, status_);
+      if (position_ != com.akaxin.proto.core.PluginProto.PluginPosition.HOME_PAGE.getNumber()) {
+        output.writeEnum(3, position_);
       }
     }
 
@@ -220,9 +220,9 @@ public final class ApiPluginListProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, pageSize_);
       }
-      if (status_ != com.akaxin.proto.core.PluginProto.PluginStatus.DISABLED.getNumber()) {
+      if (position_ != com.akaxin.proto.core.PluginProto.PluginPosition.HOME_PAGE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, status_);
+          .computeEnumSize(3, position_);
       }
       memoizedSize = size;
       return size;
@@ -244,7 +244,7 @@ public final class ApiPluginListProto {
           == other.getPageNumber());
       result = result && (getPageSize()
           == other.getPageSize());
-      result = result && status_ == other.status_;
+      result = result && position_ == other.position_;
       return result;
     }
 
@@ -259,8 +259,8 @@ public final class ApiPluginListProto {
       hash = (53 * hash) + getPageNumber();
       hash = (37 * hash) + PAGE_SIZE_FIELD_NUMBER;
       hash = (53 * hash) + getPageSize();
-      hash = (37 * hash) + STATUS_FIELD_NUMBER;
-      hash = (53 * hash) + status_;
+      hash = (37 * hash) + POSITION_FIELD_NUMBER;
+      hash = (53 * hash) + position_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -383,7 +383,7 @@ public final class ApiPluginListProto {
 
         pageSize_ = 0;
 
-        status_ = 0;
+        position_ = 0;
 
         return this;
       }
@@ -409,7 +409,7 @@ public final class ApiPluginListProto {
         com.akaxin.proto.site.ApiPluginListProto.ApiPluginListRequest result = new com.akaxin.proto.site.ApiPluginListProto.ApiPluginListRequest(this);
         result.pageNumber_ = pageNumber_;
         result.pageSize_ = pageSize_;
-        result.status_ = status_;
+        result.position_ = position_;
         onBuilt();
         return result;
       }
@@ -457,8 +457,8 @@ public final class ApiPluginListProto {
         if (other.getPageSize() != 0) {
           setPageSize(other.getPageSize());
         }
-        if (other.status_ != 0) {
-          setStatusValue(other.getStatusValue());
+        if (other.position_ != 0) {
+          setPositionValue(other.getPositionValue());
         }
         onChanged();
         return this;
@@ -562,26 +562,26 @@ public final class ApiPluginListProto {
         return this;
       }
 
-      private int status_ = 0;
+      private int position_ = 0;
       /**
        * <pre>
        *查询扩展的状态
        * </pre>
        *
-       * <code>optional .core.PluginStatus status = 3;</code>
+       * <code>optional .core.PluginPosition position = 3;</code>
        */
-      public int getStatusValue() {
-        return status_;
+      public int getPositionValue() {
+        return position_;
       }
       /**
        * <pre>
        *查询扩展的状态
        * </pre>
        *
-       * <code>optional .core.PluginStatus status = 3;</code>
+       * <code>optional .core.PluginPosition position = 3;</code>
        */
-      public Builder setStatusValue(int value) {
-        status_ = value;
+      public Builder setPositionValue(int value) {
+        position_ = value;
         onChanged();
         return this;
       }
@@ -590,25 +590,25 @@ public final class ApiPluginListProto {
        *查询扩展的状态
        * </pre>
        *
-       * <code>optional .core.PluginStatus status = 3;</code>
+       * <code>optional .core.PluginPosition position = 3;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginStatus getStatus() {
-        com.akaxin.proto.core.PluginProto.PluginStatus result = com.akaxin.proto.core.PluginProto.PluginStatus.valueOf(status_);
-        return result == null ? com.akaxin.proto.core.PluginProto.PluginStatus.UNRECOGNIZED : result;
+      public com.akaxin.proto.core.PluginProto.PluginPosition getPosition() {
+        com.akaxin.proto.core.PluginProto.PluginPosition result = com.akaxin.proto.core.PluginProto.PluginPosition.valueOf(position_);
+        return result == null ? com.akaxin.proto.core.PluginProto.PluginPosition.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        *查询扩展的状态
        * </pre>
        *
-       * <code>optional .core.PluginStatus status = 3;</code>
+       * <code>optional .core.PluginPosition position = 3;</code>
        */
-      public Builder setStatus(com.akaxin.proto.core.PluginProto.PluginStatus value) {
+      public Builder setPosition(com.akaxin.proto.core.PluginProto.PluginPosition value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        status_ = value.getNumber();
+        position_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -617,11 +617,11 @@ public final class ApiPluginListProto {
        *查询扩展的状态
        * </pre>
        *
-       * <code>optional .core.PluginStatus status = 3;</code>
+       * <code>optional .core.PluginPosition position = 3;</code>
        */
-      public Builder clearStatus() {
+      public Builder clearPosition() {
         
-        status_ = 0;
+        position_ = 0;
         onChanged();
         return this;
       }
@@ -683,24 +683,24 @@ public final class ApiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> 
+    java.util.List<com.akaxin.proto.core.PluginProto.Plugin> 
         getPluginList();
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfile getPlugin(int index);
+    com.akaxin.proto.core.PluginProto.Plugin getPlugin(int index);
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
     int getPluginCount();
     /**
@@ -708,18 +708,18 @@ public final class ApiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+    java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
         getPluginOrBuilderList();
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder(
+    com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder(
         int index);
   }
   /**
@@ -764,11 +764,11 @@ public final class ApiPluginListProto {
             }
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.PluginProfile>();
+                plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.Plugin>();
                 mutable_bitField0_ |= 0x00000001;
               }
               plugin_.add(
-                  input.readMessage(com.akaxin.proto.core.PluginProto.PluginProfile.parser(), extensionRegistry));
+                  input.readMessage(com.akaxin.proto.core.PluginProto.Plugin.parser(), extensionRegistry));
               break;
             }
           }
@@ -798,15 +798,15 @@ public final class ApiPluginListProto {
     }
 
     public static final int PLUGIN_FIELD_NUMBER = 1;
-    private java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> plugin_;
+    private java.util.List<com.akaxin.proto.core.PluginProto.Plugin> plugin_;
     /**
      * <pre>
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> getPluginList() {
+    public java.util.List<com.akaxin.proto.core.PluginProto.Plugin> getPluginList() {
       return plugin_;
     }
     /**
@@ -814,9 +814,9 @@ public final class ApiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+    public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
         getPluginOrBuilderList() {
       return plugin_;
     }
@@ -825,7 +825,7 @@ public final class ApiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
     public int getPluginCount() {
       return plugin_.size();
@@ -835,9 +835,9 @@ public final class ApiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin(int index) {
+    public com.akaxin.proto.core.PluginProto.Plugin getPlugin(int index) {
       return plugin_.get(index);
     }
     /**
@@ -845,9 +845,9 @@ public final class ApiPluginListProto {
      *获取插件列表数据
      * </pre>
      *
-     * <code>repeated .core.PluginProfile plugin = 1;</code>
+     * <code>repeated .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder(
+    public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder(
         int index) {
       return plugin_.get(index);
     }
@@ -1161,26 +1161,26 @@ public final class ApiPluginListProto {
       }
       private int bitField0_;
 
-      private java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> plugin_ =
+      private java.util.List<com.akaxin.proto.core.PluginProto.Plugin> plugin_ =
         java.util.Collections.emptyList();
       private void ensurePluginIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.PluginProfile>(plugin_);
+          plugin_ = new java.util.ArrayList<com.akaxin.proto.core.PluginProto.Plugin>(plugin_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> pluginBuilder_;
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> pluginBuilder_;
 
       /**
        * <pre>
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile> getPluginList() {
+      public java.util.List<com.akaxin.proto.core.PluginProto.Plugin> getPluginList() {
         if (pluginBuilder_ == null) {
           return java.util.Collections.unmodifiableList(plugin_);
         } else {
@@ -1192,7 +1192,7 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public int getPluginCount() {
         if (pluginBuilder_ == null) {
@@ -1206,9 +1206,9 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin(int index) {
+      public com.akaxin.proto.core.PluginProto.Plugin getPlugin(int index) {
         if (pluginBuilder_ == null) {
           return plugin_.get(index);
         } else {
@@ -1220,10 +1220,10 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder setPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile value) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1241,10 +1241,10 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder setPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           plugin_.set(index, builderForValue.build());
@@ -1259,9 +1259,9 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public Builder addPlugin(com.akaxin.proto.core.PluginProto.PluginProfile value) {
+      public Builder addPlugin(com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1279,10 +1279,10 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile value) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1300,10 +1300,10 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addPlugin(
-          com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           plugin_.add(builderForValue.build());
@@ -1318,10 +1318,10 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addPlugin(
-          int index, com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          int index, com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           plugin_.add(index, builderForValue.build());
@@ -1336,10 +1336,10 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder addAllPlugin(
-          java.lang.Iterable<? extends com.akaxin.proto.core.PluginProto.PluginProfile> values) {
+          java.lang.Iterable<? extends com.akaxin.proto.core.PluginProto.Plugin> values) {
         if (pluginBuilder_ == null) {
           ensurePluginIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1355,7 +1355,7 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder clearPlugin() {
         if (pluginBuilder_ == null) {
@@ -1372,7 +1372,7 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
       public Builder removePlugin(int index) {
         if (pluginBuilder_ == null) {
@@ -1389,9 +1389,9 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder getPluginBuilder(
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder getPluginBuilder(
           int index) {
         return getPluginFieldBuilder().getBuilder(index);
       }
@@ -1400,9 +1400,9 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder(
+      public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder(
           int index) {
         if (pluginBuilder_ == null) {
           return plugin_.get(index);  } else {
@@ -1414,9 +1414,9 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+      public java.util.List<? extends com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
            getPluginOrBuilderList() {
         if (pluginBuilder_ != null) {
           return pluginBuilder_.getMessageOrBuilderList();
@@ -1429,41 +1429,41 @@ public final class ApiPluginListProto {
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder addPluginBuilder() {
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder addPluginBuilder() {
         return getPluginFieldBuilder().addBuilder(
-            com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance());
+            com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance());
       }
       /**
        * <pre>
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder addPluginBuilder(
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder addPluginBuilder(
           int index) {
         return getPluginFieldBuilder().addBuilder(
-            index, com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance());
+            index, com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance());
       }
       /**
        * <pre>
        *获取插件列表数据
        * </pre>
        *
-       * <code>repeated .core.PluginProfile plugin = 1;</code>
+       * <code>repeated .core.Plugin plugin = 1;</code>
        */
-      public java.util.List<com.akaxin.proto.core.PluginProto.PluginProfile.Builder> 
+      public java.util.List<com.akaxin.proto.core.PluginProto.Plugin.Builder> 
            getPluginBuilderList() {
         return getPluginFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
           getPluginFieldBuilder() {
         if (pluginBuilder_ == null) {
           pluginBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder>(
+              com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder>(
                   plugin_,
                   ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
@@ -1541,14 +1541,14 @@ public final class ApiPluginListProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032site/api_plugin_list.proto\022\004site\032\021core" +
-      "/plugin.proto\"b\n\024ApiPluginListRequest\022\023\n" +
-      "\013page_number\030\001 \001(\005\022\021\n\tpage_size\030\002 \001(\005\022\"\n" +
-      "\006status\030\003 \001(\0162\022.core.PluginStatus\"<\n\025Api" +
-      "PluginListResponse\022#\n\006plugin\030\001 \003(\0132\023.cor" +
-      "e.PluginProfile2W\n\024ApiPluginListService\022" +
-      "?\n\004list\022\032.site.ApiPluginListRequest\032\033.si" +
-      "te.ApiPluginListResponseB+\n\025com.akaxin.p" +
-      "roto.siteB\022ApiPluginListProtob\006proto3"
+      "/plugin.proto\"f\n\024ApiPluginListRequest\022\023\n" +
+      "\013page_number\030\001 \001(\005\022\021\n\tpage_size\030\002 \001(\005\022&\n" +
+      "\010position\030\003 \001(\0162\024.core.PluginPosition\"5\n" +
+      "\025ApiPluginListResponse\022\034\n\006plugin\030\001 \003(\0132\014" +
+      ".core.Plugin2W\n\024ApiPluginListService\022?\n\004" +
+      "list\022\032.site.ApiPluginListRequest\032\033.site." +
+      "ApiPluginListResponseB+\n\025com.akaxin.prot" +
+      "o.siteB\022ApiPluginListProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1568,7 +1568,7 @@ public final class ApiPluginListProto {
     internal_static_site_ApiPluginListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiPluginListRequest_descriptor,
-        new java.lang.String[] { "PageNumber", "PageSize", "Status", });
+        new java.lang.String[] { "PageNumber", "PageSize", "Position", });
     internal_static_site_ApiPluginListResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_site_ApiPluginListResponse_fieldAccessorTable = new

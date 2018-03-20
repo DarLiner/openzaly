@@ -937,14 +937,13 @@ public final class HaiPluginDeleteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\036plugin/hai_plugin_delete.proto\022\004site\032\021" +
-      "core/plugin.proto\"+\n\026HaiPluginDeleteRequ" +
-      "est\022\021\n\tplugin_id\030\001 \001(\t\"\031\n\027HaiPluginDelet" +
-      "eResponse2_\n\026HaiPluginDeleteService\022E\n\006d" +
-      "elete\022\034.site.HaiPluginDeleteRequest\032\035.si" +
-      "te.HaiPluginDeleteResponseB/\n\027com.akaxin" +
-      ".proto.pluginB\024HaiPluginDeleteProtob\006pro" +
-      "to3"
+      "\n\036plugin/hai_plugin_delete.proto\022\004site\"+" +
+      "\n\026HaiPluginDeleteRequest\022\021\n\tplugin_id\030\001 " +
+      "\001(\t\"\031\n\027HaiPluginDeleteResponse2_\n\026HaiPlu" +
+      "ginDeleteService\022E\n\006delete\022\034.site.HaiPlu" +
+      "ginDeleteRequest\032\035.site.HaiPluginDeleteR" +
+      "esponseB/\n\027com.akaxin.proto.pluginB\024HaiP" +
+      "luginDeleteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -957,7 +956,6 @@ public final class HaiPluginDeleteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.PluginProto.getDescriptor(),
         }, assigner);
     internal_static_site_HaiPluginDeleteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -971,7 +969,6 @@ public final class HaiPluginDeleteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_HaiPluginDeleteResponse_descriptor,
         new java.lang.String[] { });
-    com.akaxin.proto.core.PluginProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

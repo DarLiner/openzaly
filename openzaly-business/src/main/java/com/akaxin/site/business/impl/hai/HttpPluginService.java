@@ -32,6 +32,7 @@ import com.akaxin.proto.plugin.HaiPluginProfileProto;
 import com.akaxin.proto.plugin.HaiPluginUpdateProto;
 import com.akaxin.site.business.dao.SitePluginDao;
 import com.akaxin.site.business.impl.AbstractRequest;
+import com.akaxin.site.business.utils.StringRandomUtils;
 import com.akaxin.site.storage.bean.PluginBean;
 
 /**
@@ -50,7 +51,6 @@ public class HttpPluginService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse add(Command command) {
-		logger.info("/hai/plugin/add");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -62,15 +62,18 @@ public class HttpPluginService extends AbstractRequest {
 			bean.setName(request.getPlugin().getName());
 			bean.setIcon(request.getPlugin().getIcon());
 			bean.setUrlPage(request.getPlugin().getUrlPage());
-			bean.setUrlApi(request.getPlugin().getUrlApi());
-			bean.setAuthKey(request.getPlugin().getAuthKey());
+			bean.setApiUrl(request.getPlugin().getApiUrl());
 			bean.setAllowedIp(request.getPlugin().getAllowedIp());
+			bean.setPosition(request.getPlugin().getPositionValue());
+			bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
+			bean.setPermissionStatus(request.getPlugin().getPermissionStatusValue());
 			bean.setAddTime(System.currentTimeMillis());
+			String authKey = StringRandomUtils.generateRandomString(64);// 随机生成64位的字符串
+			bean.setAuthKey(authKey);
 
 			if (SitePluginDao.getInstance().addPlugin(bean)) {
 				errorCode = ErrorCode2.SUCCESS;
 			}
-
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("add plugin error.", e);
@@ -86,7 +89,6 @@ public class HttpPluginService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse delete(Command command) {
-		logger.info("/hai/plugin/delete");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -102,11 +104,11 @@ public class HttpPluginService extends AbstractRequest {
 			} else {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
 			}
-
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("delete plugin error.", e);
 		}
+
 		logger.info("/hai/plugin/delete result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
@@ -118,7 +120,6 @@ public class HttpPluginService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse list(Command command) {
-		logger.info("/hai/plugin/list");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -126,15 +127,9 @@ public class HttpPluginService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-			int status = request.getStatusValue();
 			logger.info("/hai/plugin/list command={} request={}", command.toString(), request.toString());
 
-			List<PluginBean> pluginList = null;
-			if (status == PluginProto.PluginStatus.ALL_PLUGIN_VALUE) {
-				pluginList = SitePluginDao.getInstance().getAllPluginList(pageNum, pageSize);
-			} else {
-				pluginList = SitePluginDao.getInstance().getPluginPageList(pageNum, pageSize, status);
-			}
+			List<PluginBean> pluginList = SitePluginDao.getInstance().getAllPluginList(pageNum, pageSize);
 
 			if (pluginList != null) {
 				HaiPluginListProto.HaiPluginListResponse.Builder responseBuilder = HaiPluginListProto.HaiPluginListResponse
@@ -160,7 +155,6 @@ public class HttpPluginService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse profile(Command command) {
-		logger.info("/hai/plugin/profile");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -191,7 +185,6 @@ public class HttpPluginService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse update(Command command) {
-		logger.info("/hai/plugin/update");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -203,10 +196,13 @@ public class HttpPluginService extends AbstractRequest {
 			bean.setName(request.getPlugin().getName());
 			bean.setIcon(request.getPlugin().getIcon());
 			bean.setUrlPage(request.getPlugin().getUrlPage());
-			bean.setUrlApi(request.getPlugin().getUrlApi());
+			bean.setApiUrl(request.getPlugin().getApiUrl());
 			bean.setAuthKey(request.getPlugin().getAuthKey());
 			bean.setAllowedIp(request.getPlugin().getAllowedIp());
-			bean.setStatus(request.getPlugin().getStatusValue());
+			bean.setSort(request.getPlugin().getOrder());
+			bean.setPosition(request.getPlugin().getPositionValue());
+			bean.setPermissionStatus(request.getPlugin().getPermissionStatusValue());
+
 			if (SitePluginDao.getInstance().updatePlugin(bean)) {
 				errorCode = ErrorCode2.SUCCESS;
 			}
@@ -218,8 +214,8 @@ public class HttpPluginService extends AbstractRequest {
 		return commandResponse.setErrCode2(errorCode);
 	}
 
-	private PluginProto.PluginProfile getPluginProfile(PluginBean bean) {
-		PluginProto.PluginProfile.Builder pluginBuilder = PluginProto.PluginProfile.newBuilder();
+	private PluginProto.Plugin getPluginProfile(PluginBean bean) {
+		PluginProto.Plugin.Builder pluginBuilder = PluginProto.Plugin.newBuilder();
 		pluginBuilder.setId(String.valueOf(bean.getId()));
 		if (StringUtils.isNotBlank(bean.getName())) {
 			pluginBuilder.setName(bean.getName());
@@ -230,8 +226,8 @@ public class HttpPluginService extends AbstractRequest {
 		if (StringUtils.isNotBlank(bean.getUrlPage())) {
 			pluginBuilder.setUrlPage(bean.getUrlPage());
 		}
-		if (StringUtils.isNotBlank(bean.getUrlApi())) {
-			pluginBuilder.setUrlApi(bean.getUrlApi());
+		if (StringUtils.isNotBlank(bean.getApiUrl())) {
+			pluginBuilder.setApiUrl(bean.getApiUrl());
 		}
 		if (StringUtils.isNotBlank(bean.getAuthKey())) {
 			pluginBuilder.setAuthKey(bean.getAuthKey());
@@ -239,7 +235,10 @@ public class HttpPluginService extends AbstractRequest {
 		if (StringUtils.isNotBlank(bean.getAllowedIp())) {
 			pluginBuilder.setAllowedIp(bean.getAllowedIp());
 		}
-		pluginBuilder.setStatusValue(bean.getStatus());
+		pluginBuilder.setOrder(bean.getSort());
+		pluginBuilder.setPositionValue(bean.getPosition());
+		pluginBuilder.setPermissionStatusValue(bean.getPermissionStatus());
+
 		return pluginBuilder.build();
 	}
 }

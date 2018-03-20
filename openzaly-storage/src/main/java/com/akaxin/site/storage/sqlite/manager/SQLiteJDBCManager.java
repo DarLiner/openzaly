@@ -217,10 +217,11 @@ public class SQLiteJDBCManager {
 				pst.setString(3, siteIcon);
 				pst.setString(4, urlPage);
 				pst.setString(5, urlApi);
-				if (id == 1) {
-					pst.setInt(6, PluginProto.PluginStatus.ADMIN_HOME_PAGE_SEE_VALUE);
+
+				if (id == 1) {// 默认为后台管理
+					pst.setInt(6, PluginProto.PluginPosition.HOME_PAGE_VALUE);
 				} else {
-					pst.setInt(6, PluginProto.PluginStatus.DISABLED_VALUE);
+					pst.setInt(6, PluginProto.PluginPosition.MSG_PAGE_VALUE);
 				}
 				result = (pst.executeUpdate() > 0);
 				logger.info("insert site management result={} SQL={} name={} url_page={} url_api={}", result, insertSql,

@@ -937,13 +937,13 @@ public final class ApiPluginDeleteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\034site/api_plugin_delete.proto\022\004site\032\021co" +
-      "re/plugin.proto\"+\n\026ApiPluginDeleteReques" +
-      "t\022\021\n\tplugin_id\030\001 \001(\t\"\031\n\027ApiPluginDeleteR" +
-      "esponse2_\n\026ApiPluginDeleteService\022E\n\006del" +
-      "ete\022\034.site.ApiPluginDeleteRequest\032\035.site" +
-      ".ApiPluginDeleteResponseB-\n\025com.akaxin.p" +
-      "roto.siteB\024ApiPluginDeleteProtob\006proto3"
+      "\n\034site/api_plugin_delete.proto\022\004site\"+\n\026" +
+      "ApiPluginDeleteRequest\022\021\n\tplugin_id\030\001 \001(" +
+      "\t\"\031\n\027ApiPluginDeleteResponse2_\n\026ApiPlugi" +
+      "nDeleteService\022E\n\006delete\022\034.site.ApiPlugi" +
+      "nDeleteRequest\032\035.site.ApiPluginDeleteRes" +
+      "ponseB-\n\025com.akaxin.proto.siteB\024ApiPlugi" +
+      "nDeleteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -956,7 +956,6 @@ public final class ApiPluginDeleteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.PluginProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiPluginDeleteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -970,7 +969,6 @@ public final class ApiPluginDeleteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiPluginDeleteResponse_descriptor,
         new java.lang.String[] { });
-    com.akaxin.proto.core.PluginProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

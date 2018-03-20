@@ -95,6 +95,14 @@ public final class CoreProto {
      * <code>SITE_SERVER_PORT = 1003;</code>
      */
     SITE_SERVER_PORT(1003),
+    /**
+     * <pre>
+     *3001-4000 分配给PLUGIN
+     * </pre>
+     *
+     * <code>PLUGIN_CLIENT_REFERER = 3001;</code>
+     */
+    PLUGIN_CLIENT_REFERER(3001),
     UNRECOGNIZED(-1),
     ;
 
@@ -174,6 +182,14 @@ public final class CoreProto {
      * <code>SITE_SERVER_PORT = 1003;</code>
      */
     public static final int SITE_SERVER_PORT_VALUE = 1003;
+    /**
+     * <pre>
+     *3001-4000 分配给PLUGIN
+     * </pre>
+     *
+     * <code>PLUGIN_CLIENT_REFERER = 3001;</code>
+     */
+    public static final int PLUGIN_CLIENT_REFERER_VALUE = 3001;
 
 
     public final int getNumber() {
@@ -205,6 +221,7 @@ public final class CoreProto {
         case 1001: return SITE_SERVER_VERSION;
         case 1002: return SITE_SERVER_HOST;
         case 1003: return SITE_SERVER_PORT;
+        case 3001: return PLUGIN_CLIENT_REFERER;
         default: return null;
       }
     }
@@ -21034,7 +21051,7 @@ public final class CoreProto {
       " \001(\t\022\026\n\016site_friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001",
       "(\014\022\014\n\004time\030\004 \001(\003\"Y\n\016GroupMsgNotice\022\024\n\014si" +
       "te_user_id\030\001 \001(\t\022\025\n\rsite_group_id\030\002 \001(\t\022" +
-      "\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003*\320\002\n\tHeaderKe" +
+      "\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003*\354\002\n\tHeaderKe" +
       "y\022\031\n\025CLIENT_SOCKET_VERSION\020\000\022!\n\035CLIENT_S" +
       "OCKET_SITE_SESSION_ID\020\001\022%\n!CLIENT_SOCKET" +
       "_PLATFORM_SESSION_ID\020\002\022\033\n\027CLIENT_SOCKET_" +
@@ -21043,17 +21060,17 @@ public final class CoreProto {
       "EQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_REQUEST_" +
       "SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERSION\020\351\007",
       "\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SERVER_P" +
-      "ORT\020\353\007*\342\002\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_ST" +
-      "ATUS\020\001\022\016\n\nMSG_FINISH\020\002\022\010\n\004TEXT\020\003\022\017\n\013SECR" +
-      "ET_TEXT\020\004\022\016\n\nGROUP_TEXT\020\005\022\025\n\021GROUP_SECRE" +
-      "T_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014SECRET_IMAGE\020\010\022\017\n" +
-      "\013GROUP_IMAGE\020\t\022\026\n\022GROUP_SECRET_IMAGE\020\n\022\t" +
-      "\n\005VOICE\020\013\022\020\n\014SECRET_VOICE\020\014\022\017\n\013GROUP_VOI" +
-      "CE\020\r\022\026\n\022GROUP_SECRET_VOICE\020\016\022\007\n\003MAP\020\017\022\016\n" +
-      "\nSECRET_MAP\020\020\022\r\n\tGROUP_MAP\020\021\022\024\n\020GROUP_SE" +
-      "CRET_MAP\020\022\022\r\n\tU2_NOTICE\020\023\022\020\n\014GROUP_NOTIC",
-      "E\020\024B\"\n\025com.akaxin.proto.coreB\tCoreProtob" +
-      "\006proto3"
+      "ORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027*\342\002\n\007M" +
+      "sgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001\022\016\n\nMS" +
+      "G_FINISH\020\002\022\010\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n" +
+      "\nGROUP_TEXT\020\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005" +
+      "IMAGE\020\007\022\020\n\014SECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE" +
+      "\020\t\022\026\n\022GROUP_SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n" +
+      "\014SECRET_VOICE\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROU" +
+      "P_SECRET_VOICE\020\016\022\007\n\003MAP\020\017\022\016\n\nSECRET_MAP\020" +
+      "\020\022\r\n\tGROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r",
+      "\n\tU2_NOTICE\020\023\022\020\n\014GROUP_NOTICE\020\024B\"\n\025com.a" +
+      "kaxin.proto.coreB\tCoreProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

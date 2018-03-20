@@ -49,17 +49,31 @@ public class SQLitePluginDao {
 
 	public boolean addPlugin(PluginBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "INSERT INTO " + PLUGIN_TABLE
-				+ "(name,icon,url_page,url_api,auth_key,allowed_ip,status,sort,add_time) VALUES(?,?,?,?,?,?,0,?,?);";
+		String sql = "INSERT INTO " + PLUGIN_TABLE//
+				+ "(name," //
+				+ "icon," //
+				+ "url_page,"//
+				+ "api_url,"//
+				+ "auth_key,"//
+				+ "allowed_ip,"//
+				+ "position,"//
+				+ "sort,"//
+				+ "display_mode,"//
+				+ "permission_status,"//
+				+ "add_time) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getName());
 		preStatement.setString(2, bean.getIcon());
 		preStatement.setString(3, bean.getUrlPage());
-		preStatement.setString(4, bean.getUrlApi());
+		preStatement.setString(4, bean.getApiUrl());
 		preStatement.setString(5, bean.getAuthKey());
-		preStatement.setString(6, bean.getUrlApi());
-		preStatement.setInt(7, bean.getSort());
-		preStatement.setLong(8, bean.getAddTime());
+		preStatement.setString(6, bean.getAllowedIp());
+		preStatement.setInt(7, bean.getPosition());
+		preStatement.setInt(8, bean.getSort());
+		preStatement.setInt(9, bean.getDisplayMode());
+		preStatement.setInt(10, bean.getPermissionStatus());
+		preStatement.setLong(11, bean.getAddTime());
+
 		int result = preStatement.executeUpdate();
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, result, sql + bean.toString());
@@ -68,33 +82,34 @@ public class SQLitePluginDao {
 
 	public boolean updatePlugin(PluginBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "UPDATE " + PLUGIN_TABLE
-				+ " SET name=?,icon=?,url_page=?,url_api=?,auth_key=?,allowed_ip=?,status=?,sort=? WHERE id=?;";
+		String sql = "UPDATE " + PLUGIN_TABLE + " SET "//
+				+ "name=?,"//
+				+ "icon=?,"//
+				+ "url_page=?,"//
+				+ "api_url=?,"//
+				+ "auth_key=?,"//
+				+ "allowed_ip=?,"//
+				+ "position,"//
+				+ "sort,"//
+				+ "display_mode,"//
+				+ "permission_status,"//
+				+ "WHERE id=?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getName());
 		preStatement.setString(2, bean.getIcon());
 		preStatement.setString(3, bean.getUrlPage());
-		preStatement.setString(4, bean.getUrlApi());
+		preStatement.setString(4, bean.getApiUrl());
 		preStatement.setString(5, bean.getAuthKey());
-		preStatement.setString(6, bean.getUrlApi());
-		preStatement.setInt(7, bean.getStatus());
+		preStatement.setString(6, bean.getAllowedIp());
+		preStatement.setInt(7, bean.getPosition());
 		preStatement.setInt(8, bean.getSort());
-		preStatement.setInt(9, bean.getId());
+		preStatement.setInt(9, bean.getDisplayMode());
+		preStatement.setInt(10, bean.getPermissionStatus());
+		preStatement.setInt(11, bean.getId());
 		int result = preStatement.executeUpdate();
+
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, result, sql + bean.toString());
-		return result > 0;
-	}
-
-	public boolean updatePluginStatus(int pluginId, int status) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		String sql = "UPDATE " + PLUGIN_TABLE + " SET status=? WHERE id=?;";
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setInt(1, status);
-		preStatement.setInt(2, pluginId);
-		int result = preStatement.executeUpdate();
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + pluginId + "," + status);
 		return result > 0;
 	}
 
@@ -112,8 +127,18 @@ public class SQLitePluginDao {
 	public PluginBean queryPluginProfile(int pluginId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		PluginBean pluginBean = new PluginBean();
-		String sql = "SELECT id,name,icon,url_page,url_api,auth_key,allowed_ip,status FROM " + PLUGIN_TABLE
-				+ " WHERE id=?;";
+		String sql = "SELECT id," //
+				+ "name,"//
+				+ "icon,"//
+				+ "url_page,"//
+				+ "api_url,"//
+				+ "auth_key,"//
+				+ "allowed_ip,"//
+				+ "position,"//
+				+ "sort,"//
+				+ "display_mode,"//
+				+ "permission_status"//
+				+ " FROM " + PLUGIN_TABLE + " WHERE id=?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, pluginId);
 		ResultSet rs = preStatement.executeQuery();
@@ -122,62 +147,61 @@ public class SQLitePluginDao {
 			pluginBean.setName(rs.getString(2));
 			pluginBean.setIcon(rs.getString(3));
 			pluginBean.setUrlPage(rs.getString(4));
-			pluginBean.setUrlApi(rs.getString(5));
+			pluginBean.setApiUrl(rs.getString(5));
 			pluginBean.setAuthKey(rs.getString(6));
 			pluginBean.setAllowedIp(rs.getString(7));
-			pluginBean.setStatus(rs.getInt(8));
+			pluginBean.setPosition(rs.getInt(8));
+			pluginBean.setSort(rs.getInt(9));
+			pluginBean.setDisplayMode(rs.getInt(10));
+			pluginBean.setPermissionStatus(rs.getInt(11));
 		}
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, pluginBean.toString(), sql + pluginId);
 		return pluginBean;
 	}
 
-	public List<PluginBean> queryPluginList(int pageNum, int pageSize, int status) throws SQLException {
+	/**
+	 * 按照位置和权限，分页查询
+	 * 
+	 * @param pageNum
+	 * @param pageSize
+	 * @param position
+	 * @param permissionStatus
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<PluginBean> queryPluginList(int pageNum, int pageSize, int position, int permissionStatus)
+			throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<PluginBean> pluginList = new ArrayList<PluginBean>();
-		String sql = "SELECT id,name,icon,url_page,url_api,status FROM " + PLUGIN_TABLE
-				+ " WHERE status=? ORDER BY sort LIMIT ?,?;";
+		String sql = "SELECT id," //
+				+ "name,"//
+				+ "icon,"//
+				+ "url_page,"//
+				+ "url_api,"//
+				+ "sort,"//
+				+ "position,"//
+				+ "permission_status"//
+				+ " FROM " + PLUGIN_TABLE + " WHERE "//
+				+ "position=? AND " + "permission_status=? " + "ORDER BY sort LIMIT ?,?;";
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setInt(1, status);
-		preStatement.setInt(2, startNum);
-		preStatement.setInt(3, pageSize);
-		ResultSet rs = preStatement.executeQuery();
-		while (rs.next()) {
-			PluginBean bean = new PluginBean();
-			bean.setId(rs.getInt(1));
-			bean.setName(rs.getString(2));
-			bean.setIcon(rs.getString(3));
-			bean.setUrlPage(rs.getString(4));
-			bean.setUrlApi(rs.getString(5));
-			bean.setStatus(rs.getInt(6));
-			pluginList.add(bean);
-		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pluginList, sql);
-		return pluginList;
-	}
-
-	public List<PluginBean> queryPluginList(int pageNum, int pageSize, int status1, int status2) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		List<PluginBean> pluginList = new ArrayList<PluginBean>();
-		String sql = "SELECT id,name,icon,url_page,url_api,status FROM " + PLUGIN_TABLE
-				+ " WHERE status=? OR status=? ORDER BY sort LIMIT ?,?;";
-		int startNum = (pageNum - 1) * pageSize;
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setInt(1, status1);
-		preStatement.setInt(2, status2);
+		preStatement.setInt(1, position);
+		preStatement.setInt(2, permissionStatus);
 		preStatement.setInt(3, startNum);
 		preStatement.setInt(4, pageSize);
 		ResultSet rs = preStatement.executeQuery();
+
 		while (rs.next()) {
 			PluginBean bean = new PluginBean();
 			bean.setId(rs.getInt(1));
 			bean.setName(rs.getString(2));
 			bean.setIcon(rs.getString(3));
 			bean.setUrlPage(rs.getString(4));
-			bean.setUrlApi(rs.getString(5));
-			bean.setStatus(rs.getInt(6));
+			bean.setApiUrl(rs.getString(5));
+			bean.setSort(rs.getInt(6));
+			bean.setPosition(rs.getInt(7));
+			bean.setPermissionStatus(rs.getInt(8));
 			pluginList.add(bean);
 		}
 		long endTime = System.currentTimeMillis();
@@ -185,10 +209,72 @@ public class SQLitePluginDao {
 		return pluginList;
 	}
 
+	/**
+	 * 按照位置，分页查询
+	 * 
+	 * @param pageNum
+	 * @param pageSize
+	 * @param position
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<PluginBean> queryPluginList(int pageNum, int pageSize, int position) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		List<PluginBean> pluginList = new ArrayList<PluginBean>();
+		String sql = "SELECT id," //
+				+ "name,"//
+				+ "icon,"//
+				+ "url_page,"//
+				+ "url_api,"//
+				+ "sort,"//
+				+ "position,"//
+				+ "permission_status"//
+				+ " FROM " + PLUGIN_TABLE + " WHERE "//
+				+ "position=? ORDER BY sort LIMIT ?,?;";
+		int startNum = (pageNum - 1) * pageSize;
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setInt(1, position);
+		preStatement.setInt(2, startNum);
+		preStatement.setInt(3, pageSize);
+		ResultSet rs = preStatement.executeQuery();
+
+		while (rs.next()) {
+			PluginBean bean = new PluginBean();
+			bean.setId(rs.getInt(1));
+			bean.setName(rs.getString(2));
+			bean.setIcon(rs.getString(3));
+			bean.setUrlPage(rs.getString(4));
+			bean.setApiUrl(rs.getString(5));
+			bean.setSort(rs.getInt(6));
+			bean.setPosition(rs.getInt(7));
+			bean.setPermissionStatus(rs.getInt(8));
+			pluginList.add(bean);
+		}
+		long endTime = System.currentTimeMillis();
+		LogUtils.printDBLog(logger, endTime - startTime, pluginList, sql);
+		return pluginList;
+	}
+
+	/**
+	 * 分页查询所有的扩展，管理后台使用
+	 * 
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<PluginBean> queryAllPluginList(int pageNum, int pageSize) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<PluginBean> pluginList = new ArrayList<PluginBean>();
-		String sql = "SELECT id,name,icon,url_page,url_api,status FROM " + PLUGIN_TABLE + " ORDER BY sort LIMIT ?,?;";
+		String sql = "SELECT id,"//
+				+ "name,"//
+				+ "icon,"//
+				+ "url_page,"//
+				+ "url_api,"//
+				+ "sort,"//
+				+ "position,"//
+				+ "permission_status"//
+				+ " FROM " + PLUGIN_TABLE + " ORDER BY sort LIMIT ?,?;";
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, startNum);
@@ -200,8 +286,10 @@ public class SQLitePluginDao {
 			bean.setName(rs.getString(2));
 			bean.setIcon(rs.getString(3));
 			bean.setUrlPage(rs.getString(4));
-			bean.setUrlApi(rs.getString(5));
-			bean.setStatus(rs.getInt(6));
+			bean.setApiUrl(rs.getString(5));
+			bean.setSort(rs.getInt(6));
+			bean.setPosition(rs.getInt(7));
+			bean.setPermissionStatus(rs.getInt(8));
 			pluginList.add(bean);
 		}
 		long endTime = System.currentTimeMillis();

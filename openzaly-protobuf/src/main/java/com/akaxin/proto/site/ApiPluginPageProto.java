@@ -38,21 +38,21 @@ public final class ApiPluginPageProto {
 
     /**
      * <pre>
-     *插件执行的接口
+     *需要访问的界面
      * </pre>
      *
-     * <code>optional string api = 2;</code>
+     * <code>optional string page = 2;</code>
      */
-    java.lang.String getApi();
+    java.lang.String getPage();
     /**
      * <pre>
-     *插件执行的接口
+     *需要访问的界面
      * </pre>
      *
-     * <code>optional string api = 2;</code>
+     * <code>optional string page = 2;</code>
      */
     com.google.protobuf.ByteString
-        getApiBytes();
+        getPageBytes();
 
     /**
      * <pre>
@@ -85,7 +85,7 @@ public final class ApiPluginPageProto {
     }
     private ApiPluginPageRequest() {
       pluginId_ = "";
-      api_ = "";
+      page_ = "";
       params_ = "";
     }
 
@@ -123,7 +123,7 @@ public final class ApiPluginPageProto {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              api_ = s;
+              page_ = s;
               break;
             }
             case 26: {
@@ -197,42 +197,42 @@ public final class ApiPluginPageProto {
       }
     }
 
-    public static final int API_FIELD_NUMBER = 2;
-    private volatile java.lang.Object api_;
+    public static final int PAGE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object page_;
     /**
      * <pre>
-     *插件执行的接口
+     *需要访问的界面
      * </pre>
      *
-     * <code>optional string api = 2;</code>
+     * <code>optional string page = 2;</code>
      */
-    public java.lang.String getApi() {
-      java.lang.Object ref = api_;
+    public java.lang.String getPage() {
+      java.lang.Object ref = page_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        api_ = s;
+        page_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *插件执行的接口
+     *需要访问的界面
      * </pre>
      *
-     * <code>optional string api = 2;</code>
+     * <code>optional string page = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getApiBytes() {
-      java.lang.Object ref = api_;
+        getPageBytes() {
+      java.lang.Object ref = page_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        api_ = b;
+        page_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -296,8 +296,8 @@ public final class ApiPluginPageProto {
       if (!getPluginIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, pluginId_);
       }
-      if (!getApiBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, api_);
+      if (!getPageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, page_);
       }
       if (!getParamsBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, params_);
@@ -312,8 +312,8 @@ public final class ApiPluginPageProto {
       if (!getPluginIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, pluginId_);
       }
-      if (!getApiBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, api_);
+      if (!getPageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, page_);
       }
       if (!getParamsBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, params_);
@@ -336,8 +336,8 @@ public final class ApiPluginPageProto {
       boolean result = true;
       result = result && getPluginId()
           .equals(other.getPluginId());
-      result = result && getApi()
-          .equals(other.getApi());
+      result = result && getPage()
+          .equals(other.getPage());
       result = result && getParams()
           .equals(other.getParams());
       return result;
@@ -352,8 +352,8 @@ public final class ApiPluginPageProto {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + PLUGIN_ID_FIELD_NUMBER;
       hash = (53 * hash) + getPluginId().hashCode();
-      hash = (37 * hash) + API_FIELD_NUMBER;
-      hash = (53 * hash) + getApi().hashCode();
+      hash = (37 * hash) + PAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getPage().hashCode();
       hash = (37 * hash) + PARAMS_FIELD_NUMBER;
       hash = (53 * hash) + getParams().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -476,7 +476,7 @@ public final class ApiPluginPageProto {
         super.clear();
         pluginId_ = "";
 
-        api_ = "";
+        page_ = "";
 
         params_ = "";
 
@@ -503,7 +503,7 @@ public final class ApiPluginPageProto {
       public com.akaxin.proto.site.ApiPluginPageProto.ApiPluginPageRequest buildPartial() {
         com.akaxin.proto.site.ApiPluginPageProto.ApiPluginPageRequest result = new com.akaxin.proto.site.ApiPluginPageProto.ApiPluginPageRequest(this);
         result.pluginId_ = pluginId_;
-        result.api_ = api_;
+        result.page_ = page_;
         result.params_ = params_;
         onBuilt();
         return result;
@@ -550,8 +550,8 @@ public final class ApiPluginPageProto {
           pluginId_ = other.pluginId_;
           onChanged();
         }
-        if (!other.getApi().isEmpty()) {
-          api_ = other.api_;
+        if (!other.getPage().isEmpty()) {
+          page_ = other.page_;
           onChanged();
         }
         if (!other.getParams().isEmpty()) {
@@ -673,21 +673,21 @@ public final class ApiPluginPageProto {
         return this;
       }
 
-      private java.lang.Object api_ = "";
+      private java.lang.Object page_ = "";
       /**
        * <pre>
-       *插件执行的接口
+       *需要访问的界面
        * </pre>
        *
-       * <code>optional string api = 2;</code>
+       * <code>optional string page = 2;</code>
        */
-      public java.lang.String getApi() {
-        java.lang.Object ref = api_;
+      public java.lang.String getPage() {
+        java.lang.Object ref = page_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          api_ = s;
+          page_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -695,19 +695,19 @@ public final class ApiPluginPageProto {
       }
       /**
        * <pre>
-       *插件执行的接口
+       *需要访问的界面
        * </pre>
        *
-       * <code>optional string api = 2;</code>
+       * <code>optional string page = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getApiBytes() {
-        java.lang.Object ref = api_;
+          getPageBytes() {
+        java.lang.Object ref = page_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          api_ = b;
+          page_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -715,49 +715,49 @@ public final class ApiPluginPageProto {
       }
       /**
        * <pre>
-       *插件执行的接口
+       *需要访问的界面
        * </pre>
        *
-       * <code>optional string api = 2;</code>
+       * <code>optional string page = 2;</code>
        */
-      public Builder setApi(
+      public Builder setPage(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        api_ = value;
+        page_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *插件执行的接口
+       *需要访问的界面
        * </pre>
        *
-       * <code>optional string api = 2;</code>
+       * <code>optional string page = 2;</code>
        */
-      public Builder clearApi() {
+      public Builder clearPage() {
         
-        api_ = getDefaultInstance().getApi();
+        page_ = getDefaultInstance().getPage();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *插件执行的接口
+       *需要访问的界面
        * </pre>
        *
-       * <code>optional string api = 2;</code>
+       * <code>optional string page = 2;</code>
        */
-      public Builder setApiBytes(
+      public Builder setPageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        api_ = value;
+        page_ = value;
         onChanged();
         return this;
       }
@@ -1748,16 +1748,16 @@ public final class ApiPluginPageProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\032site/api_plugin_page.proto\022\004site\"F\n\024Ap" +
-      "iPluginPageRequest\022\021\n\tplugin_id\030\001 \001(\t\022\013\n" +
-      "\003api\030\002 \001(\t\022\016\n\006params\030\003 \001(\t\"\215\001\n\025ApiPlugin" +
-      "PageResponse\022\014\n\004data\030\001 \001(\014\0227\n\006cookie\030\002 \003" +
-      "(\0132\'.site.ApiPluginPageResponse.CookieEn" +
-      "try\032-\n\013CookieEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
-      "\030\002 \001(\t:\0028\0012W\n\024ApiPluginPageService\022?\n\004pa" +
-      "ge\022\032.site.ApiPluginPageRequest\032\033.site.Ap" +
-      "iPluginPageResponseB+\n\025com.akaxin.proto." +
-      "siteB\022ApiPluginPageProtob\006proto3"
+      "\n\032site/api_plugin_page.proto\022\004site\"G\n\024Ap" +
+      "iPluginPageRequest\022\021\n\tplugin_id\030\001 \001(\t\022\014\n" +
+      "\004page\030\002 \001(\t\022\016\n\006params\030\003 \001(\t\"\215\001\n\025ApiPlugi" +
+      "nPageResponse\022\014\n\004data\030\001 \001(\014\0227\n\006cookie\030\002 " +
+      "\003(\0132\'.site.ApiPluginPageResponse.CookieE" +
+      "ntry\032-\n\013CookieEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\t:\0028\0012W\n\024ApiPluginPageService\022?\n\004p" +
+      "age\022\032.site.ApiPluginPageRequest\032\033.site.A" +
+      "piPluginPageResponseB+\n\025com.akaxin.proto" +
+      ".siteB\022ApiPluginPageProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1776,7 +1776,7 @@ public final class ApiPluginPageProto {
     internal_static_site_ApiPluginPageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiPluginPageRequest_descriptor,
-        new java.lang.String[] { "PluginId", "Api", "Params", });
+        new java.lang.String[] { "PluginId", "Page", "Params", });
     internal_static_site_ApiPluginPageResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_site_ApiPluginPageResponse_fieldAccessorTable = new

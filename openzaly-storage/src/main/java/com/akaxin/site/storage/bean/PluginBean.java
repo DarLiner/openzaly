@@ -6,12 +6,14 @@ public class PluginBean {
 	private int id;
 	private String name;
 	private String urlPage;
-	private String urlApi;
+	private String apiUrl;
 	private String icon;
 	private String authKey;
 	private String allowedIp;
-	private int status;// 0:可用状态，1:禁用状态
-	private int sort;
+	private int position;// 扩展的位置，首页还是消息帧
+	private int sort;// 排序字段
+	private int displayMode;// 在客户端展示的方式
+	private int permissionStatus;// 是否可用
 	private long addTime;
 
 	public int getId() {
@@ -38,12 +40,12 @@ public class PluginBean {
 		this.urlPage = urlPage;
 	}
 
-	public String getUrlApi() {
-		return urlApi;
+	public String getApiUrl() {
+		return apiUrl;
 	}
 
-	public void setUrlApi(String urlApi) {
-		this.urlApi = urlApi;
+	public void setApiUrl(String apiUrl) {
+		this.apiUrl = apiUrl;
 	}
 
 	public String getIcon() {
@@ -70,14 +72,6 @@ public class PluginBean {
 		this.allowedIp = allowedIp;
 	}
 
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 	public int getSort() {
 		return sort;
 	}
@@ -92,6 +86,30 @@ public class PluginBean {
 
 	public void setAddTime(long addTime) {
 		this.addTime = addTime;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public int getDisplayMode() {
+		return displayMode;
+	}
+
+	public void setDisplayMode(int displayMode) {
+		this.displayMode = displayMode;
+	}
+
+	public int getPermissionStatus() {
+		return permissionStatus;
+	}
+
+	public void setPermissionStatus(int permissionStatus) {
+		this.permissionStatus = permissionStatus;
 	}
 
 	public String toString() {

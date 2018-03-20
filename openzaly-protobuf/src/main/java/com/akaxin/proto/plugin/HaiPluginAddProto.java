@@ -23,7 +23,7 @@ public final class HaiPluginAddProto {
      *需要增加的插件
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
     boolean hasPlugin();
     /**
@@ -31,17 +31,17 @@ public final class HaiPluginAddProto {
      *需要增加的插件
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfile getPlugin();
+    com.akaxin.proto.core.PluginProto.Plugin getPlugin();
     /**
      * <pre>
      *需要增加的插件
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder();
+    com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder();
   }
   /**
    * Protobuf type {@code plugin.HaiPluginAddRequest}
@@ -83,11 +83,11 @@ public final class HaiPluginAddProto {
               break;
             }
             case 10: {
-              com.akaxin.proto.core.PluginProto.PluginProfile.Builder subBuilder = null;
+              com.akaxin.proto.core.PluginProto.Plugin.Builder subBuilder = null;
               if (plugin_ != null) {
                 subBuilder = plugin_.toBuilder();
               }
-              plugin_ = input.readMessage(com.akaxin.proto.core.PluginProto.PluginProfile.parser(), extensionRegistry);
+              plugin_ = input.readMessage(com.akaxin.proto.core.PluginProto.Plugin.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(plugin_);
                 plugin_ = subBuilder.buildPartial();
@@ -119,13 +119,13 @@ public final class HaiPluginAddProto {
     }
 
     public static final int PLUGIN_FIELD_NUMBER = 1;
-    private com.akaxin.proto.core.PluginProto.PluginProfile plugin_;
+    private com.akaxin.proto.core.PluginProto.Plugin plugin_;
     /**
      * <pre>
      *需要增加的插件
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
     public boolean hasPlugin() {
       return plugin_ != null;
@@ -135,19 +135,19 @@ public final class HaiPluginAddProto {
      *需要增加的插件
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin() {
-      return plugin_ == null ? com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance() : plugin_;
+    public com.akaxin.proto.core.PluginProto.Plugin getPlugin() {
+      return plugin_ == null ? com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance() : plugin_;
     }
     /**
      * <pre>
      *需要增加的插件
      * </pre>
      *
-     * <code>optional .core.PluginProfile plugin = 1;</code>
+     * <code>optional .core.Plugin plugin = 1;</code>
      */
-    public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder() {
+    public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder() {
       return getPlugin();
     }
 
@@ -433,15 +433,15 @@ public final class HaiPluginAddProto {
         return this;
       }
 
-      private com.akaxin.proto.core.PluginProto.PluginProfile plugin_ = null;
+      private com.akaxin.proto.core.PluginProto.Plugin plugin_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> pluginBuilder_;
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> pluginBuilder_;
       /**
        * <pre>
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       public boolean hasPlugin() {
         return pluginBuilder_ != null || plugin_ != null;
@@ -451,11 +451,11 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile getPlugin() {
+      public com.akaxin.proto.core.PluginProto.Plugin getPlugin() {
         if (pluginBuilder_ == null) {
-          return plugin_ == null ? com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance() : plugin_;
+          return plugin_ == null ? com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance() : plugin_;
         } else {
           return pluginBuilder_.getMessage();
         }
@@ -465,9 +465,9 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public Builder setPlugin(com.akaxin.proto.core.PluginProto.PluginProfile value) {
+      public Builder setPlugin(com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -485,10 +485,10 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       public Builder setPlugin(
-          com.akaxin.proto.core.PluginProto.PluginProfile.Builder builderForValue) {
+          com.akaxin.proto.core.PluginProto.Plugin.Builder builderForValue) {
         if (pluginBuilder_ == null) {
           plugin_ = builderForValue.build();
           onChanged();
@@ -503,13 +503,13 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public Builder mergePlugin(com.akaxin.proto.core.PluginProto.PluginProfile value) {
+      public Builder mergePlugin(com.akaxin.proto.core.PluginProto.Plugin value) {
         if (pluginBuilder_ == null) {
           if (plugin_ != null) {
             plugin_ =
-              com.akaxin.proto.core.PluginProto.PluginProfile.newBuilder(plugin_).mergeFrom(value).buildPartial();
+              com.akaxin.proto.core.PluginProto.Plugin.newBuilder(plugin_).mergeFrom(value).buildPartial();
           } else {
             plugin_ = value;
           }
@@ -525,7 +525,7 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       public Builder clearPlugin() {
         if (pluginBuilder_ == null) {
@@ -543,9 +543,9 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfile.Builder getPluginBuilder() {
+      public com.akaxin.proto.core.PluginProto.Plugin.Builder getPluginBuilder() {
         
         onChanged();
         return getPluginFieldBuilder().getBuilder();
@@ -555,14 +555,14 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
-      public com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder getPluginOrBuilder() {
+      public com.akaxin.proto.core.PluginProto.PluginOrBuilder getPluginOrBuilder() {
         if (pluginBuilder_ != null) {
           return pluginBuilder_.getMessageOrBuilder();
         } else {
           return plugin_ == null ?
-              com.akaxin.proto.core.PluginProto.PluginProfile.getDefaultInstance() : plugin_;
+              com.akaxin.proto.core.PluginProto.Plugin.getDefaultInstance() : plugin_;
         }
       }
       /**
@@ -570,14 +570,14 @@ public final class HaiPluginAddProto {
        *需要增加的插件
        * </pre>
        *
-       * <code>optional .core.PluginProfile plugin = 1;</code>
+       * <code>optional .core.Plugin plugin = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder> 
+          com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder> 
           getPluginFieldBuilder() {
         if (pluginBuilder_ == null) {
           pluginBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.PluginProto.PluginProfile, com.akaxin.proto.core.PluginProto.PluginProfile.Builder, com.akaxin.proto.core.PluginProto.PluginProfileOrBuilder>(
+              com.akaxin.proto.core.PluginProto.Plugin, com.akaxin.proto.core.PluginProto.Plugin.Builder, com.akaxin.proto.core.PluginProto.PluginOrBuilder>(
                   getPlugin(),
                   getParentForChildren(),
                   isClean());
@@ -1019,13 +1019,12 @@ public final class HaiPluginAddProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\033plugin/hai_plugin_add.proto\022\006plugin\032\021c" +
-      "ore/plugin.proto\":\n\023HaiPluginAddRequest\022" +
-      "#\n\006plugin\030\001 \001(\0132\023.core.PluginProfile\"\026\n\024" +
-      "HaiPluginAddResponse2W\n\023HaiPluginAddServ" +
-      "ice\022@\n\003add\022\033.plugin.HaiPluginAddRequest\032" +
-      "\034.plugin.HaiPluginAddResponseB,\n\027com.aka" +
-      "xin.proto.pluginB\021HaiPluginAddProtob\006pro" +
-      "to3"
+      "ore/plugin.proto\"3\n\023HaiPluginAddRequest\022" +
+      "\034\n\006plugin\030\001 \001(\0132\014.core.Plugin\"\026\n\024HaiPlug" +
+      "inAddResponse2W\n\023HaiPluginAddService\022@\n\003" +
+      "add\022\033.plugin.HaiPluginAddRequest\032\034.plugi" +
+      "n.HaiPluginAddResponseB,\n\027com.akaxin.pro" +
+      "to.pluginB\021HaiPluginAddProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

@@ -21,6 +21,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.storage.api.IPluginDao;
 import com.akaxin.site.storage.bean.PluginBean;
 import com.akaxin.site.storage.service.PluginServiceDao;
@@ -64,28 +65,6 @@ public class SitePluginDao {
 		return false;
 	}
 
-	/**
-	 * <pre>
-	 * 禁用扩展，将扩展状态设置为0
-	 * 
-	 * 扩展的状态
-	 * 		1：status=0，扩展禁止使用
-	 * 		2：status=1,扩展可用
-	 * 		3：status=2,管理员可见
-	 * </pre>
-	 * 
-	 * @param pluginId
-	 * @return
-	 */
-	public boolean updateStatus(int pluginId, int status) {
-		try {
-			return pluginDao.updatePluginStatus(pluginId, status);
-		} catch (SQLException e) {
-			logger.error("disable plugin error.", e);
-		}
-		return false;
-	}
-
 	public boolean updatePlugin(PluginBean bean) {
 		try {
 			return pluginDao.updatePlugin(bean);
@@ -95,10 +74,18 @@ public class SitePluginDao {
 		return false;
 	}
 
-	public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int status) {
+	/**
+	 * 获取管理员的扩展列表
+	 * 
+	 * @param pageNum
+	 * @param pageSize
+	 * @param position
+	 * @return
+	 */
+	public List<PluginBean> getAdminPluginPageList(int pageNum, int pageSize, int position) {
 		List<PluginBean> pluginList = null;
 		try {
-			pluginList = pluginDao.getPluginPageList(pageNum, pageSize, status);
+			pluginList = pluginDao.getPluginPageList(pageNum, pageSize, position);
 		} catch (SQLException e) {
 			logger.error("get plugin list error.", e);
 		}
@@ -106,24 +93,31 @@ public class SitePluginDao {
 	}
 
 	/**
-	 * 针对管理员用户，兼容两种状态
+	 * 获取普通用户的扩展列表
 	 * 
 	 * @param pageNum
 	 * @param pageSize
-	 * @param status1
-	 * @param status2
+	 * @param position
 	 * @return
 	 */
-	public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int status1, int status2) {
+	public List<PluginBean> getOrdinaryPluginPageList(int pageNum, int pageSize, int position) {
 		List<PluginBean> pluginList = null;
 		try {
-			pluginList = pluginDao.getPluginPageList(pageNum, pageSize, status1, status2);
+			pluginList = pluginDao.getPluginPageList(pageNum, pageSize, position,
+					PluginProto.PermissionStatus.AVAILABLE_VALUE);
 		} catch (SQLException e) {
 			logger.error("get plugin list error.", e);
 		}
 		return pluginList;
 	}
 
+	/**
+	 * 获取所有扩展列表
+	 * 
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
 	public List<PluginBean> getAllPluginList(int pageNum, int pageSize) {
 		List<PluginBean> pluginList = null;
 		try {

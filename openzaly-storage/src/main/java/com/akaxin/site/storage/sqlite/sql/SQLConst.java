@@ -59,16 +59,27 @@ public interface SQLConst {
 			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
 
 	String CREATE_SITE_USER_DEVICE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_DEVICE
-			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, device_id VARCHAR(50), user_device_pubk TEXT, device_name TEXT, device_ip VARCHAR(50), user_token VARCHAR(50),active_time DATATIME, add_time DATATIME);";
+			+ "(id INTEGER primary key not null, site_user_id VARCHAR(50) not null, device_id VARCHAR(50), user_device_pubk TEXT, device_name TEXT, device_ip VARCHAR(50), user_token VARCHAR(50),active_time LONG, add_time LONG);";
 
 	String CREATE_SITE_PLUGIN_MANAGER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_PLUGIN_MANAGER
-			+ "(id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(50) UNIQUE NOT NULL, icon TEXT NOT NULL, url_page TEXT, url_api TEXT,auth_key TEXT,allowed_ip VARCHAR(50),status INTEGER,sort INTEGER,add_time DATATIME);";
+			+ "(id INTEGER PRIMARY KEY NOT NULL,"
+			+ "name VARCHAR(50) UNIQUE NOT NULL,"
+			+ "icon TEXT NOT NULL,"
+			+ "url_page TEXT,"
+			+ "api_url TEXT,"
+			+ "auth_key TEXT NOT NULL,"
+			+ "allowed_ip TEXT,"
+			+ "position INTEGER,"
+			+ "sort INTEGER,"
+			+ "display_mode INTEGER,"
+			+ "permission_status INTEGER,"
+			+ "add_time LONG);";
 
 	String CREATE_SITE_USER_UIC_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_UIC
 			+ "(id INTEGER PRIMARY KEY NOT NULL,uic VARCHAR(10) UNIQUE NOT NULL,site_user_id VARCHAR(50),status INTEGER,create_time LONG,use_time LONG)";
 
+	
 	public HashMap<String, String> SITE_TABLES_MAP = new HashMap<String, String>() {
-		//
 		private static final long serialVersionUID = 1L;
 
 		{
