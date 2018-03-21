@@ -126,21 +126,24 @@ public class ApiPluginService extends AbstractRequest {
 				PluginBean bean = SitePluginDao.getInstance().getPluginProfile(Integer.valueOf(pluginId));
 				if (bean != null && bean.getApiUrl() != null) {
 					String pageUrl = buildUrl(bean.getApiUrl(), requestPage, bean.getUrlPage());
-					pageUrl += "?siteUserId=" + siteUserId;
 					logger.info("http request uri={}", pageUrl);
 
-					PluginProto.ProxyPluginPackage proxyPackage = PluginProto.ProxyPluginPackage.newBuilder()
-							.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId)
-							.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_SESSION_ID_VALUE, siteSessionId)
-							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_REFERER_VALUE, pluginRefere)
-							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE,
-									String.valueOf(System.currentTimeMillis()))
-							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_ID_VALUE, pluginId)
-							.setData(requestParams).build();
-
+					PluginProto.ProxyPluginPackage.Builder packageBuilder = PluginProto.ProxyPluginPackage.newBuilder();
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId);
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_SESSION_ID_VALUE,
+							siteSessionId);
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_ID_VALUE, pluginId);
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE,
+							String.valueOf(System.currentTimeMillis()));
+					if (StringUtils.isNotEmpty(pluginRefere)) {
+						packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_REFERER_VALUE, pluginRefere);
+					}
+					if (StringUtils.isNotEmpty(requestParams)) {
+						packageBuilder.setData(requestParams);
+					}
 					// AES 加密整个proto，通过http传输给plugin
 					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
-					byte[] enPostContent = AESCrypto.encrypt(tsk, proxyPackage.toByteArray());
+					byte[] enPostContent = AESCrypto.encrypt(tsk, packageBuilder.build().toByteArray());
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, enPostContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
@@ -197,18 +200,23 @@ public class ApiPluginService extends AbstractRequest {
 					logger.info("Api.Plugin.Proxy pluginId={} api={} url={} params={}", pluginId, requestApi, pluginUrl,
 							requestParams);
 
-					PluginProto.ProxyPluginPackage proxyPackage = PluginProto.ProxyPluginPackage.newBuilder()
-							.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId)
-							.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_SESSION_ID_VALUE, siteSessionId)
-							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_REFERER_VALUE, pluginRefere)
-							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE,
-									String.valueOf(System.currentTimeMillis()))
-							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_ID_VALUE, pluginId)
-							.setData(requestParams).build();
+					PluginProto.ProxyPluginPackage.Builder packageBuilder = PluginProto.ProxyPluginPackage.newBuilder();
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId);
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_SESSION_ID_VALUE,
+							siteSessionId);
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_ID_VALUE, pluginId);
+					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE,
+							String.valueOf(System.currentTimeMillis()));
+					if (StringUtils.isNotEmpty(pluginRefere)) {
+						packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_REFERER_VALUE, pluginRefere);
+					}
+					if (StringUtils.isNotEmpty(requestParams)) {
+						packageBuilder.setData(requestParams);
+					}
 
 					// AES 加密整个proto，通过http传输给plugin
 					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
-					byte[] enPostContent = AESCrypto.encrypt(tsk, proxyPackage.toByteArray());
+					byte[] enPostContent = AESCrypto.encrypt(tsk, packageBuilder.build().toByteArray());
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pluginUrl, enPostContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
