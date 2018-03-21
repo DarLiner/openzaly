@@ -115,19 +115,41 @@ public class ApiPluginService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String pluginId = request.getPluginId();
-			String pluginPage = request.getPage();// /index || index.php || index.html
+			String requestPage = request.getPage();// /index || index.php || index.html
+			String requestParams = request.getParams();
 			logger.info("api.plugin.page cmd={} request={}", command.toString(), request.toString());
 
+			Map<Integer, String> header = command.getHeader();
+			String siteSessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
+			String pluginRefere = header.get(CoreProto.HeaderKey.PLUGIN_CLIENT_REFERER_VALUE);
 			if (StringUtils.isNoneEmpty(siteUserId, pluginId)) {
 				PluginBean bean = SitePluginDao.getInstance().getPluginProfile(Integer.valueOf(pluginId));
 				if (bean != null && bean.getApiUrl() != null) {
-					String pageUrl = buildUrl(bean.getApiUrl(), pluginPage, bean.getUrlPage());
+					String pageUrl = buildUrl(bean.getApiUrl(), requestPage, bean.getUrlPage());
 					pageUrl += "?siteUserId=" + siteUserId;
 					logger.info("http request uri={}", pageUrl);
 
-					byte[] httpResponse = ZalyHttpClient.getInstance().get(pageUrl);
-					ApiPluginPageProto.ApiPluginPageResponse response = ApiPluginPageProto.ApiPluginPageResponse
+					PluginProto.ProxyPluginPackage proxyPackage = PluginProto.ProxyPluginPackage.newBuilder()
+							.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId)
+							.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_SESSION_ID_VALUE, siteSessionId)
+							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_REFERER_VALUE, pluginRefere)
+							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE,
+									String.valueOf(System.currentTimeMillis()))
+							.putPluginHeader(PluginProto.PluginHeaderKey.PLUGIN_ID_VALUE, pluginId)
+							.setData(requestParams).build();
+
+					// AES 加密整个proto，通过http传输给plugin
+					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
+					byte[] enPostContent = AESCrypto.encrypt(tsk, proxyPackage.toByteArray());
+
+					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, enPostContent);
+					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
 							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
+
+					// byte[] httpResponse = ZalyHttpClient.getInstance().get(pageUrl);
+					// ApiPluginPageProto.ApiPluginPageResponse response =
+					// ApiPluginPageProto.ApiPluginPageResponse
+					// .newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
 					commandResponse.setParams(response.toByteArray());
 					errCode = ErrorCode2.SUCCESS;
 				}
