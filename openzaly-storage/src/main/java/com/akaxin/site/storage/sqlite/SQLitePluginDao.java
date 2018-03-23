@@ -87,25 +87,23 @@ public class SQLitePluginDao {
 				+ "icon=?,"//
 				+ "url_page=?,"//
 				+ "api_url=?,"//
-				+ "auth_key=?,"//
 				+ "allowed_ip=?,"//
-				+ "position,"//
-				+ "sort,"//
-				+ "display_mode,"//
-				+ "permission_status,"//
+				+ "position=?,"//
+				+ "sort=?,"//
+				+ "display_mode=?,"//
+				+ "permission_status=? "//
 				+ "WHERE id=?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getName());
 		preStatement.setString(2, bean.getIcon());
 		preStatement.setString(3, bean.getUrlPage());
 		preStatement.setString(4, bean.getApiUrl());
-		preStatement.setString(5, bean.getAuthKey());
-		preStatement.setString(6, bean.getAllowedIp());
-		preStatement.setInt(7, bean.getPosition());
-		preStatement.setInt(8, bean.getSort());
-		preStatement.setInt(9, bean.getDisplayMode());
-		preStatement.setInt(10, bean.getPermissionStatus());
-		preStatement.setInt(11, bean.getId());
+		preStatement.setString(5, bean.getAllowedIp());
+		preStatement.setInt(6, bean.getPosition());
+		preStatement.setInt(7, bean.getSort());
+		preStatement.setInt(8, bean.getDisplayMode());
+		preStatement.setInt(9, bean.getPermissionStatus());
+		preStatement.setInt(10, bean.getId());
 		int result = preStatement.executeUpdate();
 
 		long endTime = System.currentTimeMillis();
@@ -131,7 +129,6 @@ public class SQLitePluginDao {
 				+ "name,"//
 				+ "icon,"//
 				+ "url_page,"//
-				+ "api_url,"//
 				+ "auth_key,"//
 				+ "allowed_ip,"//
 				+ "position,"//
@@ -148,12 +145,11 @@ public class SQLitePluginDao {
 			pluginBean.setIcon(rs.getString(3));
 			pluginBean.setUrlPage(rs.getString(4));
 			pluginBean.setApiUrl(rs.getString(5));
-			pluginBean.setAuthKey(rs.getString(6));
-			pluginBean.setAllowedIp(rs.getString(7));
-			pluginBean.setPosition(rs.getInt(8));
-			pluginBean.setSort(rs.getInt(9));
-			pluginBean.setDisplayMode(rs.getInt(10));
-			pluginBean.setPermissionStatus(rs.getInt(11));
+			pluginBean.setAllowedIp(rs.getString(6));
+			pluginBean.setPosition(rs.getInt(7));
+			pluginBean.setSort(rs.getInt(8));
+			pluginBean.setDisplayMode(rs.getInt(9));
+			pluginBean.setPermissionStatus(rs.getInt(10));
 		}
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, pluginBean.toString(), sql + pluginId);
