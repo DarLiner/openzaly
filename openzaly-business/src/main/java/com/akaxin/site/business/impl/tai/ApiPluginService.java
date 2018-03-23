@@ -142,7 +142,7 @@ public class ApiPluginService extends AbstractRequest {
 						packageBuilder.setData(requestParams);
 					}
 					// AES 加密整个proto，通过http传输给plugin
-					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
+					byte[] tsk = bean.getAuthKey().getBytes("ISO-8859-1");
 					byte[] enPostContent = AESCrypto.encrypt(tsk, packageBuilder.build().toByteArray());
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, enPostContent);
@@ -215,7 +215,8 @@ public class ApiPluginService extends AbstractRequest {
 					}
 
 					// AES 加密整个proto，通过http传输给plugin
-					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
+//					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
+					byte[] tsk = bean.getAuthKey().getBytes("ISO-8859-1");
 					byte[] enPostContent = AESCrypto.encrypt(tsk, packageBuilder.build().toByteArray());
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pluginUrl, enPostContent);

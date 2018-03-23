@@ -114,7 +114,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 				// 查询扩展的auth——key
 				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
-				byte[] tsk = AESCrypto.generateTSKey(authKey);
+//				byte[] tsk = AESCrypto.generateTSKey(authKey);
+				byte[] tsk = authKey.getBytes("ISO-8859-1");
 				byte[] decContent = AESCrypto.decrypt(tsk, contentBytes);
 
 				PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(decContent);
