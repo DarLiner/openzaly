@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.plugin.HaiPluginAddProto;
 import com.akaxin.proto.plugin.HaiPluginDeleteProto;
@@ -68,9 +69,9 @@ public class HttpPluginService extends AbstractRequest {
 			bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
 			bean.setPermissionStatus(request.getPlugin().getPermissionStatusValue());
 			bean.setAddTime(System.currentTimeMillis());
-			String authKey = StringRandomUtils.generateRandomString(64);// 随机生成64位的字符串
-			bean.setAuthKey(authKey);
-
+			// 随机生成64位的字符串
+			bean.setAuthKey(StringHelper.generateRandomString(16));
+			
 			if (SitePluginDao.getInstance().addPlugin(bean)) {
 				errorCode = ErrorCode2.SUCCESS;
 			}

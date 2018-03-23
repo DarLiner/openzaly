@@ -234,7 +234,7 @@ public class SQLiteJDBCManager {
 				pst.setString(3, siteIcon);
 				pst.setString(4, urlPage);
 				pst.setString(5, apiUrl);
-				pst.setString(6, StringHelper.generateRandomString(64));// authkey
+				pst.setString(6, StringHelper.generateRandomString(16));// authkey
 				if (id == 1) {// 默认为后台管理
 					pst.setString(7, "127.0.0.1");// allowed_ip
 					pst.setInt(8, PluginProto.PluginPosition.HOME_PAGE_VALUE);// position
