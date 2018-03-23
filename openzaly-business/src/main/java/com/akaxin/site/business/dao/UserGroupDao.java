@@ -238,7 +238,12 @@ public class UserGroupDao {
 
 	public UserGroupBean getUserGroupSetting(String siteUserId, String siteGroupId) {
 		try {
-			return userGroupDao.getUserGroupSetting(siteUserId, siteGroupId);
+			UserGroupBean bean = userGroupDao.getUserGroupSetting(siteUserId, siteGroupId);
+			if (bean == null) {
+				bean = new UserGroupBean();
+				bean.setMute(false);
+			}
+			return bean;
 		} catch (SQLException e) {
 			logger.error("get user group setting error", e);
 		}

@@ -164,7 +164,12 @@ public class UserFriendDao {
 
 	public UserFriendBean getFriendSetting(String siteUserId, String siteFriendId) {
 		try {
-			return userFriendDao.getFriendSetting(siteUserId, siteFriendId);
+			UserFriendBean bean = userFriendDao.getFriendSetting(siteUserId, siteFriendId);
+			if (bean == null) {
+				bean = new UserFriendBean();
+				bean.setMute(false);
+			}
+			return bean;
 		} catch (SQLException e) {
 			logger.error("get friend setting error", e);
 		}
