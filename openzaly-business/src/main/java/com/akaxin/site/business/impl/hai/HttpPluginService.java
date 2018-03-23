@@ -230,9 +230,6 @@ public class HttpPluginService extends AbstractRequest {
 		if (StringUtils.isNotBlank(bean.getApiUrl())) {
 			pluginBuilder.setApiUrl(bean.getApiUrl());
 		}
-		if (StringUtils.isNotBlank(bean.getAuthKey())) {
-			pluginBuilder.setAuthKey(bean.getAuthKey());
-		}
 		if (StringUtils.isNotBlank(bean.getAllowedIp())) {
 			pluginBuilder.setAllowedIp(bean.getAllowedIp());
 		}

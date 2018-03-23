@@ -130,6 +130,7 @@ public class SQLitePluginDao {
 				+ "icon,"//
 				+ "url_page,"//
 				+ "api_url,"//
+				+ "auth_key,"//
 				+ "allowed_ip,"//
 				+ "position,"//
 				+ "sort,"//
@@ -145,11 +146,12 @@ public class SQLitePluginDao {
 			pluginBean.setIcon(rs.getString(3));
 			pluginBean.setUrlPage(rs.getString(4));
 			pluginBean.setApiUrl(rs.getString(5));
-			pluginBean.setAllowedIp(rs.getString(6));
-			pluginBean.setPosition(rs.getInt(7));
-			pluginBean.setSort(rs.getInt(8));
-			pluginBean.setDisplayMode(rs.getInt(9));
-			pluginBean.setPermissionStatus(rs.getInt(10));
+			pluginBean.setAuthKey(rs.getString(6));
+			pluginBean.setAllowedIp(rs.getString(7));
+			pluginBean.setPosition(rs.getInt(8));
+			pluginBean.setSort(rs.getInt(9));
+			pluginBean.setDisplayMode(rs.getInt(10));
+			pluginBean.setPermissionStatus(rs.getInt(11));
 		}
 		long endTime = System.currentTimeMillis();
 		LogUtils.printDBLog(logger, endTime - startTime, pluginBean.toString(), sql + pluginId);
