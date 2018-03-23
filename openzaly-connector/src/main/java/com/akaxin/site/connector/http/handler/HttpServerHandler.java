@@ -24,10 +24,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.connector.constant.HttpConst;
+import com.akaxin.site.connector.constant.PluginConst;
 import com.akaxin.site.connector.session.PluginSession;
 
 import io.netty.buffer.ByteBuf;
@@ -78,7 +81,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 
-				String clientIp = request.headers().get("X-Forwarded-For");
+				String clientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
 				if (clientIp == null) {
 					InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
 					clientIp = address.getAddress().getHostAddress();
@@ -107,15 +110,15 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 
-				String sitePluginId = request.headers().get("site-plugin-id");
+				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
 				byte[] contentBytes = new byte[httpByteBuf.readableBytes()];
 				httpByteBuf.readBytes(contentBytes);
 				httpByteBuf.release();
 
 				// 查询扩展的auth——key
 				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
-//				byte[] tsk = AESCrypto.generateTSKey(authKey);
-				byte[] tsk = authKey.getBytes("ISO-8859-1");
+				// byte[] tsk = AESCrypto.generateTSKey(authKey);
+				byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
 				byte[] decContent = AESCrypto.decrypt(tsk, contentBytes);
 
 				PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(decContent);
@@ -135,6 +138,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 				if (isOk) {
 					Command command = new Command();
+					command.setField(PluginConst.PLUGIN_AUTH_KEY, authKey);
 					if (proxyHeader != null) {
 						command.setSiteUserId(proxyHeader.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE));
 					}
@@ -175,7 +179,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	 */
 	private boolean checkLegalRequest() {
 		String methodName = request.method().name();
-		if ("POST".equals(methodName)) {
+		if (HttpConst.HTTP_M_POST.equals(methodName)) {
 			return true;
 		}
 		return false;

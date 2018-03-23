@@ -22,10 +22,14 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
+import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.service.HttpRequestService;
+import com.akaxin.site.connector.constant.HttpConst;
+import com.akaxin.site.connector.constant.PluginConst;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -57,7 +61,9 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 			CommandResponse comamndResponse = new HttpRequestService().process(command);
 			comamndResponse.setVersion(CommandConst.PROTOCOL_VERSION);
 			comamndResponse.setAction(CommandConst.ACTION_RES);
-			fullHttpResponse(context, comamndResponse);
+
+			String authKey = command.getField(PluginConst.PLUGIN_AUTH_KEY, String.class);
+			fullHttpResponse(context, comamndResponse, authKey);
 			return true;
 		} catch (Exception e) {
 			logger.error("api request error.", e);
@@ -71,7 +77,7 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 	 * 2.消息报头 <br>
 	 * 3.响应正文
 	 */
-	private void fullHttpResponse(ChannelHandlerContext context, CommandResponse commandResponse) {
+	private void fullHttpResponse(ChannelHandlerContext context, CommandResponse commandResponse, String authKey) {
 		FullHttpResponse response = null;
 		try {
 			PluginProto.ProxyPluginPackage.Builder packBuilder = PluginProto.ProxyPluginPackage.newBuilder();
@@ -83,13 +89,18 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 				String dataStr = Base64.getEncoder().encodeToString(commandResponse.getParams());
 				packBuilder.setData(dataStr);
 			}
+
+			// 进行加密
+			byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
+			byte[] decContent = AESCrypto.encrypt(tsk, packBuilder.build().toByteArray());
+
 			response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-					Unpooled.wrappedBuffer(packBuilder.build().toByteArray()));
+					Unpooled.wrappedBuffer(decContent));
 		} catch (Exception e) {
 			response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NO_CONTENT);
 			logger.error("full http response error.", e);
 		}
-		response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json");
+		response.headers().set(HttpHeaderNames.CONTENT_TYPE, HttpConst.HTTP_H_CONTENT_TYPE);
 		response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
 		response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 		context.writeAndFlush(response);
