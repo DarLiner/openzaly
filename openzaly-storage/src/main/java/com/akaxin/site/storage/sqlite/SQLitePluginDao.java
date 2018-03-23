@@ -129,7 +129,7 @@ public class SQLitePluginDao {
 				+ "name,"//
 				+ "icon,"//
 				+ "url_page,"//
-				+ "auth_key,"//
+				+ "api_url,"//
 				+ "allowed_ip,"//
 				+ "position,"//
 				+ "sort,"//
