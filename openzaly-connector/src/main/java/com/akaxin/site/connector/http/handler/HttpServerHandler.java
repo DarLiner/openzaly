@@ -117,11 +117,14 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 				// 查询扩展的auth——key
 				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
-				// byte[] tsk = AESCrypto.generateTSKey(authKey);
-				byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
-				byte[] decContent = AESCrypto.decrypt(tsk, contentBytes);
+				if (StringUtils.isNotEmpty(authKey)) {
+					// byte[] tsk = AESCrypto.generateTSKey(authKey);
+					byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
+					byte[] decContent = AESCrypto.decrypt(tsk, contentBytes);
+					contentBytes = decContent;
+				}
 
-				PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(decContent);
+				PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(contentBytes);
 				Map<Integer, String> proxyHeader = pluginPackage.getPluginHeaderMap();
 
 				String timeStampStr = proxyHeader.get(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE);

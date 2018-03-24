@@ -17,6 +17,7 @@ package com.akaxin.site.connector.handler;
 
 import java.util.Base64;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,12 +91,15 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 				packBuilder.setData(dataStr);
 			}
 
-			// 进行加密
-			byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
-			byte[] decContent = AESCrypto.encrypt(tsk, packBuilder.build().toByteArray());
-
+			byte[] httpResBytes = packBuilder.build().toByteArray();
+			if (StringUtils.isNotEmpty(authKey)) {
+				// authKey存在，则加密，不存在则使用原文
+				byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
+				byte[] decContent = AESCrypto.encrypt(tsk, httpResBytes);
+				httpResBytes = decContent;
+			}
 			response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-					Unpooled.wrappedBuffer(decContent));
+					Unpooled.wrappedBuffer(httpResBytes));
 		} catch (Exception e) {
 			response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NO_CONTENT);
 			logger.error("full http response error.", e);

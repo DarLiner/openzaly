@@ -234,8 +234,8 @@ public class SQLiteJDBCManager {
 				pst.setString(3, siteIcon);
 				pst.setString(4, urlPage);
 				pst.setString(5, apiUrl);
-				pst.setString(6, StringHelper.generateRandomString(16));// authkey
 				if (id == 1) {// 默认为后台管理
+					pst.setString(6, "");// authkey
 					pst.setString(7, "127.0.0.1");// allowed_ip
 					pst.setInt(8, PluginProto.PluginPosition.HOME_PAGE_VALUE);// position
 					pst.setInt(9, 0);// sort
@@ -243,6 +243,7 @@ public class SQLiteJDBCManager {
 					pst.setInt(11, PluginProto.PermissionStatus.DISABLED_VALUE); // permission_status
 					pst.setLong(12, System.currentTimeMillis()); // add_time
 				} else {
+					pst.setString(6, StringHelper.generateRandomString(16));// authkey
 					pst.setString(7, "127.0.0.1");// allowed_ip
 					pst.setInt(8, PluginProto.PluginPosition.MSG_PAGE_VALUE);// position
 					pst.setInt(9, 1);// sort

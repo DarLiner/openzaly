@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
+import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.crypto.AESCrypto;
@@ -102,7 +103,11 @@ public class ApiPluginService extends AbstractRequest {
 	}
 
 	/**
-	 * 获取插件扩展的展示页面
+	 * <pre>
+	 * 获取插件扩展的展示页面,支持两种方式
+	 * 	1.非加密方式，此时扩展authkey不存在
+	 *  2.加密方式，此时扩展authkey存在
+	 * </pre>
 	 * 
 	 * @param command
 	 * @return
@@ -141,11 +146,17 @@ public class ApiPluginService extends AbstractRequest {
 					if (StringUtils.isNotEmpty(requestParams)) {
 						packageBuilder.setData(requestParams);
 					}
-					// AES 加密整个proto，通过http传输给plugin
-					byte[] tsk = bean.getAuthKey().getBytes("ISO-8859-1");
-					byte[] enPostContent = AESCrypto.encrypt(tsk, packageBuilder.build().toByteArray());
 
-					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, enPostContent);
+					byte[] httpContent = packageBuilder.build().toByteArray();
+					String authKey = bean.getAuthKey();
+					if (StringUtils.isNotEmpty(authKey)) {
+						// AES 加密整个proto，通过http传输给plugin
+						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
+						byte[] enPostContent = AESCrypto.encrypt(tsk, httpContent);
+						httpContent = enPostContent;
+					}
+
+					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, httpContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
 							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
 
@@ -214,12 +225,17 @@ public class ApiPluginService extends AbstractRequest {
 						packageBuilder.setData(requestParams);
 					}
 
-					// AES 加密整个proto，通过http传输给plugin
-//					byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
-					byte[] tsk = bean.getAuthKey().getBytes("ISO-8859-1");
-					byte[] enPostContent = AESCrypto.encrypt(tsk, packageBuilder.build().toByteArray());
+					byte[] httpContent = packageBuilder.build().toByteArray();
+					String authKey = bean.getAuthKey();
+					if (StringUtils.isNotEmpty(authKey)) {
+						// AES 加密整个proto，通过http传输给plugin
+						// byte[] tsk = AESCrypto.generateTSKey(bean.getAuthKey());
+						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
+						byte[] enPostContent = AESCrypto.encrypt(tsk, httpContent);
+						httpContent = enPostContent;
+					}
 
-					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pluginUrl, enPostContent);
+					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pluginUrl, httpContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
 							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
 					commandResponse.setParams(response.toByteArray());// httpResposne,callback方法的回调方法参数
