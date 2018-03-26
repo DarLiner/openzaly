@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- <parent> <groupId>com.akaxin</groupId> <artifactId>openzaly-parent</artifactId> 
+		<version>0.0.1-SNAPSHOT</version> </parent> -->
+	<groupId>com.akaxin.site</groupId>
+	<artifactId>openzaly-admin</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>openzaly-admin Maven Webapp</name>
+
+	<!-- <properties> <jetty_version>9.4.9.v20180320</jetty_version> </properties> -->
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>6.1.26</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<!-- 项目打包名称 -->
+		<finalName>openzaly-admin</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>  
+                <artifactId>jetty-maven-plugin</artifactId>  
+				<version>8.1.16.v20140903</version>
+				<configuration>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<name>localhost</name>
+							<port>8080</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<scanIntervalSeconds>15</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/</contextPath>
+					</webApp>
+					<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+						<filename>target/access.log</filename>
+						<retainDays>90</retainDays>
+						<append>false</append>
+						<extended>false</extended>
+						<logTimeZone>GMT+8:00</logTimeZone>
+					</requestLog>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
