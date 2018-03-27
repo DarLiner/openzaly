@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,10 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
+import com.akaxin.common.logs.AkxLog4jManager;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.FileProto.FileType;
+import com.akaxin.site.boot.config.AkxProject;
 import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.boot.config.ConfigListener;
@@ -53,10 +57,12 @@ import com.akaxin.site.storage.sqlite.manager.PluginArgs;
  * @since 2018.01.01 11:23:42
  */
 public class Bootstrap {
-	private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
+	private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
+	private static final String DEBUG_ENV = "DEBUG";
 
 	public static void main(String[] args) {
-		logger.info("start openzaly site server...");
+		logger.info("{} start site server...", AkxProject.PLN);
+		setSystemLogLevel();
 		try {
 			String siteAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
 			int sitePort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
@@ -85,15 +91,28 @@ public class Bootstrap {
 			startNettyServer(siteAddress, sitePort);
 			addConfigListener();
 		} catch (Exception e) {
-			logger.error("start Bootstrap args exception.args:{}", Arrays.toString(args));
+			logger.error("{} start Bootstrap exception. args:{}", AkxProject.PLN, Arrays.toString(args));
+			System.exit(-1);// 直接退出程序
 		}
+	}
+
+	private static void setSystemLogLevel() {
+		// 先获取站点的项目环境 site.project.env
+		String projectEvn = ConfigHelper.getStringConfig(ConfigKey.SITE_PROJECT_ENV);
+		Level level = Level.INFO;
+		if (DEBUG_ENV.equalsIgnoreCase(projectEvn)) {
+			level = Level.DEBUG;
+		}
+		// 更新日志级别
+		AkxLog4jManager.setLogLevel(level);
+		logger.info("{} set system log level={}", AkxProject.PLN, level);
 	}
 
 	/**
 	 * 初始化数据源
 	 */
 	private static void initDataSource(DBConfig config) {
-		logger.info("start init datasource bean={}", config.toString());
+		logger.info("{} init datasource config={}", AkxProject.PLN, config.toString());
 		DataSourceManager.init(config);
 	}
 
@@ -109,7 +128,7 @@ public class Bootstrap {
 			}
 
 		}.start(address, port);
-		logger.info("start openzaly http server {}:{} ok.", address, port);
+		logger.info("{} start http server {}:{} ok.", AkxProject.PLN, address, port);
 	}
 
 	/**
@@ -129,7 +148,7 @@ public class Bootstrap {
 			}
 
 		}.start(address, port);
-		logger.info("start openzaly netty server {}:{} ok.", address, port);
+		logger.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
 	}
 
 	/**
@@ -139,8 +158,8 @@ public class Bootstrap {
 	 * </pre>
 	 */
 	private static void addConfigListener() {
-		logger.info("add config listener");
 		ConfigListener.startListenning();
+		logger.info("{} add config listener to site-config", AkxProject.PLN);
 	}
 
 	private static String getDefaultIcon(String base64Str) {
@@ -150,7 +169,7 @@ public class Bootstrap {
 					FileType.SITE_PLUGIN_VALUE);
 			return fileId;
 		} catch (Exception e) {
-			logger.error("get default site admin icon error", e);
+			logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
 		}
 		return "";
 	}

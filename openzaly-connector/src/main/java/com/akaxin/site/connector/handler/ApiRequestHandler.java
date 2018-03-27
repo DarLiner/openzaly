@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.connector.handler;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +29,10 @@ import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.business.service.ApiRequestService;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.storage.api.IUserSessionDao;
 import com.akaxin.site.storage.bean.SimpleAuthBean;
 import com.akaxin.site.storage.service.UserSessionDaoService;
@@ -53,49 +54,53 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(ApiRequestHandler.class);
 
 	public boolean handle(Command command) {
-		logger.info("api request handler executing....");
 		try {
 			ChannelSession channelSession = command.getChannelSession();
-			if (channelSession == null) {
-				logger.error("api request handler error.channelSession={}", channelSession);
+			if (channelSession == null || channelSession.getChannel() == null) {
+				logger.error("{} client={} api request handler error.channelSession={}", AkxProject.PLN,
+						command.getClientIp(), channelSession);
+				// NULL，则不需要再次关闭channel
 				return false;
 			}
 
 			switch (RequestAction.getAction(command.getAction())) {
-			case API_SITE:
 			case API_SITE_CONFIG:
 			case API_SITE_REGISTER:
 			case API_SITE_LOGIN:
-				logger.info("api request by config/register/login");
 				break;
-			default:
+			default: {
 				Map<Integer, String> header = command.getHeader();
-				String siteSessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
+				String sessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
+				logger.debug("{} client={} api request sessionId={}", AkxProject.PLN, command.getClientIp(), sessionId);
 
-				logger.info("API request header sessionId=" + siteSessionId);
+				if (!StringUtils.isNotEmpty(sessionId)) {
+					this.tellClientSessionError(channelSession.getChannel());
+					logger.error("{} client={} api request with sessionId is NULL", AkxProject.PLN,
+							command.getClientIp());
+					return false;
+				}
 
 				IUserSessionDao sessionDao = new UserSessionDaoService();
-				SimpleAuthBean authBean = sessionDao.getUserSession(siteSessionId);
-				logger.info("api session auth result {}", authBean.toString());
+				SimpleAuthBean authBean = sessionDao.getUserSession(sessionId);
+				logger.debug("{} client={} api session auth result {}", authBean.toString());
 
-				if (authBean == null || StringUtils.isEmpty(authBean.getSiteUserId())
-						|| StringUtils.isEmpty(authBean.getDeviceId())) {
+				if (authBean == null || StringUtils.isAnyEmpty(authBean.getSiteUserId(), authBean.getDeviceId())) {
 					this.tellClientSessionError(channelSession.getChannel());
-					logger.info("api session auth fail.authBean={}", authBean.toString());
+					logger.error("api session auth fail.authBean={}", authBean.toString());
 					return false;
 				}
 
 				command.setSiteUserId(authBean.getSiteUserId());
 				command.setDeviceId(authBean.getDeviceId());
 			}
+			}
 			// 执行业务操作
 			this.doApiRequest(channelSession.getChannel(), command);
-
 			return true;
-		} catch (SQLException e) {
-			logger.error("api request error.", e);
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} client={} api request error.", AkxProject.PLN, command.getClientIp()),
+					e);
 		}
-
 		return false;
 	}
 
@@ -126,7 +131,6 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 
 					public void operationComplete(Future<? super Void> future) throws Exception {
 						channel.close();
-						channel.disconnect();
 					}
 				});
 
@@ -154,7 +158,6 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 
 					public void operationComplete(Future<? super Void> future) throws Exception {
 						channel.close();
-						channel.disconnect();
 					}
 				});
 	}

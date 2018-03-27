@@ -22,6 +22,8 @@ package com.akaxin.site.boot.config;
  * @since 2018-01-24 19:49:19
  */
 public interface ConfigKey {
+	// site.project.env
+	public String SITE_PROJECT_ENV = "site.project.env";
 	// 站点版本
 	public String SITE_VERSION = "site.version";
 	// 站点服务地址，提供用户和站点之间连接使用

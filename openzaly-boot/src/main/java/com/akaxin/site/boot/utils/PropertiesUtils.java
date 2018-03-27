@@ -29,9 +29,9 @@ public class PropertiesUtils {
 
 	public static Properties getProperties(String configPath) throws IOException {
 		InputStream inputStream = ClassLoader.getSystemResourceAsStream(configPath);
-		Properties pro = new Properties();
-		pro.load(inputStream);
-		return pro;
+		Properties properties = new Properties();
+		properties.load(inputStream);
+		return properties;
 	}
 
 }

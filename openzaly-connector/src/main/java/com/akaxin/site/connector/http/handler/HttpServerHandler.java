@@ -28,7 +28,9 @@ import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.common.executor.AbstracteExecutor;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.constant.HttpConst;
 import com.akaxin.site.connector.constant.PluginConst;
 import com.akaxin.site.connector.session.PluginSession;
@@ -58,7 +60,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		logger.info("client connect to http server... client={}", ctx.channel().toString());
+		logger.debug("{} client connect to http server... client={}", AkxProject.PLN, ctx.channel().toString());
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 			if (msg instanceof HttpRequest) {
 				request = (HttpRequest) msg;
 				if (!checkLegalRequest()) {
-					logger.error("http request method error. please use post!");
+					logger.error("{} http request method error. please use post!", AkxProject.PLN);
 					ctx.close();
 					return;
 				}
@@ -88,12 +90,14 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				}
 
 				if (!checkLegalClientIp(clientIp)) {
-					logger.error("http request illegal request IP.");
+					logger.error("{} http request illegal IP={}.", AkxProject.PLN, clientIp);
 					ctx.close();
 					return;
 				}
-				logger.info("request uri:{} client ip={}", request.uri(), clientIp);
+
+				logger.debug("{} request uri:{} clientIp={}", AkxProject.PLN, request.uri(), clientIp);
 			}
+
 			/**
 			 * HttpContent:表示HTTP实体正文和内容标头的基类 <br>
 			 * method.name=POST 传输消息体存在内容
@@ -110,6 +114,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 
+				String clientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
 				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
 				byte[] contentBytes = new byte[httpByteBuf.readableBytes()];
 				httpByteBuf.readBytes(contentBytes);
@@ -127,19 +132,20 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(contentBytes);
 				Map<Integer, String> proxyHeader = pluginPackage.getPluginHeaderMap();
 
-				String timeStampStr = proxyHeader.get(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE);
-
-				boolean isOk = false;
-				if (StringUtils.isNotEmpty(timeStampStr)) {
-					long timeMills = Long.valueOf(timeStampStr);
-					if (System.currentTimeMillis() - timeMills < 10 * 1000l) {
-						isOk = true;
+				String requestTime = proxyHeader.get(PluginProto.PluginHeaderKey.PLUGIN_TIMESTAMP_VALUE);
+				long currentTime = System.currentTimeMillis();
+				boolean timeOut = true;
+				if (StringUtils.isNotEmpty(requestTime)) {
+					long timeMills = Long.valueOf(requestTime);
+					if (currentTime - timeMills < 10 * 1000l) {
+						timeOut = false;
 					}
 				}
 
-				logger.info("check timestamp result={} headTime={}", isOk, timeStampStr);
+				logger.debug("{} client={} http request timeOut={} currTime={} reqTime={}", AkxProject.PLN, clientIp,
+						timeOut, currentTime, requestTime);
 
-				if (isOk) {
+				if (!timeOut) {
 					Command command = new Command();
 					command.setField(PluginConst.PLUGIN_AUTH_KEY, authKey);
 					if (proxyHeader != null) {
@@ -147,20 +153,24 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					}
 					command.setChannelContext(ctx);
 					command.setUri(request.uri());
-
 					command.setParams(Base64.getDecoder().decode(pluginPackage.getData()));
+					command.setClientIp(clientIp);
+					command.setStartTime(System.currentTimeMillis());
 
-					logger.info("http server handler command={}", command.toString());
+					logger.debug("{} client={} http server handler command={}", AkxProject.PLN, clientIp,
+							command.toString());
 
 					this.executor.execute(HttpUriAction.HTTP_ACTION.getUri(), command);
 				} else {
 					// 超时10s，认为此请求失效，直接断开连接
 					ctx.close();
+					logger.error("{} client={} http request error.timeOut={} currTime={} reqTime={}", AkxProject.PLN,
+							clientIp, timeOut, currentTime, requestTime);
 				}
 			}
 		} catch (Exception e) {
-			logger.error("http request error.", e);
 			ctx.close();
+			logger.error(StringHelper.format("{} http request error.", AkxProject.PLN), e);
 		}
 	}
 
@@ -171,8 +181,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		logger.error("channel exception caught = {}", cause);
 		ctx.close();
+		logger.error(StringHelper.format("{} channel exception caught", AkxProject.PLN), cause);
 	}
 
 	/**

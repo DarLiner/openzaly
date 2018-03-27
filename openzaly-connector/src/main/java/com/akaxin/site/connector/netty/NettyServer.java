@@ -25,6 +25,7 @@ import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.connector.codec.protocol.MessageDecoder;
 import com.akaxin.site.connector.codec.protocol.MessageEncoder;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.netty.handler.NettyServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -118,7 +119,7 @@ public abstract class NettyServer {
 			loadExecutor(executor);
 		} catch (Exception e) {
 			closeGracefully();
-			logger.error("init netty server error.", e);
+			logger.error(AkxProject.PLN + " init netty server error.", e);
 			System.exit(-10);
 		}
 	}
@@ -137,7 +138,7 @@ public abstract class NettyServer {
 			}
 		} catch (Exception e) {
 			closeGracefully();
-			logger.error("start netty server error.", e);
+			logger.error(AkxProject.PLN + " start netty server error.", e);
 			System.exit(-100);
 		}
 	}
@@ -151,7 +152,7 @@ public abstract class NettyServer {
 			channel.pipeline().addLast(new MessageDecoder());
 			channel.pipeline().addLast(new MessageEncoder());
 			channel.pipeline().addLast("timeout", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
-			
+
 			// ch.pipeline().addLast(new SslHandler(sslEngine));
 
 			channel.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(20, TimeUnit.SECONDS));
@@ -176,7 +177,7 @@ public abstract class NettyServer {
 				childGroup.terminationFuture().sync();
 			}
 		} catch (Exception es) {
-			logger.error("shutdown netty gracefully error.", es);
+			logger.error(AkxProject.PLN + " shutdown netty gracefully error.", es);
 		}
 	}
 

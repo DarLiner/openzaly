@@ -29,6 +29,7 @@ import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.service.HttpRequestService;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.constant.HttpConst;
 import com.akaxin.site.connector.constant.PluginConst;
 
@@ -56,7 +57,8 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 		try {
 			ChannelHandlerContext context = command.getChannelContext();
 			if (context == null) {
-				logger.error("http request handler error.context={}", context);
+				logger.error("{} client={} http request error context={}", AkxProject.PLN, command.getClientIp(),
+						context);
 				return false;
 			}
 			CommandResponse comamndResponse = new HttpRequestService().process(command);

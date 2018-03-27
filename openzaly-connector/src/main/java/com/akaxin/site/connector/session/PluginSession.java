@@ -15,11 +15,11 @@
  */
 package com.akaxin.site.connector.session;
 
-import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.utils.StringHelper;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.storage.api.IPluginDao;
 import com.akaxin.site.storage.bean.PluginBean;
 import com.akaxin.site.storage.service.PluginServiceDao;
@@ -45,8 +45,8 @@ public class PluginSession {
 		try {
 			int pluginId = Integer.valueOf(sitePluginId);
 			return pluginDao.getPluginProfile(pluginId);
-		} catch (SQLException e) {
-			logger.error("get plugin error sitePluginId=" + sitePluginId, e);
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} get plugin error pluginId={}", AkxProject.PLN, sitePluginId), e);
 		}
 		return null;
 	}
@@ -58,8 +58,9 @@ public class PluginSession {
 			if (bean != null) {
 				return bean.getAuthKey();
 			}
-		} catch (SQLException e) {
-			logger.error("get plugin authKey error sitePluginId=" + sitePluginId, e);
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} get plugin authKey error pluginId={}", AkxProject.PLN, sitePluginId),
+					e);
 		}
 		return null;
 	}

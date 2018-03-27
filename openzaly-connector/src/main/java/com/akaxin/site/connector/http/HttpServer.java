@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.http.handler.HttpServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -66,7 +67,7 @@ public abstract class HttpServer {
 			});
 		} catch (Exception e) {
 			closeGracefylly();
-			logger.error("init http server error.", e);
+			logger.error(AkxProject.PLN + " init http server error.", e);
 			System.exit(-200);
 		}
 	}

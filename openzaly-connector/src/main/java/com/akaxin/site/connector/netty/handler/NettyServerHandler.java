@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.connector.netty.handler;
 
+import java.net.InetSocketAddress;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +27,10 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
-import com.akaxin.common.logs.LogUtils;
-import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.connector.codec.parser.ParserConst;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.session.SessionManager;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -50,36 +52,42 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		// connect to netty server
+		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+		String clientIp = socketAddress.getAddress().getHostAddress();
 		ctx.channel().attr(ParserConst.CHANNELSESSION).set(new ChannelSession(ctx.channel()));
-		logger.info("open netty channel connection... client={}", ctx.channel().toString());
+		logger.debug("{} client={} connect to Netty Server...", AkxProject.PLN, clientIp);
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		logger.info("close netty channel connection...client={}", ctx.channel().toString());
+		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+		String clientIp = socketAddress.getAddress().getHostAddress();
+		logger.debug("{} client={} close connection... ChannelSize={}", AkxProject.PLN, clientIp,
+				ChannelManager.getChannelSessionSize());
 
 		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
 		if (channelSession.getCtype() == 1 && StringUtils.isNotEmpty(channelSession.getUserId())) {
 			ChannelManager.delChannelSession(channelSession.getDeviceId());
 			String siteUserId = channelSession.getUserId();
 			String deviceId = channelSession.getDeviceId();
-			boolean offResult = SessionManager.getInstance().setUserOffline(siteUserId, deviceId);
+			boolean offRes = SessionManager.getInstance().setUserOffline(siteUserId, deviceId);
 
-			logger.info("User Offline:{}. siteUserId={} deviceId={} ChannelSessionKey={}", offResult, siteUserId,
-					deviceId, GsonUtils.toJson(ChannelManager.getChannelSessionKeySet()));
+			logger.debug("{} set client={} siteUserId={} deviceId={} offline-status:{} ChannelSize={}", AkxProject.PLN,
+					clientIp, siteUserId, deviceId, offRes, ChannelManager.getChannelSessionSize());
 		}
 	}
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, RedisCommand redisCmd) throws Exception {
-		// 获取channel以及channel绑定的信息
+		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+		String clientIp = socketAddress.getAddress().getHostAddress();
 		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
 
-		/**
-		 * 如果channel不活跃，关闭tcp连接
-		 */
+		// 如果channel不活跃，关闭tcp连接
 		if (channelSession.getChannel() == null || !channelSession.getChannel().isActive()) {
 			ctx.disconnect();// 关闭tcp连接
+			logger.warn("{} close client={} as its channel is not active ", AkxProject.PLN, clientIp);
 		}
 
 		String version = redisCmd.getParameterByIndex(0);
@@ -88,15 +96,20 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(params);
 
 		Command command = new Command();
+		command.setClientIp(clientIp);
 		command.setSiteUserId(channelSession.getUserId());
 		command.setDeviceId(channelSession.getDeviceId());
 		command.setAction(action);
 		command.setHeader(packageData.getHeaderMap());
 		command.setParams(packageData.getData().toByteArray());
 		command.setChannelSession(channelSession);
+		command.setStartTime(System.currentTimeMillis());
 
 		if (!RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
-			LogUtils.printNetLog(logger, "c->s", version, action, "", "", params.length);
+			logger.debug("{} client={} -> site version={} action={} params-length={}", AkxProject.PLN, clientIp,
+					version, action, params.length);
+		} else {
+			logger.trace("{} client={} ping -> site", AkxProject.PLN, clientIp);
 		}
 
 		if (RequestAction.IM.getName().equals(command.getRety())) {
@@ -111,28 +124,27 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		} else if (RequestAction.API.getName().equalsIgnoreCase(command.getRety())) {
 			this.executor.execute(command.getRety(), command);
 		} else {
-			logger.warn("unknow request command={}", command.toString());
+			logger.warn("{} client={} siteUserId={} action={} unknow request method", AkxProject.PLN,
+					command.getClientIp(), command.getSiteUserId(), command.getAction());
 			return;
 		}
+
+		logger.debug("{} client={} siteUserId={} action={} cost={} ms", AkxProject.PLN, command.getAction(),
+				command.getSiteUserId(), command.getAction(), System.currentTimeMillis() - command.getStartTime());
 	}
 
-	/**
-	 * 比较严格的处理方式，channel处理异常，直接关闭链接，客户端此时需要重新连接到服务端
-	 */
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		if (cause != null) {
-			logger.error("channel exeception happen.", cause);
-		}
+		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+		String clientIp = socketAddress.getAddress().getHostAddress();
 		ctx.close();
+		logger.error(StringHelper.format("{} client{} channel exeception happen.", AkxProject.PLN, clientIp), cause);
 	}
 
-	/**
-	 * 设置idle，触发此方法
-	 */
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		logger.info("user event triggered evt={}", evt.toString());
+		// 设置idle，触发此方法
+		// logger.info("user event triggered evt={}", evt.toString());
 	}
 
 }

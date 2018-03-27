@@ -23,6 +23,9 @@ public interface CommandConst {
 	public String SITE_GROUP_ID = "site_group_id";
 	public String CHAHHEL_SESSION = "channel_session";
 	public String CHANNEL_CONTEXT = "channel_context";
+	public String CLIENT_IP = "client_ip";
+	public String START_TIME = "start_time";
+	public String END_TIME = "end_time";
 
 	public String IM_MSG_TOCLIENT = "im.stc.message";
 	public String IM_MSG_TOSITE = "im.cts.message";

@@ -17,12 +17,14 @@ package com.akaxin.site.business.impl.hai;
 
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.AkxLog4jManager;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.plugin.HaiSiteGetConfigProto;
 import com.akaxin.proto.plugin.HaiSiteUpdateConfigProto;
@@ -47,12 +49,11 @@ public class HttpSiteConfigService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse getConfig(Command command) {
-		logger.info("/hai/site/getConfig");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
 			logger.info("/hai/site/getConfig command={}", command.toString());
-
+			
 			Map<Integer, String> configMap = SiteConfig.getConfigMap();
 			ConfigProto.SiteBackConfig config = ConfigProto.SiteBackConfig.newBuilder().putAllSiteConfig(configMap)
 					.build();
@@ -75,7 +76,6 @@ public class HttpSiteConfigService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse updateConfig(Command command) {
-		logger.info("/hai/site/updateConfig");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -85,10 +85,17 @@ public class HttpSiteConfigService extends AbstractRequest {
 			logger.info("/hai/site/updateConfig command={} request={}", command.toString(), request.toString());
 
 			if (configMap != null) {
+				// update db config
 				if (SiteConfigDao.getInstance().updateSiteConfig(configMap)) {
 					errorCode = ErrorCode2.SUCCESS;
 					SiteConfig.updateConfig();
 					SiteConfigHelper.updateConfig();
+				}
+				// update log level
+				if (configMap.get(ConfigProto.ConfigKey.LOG_LEVEL_VALUE) != null) {
+					String loglev = configMap.get(ConfigProto.ConfigKey.LOG_LEVEL_VALUE);
+					Level level = Level.toLevel(loglev);
+					AkxLog4jManager.setLogLevel(level);
 				}
 			} else {
 				errorCode = ErrorCode2.ERROR_PARAMETER;

@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.connector.handler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,19 +28,23 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.utils.ServerAddressUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.site.ImSiteAuthProto;
 import com.akaxin.proto.site.ImSiteHelloProto;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.session.SessionManager;
 import com.akaxin.site.storage.bean.SimpleAuthBean;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import io.netty.channel.Channel;
 
 /**
- * 处理用户登陆站点之前认证行为 <br>
- * 1.hello行为，获取站点版本号<im.site.hello> <br>
- * 2.auth行为，进行用户个人身份认证<im.site.auth> <br>
+ * <pre>
+ * 处理用户登陆站点之前认证行为 
+ * 	1.hello行为，获取站点版本号<im.site.hello> 
+ * 	2.auth行为，进行用户个人身份认证<im.site.auth>
+ * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2017.11.15
@@ -48,22 +53,23 @@ import io.netty.channel.Channel;
  */
 public class ImSiteAuthHandler extends MethodReflectHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(ImSiteAuthHandler.class);
+	private static final int IM = 1;
 
 	public boolean hello(Command command) {
-		logger.info("----------Im hello Handler--------");
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			if (channelSession != null) {
 				ImSiteHelloProto.ImSiteHelloRequest request = ImSiteHelloProto.ImSiteHelloRequest
 						.parseFrom(command.getParams());
 				String clientVersion = request.getClientVersion();
-
-				logger.info("im hello request, get clientVersion={}", clientVersion);
+				logger.debug("{} client={} siteUserId={} action={} clientVersion={}", AkxProject.PLN,
+						command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_HELLO, clientVersion);
 				helloResponse(channelSession.getChannel());
 				return true;
 			}
-		} catch (InvalidProtocolBufferException e) {
-			logger.error("im hello request error.", e);
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} client={} siteUserId={} action={} error.", AkxProject.PLN,
+					command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_HELLO), e);
 		}
 		return false;
 	}
@@ -79,7 +85,6 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command> {
 	}
 
 	public boolean auth(Command command) {
-		logger.info("im.site.auth command={}", command.toString());
 		boolean authResult = false;
 		ChannelSession channelSession = command.getChannelSession();
 		if (channelSession != null) {
@@ -95,51 +100,54 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command> {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 			String sessionId = request.getSiteSessionId();
-			logger.info("siteUserId={},sessionId={}", siteUserId, sessionId);
+			command.setSiteUserId(siteUserId);
 
-			SimpleAuthBean authSessionBean = SessionManager.getInstance().getAuthSession(sessionId);
+			if (StringUtils.isNoneEmpty(siteUserId, sessionId)) {
+				SimpleAuthBean authSession = SessionManager.getInstance().getAuthSession(sessionId);
+				logger.debug("{} client={} siteUserId={} action={} sessionId={} authSession={}", AkxProject.PLN,
+						command.getClientIp(), siteUserId, RequestAction.IM_SITE_AUTH, sessionId,
+						authSession.toString());
 
-			logger.info("判断session库里是否存在用户，authSessionBean={}", authSessionBean.toString());
-
-			if (siteUserId.equals(authSessionBean.getSiteUserId())) {
-				// set user online
-				SessionManager.getInstance().setUserOnline(siteUserId, authSessionBean.getDeviceId());
-				// Mark IM长链接
-				channelSession.setCtype(1);
-				channelSession.setUserId(siteUserId);
-				channelSession.setDeviceId(authSessionBean.getDeviceId());
-				ChannelManager.addChannelSession(authSessionBean.getDeviceId(), channelSession);
-
-				SessionManager.getInstance().updateActiveTime(siteUserId, authSessionBean.getDeviceId());
-				logger.info("im.site.auth success. ChannelSession={},ChannelSessionSize{}",
-						ChannelManager.getChannelSessions(), ChannelManager.getChannelSessionSize());
-
-				return true;
+				if (siteUserId.equals(authSession.getSiteUserId())) {
+					// 1. set user online
+					SessionManager.getInstance().setUserOnline(siteUserId, authSession.getDeviceId());
+					// 2. Mark IM长链接
+					channelSession.setCtype(IM);
+					channelSession.setUserId(siteUserId);
+					channelSession.setDeviceId(authSession.getDeviceId());
+					ChannelManager.addChannelSession(authSession.getDeviceId(), channelSession);
+					// 3. update active time
+					SessionManager.getInstance().updateActiveTime(siteUserId, authSession.getDeviceId());
+					// 4. log
+					logger.info("{} client={} siteUserId={} action={} AUTH SUCCESS ChannelSessionSize{}",
+							AkxProject.PLN, command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_AUTH,
+							ChannelManager.getChannelSessionSize());
+					return true;
+				}
 			}
-
-			logger.info("auth fail for siteUserId={},authSiteUserId={}.", siteUserId, authSessionBean.getSiteUserId());
 		} catch (Exception e) {
-			logger.error("process auth session error......", e);
+			logger.error(StringHelper.format("{} client={} siteUserId={} auth session error......", AkxProject.PLN,
+					command.getClientIp(), command.getSiteUserId()), e);
 		}
-
 		return false;
 	}
 
 	private void authResponse(Channel channel, Command command, boolean result) {
-		logger.info("im.site.auth session response");
 		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
 				.setAction(CommandConst.ACTION_RES);
+		ErrorCode2 errCode = ErrorCode2.ERROR2_IMAUTH_FAIL;
 		if (result) {
 			String siteServer = ServerAddressUtils.getAddressPort();
 			ImSiteAuthProto.ImSiteAuthResponse authResponse = ImSiteAuthProto.ImSiteAuthResponse.newBuilder()
 					.setSiteServer(siteServer).build();
 			commandResponse.setParams(authResponse.toByteArray());
-			ChannelWriter.write(channel, commandResponse.setErrCode2(ErrorCode2.SUCCESS));
-			logger.info("im.site.auth success result={}", ErrorCode2.SUCCESS);
+			errCode = ErrorCode2.SUCCESS;
+			ChannelWriter.write(channel, commandResponse.setErrCode2(errCode));
 		} else {
-			ChannelWriter.writeAndClose(channel, commandResponse.setErrCode2(ErrorCode2.ERROR2_IMAUTH_FAIL));
-			logger.error("im.site.auth fail result={}", ErrorCode2.ERROR2_IMAUTH_FAIL);
+			ChannelWriter.writeAndClose(channel, commandResponse.setErrCode2(errCode));
 		}
+		logger.debug("{} client={} siteUserId={} action={} auth response result={}", AkxProject.PLN,
+				command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_AUTH, errCode.toString());
 	}
 
 }

@@ -29,6 +29,7 @@ import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.proto.core.CoreProto;
+import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.message.service.ImMessageService;
 
 /**
@@ -46,26 +47,26 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 			ChannelSession channelSession = command.getChannelSession();
 			String deviceId = channelSession.getDeviceId();
 			if (StringUtils.isEmpty(deviceId)) {
-				logger.info("im request fail.deviceId ={}.", deviceId);
+				channelSession.getChannel().close();
+				logger.error("{} client={} im request error with deviceId={}.", AkxProject.PLN, command.getClientIp(),
+						deviceId);
 				return false;
 			}
+
 			ChannelSession acsession = ChannelManager.getChannelSession(deviceId);
 			if (acsession == null) {
-				// TODO 断开连接
 				channelSession.getChannel().close();
-				logger.info("im request fail.authedChannelSession={}", acsession);
+				logger.info("{} client={} im request error with channelSession={}", acsession);
 				return false;
 			}
 
 			if (!checkSiteUserId(command.getSiteUserId(), acsession.getUserId())) {
-				// TODO 断开连接
 				channelSession.getChannel().close();
 				logger.info("im request fail.cmdUserId={},sessionUserId={}", command.getSiteUserId(),
 						acsession.getUserId());
 				return false;
 			}
 
-			// PING / PONG
 			if (RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
 				Map<Integer, String> header = new HashMap<Integer, String>();
 				header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
@@ -75,10 +76,11 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 						.add(RequestAction.IM_STC_PONG.getName()).add(packBuilder.build().toByteArray()));
 				// 检测是否需要给用户发送PSN
 				if (channelSession.detectPsn()) {
-					logger.info("siteUserId={} deviceId={} detect psn {} {}", command.getSiteUserId(),
-							command.getDeviceId(), channelSession.getPsnTime(), channelSession.getSynFinTime());
 					channelSession.getChannel().writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
 							.add(RequestAction.IM_STC_PSN.getName()).add(packBuilder.build().toByteArray()));
+					logger.info("{} client={} siteUserId={} deviceId={} push psn {} {}", AkxProject.PLN,
+							command.getClientIp(), command.getSiteUserId(), command.getDeviceId(),
+							channelSession.getPsnTime(), channelSession.getSynFinTime());
 				}
 
 			}

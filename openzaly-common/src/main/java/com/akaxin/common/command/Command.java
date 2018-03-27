@@ -158,6 +158,35 @@ public class Command {
 		return this.getField(CommandConst.SITE_GROUP_ID, String.class);
 	}
 
+	public Command setClientIp(String clientIp) {
+		this.fields.put(CommandConst.CLIENT_IP, clientIp);
+		return this;
+	}
+
+	public String getClientIp() {
+		return this.getField(CommandConst.CLIENT_IP, String.class);
+	}
+
+	public Command setStartTime(long time) {
+		this.fields.put(CommandConst.START_TIME, time);
+		return this;
+	}
+
+	public long getStartTime() {
+		Long time = this.getField(CommandConst.START_TIME, Long.class);
+		return time == null ? 0 : time;
+	}
+
+	public Command setEndTime(long time) {
+		this.fields.put(CommandConst.END_TIME, time);
+		return this;
+	}
+
+	public long getEndTime() {
+		Long time = this.getField(CommandConst.END_TIME, Long.class);
+		return time == null ? 0 : time;
+	}
+
 	public Command setChannelSession(ChannelSession channelSession) {
 		this.fields.put(CommandConst.CHAHHEL_SESSION, channelSession);
 		return this;
