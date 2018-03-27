@@ -19,7 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
-import com.akaxin.common.utils.ServerAddressUtils;
+import com.akaxin.common.command.Command;
+import com.akaxin.common.utils.StringHelper;
 
 /**
  * 封装log，针对网络日志以及数据库操作日志
@@ -28,11 +29,20 @@ import com.akaxin.common.utils.ServerAddressUtils;
  * @since 2018-01-25 16:13:00
  */
 public class LogUtils extends LogCreater {
-	
-	public static void printNetLog(Logger logger, String way, String version, String action, String ec, String em,
-			int contentLen) {
-		logger.info("NET -> way:{} server:{} version={} Action={} ec={} em:{} length:{}[bytes]", way,
-				ServerAddressUtils.getAddressPort(), version, action, ec, em, contentLen);
+
+	public static void apiRequestLog(Logger logger, Command command, String requestStr) {
+		logger.debug("client={} siteUserId={} action={} command={} request={}", command.getClientIp(),
+				command.getSiteUserId(), command.getAction(), requestStr);
+	}
+
+	public static void apiErrorLog(Logger logger, Command command, Throwable t) {
+		logger.error(StringHelper.format("client={} siteUserId={} action={} error", command.getClientIp(),
+				command.getSiteUserId(), command.getAction()), t);
+	}
+
+	public static void apiResultLog(Logger logger, Command command, String errCode) {
+		logger.debug("client={} siteUserId={} action={} result={}", command.getClientIp(), command.getSiteUserId(),
+				command.getAction(), errCode);
 	}
 
 	public static void printDBLog(Logger logger, long cost, Object result, String sql) {

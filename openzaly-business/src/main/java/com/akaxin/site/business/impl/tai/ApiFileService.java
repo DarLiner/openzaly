@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.site.ApiFileDownloadProto;
 import com.akaxin.proto.site.ApiFileUploadProto;
@@ -48,7 +49,7 @@ public class ApiFileService extends AbstractRequest {
 			FileProto.File file = request.getFile();
 			int type = file.getFileTypeValue();
 			byte[] content = file.getFileContent().toByteArray();
-			logger.info("api.file.upload command={} type={} content={}", command.toString(), type, content.length);
+			LogUtils.apiRequestLog(logger, command, "type=" + type + ",size=" + content.length);
 
 			String fileId = FileServerUtils.saveFile(content, FilePathUtils.getPicPath(), type);
 			ApiFileUploadProto.ApiFileUploadResponse response = ApiFileUploadProto.ApiFileUploadResponse.newBuilder()
@@ -57,9 +58,8 @@ public class ApiFileService extends AbstractRequest {
 			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("upload file error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.file.upload result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -70,7 +70,7 @@ public class ApiFileService extends AbstractRequest {
 			ApiFileDownloadProto.ApiFileDownloadRequest request = ApiFileDownloadProto.ApiFileDownloadRequest
 					.parseFrom(command.getParams());
 			String fileId = request.getFileId();
-			logger.info("api.file.download request={}", request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(fileId) && !"null".equals(fileId)) {
 				byte[] imageBytes = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), fileId);
@@ -88,9 +88,8 @@ public class ApiFileService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("download file error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.file.download result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

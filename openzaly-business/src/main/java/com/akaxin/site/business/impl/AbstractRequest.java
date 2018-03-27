@@ -1,6 +1,5 @@
 package com.akaxin.site.business.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
@@ -9,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.constant.ErrorCode;
+import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
+
 /**
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -23,24 +24,25 @@ public abstract class AbstractRequest implements IRequestService {
 	}
 
 	private CommandResponse executeMethodByReflect(Command command) {
+		CommandResponse response = null;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
-			logger.info("AbstractApiBusiness command={}", command.toString());
 			String methodName = command.getMethod();
 			Method m = this.getClass().getDeclaredMethod(methodName, command.getClass());
-			CommandResponse result = (CommandResponse) m.invoke(this, command);
-			return result;
-		} catch (NoSuchMethodException e) {
-			logger.error("request business NoSuchMethod error.", e);
-		} catch (SecurityException e) {
-			logger.error("request business Security error.", e);
-		} catch (IllegalAccessException e) {
-			logger.error("request business IllegalAccess error.", e);
-		} catch (IllegalArgumentException e) {
-			logger.error("request business IllegalArgument error.", e);
-		} catch (InvocationTargetException e) {
-			logger.error("request business InvocationTarget error.", e);
+			response = (CommandResponse) m.invoke(this, command);
+		} catch (Exception e) {
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		return new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION).setAction(CommandConst.ACTION_RES)
-				.setErrCode(ErrorCode.ERROR);
+
+		if (response == null) {
+			response = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
+					.setAction(CommandConst.ACTION_RES).setErrCode2(errCode);
+		}
+		LogUtils.apiResultLog(logger, command, getResponseResult(response));
+		return response;
+	}
+
+	private String getResponseResult(CommandResponse res) {
+		return "errCode=" + res.getErrCode() + ",errInfo=" + res.getErrInfo();
 	}
 }

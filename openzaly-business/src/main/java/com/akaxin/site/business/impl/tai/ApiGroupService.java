@@ -25,6 +25,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiGroupAddMemberProto;
@@ -75,8 +76,7 @@ public class ApiGroupService extends AbstractRequest {
 			ApiGroupListProto.ApiGroupListRequest request = ApiGroupListProto.ApiGroupListRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
-			// String siteUserId = request.getSiteUserId();
-			logger.info("api.group.list command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(siteUserId)) {
 				List<SimpleGroupBean> groupBeanList = UserGroupDao.getInstance().getUserGroups(siteUserId);
@@ -99,7 +99,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("api.group.list", e);
 		}
-		logger.info("api.group.list result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -119,7 +118,7 @@ public class ApiGroupService extends AbstractRequest {
 			String groupName = request.getGroupName();
 			ProtocolStringList groupMemberIds = request.getSiteUserIdsList();
 			String createUserId = command.getSiteUserId();
-			logger.info("api.group.create command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotEmpty(createUserId) && groupMemberIds != null) {
 				if (groupMemberIds.size() >= 3) {
@@ -151,7 +150,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("api.group.create error.", e);
 		}
-		logger.info("api.group.create result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -171,7 +169,7 @@ public class ApiGroupService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
-			logger.info("api.group.delete command={},request={}", command.toString(), request.toBuilder());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
 				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
@@ -187,7 +185,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("delete group error.", e);
 		}
-		logger.info("api.group.delete result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -210,11 +207,10 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			int pageNum = 1;
 			int pageSize = GroupConfig.GROUP_MIN_MEMBER_COUNT;
-			logger.info("api.group.profile command={} reques={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(groupId)) {
 				GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
-				logger.info("get groupId={} groupProfile={}", groupBean.toString());
 
 				if (groupBean != null && StringUtils.isNotBlank(groupBean.getGroupId())) {
 					SimpleUserBean ownerProfileBean = UserProfileDao.getInstance()
@@ -266,7 +262,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("get group profile error.", e);
 		}
-		logger.info("api.group.profile result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -292,7 +287,7 @@ public class ApiGroupService extends AbstractRequest {
 			String newGroupOwner = request.getNewGroupOwner();
 			// 是否可以邀请群聊（除了群主以外的其他群成员）
 			boolean closeInviteGroupChat = request.getCloseInviteGroupChat();
-			logger.info("api.group.updateProfile cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
 				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
@@ -325,7 +320,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("update group profile error.", e);
 		}
-		logger.info("api.group.updateProfile result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -345,7 +339,7 @@ public class ApiGroupService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			ProtocolStringList addMemberList = request.getUserListList();
-			logger.info("api.group.addMember comamnd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId) && addMemberList != null) {
 				GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
@@ -368,7 +362,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("add group member error.", e);
 		}
-		logger.info("api.group.addMember result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -412,7 +405,7 @@ public class ApiGroupService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			ProtocolStringList deleteMemberIds = request.getSiteUserIdList();
-			logger.info("api.group.deleteMember command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNoneBlank(groupId) && deleteMemberIds != null) {
 				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
@@ -450,7 +443,7 @@ public class ApiGroupService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
-			logger.info("api.group.quit cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
 				if (UserGroupDao.getInstance().quitGroup(groupId, siteUserId)) {
@@ -483,7 +476,7 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			int pageNum = 1;
 			int pageSize = GroupConfig.GROUP_MAX_MEMBER_COUNT;
-			logger.info("api.group.membners cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(groupId)) {
 				List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(groupId, pageNum,
@@ -509,7 +502,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			logger.error("get group members error.", e);
 		}
-		logger.info("api.group.members result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -529,7 +521,7 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-
+			LogUtils.apiRequestLog(logger, command, request.toString());
 			if (pageNum == 0 && pageSize == 0) {
 				pageSize = 100;
 			}
@@ -548,9 +540,9 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.SUCCESS;
 
 		} catch (Exception e) {
-			logger.error("api.group.nonMembers exception", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.group.nonMembers result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -568,7 +560,7 @@ public class ApiGroupService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
-			logger.info("api.group.setting command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
 				UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, groupId);
@@ -585,9 +577,9 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.group.setting error", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.group.setting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -606,7 +598,7 @@ public class ApiGroupService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			boolean isMute = request.getMessageMute();
-			logger.info("api.group.updateSetting command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
 				UserGroupBean bean = new UserGroupBean();
@@ -622,9 +614,9 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.group.updateSetting error", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.group.updateSetting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -636,7 +628,7 @@ public class ApiGroupService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteGroupId = request.getSiteGroupId();
-			logger.info("api.group.mute command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteGroupId, siteUserId)) {
 				UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
@@ -653,9 +645,9 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.group.setting error", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.group.setting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -674,7 +666,7 @@ public class ApiGroupService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			boolean isMute = request.getMessageMute();
-			logger.info("api.group.updateMute command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
 				UserGroupBean bean = new UserGroupBean();
@@ -690,9 +682,9 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.group.updateMute error", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.group.updateMute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

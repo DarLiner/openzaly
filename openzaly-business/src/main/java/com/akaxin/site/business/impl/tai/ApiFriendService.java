@@ -26,6 +26,7 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiFriendApplyCountProto;
 import com.akaxin.proto.site.ApiFriendApplyListProto;
@@ -73,7 +74,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String globalOrSiteFriendId = request.getSiteUserId();// 等待查询的站点用户ID || globalUserId
 			String userIdPubk = request.getUserIdPubk(); // 等待查询的用户公钥，优先级高
-			logger.info("api.friend.profile request={}", request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (userIdPubk == null && globalOrSiteFriendId == null) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
@@ -85,8 +86,6 @@ public class ApiFriendService extends AbstractRequest {
 				// 直接复用之前的接口了。
 				userBean = UserProfileDao.getInstance().getUserProfileByGlobalUserId(globalOrSiteFriendId);
 			}
-
-			logger.info("api.friend.profile siteUserId={} result={}", globalOrSiteFriendId, userBean.getSiteUserId());
 
 			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {
 				UserProto.UserProfile userProfileProto = UserProto.UserProfile.newBuilder()
@@ -104,9 +103,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.profile error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.profile result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -118,7 +116,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String currentUserId = command.getSiteUserId();
 			String siteUserId = request.getSiteUserId();
-			logger.info("api.friend.list command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(currentUserId)) {
 				List<SimpleUserBean> friendBeanList = UserFriendDao.getInstance().getUserFriends(siteUserId);
@@ -139,9 +137,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("get friend list error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.list result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -160,7 +157,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			String applyReason = request.getApplyReason();
-			logger.info("api.friend.apply command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isEmpty(siteUserId)) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
@@ -184,15 +181,14 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 			if (ErrorCode2.SUCCESS.equals(errCode)) {
-				logger.info("api.friend.apply notice. to userId={}", siteFriendId);
+				logger.info("api.friend.apply notice. to siteUserId={}", siteFriendId);
 				new User2Notice().applyFriendNotice(siteFriendId);
 			}
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.apply error", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.apply result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -207,7 +203,7 @@ public class ApiFriendService extends AbstractRequest {
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			String siteUserId = command.getSiteUserId();
-			logger.info("api.friend.applyList command={}", command.toString());
+			LogUtils.apiRequestLog(logger, command, "");
 
 			if (StringUtils.isNotBlank(siteUserId)) {
 				List<ApplyUserBean> applyUserList = UserFriendDao.getInstance().getApplyUserList(siteUserId);
@@ -230,9 +226,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.applyList exception", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.applyList result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -241,7 +236,7 @@ public class ApiFriendService extends AbstractRequest {
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			String siteUserId = command.getSiteUserId();
-			logger.info("api.friend.applyCount command={}", command.toString());
+			LogUtils.apiRequestLog(logger, command, "");
 
 			if (StringUtils.isNotBlank(siteUserId)) {
 				int applyCount = UserFriendDao.getInstance().getApplyCount(siteUserId);
@@ -252,9 +247,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.applyCount exception", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.applyCount result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -273,7 +267,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			boolean result = request.getApplyResult();
-			logger.info("api.friend.applyResult command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(siteFriendId)
 					&& !siteUserId.equals(siteFriendId)) {
@@ -290,9 +284,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.applyResult error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.applyResult result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -310,6 +303,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(siteFriendId)
 					&& !siteUserId.equals(siteFriendId)) {
@@ -321,9 +315,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.delete error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.delete result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -341,7 +334,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			logger.info("api.friend.setting command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, siteFriendId)) {
 				UserFriendBean bean = UserFriendDao.getInstance().getFriendSetting(siteUserId, siteFriendId);
@@ -359,9 +352,9 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.friend.setting error", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.setting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -380,7 +373,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			boolean messageMute = request.getMessageMute();
-			logger.info("api.friend.updateSetting command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId)) {
 				UserFriendBean friendBean = new UserFriendBean();
@@ -396,10 +389,9 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.friend.updateSetting exception", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-
-		logger.info("api.friend.updateSetting result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -411,7 +403,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			logger.info("api.friend.mute command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, siteFriendId)) {
 				boolean mute = UserFriendDao.getInstance().getFriendMute(siteUserId, siteFriendId);
@@ -424,9 +416,8 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.friend.mute error", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.friend.mute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -445,7 +436,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			boolean messageMute = request.getMute();
-			logger.info("api.friend.updateMute command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId)) {
 				if (UserFriendDao.getInstance().updateFriendMute(siteUserId, siteFriendId, messageMute)) {
@@ -458,10 +449,9 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			logger.error("api.friend.updateMute exception", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-
-		logger.info("api.friend.updateMute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

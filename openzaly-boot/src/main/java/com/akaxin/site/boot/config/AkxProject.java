@@ -9,5 +9,6 @@ public interface AkxProject {
 	String PROJECT_NAME = "openzaly-boot";
 
 	String PROJECT_LOG_NAME = "openzaly-boot";
-	String PLN = "openzaly-boot";
+
+	String PLN = "[openzaly-boot]";
 }

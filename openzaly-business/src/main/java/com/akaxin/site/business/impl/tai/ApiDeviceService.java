@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.DeviceProto;
 import com.akaxin.proto.site.ApiDeviceBoundListProto;
 import com.akaxin.proto.site.ApiDeviceListProto;
@@ -49,7 +50,7 @@ public class ApiDeviceService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String deviceId = request.getDeviceId();
-			logger.info("api.device.profile command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(deviceId)) {
 				UserDeviceBean deviceBean = UserDeviceDao.getInstance().getDeviceDetails(siteUserId, deviceId);
@@ -68,9 +69,8 @@ public class ApiDeviceService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.device.profile error", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.device.profile result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -81,7 +81,7 @@ public class ApiDeviceService extends AbstractRequest {
 			ApiDeviceListProto.DeviceListInfoRequest request = ApiDeviceListProto.DeviceListInfoRequest
 					.parseFrom(command.getParams());
 			String siteFriendId = request.getSiteUserId();
-			logger.info("api.device.list command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteFriendId)) {
 				ApiDeviceListProto.DeviceListInfoResponse.Builder responseBuilder = ApiDeviceListProto.DeviceListInfoResponse
@@ -103,9 +103,8 @@ public class ApiDeviceService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.device.list error", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.device.list result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -123,7 +122,7 @@ public class ApiDeviceService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String currentUserId = command.getSiteUserId();
 			String siteUserId = request.getSiteUserId();
-			logger.info("api.device.boundList command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(currentUserId) && currentUserId.equals(siteUserId)) {
 				ApiDeviceBoundListProto.ApiDeviceBoundListResponse.Builder responseBuilder = ApiDeviceBoundListProto.ApiDeviceBoundListResponse
@@ -143,9 +142,8 @@ public class ApiDeviceService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("get bound list error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.device.boundList result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
