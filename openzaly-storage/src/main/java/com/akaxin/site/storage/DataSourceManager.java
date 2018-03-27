@@ -35,11 +35,6 @@ public class DataSourceManager {
 	}
 
 	public static void init(DBConfig config) {
-		try {
-			SQLiteJDBCManager.initSqliteDB(config);
-			logger.info("init sqlite datasource finish.");
-		} catch (Exception e) {
-			logger.error("init sqlite datasource error.", e);
-		}
+		SQLiteJDBCManager.initSqliteDB(config);
 	}
 }

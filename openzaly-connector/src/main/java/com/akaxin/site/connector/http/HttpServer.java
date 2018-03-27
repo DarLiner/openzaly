@@ -72,7 +72,7 @@ public abstract class HttpServer {
 		}
 	}
 
-	public void start(String address, int port) {
+	public void start(String address, int port) throws Exception {
 		try {
 			ChannelFuture channelFuture = bootstrap.bind(address, port).sync();
 			channelFuture.channel().closeFuture().addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -85,7 +85,7 @@ public abstract class HttpServer {
 			});
 		} catch (Exception e) {
 			closeGracefylly();
-			logger.error("start http server error.", e);
+			throw new Exception("start http server error", e);
 		}
 	}
 

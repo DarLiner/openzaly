@@ -124,7 +124,7 @@ public abstract class NettyServer {
 		}
 	}
 
-	public void start(String address, int port) {
+	public void start(String address, int port) throws Exception {
 		try {
 			if (bootstrap != null) {
 				ChannelFuture channelFuture = bootstrap.bind(address, port).sync();
@@ -138,8 +138,7 @@ public abstract class NettyServer {
 			}
 		} catch (Exception e) {
 			closeGracefully();
-			logger.error(AkxProject.PLN + " start netty server error.", e);
-			System.exit(-100);
+			throw new Exception("start netty server error", e);
 		}
 	}
 

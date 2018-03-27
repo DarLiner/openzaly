@@ -15,7 +15,6 @@
 */
 package com.akaxin.site.boot.main;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
 
@@ -91,7 +90,7 @@ public class Bootstrap {
 			startNettyServer(siteAddress, sitePort);
 			addConfigListener();
 		} catch (Exception e) {
-			logger.error("{} start Bootstrap exception. args:{}", AkxProject.PLN, Arrays.toString(args));
+			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			System.exit(-1);// 直接退出程序
 		}
 	}
@@ -118,8 +117,10 @@ public class Bootstrap {
 
 	/**
 	 * 启动Http服务，提供与扩展服务之间的hai（http application interface）接口功能
+	 * 
+	 * @throws Exception
 	 */
-	private static void startHttpServer(String address, int port) {
+	private static void startHttpServer(String address, int port) throws Exception {
 		new HttpServer() {
 
 			@Override
@@ -136,8 +137,9 @@ public class Bootstrap {
 	 * 
 	 * @param address
 	 * @param port
+	 * @throws Exception
 	 */
-	private static void startNettyServer(String address, int port) {
+	private static void startNettyServer(String address, int port) throws Exception {
 		new NettyServer() {
 
 			@Override
