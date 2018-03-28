@@ -29,6 +29,7 @@ import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.common.executor.AbstracteExecutor;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.connector.constant.AkxProject;
@@ -54,7 +55,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 	private HttpRequest request;
 	private AbstracteExecutor<Command, CommandResponse> executor;
-	
+
 	public HttpServerHandler(AbstracteExecutor<Command, CommandResponse> executor) {
 		this.executor = executor;
 	}
@@ -161,7 +162,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					logger.debug("{} client={} http server handler command={}", AkxProject.PLN, clientIp,
 							command.toString());
 
-					this.executor.execute(HttpUriAction.HTTP_ACTION.getUri(), command);
+					CommandResponse response = this.executor.execute(HttpUriAction.HTTP_ACTION.getUri(), command);
+					LogUtils.requestResultLog(logger, command, response);
 				} else {
 					// 超时10s，认为此请求失效，直接断开连接
 					ctx.close();

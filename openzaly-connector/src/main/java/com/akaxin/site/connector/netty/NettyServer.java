@@ -111,7 +111,7 @@ public abstract class NettyServer {
 			 */
 			bootstrap.childOption(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
 			// the ChannelHandler to use for serving the requests.
-			bootstrap.handler(new LoggingHandler(LogLevel.INFO));
+			bootstrap.handler(new LoggingHandler(LogLevel.DEBUG));
 			// Set the ChannelHandler which is used to serve the request for the
 			// Channel's
 			bootstrap.childHandler(new NettyChannelInitializer());
