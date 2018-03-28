@@ -50,7 +50,7 @@ public class ApiDeviceService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String deviceId = request.getDeviceId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(deviceId)) {
 				UserDeviceBean deviceBean = UserDeviceDao.getInstance().getDeviceDetails(siteUserId, deviceId);
@@ -69,7 +69,7 @@ public class ApiDeviceService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -81,7 +81,7 @@ public class ApiDeviceService extends AbstractRequest {
 			ApiDeviceListProto.DeviceListInfoRequest request = ApiDeviceListProto.DeviceListInfoRequest
 					.parseFrom(command.getParams());
 			String siteFriendId = request.getSiteUserId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteFriendId)) {
 				ApiDeviceListProto.DeviceListInfoResponse.Builder responseBuilder = ApiDeviceListProto.DeviceListInfoResponse
@@ -103,7 +103,7 @@ public class ApiDeviceService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -122,7 +122,7 @@ public class ApiDeviceService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String currentUserId = command.getSiteUserId();
 			String siteUserId = request.getSiteUserId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(currentUserId) && currentUserId.equals(siteUserId)) {
 				ApiDeviceBoundListProto.ApiDeviceBoundListResponse.Builder responseBuilder = ApiDeviceBoundListProto.ApiDeviceBoundListResponse
@@ -142,7 +142,7 @@ public class ApiDeviceService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

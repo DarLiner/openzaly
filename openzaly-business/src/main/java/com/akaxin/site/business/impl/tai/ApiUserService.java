@@ -58,7 +58,7 @@ public class ApiUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String currentUserId = command.getSiteUserId();
 			String siteUserId = request.getSiteUserId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(currentUserId)) {
 				UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
@@ -93,7 +93,7 @@ public class ApiUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errorCode);
 	}
@@ -114,7 +114,7 @@ public class ApiUserService extends AbstractRequest {
 			String userName = request.getUserProfile().getUserName();
 			String userPhoto = request.getUserProfile().getUserPhoto();
 			String introduce = request.getUserProfile().getSelfIntroduce();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, userName, userPhoto)) {
 
@@ -134,7 +134,7 @@ public class ApiUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -145,7 +145,7 @@ public class ApiUserService extends AbstractRequest {
 		try {
 			String siteUserId = command.getSiteUserId();
 			boolean mute = UserProfileDao.getInstance().getUserMute(siteUserId);
-			LogUtils.apiRequestLog(logger, command, "");
+			LogUtils.requestDebugLog(logger, command, "");
 
 			ApiUserMuteProto.ApiUserMuteResponse response = ApiUserMuteProto.ApiUserMuteResponse.newBuilder()
 					.setMute(mute).build();
@@ -153,7 +153,7 @@ public class ApiUserService extends AbstractRequest {
 			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -166,7 +166,7 @@ public class ApiUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			boolean mute = request.getMute();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (UserProfileDao.getInstance().updateUserMute(siteUserId, mute)) {
 				errCode = ErrorCode2.SUCCESS;
@@ -175,7 +175,7 @@ public class ApiUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

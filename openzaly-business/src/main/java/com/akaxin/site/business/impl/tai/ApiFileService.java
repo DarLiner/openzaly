@@ -49,7 +49,7 @@ public class ApiFileService extends AbstractRequest {
 			FileProto.File file = request.getFile();
 			int type = file.getFileTypeValue();
 			byte[] content = file.getFileContent().toByteArray();
-			LogUtils.apiRequestLog(logger, command, "type=" + type + ",size=" + content.length);
+			LogUtils.requestDebugLog(logger, command, "type=" + type + ",size=" + content.length);
 
 			String fileId = FileServerUtils.saveFile(content, FilePathUtils.getPicPath(), type);
 			ApiFileUploadProto.ApiFileUploadResponse response = ApiFileUploadProto.ApiFileUploadResponse.newBuilder()
@@ -58,7 +58,7 @@ public class ApiFileService extends AbstractRequest {
 			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -70,7 +70,7 @@ public class ApiFileService extends AbstractRequest {
 			ApiFileDownloadProto.ApiFileDownloadRequest request = ApiFileDownloadProto.ApiFileDownloadRequest
 					.parseFrom(command.getParams());
 			String fileId = request.getFileId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(fileId) && !"null".equals(fileId)) {
 				byte[] imageBytes = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), fileId);
@@ -93,7 +93,7 @@ public class ApiFileService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

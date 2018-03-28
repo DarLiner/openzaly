@@ -32,11 +32,10 @@ import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.google.protobuf.ByteString;
 
 /**
- * 主要发送群主相关的消息通知
- * 
  * <pre>
+ * 主要发送群主相关的消息通知 
  * 	1.新用户加入了群聊消息提醒
- * 	2.
+ * 	2.消息通知，以及系统通知
  * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}

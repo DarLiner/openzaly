@@ -75,7 +75,7 @@ public class ApiSiteService extends AbstractRequest {
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			Map<Integer, String> configMap = SiteConfig.getConfigMap();
-			LogUtils.apiRequestLog(logger, command, "");
+			LogUtils.requestDebugLog(logger, command, "");
 
 			if (configMap != null) {
 				ConfigProto.SiteConfig.Builder configBuilder = ConfigProto.SiteConfig.newBuilder();
@@ -112,7 +112,7 @@ public class ApiSiteService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -132,7 +132,7 @@ public class ApiSiteService extends AbstractRequest {
 			String applyInfo = registerRequest.getApplyInfo();
 			String phoneToken = registerRequest.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
-			LogUtils.apiRequestLog(logger, command, registerRequest.toString());
+			LogUtils.requestDebugLog(logger, command, registerRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userName)) {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
@@ -199,7 +199,7 @@ public class ApiSiteService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errorCode);
 	}
@@ -243,7 +243,7 @@ public class ApiSiteService extends AbstractRequest {
 			String userDeviceIdSignBase64 = loginRequest.getUserDeviceIdSignBase64();
 			String userDeviceName = loginRequest.getUserDeviceName();
 			String userToken = loginRequest.getUserToken();
-			LogUtils.apiRequestLog(logger, command, loginRequest.toString());
+			LogUtils.requestDebugLog(logger, command, loginRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userIdSignBase64)) {
 				errCode = ErrorCode2.ERROR2_LOGGIN_USERID_EMPTY;
@@ -337,7 +337,7 @@ public class ApiSiteService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

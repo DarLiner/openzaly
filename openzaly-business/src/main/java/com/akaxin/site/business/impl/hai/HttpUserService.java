@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.plugin.HaiUserListProto;
 import com.akaxin.proto.plugin.HaiUserProfileProto;
@@ -54,7 +55,6 @@ public class HttpUserService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse search(Command command) {
-		logger.info("/hai/user/search");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -62,7 +62,7 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 			String userName = request.getUserName();
-			logger.info("/hai/user/search request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
 			if (StringUtils.isNotBlank(siteUserId)) {
@@ -87,9 +87,8 @@ public class HttpUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai search user error", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/user/search result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -100,13 +99,13 @@ public class HttpUserService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse profile(Command command) {
-		logger.info("/hai/user/profile");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
 			HaiUserProfileProto.HaiUserProfileRequest request = HaiUserProfileProto.HaiUserProfileRequest
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId)) {
 				UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
@@ -125,9 +124,8 @@ public class HttpUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("/hai/user/profile error", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/user/profile result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -138,7 +136,6 @@ public class HttpUserService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse update(Command command) {
-		logger.info("/hai/user/update");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
@@ -148,7 +145,7 @@ public class HttpUserService extends AbstractRequest {
 			String userName = request.getUserProfile().getUserName();
 			String userPhoto = request.getUserProfile().getUserPhoto();
 			String userIntro = request.getUserProfile().getSelfIntroduce();
-			logger.info("/hai/user/update request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			// 过滤参数
 			if (StringUtils.isNoneBlank(siteUserId)) {
@@ -165,9 +162,8 @@ public class HttpUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai update user error", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/user/update result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -180,7 +176,6 @@ public class HttpUserService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse sealUp(Command command) {
-		logger.info("/hai/user/sealUp");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
@@ -188,7 +183,7 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 			UserProto.UserStatus userStatus = request.getStatus();
-			logger.info("/hai/user/sealUp request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId)) {
 				if (UserProfileDao.getInstance().updateUserStatus(siteUserId, userStatus.getNumber())) {
@@ -199,9 +194,8 @@ public class HttpUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai seal up user error", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/user/sealUp result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -212,7 +206,6 @@ public class HttpUserService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse list(Command command) {
-		logger.info("/hai/user/list");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -220,9 +213,8 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-
-			logger.info("/hai/user/list request={}", request.toString());
-
+			LogUtils.requestDebugLog(logger, command, request.toString());
+			
 			List<SimpleUserBean> pageList = UserProfileDao.getInstance().getUserPageList(pageNum, pageSize);
 			if (pageList != null) {
 				HaiUserListProto.HaiUserListResponse.Builder responseBuilder = HaiUserListProto.HaiUserListResponse
@@ -246,9 +238,8 @@ public class HttpUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai query user list error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/user/list result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -259,7 +250,6 @@ public class HttpUserService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse relationList(Command command) {
-		logger.info("/hai/user/relationList");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -268,8 +258,8 @@ public class HttpUserService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-			logger.info("/hai/user/relationList request={}", request.toString());
-
+			LogUtils.requestDebugLog(logger, command, request.toString());
+			
 			List<SimpleUserRelationBean> pageList = UserProfileDao.getInstance().getUserRelationPageList(siteUserId,
 					pageNum, pageSize);
 			if (pageList != null) {
@@ -296,9 +286,8 @@ public class HttpUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai query user list error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/user/relationList result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 }

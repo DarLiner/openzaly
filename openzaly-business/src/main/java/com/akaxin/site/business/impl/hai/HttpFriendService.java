@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.plugin.HaiFriendApplyProto;
 import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.impl.AbstractRequest;
@@ -43,7 +44,6 @@ public class HttpFriendService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse apply(Command command) {
-		logger.info("/hai/friend/apply");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
@@ -52,8 +52,7 @@ public class HttpFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			String applyReason = request.getApplyReason();
-
-			logger.info("/hai/friend/apply request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isBlank(siteUserId)) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
@@ -77,9 +76,8 @@ public class HttpFriendService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai apply friend error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/friend/apply result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 }

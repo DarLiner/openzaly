@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.plugin.HaiPluginAddProto;
@@ -33,7 +34,6 @@ import com.akaxin.proto.plugin.HaiPluginProfileProto;
 import com.akaxin.proto.plugin.HaiPluginUpdateProto;
 import com.akaxin.site.business.dao.SitePluginDao;
 import com.akaxin.site.business.impl.AbstractRequest;
-import com.akaxin.site.business.utils.StringRandomUtils;
 import com.akaxin.site.storage.bean.PluginBean;
 
 /**
@@ -57,7 +57,7 @@ public class HttpPluginService extends AbstractRequest {
 		try {
 			HaiPluginAddProto.HaiPluginAddRequest request = HaiPluginAddProto.HaiPluginAddRequest
 					.parseFrom(command.getParams());
-			logger.info("/hai/plugin/add command={},request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			PluginBean bean = new PluginBean();
 			bean.setName(request.getPlugin().getName());
@@ -71,15 +71,14 @@ public class HttpPluginService extends AbstractRequest {
 			bean.setAddTime(System.currentTimeMillis());
 			// 随机生成64位的字符串
 			bean.setAuthKey(StringHelper.generateRandomString(16));
-			
+
 			if (SitePluginDao.getInstance().addPlugin(bean)) {
 				errorCode = ErrorCode2.SUCCESS;
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("add plugin error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/plugin/add result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -96,7 +95,7 @@ public class HttpPluginService extends AbstractRequest {
 			HaiPluginDeleteProto.HaiPluginDeleteRequest request = HaiPluginDeleteProto.HaiPluginDeleteRequest
 					.parseFrom(command.getParams());
 			String pluginId = request.getPluginId();
-			logger.info("/hai/plugin/delete command={} request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(pluginId)) {
 				if (SitePluginDao.getInstance().deletePlugin(Integer.valueOf(pluginId))) {
@@ -107,10 +106,8 @@ public class HttpPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("delete plugin error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-
-		logger.info("/hai/plugin/delete result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -128,7 +125,7 @@ public class HttpPluginService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-			logger.info("/hai/plugin/list command={} request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			List<PluginBean> pluginList = SitePluginDao.getInstance().getAllPluginList(pageNum, pageSize);
 
@@ -143,9 +140,8 @@ public class HttpPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("/hai/plugin/list error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/plugin/list result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -162,7 +158,7 @@ public class HttpPluginService extends AbstractRequest {
 			HaiPluginProfileProto.HaiPluginProfileRequest request = HaiPluginProfileProto.HaiPluginProfileRequest
 					.parseFrom(command.getParams());
 			String pluginId = request.getPluginId();
-			logger.info("/hai/plugin/profile command={},request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			PluginBean bean = SitePluginDao.getInstance().getPluginProfile(Integer.valueOf(pluginId));
 			if (bean != null) {
@@ -173,9 +169,8 @@ public class HttpPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai apply friend error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/plugin/profile result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -191,7 +186,8 @@ public class HttpPluginService extends AbstractRequest {
 		try {
 			HaiPluginUpdateProto.HaiPluginUpdateRequest request = HaiPluginUpdateProto.HaiPluginUpdateRequest
 					.parseFrom(command.getParams());
-			logger.info("/hai/plugin/update command={},request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
 			PluginBean bean = new PluginBean();
 			bean.setId(Integer.valueOf(request.getPlugin().getId()));
 			bean.setName(request.getPlugin().getName());
@@ -209,9 +205,8 @@ public class HttpPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("/hai/plugin/update error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/plugin/update result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 

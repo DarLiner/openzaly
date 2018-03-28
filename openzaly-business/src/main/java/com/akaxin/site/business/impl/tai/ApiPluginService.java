@@ -69,7 +69,7 @@ public class ApiPluginService extends AbstractRequest {
 			int pageSize = request.getPageSize();
 			PluginProto.PluginPosition position = request.getPosition();
 			String siteAdmin = SiteConfig.getSiteAdmin();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			// 先做首帧扩展
 			if (PluginProto.PluginPosition.HOME_PAGE == position) {
@@ -96,7 +96,7 @@ public class ApiPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -121,7 +121,7 @@ public class ApiPluginService extends AbstractRequest {
 			String pluginId = request.getPluginId();
 			String requestPage = request.getPage();// /index || index.php || index.html
 			String requestParams = request.getParams();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			Map<Integer, String> header = command.getHeader();
 			String siteSessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
@@ -171,7 +171,7 @@ public class ApiPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -196,7 +196,7 @@ public class ApiPluginService extends AbstractRequest {
 			String pluginId = request.getPluginId();
 			String requestApi = request.getApi();
 			String requestParams = request.getParams();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			Map<Integer, String> header = command.getHeader();
 			String siteSessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
@@ -244,7 +244,7 @@ public class ApiPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

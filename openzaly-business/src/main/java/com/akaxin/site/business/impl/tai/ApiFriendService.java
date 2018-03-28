@@ -74,7 +74,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String globalOrSiteFriendId = request.getSiteUserId();// 等待查询的站点用户ID || globalUserId
 			String userIdPubk = request.getUserIdPubk(); // 等待查询的用户公钥，优先级高
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (userIdPubk == null && globalOrSiteFriendId == null) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
@@ -103,7 +103,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -116,7 +116,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String currentUserId = command.getSiteUserId();
 			String siteUserId = request.getSiteUserId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(currentUserId)) {
 				List<SimpleUserBean> friendBeanList = UserFriendDao.getInstance().getUserFriends(siteUserId);
@@ -137,7 +137,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -157,7 +157,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			String applyReason = request.getApplyReason();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isEmpty(siteUserId)) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
@@ -187,7 +187,7 @@ public class ApiFriendService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -203,7 +203,7 @@ public class ApiFriendService extends AbstractRequest {
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			String siteUserId = command.getSiteUserId();
-			LogUtils.apiRequestLog(logger, command, "");
+			LogUtils.requestDebugLog(logger, command, "");
 
 			if (StringUtils.isNotBlank(siteUserId)) {
 				List<ApplyUserBean> applyUserList = UserFriendDao.getInstance().getApplyUserList(siteUserId);
@@ -226,7 +226,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -236,7 +236,7 @@ public class ApiFriendService extends AbstractRequest {
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			String siteUserId = command.getSiteUserId();
-			LogUtils.apiRequestLog(logger, command, "");
+			LogUtils.requestDebugLog(logger, command, "");
 
 			if (StringUtils.isNotBlank(siteUserId)) {
 				int applyCount = UserFriendDao.getInstance().getApplyCount(siteUserId);
@@ -247,7 +247,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -267,7 +267,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			boolean result = request.getApplyResult();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(siteFriendId)
 					&& !siteUserId.equals(siteFriendId)) {
@@ -284,7 +284,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -303,7 +303,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(siteFriendId)
 					&& !siteUserId.equals(siteFriendId)) {
@@ -315,7 +315,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -334,7 +334,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, siteFriendId)) {
 				UserFriendBean bean = UserFriendDao.getInstance().getFriendSetting(siteUserId, siteFriendId);
@@ -353,7 +353,7 @@ public class ApiFriendService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -373,7 +373,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			boolean messageMute = request.getMessageMute();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId)) {
 				UserFriendBean friendBean = new UserFriendBean();
@@ -390,7 +390,7 @@ public class ApiFriendService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -403,7 +403,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, siteFriendId)) {
 				boolean mute = UserFriendDao.getInstance().getFriendMute(siteUserId, siteFriendId);
@@ -416,7 +416,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -436,7 +436,7 @@ public class ApiFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
 			boolean messageMute = request.getMute();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId)) {
 				if (UserFriendDao.getInstance().updateFriendMute(siteUserId, siteFriendId, messageMute)) {
@@ -450,7 +450,7 @@ public class ApiFriendService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

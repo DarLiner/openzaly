@@ -25,6 +25,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.logs.AkxLog4jManager;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.plugin.HaiSiteGetConfigProto;
 import com.akaxin.proto.plugin.HaiSiteUpdateConfigProto;
@@ -52,8 +53,8 @@ public class HttpSiteConfigService extends AbstractRequest {
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
-			logger.info("/hai/site/getConfig command={}", command.toString());
-			
+			LogUtils.requestDebugLog(logger, command, "");
+
 			Map<Integer, String> configMap = SiteConfig.getConfigMap();
 			ConfigProto.SiteBackConfig config = ConfigProto.SiteBackConfig.newBuilder().putAllSiteConfig(configMap)
 					.build();
@@ -63,9 +64,8 @@ public class HttpSiteConfigService extends AbstractRequest {
 			errorCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai get config error", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/site/getConfig result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -82,7 +82,7 @@ public class HttpSiteConfigService extends AbstractRequest {
 			HaiSiteUpdateConfigProto.HaiSiteUpdateConfigRequest request = HaiSiteUpdateConfigProto.HaiSiteUpdateConfigRequest
 					.parseFrom(command.getParams());
 			Map<Integer, String> configMap = request.getSiteConfig().getSiteConfigMap();
-			logger.info("/hai/site/updateConfig command={} request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (configMap != null) {
 				// update db config
@@ -103,9 +103,8 @@ public class HttpSiteConfigService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai update config proto error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/site/updateConfig result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 }

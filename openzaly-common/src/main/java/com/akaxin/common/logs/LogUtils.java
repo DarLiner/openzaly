@@ -29,20 +29,27 @@ import com.akaxin.common.utils.StringHelper;
  * @since 2018-01-25 16:13:00
  */
 public class LogUtils extends LogCreater {
-	
-	public static void apiRequestLog(Logger logger, Command command, String requestStr) {
+
+	public static void requestInfoLog(Logger logger, Command command, String messagePattern, Object... objects) {
+		FormattingTuple format = MessageFormatter.arrayFormat(messagePattern, objects);
+		logger.info("client={} siteUserId={} action={} msg={}", command.getClientIp(), command.getSiteUserId(),
+				command.getAction(), command.toString(), format.getMessage());
+		return;
+	}
+
+	public static void requestDebugLog(Logger logger, Command command, String requestStr) {
 		logger.debug("client={} siteUserId={} action={} command={} request={}", command.getClientIp(),
 				command.getSiteUserId(), command.getAction(), command.toString(), requestStr);
 	}
 
-	public static void apiErrorLog(Logger logger, Command command, Throwable t) {
-		logger.error(StringHelper.format("client={} siteUserId={} action={} error", command.getClientIp(),
-				command.getSiteUserId(), command.getAction()), t);
+	public static void requestErrorLog(Logger logger, Command command, Throwable t) {
+		logger.error(StringHelper.format("client={} siteUserId={} action={} uri={} error", command.getClientIp(),
+				command.getSiteUserId(), command.getAction(), command.getUri()), t);
 	}
 
-	public static void apiResultLog(Logger logger, Command command, String errCode) {
-		logger.debug("client={} siteUserId={} action={} result={}", command.getClientIp(), command.getSiteUserId(),
-				command.getAction(), errCode);
+	public static void requestResultLog(Logger logger, Command command, String errCode) {
+		logger.debug("client={} siteUserId={} action={} uri={} result={}", command.getClientIp(),
+				command.getSiteUserId(), command.getAction(), command.getUri(), errCode);
 	}
 
 	public static void printDBLog(Logger logger, long cost, Object result, String sql) {
@@ -58,4 +65,5 @@ public class LogUtils extends LogCreater {
 		FormattingTuple format = MessageFormatter.arrayFormat(messagePattern, objects);
 		logger.info(format.getMessage());
 	}
+
 }

@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.plugin.HaiGroupAddMemberProto;
@@ -66,8 +67,7 @@ public class HttpGroupService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-
-			logger.info("/hai/group/list request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			List<SimpleGroupBean> groupList = UserGroupDao.getInstance().getGroupList(pageNum, pageSize);
 			if (groupList != null) {
@@ -81,9 +81,8 @@ public class HttpGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai get group list error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/list result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -94,15 +93,13 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse profile(Command command) {
-		logger.info("/hai/group/profile");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupProfileProto.HaiGroupProfileRequest request = HaiGroupProfileProto.HaiGroupProfileRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
-
-			logger.info("/hai/group/profile request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
 
@@ -114,14 +111,13 @@ public class HttpGroupService extends AbstractRequest {
 						.newBuilder();
 				responseBuilder.setProfile(groupProfile);
 				commandResponse.setParams(responseBuilder.build().toByteArray());
-				errorCode = ErrorCode2.SUCCESS;
+				errCode = ErrorCode2.SUCCESS;
 			}
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai group profile error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/profile result={}", errorCode.toString());
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
@@ -131,22 +127,19 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse members(Command command) {
-		logger.info("/hai/group/members");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupMembersProto.HaiGroupMembersRequest request = HaiGroupMembersProto.HaiGroupMembersRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-
 			if (pageNum == 0 && pageSize == 0) {
 				pageNum = 1;
 				pageSize = GroupConfig.GROUP_MAX_MEMBER_COUNT;
 			}
-
-			logger.info("/hai/group/members request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(groupId, pageNum,
 					pageSize);
@@ -163,28 +156,25 @@ public class HttpGroupService extends AbstractRequest {
 				responseBuilder.addGroupMember(groupMember);
 			}
 			commandResponse.setParams(responseBuilder.build().toByteArray());
-			errorCode = ErrorCode2.SUCCESS;
+			errCode = ErrorCode2.SUCCESS;
 
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("get group members error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/members result={}", errorCode.toString());
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	public CommandResponse nonmembers(Command command) {
-		logger.info("/hai/group/nonmembers");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupNonmembersProto.HaiGroupNonmembersRequest request = HaiGroupNonmembersProto.HaiGroupNonmembersRequest
 					.parseFrom(command.getParams());
-			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-			logger.info("/hai/group/nonmembers request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getNonGroupMemberList(groupId, pageNum,
 					pageSize);
@@ -200,13 +190,13 @@ public class HttpGroupService extends AbstractRequest {
 				responseBuilder.addGroupMember(groupMember);
 			}
 			commandResponse.setParams(responseBuilder.build().toByteArray());
-			errorCode = ErrorCode2.SUCCESS;
+			errCode = ErrorCode2.SUCCESS;
 
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("get group members error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
@@ -216,31 +206,28 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse removeMember(Command command) {
-		logger.info("/hai/group/removeMember");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest request = HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
 			ProtocolStringList deleteMemberIds = request.getGroupMemberList();
-
-			logger.info("/hai/group/removeMember request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(groupId)) {
 				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
-					errorCode = ErrorCode2.SUCCESS;
+					errCode = ErrorCode2.SUCCESS;
 				}
 			} else {
-				errorCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
 
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("remove group members error", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/removeMember result={}", errorCode.toString());
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
@@ -250,9 +237,8 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse updateProfile(Command command) {
-		logger.info("/hai/group/updateProfile");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupUpdateProfileProto.HaiGroupUpdateProfileRequest request = HaiGroupUpdateProfileProto.HaiGroupUpdateProfileRequest
 					.parseFrom(command.getParams());
@@ -260,7 +246,7 @@ public class HttpGroupService extends AbstractRequest {
 			String photoId = request.getProfile().getIcon();
 			String groupName = request.getProfile().getName();
 			String groupNotice = request.getProfile().getGroupNotice();
-			logger.info("/hai/group/updateProfile request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(groupId)) {
 				GroupProfileBean gprofileBean = new GroupProfileBean();
@@ -269,17 +255,16 @@ public class HttpGroupService extends AbstractRequest {
 				gprofileBean.setGroupPhoto(photoId);
 				gprofileBean.setGroupNotice(groupNotice);
 				if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
-					errorCode = ErrorCode2.SUCCESS;
+					errCode = ErrorCode2.SUCCESS;
 				}
 			} else {
-				errorCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("/hai/group/updateProfile error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/updateProfile result={}", errorCode.toString());
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
@@ -289,28 +274,26 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse delete(Command command) {
-		logger.info("/hai/group/delete");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupDeleteProto.HaiGroupDeleteRequest request = HaiGroupDeleteProto.HaiGroupDeleteRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
-			logger.info("/hai/group/delete request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(groupId)) {
 				if (UserGroupDao.getInstance().deleteGroup(groupId)) {
-					errorCode = ErrorCode2.SUCCESS;
+					errCode = ErrorCode2.SUCCESS;
 				}
 			} else {
-				errorCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai apply friend error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/delete result={}", errorCode.toString());
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
@@ -320,30 +303,28 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse addMember(Command command) {
-		logger.info("/hai/group/addMember");
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupAddMemberProto.HaiGroupAddMemberRequest request = HaiGroupAddMemberProto.HaiGroupAddMemberRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			ProtocolStringList addMemberList = request.getGroupMemberList();
-			logger.info("/hai/group/delete request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNoneBlank(groupId) && addMemberList != null) {
 				if (UserGroupDao.getInstance().addGroupMember(siteUserId, groupId, addMemberList)) {
-					errorCode = ErrorCode2.SUCCESS;
+					errCode = ErrorCode2.SUCCESS;
 				}
 			} else {
-				errorCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("add group member error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/group/delete result={}", errorCode.toString());
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	private GroupProto.SimpleGroupProfile getSimpleGroupProfile(SimpleGroupBean bean) {

@@ -57,7 +57,7 @@ public class ApiSecretChatService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			LogUtils.apiRequestLog(logger, command, request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId) && !siteUserId.equals(siteFriendId)) {
 				ConfigProto.U2EncryptionStatus status = SiteConfig.getU2EncryStatus();
@@ -85,7 +85,7 @@ public class ApiSecretChatService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

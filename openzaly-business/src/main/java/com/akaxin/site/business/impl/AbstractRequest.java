@@ -31,14 +31,14 @@ public abstract class AbstractRequest implements IRequestService {
 			Method m = this.getClass().getDeclaredMethod(methodName, command.getClass());
 			response = (CommandResponse) m.invoke(this, command);
 		} catch (Exception e) {
-			LogUtils.apiErrorLog(logger, command, e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
 
 		if (response == null) {
 			response = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
 					.setAction(CommandConst.ACTION_RES).setErrCode2(errCode);
 		}
-		LogUtils.apiResultLog(logger, command, getResponseResult(response));
+		LogUtils.requestResultLog(logger, command, getResponseResult(response));
 		return response;
 	}
 

@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
-import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.UicProto;
 import com.akaxin.proto.core.UicProto.UicStatus;
 import com.akaxin.proto.plugin.HaiUicCreateProto;
@@ -50,7 +50,6 @@ public class HttpUICService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse create(Command command) {
-		logger.info("/hai/uic/create");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -59,8 +58,7 @@ public class HttpUICService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			int num = request.getUicNumber();
 			int successCount = 0;
-
-			logger.info("/hai/uic/create command={},request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && num > 0) {
 				UicBean bean = new UicBean();
@@ -75,9 +73,8 @@ public class HttpUICService extends AbstractRequest {
 			logger.info("create uic siteUserId={},succNum={},totalNumber={}", siteUserId, successCount, num);
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("add plugin error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/uic/create result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -88,16 +85,15 @@ public class HttpUICService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse list(Command command) {
-		logger.info("/hai/uic/list");
 		CommandResponse commandResponse = new CommandResponse();
-		String errorCode = ErrorCode.ERROR;
+		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			HaiUicListProto.HaiUicListRequest request = HaiUicListProto.HaiUicListRequest
 					.parseFrom(command.getParams());
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			int status = request.getStatusValue();
-			logger.info("/hai/uic/list command={},request={}", command.toString(), request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			List<UicBean> uicList = SiteUicDao.getInstance().getUicList(pageNum, pageSize, status);
 			if (uicList != null) {
@@ -107,14 +103,14 @@ public class HttpUICService extends AbstractRequest {
 					responseBuilder.addUicInfo(getUicInfo(bean));
 				}
 				commandResponse.setParams(responseBuilder.build().toByteArray());
-				errorCode = ErrorCode.SUCCESS;
+				errCode = ErrorCode2.SUCCESS;
 			}
 
 		} catch (Exception e) {
-			commandResponse.setErrInfo("uic list error");
-			logger.error("uic list error.", e);
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode(errorCode);
+		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
@@ -124,7 +120,6 @@ public class HttpUICService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse info(Command command) {
-		logger.info("/hai/uic/info");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
@@ -132,7 +127,7 @@ public class HttpUICService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			int id = request.getId();
 			String uic = request.getUic();
-			logger.info("/hai/uic/info request={}", request.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (id > 0 && StringUtils.isNotBlank(uic)) {
 				UicBean bean = SiteUicDao.getInstance().getUicInfo(uic);
@@ -147,9 +142,8 @@ public class HttpUICService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("hai uic info error.", e);
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("/hai/uic/info result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
