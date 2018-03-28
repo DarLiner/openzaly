@@ -23,6 +23,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserProfileProto;
@@ -57,8 +58,7 @@ public class ApiUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String currentUserId = command.getSiteUserId();
 			String siteUserId = request.getSiteUserId();
-
-			logger.info("api.user.profile command={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(currentUserId)) {
 				UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
@@ -93,9 +93,8 @@ public class ApiUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.user.profile exception", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.user.profile result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -115,7 +114,7 @@ public class ApiUserService extends AbstractRequest {
 			String userName = request.getUserProfile().getUserName();
 			String userPhoto = request.getUserProfile().getUserPhoto();
 			String introduce = request.getUserProfile().getSelfIntroduce();
-			logger.info("api.user.updateProfile cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneEmpty(siteUserId, userName, userPhoto)) {
 
@@ -135,9 +134,8 @@ public class ApiUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("update profile error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.user.updateProfile result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -147,15 +145,16 @@ public class ApiUserService extends AbstractRequest {
 		try {
 			String siteUserId = command.getSiteUserId();
 			boolean mute = UserProfileDao.getInstance().getUserMute(siteUserId);
+			LogUtils.apiRequestLog(logger, command, "");
+
 			ApiUserMuteProto.ApiUserMuteResponse response = ApiUserMuteProto.ApiUserMuteResponse.newBuilder()
 					.setMute(mute).build();
 			commandResponse.setParams(response.toByteArray());
 			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.user.mute error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.user.mute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -167,6 +166,8 @@ public class ApiUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			boolean mute = request.getMute();
+			LogUtils.apiRequestLog(logger, command, request.toString());
+
 			if (UserProfileDao.getInstance().updateUserMute(siteUserId, mute)) {
 				errCode = ErrorCode2.SUCCESS;
 			} else {
@@ -174,9 +175,8 @@ public class ApiUserService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.user.updateMute error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.user.updateMute result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

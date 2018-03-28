@@ -31,6 +31,7 @@ import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.crypto.HashCrypto;
 import com.akaxin.common.crypto.RSACrypto;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.UserProto;
@@ -74,7 +75,7 @@ public class ApiSiteService extends AbstractRequest {
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
 			Map<Integer, String> configMap = SiteConfig.getConfigMap();
-			logger.info("api.site.config cmd={} ", command.toString());
+			LogUtils.apiRequestLog(logger, command, "");
 
 			if (configMap != null) {
 				ConfigProto.SiteConfig.Builder configBuilder = ConfigProto.SiteConfig.newBuilder();
@@ -111,9 +112,8 @@ public class ApiSiteService extends AbstractRequest {
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.info("api.site.config execute error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.site.config result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -132,34 +132,31 @@ public class ApiSiteService extends AbstractRequest {
 			String applyInfo = registerRequest.getApplyInfo();
 			String phoneToken = registerRequest.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
-
-			logger.info("api.site.register siteUserId={} cmd={} request={}", siteUserId, command.toString(),
-					registerRequest.toString());
+			LogUtils.apiRequestLog(logger, command, registerRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userName)) {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
-				logger.error("");
 				return commandResponse.setErrCode2(errorCode);
 			}
 
 			// 判断站点的注册方式
 			ConfigProto.RegisterWay regWay = SiteConfig.getRegisterWay();
 
-			logger.info("api.site.register register way={}", regWay);
+			logger.debug("api.site.register register way={}", regWay);
 
 			switch (regWay) {
 			case USERUIC:
-				logger.info("注册方式：邀请码注册");
+				logger.debug("注册方式：邀请码注册");
 				if (!UserUic.getInstance().checkUic(userUic, siteUserId)) {
 					errorCode = ErrorCode2.ERROR_REGISTER_UIC;
 					return commandResponse.setErrCode2(errorCode);
 				}
 				break;
 			case REALNAME:
-				logger.info("注册方式：实名注册");
+				logger.debug("注册方式：实名注册");
 				if (StringUtils.isNotBlank(phoneToken)) {
 					phoneId = UserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
-					logger.info("实名注册，站点获取手机号：{}", phoneId);
+					logger.debug("实名注册，站点获取手机号：{}", phoneId);
 					if (!StringUtils.isNotBlank(phoneId)) {
 						errorCode = ErrorCode2.ERROR_REGISTER_PHONEID;
 						return commandResponse.setErrCode2(errorCode);
@@ -167,7 +164,7 @@ public class ApiSiteService extends AbstractRequest {
 				}
 				break;
 			case ANONYMOUS:
-				logger.info("注册方式：匿名注册");
+				logger.debug("注册方式：匿名注册");
 				break;
 			case UNRECOGNIZED:
 				break;
@@ -193,15 +190,17 @@ public class ApiSiteService extends AbstractRequest {
 				errorCode = ErrorCode2.ERROR_REGISTER_SAVEPROFILE;
 			}
 
+			logger.info("client={} siteUserId={} action={} register on site", command.getClientIp(), siteUserId,
+					command.getAction());
+
 			if (ErrorCode2.SUCCESS == errorCode) {
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());
 			}
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.site.register error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.site.register result={}", errorCode.toString());
 		return commandResponse.setErrCode2(errorCode);
 	}
 
@@ -238,18 +237,13 @@ public class ApiSiteService extends AbstractRequest {
 		try {
 			ApiSiteLoginProto.ApiSiteLoginRequest loginRequest = ApiSiteLoginProto.ApiSiteLoginRequest
 					.parseFrom(command.getParams());
-
 			String userIdPubk = loginRequest.getUserIdPubk();
 			String userIdSignBase64 = loginRequest.getUserIdSignBase64();
 			String userDeviceIdPubk = loginRequest.getUserDeviceIdPubk();
 			String userDeviceIdSignBase64 = loginRequest.getUserDeviceIdSignBase64();
 			String userDeviceName = loginRequest.getUserDeviceName();
 			String userToken = loginRequest.getUserToken();
-
-			logger.info("user_id_pubk={}", userIdPubk);
-			logger.info("userIdSignBase64={}", userIdSignBase64);
-			logger.info("device_id_pubk={}", userDeviceIdPubk);
-			logger.info("userDeviceIdSignBase64={}", userDeviceIdSignBase64);
+			LogUtils.apiRequestLog(logger, command, loginRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userIdSignBase64)) {
 				errCode = ErrorCode2.ERROR2_LOGGIN_USERID_EMPTY;
@@ -266,7 +260,7 @@ public class ApiSiteService extends AbstractRequest {
 			userSign.initVerify(userPubKey);
 			userSign.update(userIdPubk.getBytes());// 原文
 			boolean userSignResult = userSign.verify(Base64.getDecoder().decode(userIdSignBase64));
-			logger.info("userSignResult={}", userSignResult);
+			logger.debug("userSignResult={}", userSignResult);
 
 			if (userSignResult) {
 				Signature userDeviceSign = Signature.getInstance("SHA512withRSA");
@@ -274,28 +268,26 @@ public class ApiSiteService extends AbstractRequest {
 				userDeviceSign.update(userDeviceIdPubk.getBytes());// 原文
 				userSignResult = userDeviceSign.verify(Base64.getDecoder().decode(userDeviceIdSignBase64));
 			}
-			logger.info("deviceSignResult={}", userSignResult);
+			logger.debug("deviceSignResult={}", userSignResult);
 
 			// 用户身份校验成功，方可执行登陆操作
 			if (userSignResult) {
 				// 判断用户，是否已经注册
 				SimpleUserBean subean = UserProfileDao.getInstance().getSimpleProfileByPubk(userIdPubk);
 				if (subean == null || StringUtils.isEmpty(subean.getUserId())) {
-					logger.info("Login Error:	Never Register On Site!");
+					logger.info("login site: new user need to register before login site");
 					errCode = ErrorCode2.ERROR2_LOGGIN_NOREGISTER;// 未注册,告知用户执行注册行为
 					return commandResponse.setErrCode2(errCode);
 				}
 
 				if (subean.getUserStatus() == UserProto.UserStatus.SEALUP_VALUE) {
-					logger.info("Login Error:	Seal Up user no permision");
+					logger.info("login site:	 user no permision as seal up");
 					errCode = ErrorCode2.ERROR2_LOGGIN_SEALUPUSER;// 禁封用户禁止登陆
 					return commandResponse.setErrCode2(errCode);
 				}
 
 				String siteUserId = subean.getUserId();
 				String deviceId = HashCrypto.MD5(userDeviceIdPubk);
-
-				logger.info("Login: Check User, siteUserId={} deviceId={}", siteUserId, deviceId);
 
 				// 保存设备信息
 				UserDeviceBean deviceBean = new UserDeviceBean();
@@ -313,7 +305,7 @@ public class ApiSiteService extends AbstractRequest {
 					loginResult = SiteLoginDao.getInstance().saveUserDevice(deviceBean);
 				}
 
-				logger.info("Login:save device result={} deviceBean={}", loginResult, deviceBean.toString());
+				logger.debug("login site: save device result={} deviceBean={}", loginResult, deviceBean.toString());
 
 				if (loginResult) {
 					// 生成session
@@ -327,10 +319,7 @@ public class ApiSiteService extends AbstractRequest {
 					sessionBean.setDeviceId(deviceId);
 					sessionBean.setLoginTime(System.currentTimeMillis());// 上次登陆(auth)时间
 
-					// 登陆信息入库,保存session
-					logger.info("Login:sessionId={}", sessionId);
 					loginResult = loginResult && SiteLoginDao.getInstance().saveUserSession(sessionBean);
-					logger.info("Login:save session result={}", loginResult);
 
 					if (loginResult) {
 						ApiSiteLoginProto.ApiSiteLoginResponse response = ApiSiteLoginProto.ApiSiteLoginResponse
@@ -348,9 +337,8 @@ public class ApiSiteService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("user login site exception.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.site.login result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

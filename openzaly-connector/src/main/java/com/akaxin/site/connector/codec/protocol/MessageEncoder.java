@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.connector.codec.protocol;
 
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
 import org.slf4j.Logger;
@@ -23,8 +24,8 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.RequestAction;
-import com.akaxin.common.logs.LogUtils;
 import com.akaxin.site.connector.codec.parser.ParserConst;
+import com.akaxin.site.connector.constant.AkxProject;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -59,6 +60,8 @@ public class MessageEncoder extends MessageToByteEncoder<RedisCommand> {
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, RedisCommand msg, ByteBuf out) throws Exception {
+		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+		String clientIp = socketAddress.getAddress().getHostAddress();
 		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
 		String version = msg.getParameterByIndex(0);
 		String action = msg.getParameterByIndex(1);
@@ -66,7 +69,8 @@ public class MessageEncoder extends MessageToByteEncoder<RedisCommand> {
 		channelSession.setActionForPsn(action);
 
 		if (!RequestAction.IM_STC_PONG.getName().equals(action)) {
-			LogUtils.printNetLog(logger, "s->c", version, action, "", "", params.length);
+			logger.debug("{} site -> client={}  version={} action={} params-length={}", AkxProject.PLN, clientIp,
+					version, action, params.length);
 		}
 
 		int byteSize = msg.getByteSize();

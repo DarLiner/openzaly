@@ -29,10 +29,10 @@ import com.akaxin.common.utils.StringHelper;
  * @since 2018-01-25 16:13:00
  */
 public class LogUtils extends LogCreater {
-
+	
 	public static void apiRequestLog(Logger logger, Command command, String requestStr) {
 		logger.debug("client={} siteUserId={} action={} command={} request={}", command.getClientIp(),
-				command.getSiteUserId(), command.getAction(), requestStr);
+				command.getSiteUserId(), command.getAction(), command.toString(), requestStr);
 	}
 
 	public static void apiErrorLog(Logger logger, Command command, Throwable t) {

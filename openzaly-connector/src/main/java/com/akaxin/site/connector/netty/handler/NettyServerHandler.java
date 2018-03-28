@@ -129,7 +129,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 			return;
 		}
 
-		logger.debug("{} client={} siteUserId={} action={} cost={} ms", AkxProject.PLN, command.getAction(),
+		logger.debug("{} client={} siteUserId={} action={} cost={} ms", AkxProject.PLN, command.getClientIp(),
 				command.getSiteUserId(), command.getAction(), System.currentTimeMillis() - command.getStartTime());
 	}
 

@@ -29,6 +29,7 @@ import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.crypto.AESCrypto;
 import com.akaxin.common.http.ZalyHttpClient;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.site.ApiPluginListProto;
@@ -68,8 +69,7 @@ public class ApiPluginService extends AbstractRequest {
 			int pageSize = request.getPageSize();
 			PluginProto.PluginPosition position = request.getPosition();
 			String siteAdmin = SiteConfig.getSiteAdmin();
-			logger.info("api.plugin.list siteAdmin={} command={} ,request={}", siteAdmin, command.toString(),
-					request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			// 先做首帧扩展
 			if (PluginProto.PluginPosition.HOME_PAGE == position) {
@@ -96,9 +96,8 @@ public class ApiPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api plugin list error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.plugin.list result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -122,7 +121,7 @@ public class ApiPluginService extends AbstractRequest {
 			String pluginId = request.getPluginId();
 			String requestPage = request.getPage();// /index || index.php || index.html
 			String requestParams = request.getParams();
-			logger.info("api.plugin.page cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			Map<Integer, String> header = command.getHeader();
 			String siteSessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
@@ -131,7 +130,7 @@ public class ApiPluginService extends AbstractRequest {
 				PluginBean bean = SitePluginDao.getInstance().getPluginProfile(Integer.valueOf(pluginId));
 				if (bean != null && bean.getApiUrl() != null) {
 					String pageUrl = buildUrl(bean.getApiUrl(), requestPage, bean.getUrlPage());
-					logger.info("http request uri={}", pageUrl);
+					logger.debug("http request uri={}", pageUrl);
 
 					PluginProto.ProxyPluginPackage.Builder packageBuilder = PluginProto.ProxyPluginPackage.newBuilder();
 					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId);
@@ -172,9 +171,8 @@ public class ApiPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api plugin page error", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.plugin.page result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -198,7 +196,7 @@ public class ApiPluginService extends AbstractRequest {
 			String pluginId = request.getPluginId();
 			String requestApi = request.getApi();
 			String requestParams = request.getParams();
-			logger.info("api.plugin.proxy cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			Map<Integer, String> header = command.getHeader();
 			String siteSessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
@@ -208,8 +206,8 @@ public class ApiPluginService extends AbstractRequest {
 				PluginBean bean = SitePluginDao.getInstance().getPluginProfile(Integer.valueOf(pluginId));
 				if (bean != null && bean.getApiUrl() != null) {
 					String pluginUrl = this.buildUrl(bean.getApiUrl(), requestApi, null);
-					logger.info("Api.Plugin.Proxy pluginId={} api={} url={} params={}", pluginId, requestApi, pluginUrl,
-							requestParams);
+					logger.debug("action={} pluginId={} api={} url={} params={}", command.getAction(), pluginId,
+							requestApi, pluginUrl, requestParams);
 
 					PluginProto.ProxyPluginPackage.Builder packageBuilder = PluginProto.ProxyPluginPackage.newBuilder();
 					packageBuilder.putPluginHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE, siteUserId);
@@ -246,9 +244,8 @@ public class ApiPluginService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api plugin proxy error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.plugin.proxy result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

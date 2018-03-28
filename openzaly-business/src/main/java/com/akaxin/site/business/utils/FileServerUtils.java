@@ -84,7 +84,6 @@ public class FileServerUtils {
 		} else {
 			fileUrl = defaultDir + "/" + fileUrl;
 		}
-		logger.info("download file URL={}", fileUrl);
 		File file = new File(fileUrl);
 		BufferedInputStream bis = null;
 		try {
@@ -93,7 +92,7 @@ public class FileServerUtils {
 			bis.read(bytes);
 			return bytes;
 		} catch (IOException e) {
-			logger.error("download file error.", e);
+			logger.error("download file={} error,cause={}", fileUrl, e.toString());
 		} finally {
 			try {
 				if (bis != null) {
@@ -115,7 +114,7 @@ public class FileServerUtils {
 			bis.read(bytes);
 			return bytes;
 		} catch (IOException e) {
-			logger.error("file to binary bytes error.", e);
+			logger.error("download file={} error,cause={}", fileUrl, e.toString());
 		} finally {
 			try {
 				if (bis != null) {

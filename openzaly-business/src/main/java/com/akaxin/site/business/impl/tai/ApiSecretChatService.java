@@ -23,6 +23,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.DeviceProto;
 import com.akaxin.proto.site.ApiSecretChatApplyU2Proto;
@@ -56,15 +57,15 @@ public class ApiSecretChatService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String siteFriendId = request.getSiteFriendId();
-			logger.info("api.secretChat.applyU2 cmd={} request={}", command.toString(), request.toString());
+			LogUtils.apiRequestLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId) && !siteUserId.equals(siteFriendId)) {
 				ConfigProto.U2EncryptionStatus status = SiteConfig.getU2EncryStatus();
-				logger.info("siteUserId={} apply encryption chat to siteFriendId={} status={}", siteUserId,
+				logger.debug("siteUserId={} apply encryption chat to siteFriendId={} status={}", siteUserId,
 						siteFriendId, status);
 				if (ConfigProto.U2EncryptionStatus.U2_OPEN == status) {
 					UserDeviceBean deviceBean = userDeviceDao.getLatestDevice(siteFriendId);
-					logger.info("开始获取好友的默认设备信息 get user:{} deviceInfo:{}", siteFriendId, deviceBean.toString());
+					logger.debug("get siteUserId:{} deviceInfo:{}", siteFriendId, deviceBean.toString());
 
 					DeviceProto.SimpleDeviceProfile deviceProfile = DeviceProto.SimpleDeviceProfile.newBuilder()
 							.setDeviceId(deviceBean.getDeviceId())
@@ -84,9 +85,8 @@ public class ApiSecretChatService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.secretChat.applyU2 exception", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.secretChat.applyU2 result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

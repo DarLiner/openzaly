@@ -97,7 +97,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.group.list", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -148,7 +148,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("api.group.create error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -183,7 +183,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("delete group error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -260,7 +260,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("get group profile error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -318,7 +318,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("update group profile error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -360,7 +360,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("add group member error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -422,7 +422,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("delete group member error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		logger.info("api.group.removeMember", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
@@ -454,9 +454,8 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("quite group error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
-		logger.info("api.group.quit result={}", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 
@@ -500,7 +499,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			logger.error("get group members error.", e);
+			LogUtils.apiErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}

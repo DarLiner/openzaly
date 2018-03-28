@@ -105,7 +105,6 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 	}
 
 	private void doApiRequest(final Channel channel, Command command) {
-		logger.info("execute api request from client");
 		CommandResponse comamndResponse = new ApiRequestService().process(command);
 		// response
 		CoreProto.TransportPackageData.Builder packageBuilder = CoreProto.TransportPackageData.newBuilder();

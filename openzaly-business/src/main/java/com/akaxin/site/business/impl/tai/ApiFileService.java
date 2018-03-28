@@ -75,14 +75,19 @@ public class ApiFileService extends AbstractRequest {
 			if (StringUtils.isNotBlank(fileId) && !"null".equals(fileId)) {
 				byte[] imageBytes = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), fileId);
 
-				FileProto.File file = FileProto.File.newBuilder().setFileId(fileId)
-						.setFileContent(ByteString.copyFrom(imageBytes)).build();
+				if (imageBytes != null && imageBytes.length > 0) {
+					FileProto.File file = FileProto.File.newBuilder().setFileId(fileId)
+							.setFileContent(ByteString.copyFrom(imageBytes)).build();
 
-				ApiFileDownloadProto.ApiFileDownloadResponse response = ApiFileDownloadProto.ApiFileDownloadResponse
-						.newBuilder().setFile(file).build();
-
-				commandResponse.setParams(response.toByteArray());
-				errCode = ErrorCode2.SUCCESS;
+					ApiFileDownloadProto.ApiFileDownloadResponse response = ApiFileDownloadProto.ApiFileDownloadResponse
+							.newBuilder().setFile(file).build();
+					
+					commandResponse.setParams(response.toByteArray());
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					// 获取文件资源失败，文件可能不存在，此时需要抛出异常
+					errCode = ErrorCode2.ERROR2_FILE_DOWNLOAD;
+				}
 			} else {
 				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
