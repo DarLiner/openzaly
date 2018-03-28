@@ -36,7 +36,7 @@ public class GroupPsnHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupPsnHandler.class);
 	private IGroupDao groupDao = new GroupDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		String siteGroupId = command.getSiteGroupId();
 		String siteUserId = command.getSiteUserId();
 		String siteDeviceId = command.getDeviceId();

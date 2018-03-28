@@ -94,6 +94,10 @@ public class CommandResponse {
 		return this;
 	}
 
+	public String getErrorCodeInfo() {
+		return "errCode=" + this.errCode + ",errInfo=" + this.errInfo;
+	}
+
 	public String toString() {
 		return "[version=" + this.version + ",action=" + this.action + ",data=" + new String(this.params) + "]";
 	}

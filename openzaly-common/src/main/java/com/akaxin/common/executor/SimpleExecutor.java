@@ -24,13 +24,12 @@ import com.akaxin.common.chain.IHandler;
  * @since 2017.09.29
  *
  */
-public class SimpleExecutor<T> extends AbstracteExecutor<T> {
+public class SimpleExecutor<T, R> extends AbstracteExecutor<T, R> {
 
 	@Override
-	public boolean execute(String name, T t) {
-		IHandler<T> chain = getChain(name);
+	public R execute(String name, T t) {
+		IHandler<T, R> chain = getChain(name);
 		return chain.handle(t);
-
 	}
 
 }

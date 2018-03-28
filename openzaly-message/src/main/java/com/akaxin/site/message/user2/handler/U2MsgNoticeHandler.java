@@ -33,7 +33,7 @@ public class U2MsgNoticeHandler extends AbstractGroupHandler<Command> {
 	private IMessageDao messageDao = new MessageDaoService();
 
 	@Override
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());

@@ -36,7 +36,7 @@ public class U2MessageVoiceHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageVoiceHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest

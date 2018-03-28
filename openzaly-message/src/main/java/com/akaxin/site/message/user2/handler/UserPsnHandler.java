@@ -31,7 +31,7 @@ import com.akaxin.site.message.dao.ImUserSessionDao;
 public class UserPsnHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPsnHandler.class);
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		try {
 			String site_friend_id = command.getSiteFriendId();
 			logger.info("psn to user command={}", command.toString());

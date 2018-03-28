@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.connector.codec.protocol.MessageDecoder;
@@ -53,7 +54,7 @@ import io.netty.util.concurrent.GenericFutureListener;
  */
 public abstract class NettyServer {
 	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
-	private AbstracteExecutor<Command> executor;
+	private AbstracteExecutor<Command, CommandResponse> executor;
 	private ServerBootstrap bootstrap;
 	private EventLoopGroup parentGroup;
 	private EventLoopGroup childGroup;
@@ -115,7 +116,7 @@ public abstract class NettyServer {
 			// Channel's
 			bootstrap.childHandler(new NettyChannelInitializer());
 
-			executor = new SimpleExecutor<Command>();
+			executor = new SimpleExecutor<Command, CommandResponse>();
 			loadExecutor(executor);
 		} catch (Exception e) {
 			closeGracefully();
@@ -180,5 +181,5 @@ public abstract class NettyServer {
 		}
 	}
 
-	public abstract void loadExecutor(AbstracteExecutor<Command> executor);
+	public abstract void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor);
 }

@@ -43,7 +43,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupPushHandler.class);
 	private IGroupDao groupDao = new GroupDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		logger.info("开始发送群PUSH command={}", command.toString());
 		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 
@@ -75,7 +75,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					for (String memberUserId : groupMembers) {
 
 						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(siteUserId)) {
-							
+
 							// 一、用户是否对站点消息免打扰
 							// 二、用户是否对该群消息免打扰
 							if (ImUserProfileDao.getInstance().isMute(memberUserId)

@@ -50,7 +50,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 	private IMessageDao syncDao = new MessageDaoService();
 	private static final int SYNC_MAX_MESSAGE_COUNT = 100;
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImSyncMessageProto.ImSyncMessageRequest syncRequest = ImSyncMessageProto.ImSyncMessageRequest

@@ -49,7 +49,7 @@ public class UserDetectionHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserDetectionHandler.class);
 
 	@Override
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
@@ -129,8 +129,8 @@ public class UserDetectionHandler extends AbstractUserHandler<Command> {
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		ChannelWriter.writeByDeviceId(command.getDeviceId(),
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		ChannelWriter.writeByDeviceId(command.getDeviceId(), new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
+				.add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
 	}
 
 	/**

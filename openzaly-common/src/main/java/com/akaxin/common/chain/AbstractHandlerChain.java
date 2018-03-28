@@ -22,17 +22,17 @@ import java.util.List;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-31 12:24:59
  */
-public abstract class AbstractHandlerChain<T> implements IHandler<T> {
+public abstract class AbstractHandlerChain<T, R> implements IHandler<T, R> {
 
-	private List<IHandler<T>> handlers = new ArrayList<IHandler<T>>();
+	private List<IHandler<T, R>> handlers = new ArrayList<IHandler<T, R>>();
 
-	public abstract boolean handle(T t);
+	public abstract R handle(T t);
 
-	public boolean addHandler(IHandler<T> handler) {
+	public boolean addHandler(IHandler<T, R> handler) {
 		return handlers.add(handler);
 	}
 
-	public List<IHandler<T>> getHandlers() {
+	public List<IHandler<T, R>> getHandlers() {
 		return handlers;
 	}
 }

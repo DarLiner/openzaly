@@ -24,9 +24,11 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.channel.ChannelManager;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.connector.codec.parser.ParserConst;
@@ -44,9 +46,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand> {
 	private static final Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
-	private AbstracteExecutor<Command> executor;
+	private AbstracteExecutor<Command, CommandResponse> executor;
 
-	public NettyServerHandler(AbstracteExecutor<Command> executor) {
+	public NettyServerHandler(AbstracteExecutor<Command, CommandResponse> executor) {
 		this.executor = executor;
 	}
 
@@ -122,14 +124,15 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 			}
 			this.executor.execute(command.getRety(), command);
 		} else if (RequestAction.API.getName().equalsIgnoreCase(command.getRety())) {
-			this.executor.execute(command.getRety(), command);
+			CommandResponse response = this.executor.execute(command.getRety(), command);
+			LogUtils.requestResultLog(logger, command, response);
 		} else {
 			logger.warn("{} client={} siteUserId={} action={} unknow request method", AkxProject.PLN,
 					command.getClientIp(), command.getSiteUserId(), command.getAction());
 			return;
 		}
 
-		logger.debug("{} client={} siteUserId={} action={} cost={} ms", AkxProject.PLN, command.getClientIp(),
+		logger.debug("{} client={} siteUserId={} action={} ", AkxProject.PLN, command.getClientIp(),
 				command.getSiteUserId(), command.getAction(), System.currentTimeMillis() - command.getStartTime());
 	}
 

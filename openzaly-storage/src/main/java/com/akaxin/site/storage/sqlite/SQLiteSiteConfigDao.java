@@ -51,15 +51,15 @@ public class SQLiteSiteConfigDao {
 	public Map<Integer, String> querySiteConfig() throws SQLException {
 		long startTime = System.currentTimeMillis();
 		Map<Integer, String> configMap = new HashMap<Integer, String>();
-		String sql = "SELECT config_key,config_value FROM " + SITE_CONFIG_INFO_TABLE + " ;";
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		String sql = "SELECT config_key,config_value FROM " + SITE_CONFIG_INFO_TABLE + ";";
 
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
 			configMap.put(rs.getInt(1), rs.getString(2));
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, configMap, sql);
+
+		LogUtils.dbDebugLog(logger, startTime, configMap, sql);
 		return configMap;
 	}
 
@@ -67,8 +67,8 @@ public class SQLiteSiteConfigDao {
 		long startTime = System.currentTimeMillis();
 		int result = 0;
 		String sql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, value);
 		preStatement.setInt(2, key);
 		result = preStatement.executeUpdate();
@@ -77,9 +77,7 @@ public class SQLiteSiteConfigDao {
 			result = saveSiteConfig(key, value);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + value + "," + key);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, value, key);
 		return result;
 	}
 
@@ -87,8 +85,8 @@ public class SQLiteSiteConfigDao {
 		long startTime = System.currentTimeMillis();
 		int result = 0;
 		String sql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		for (Map.Entry<Integer, String> configEntry : configMap.entrySet()) {
 			preStatement.setString(1, configEntry.getValue());
 			preStatement.setInt(2, configEntry.getKey());
@@ -101,25 +99,24 @@ public class SQLiteSiteConfigDao {
 			if (updateResult > 0) {
 				result++;
 			}
+
+			LogUtils.dbDebugLog(logger, startTime, configMap, sql, configEntry.getValue(), configEntry.getKey());
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, configMap, sql);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql);
 		return result;
 	}
 
 	public int saveSiteConfig(int configKey, String configValue) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + SITE_CONFIG_INFO_TABLE + "(config_key,config_value) VALUES(?,?);";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, configKey);
 		preStatement.setString(2, configValue);
-		int addResult = preStatement.executeUpdate();
+		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, addResult, sql);
-
-		return addResult;
+		LogUtils.dbDebugLog(logger, startTime, result, sql, configKey, configValue);
+		return result;
 	}
 }

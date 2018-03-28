@@ -50,16 +50,16 @@ import io.netty.handler.codec.http.HttpVersion;
  *
  * @param <Command>
  */
-public class HttpRequestHandler extends AbstractCommonHandler<Command> {
+public class HttpRequestHandler extends AbstractCommonHandler<Command, CommandResponse> {
 	private static final Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
 
-	public boolean handle(Command command) {
+	public CommandResponse handle(Command command) {
 		try {
 			ChannelHandlerContext context = command.getChannelContext();
 			if (context == null) {
 				logger.error("{} client={} http request error context={}", AkxProject.PLN, command.getClientIp(),
 						context);
-				return false;
+				return null;
 			}
 			CommandResponse comamndResponse = new HttpRequestService().process(command);
 			comamndResponse.setVersion(CommandConst.PROTOCOL_VERSION);
@@ -67,11 +67,11 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command> {
 
 			String authKey = command.getField(PluginConst.PLUGIN_AUTH_KEY, String.class);
 			fullHttpResponse(context, comamndResponse, authKey);
-			return true;
+			return comamndResponse;
 		} catch (Exception e) {
 			logger.error("api request error.", e);
 		}
-		return false;
+		return null;
 	}
 
 	/**

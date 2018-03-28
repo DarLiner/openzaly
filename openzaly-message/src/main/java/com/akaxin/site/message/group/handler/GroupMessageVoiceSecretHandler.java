@@ -35,7 +35,8 @@ public class GroupMessageVoiceSecretHandler extends AbstractGroupHandler<Command
 	private static final Logger logger = LoggerFactory.getLogger(GroupMessageVoiceSecretHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	@Override
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 
 		try {

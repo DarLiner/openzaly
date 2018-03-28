@@ -17,6 +17,6 @@ package com.akaxin.site.message.sync.handler;
 
 import com.akaxin.common.chain.IHandler;
 
-public abstract class AbstractSyncHandler<Command> implements IHandler<Command> {
+public abstract class AbstractSyncHandler<Command> implements IHandler<Command, Boolean> {
 	// do something fo all handlers
 }

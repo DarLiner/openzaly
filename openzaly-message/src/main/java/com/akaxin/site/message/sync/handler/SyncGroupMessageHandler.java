@@ -46,7 +46,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 	private IGroupDao userGroupDao = new GroupDaoService();
 	private IMessageDao syncDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		int syncCount = 0;
 		ChannelSession channelSession = command.getChannelSession();
 		try {

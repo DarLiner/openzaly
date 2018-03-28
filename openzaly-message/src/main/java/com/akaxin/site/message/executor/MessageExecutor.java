@@ -42,10 +42,10 @@ import com.akaxin.site.message.user2.handler.UserPsnHandler;
 import com.akaxin.site.message.user2.handler.UserPushHandler;
 
 public class MessageExecutor {
-	private static AbstracteExecutor<Command> executor = new SimpleExecutor<Command>();
+	private static AbstracteExecutor<Command, Boolean> executor = new SimpleExecutor<Command, Boolean>();
 
 	static {
-		AbstractHandlerChain<Command> u2MessageChain = new SimpleHandlerChain<Command>();
+		AbstractHandlerChain<Command, Boolean> u2MessageChain = new SimpleHandlerChain<Command>();
 		u2MessageChain.addHandler(new UserDetectionHandler());
 		u2MessageChain.addHandler(new U2MessageTextHandler());
 		u2MessageChain.addHandler(new U2MessageTextSecretHandler());
@@ -57,7 +57,7 @@ public class MessageExecutor {
 		u2MessageChain.addHandler(new UserPsnHandler());
 		u2MessageChain.addHandler(new UserPushHandler());
 
-		AbstractHandlerChain<Command> groupMessageChain = new SimpleHandlerChain<Command>();
+		AbstractHandlerChain<Command, Boolean> groupMessageChain = new SimpleHandlerChain<Command>();
 		groupMessageChain.addHandler(new GroupDetectionHandler());
 		groupMessageChain.addHandler(new GroupMessageTextHandler());
 		groupMessageChain.addHandler(new GroupMessageImageHandler());
@@ -66,7 +66,7 @@ public class MessageExecutor {
 		groupMessageChain.addHandler(new GroupPsnHandler());
 		groupMessageChain.addHandler(new GroupPushHandler());
 
-		AbstractHandlerChain<Command> syncMessageChain = new SimpleHandlerChain<Command>();
+		AbstractHandlerChain<Command, Boolean> syncMessageChain = new SimpleHandlerChain<Command>();
 		syncMessageChain.addHandler(new SyncU2MessageHandler());
 		syncMessageChain.addHandler(new SyncGroupMessageHandler());
 
@@ -76,7 +76,7 @@ public class MessageExecutor {
 		executor.addChain("im.sync.finish", new SyncFinishHandler());
 	}
 
-	public static AbstracteExecutor<Command> getExecutor() {
+	public static AbstracteExecutor<Command, Boolean> getExecutor() {
 		return executor;
 	}
 

@@ -17,6 +17,6 @@ package com.akaxin.site.message.user2.handler;
 
 import com.akaxin.common.chain.IHandler;
 
-public abstract class AbstractUserHandler<Command> implements IHandler<Command> {
+public abstract class AbstractUserHandler<Command> implements IHandler<Command, Boolean> {
 	// do something fo all handlers
 }

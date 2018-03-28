@@ -50,17 +50,17 @@ import io.netty.util.concurrent.GenericFutureListener;
  *
  * @param <Command>
  */
-public class ApiRequestHandler extends AbstractCommonHandler<Command> {
+public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandResponse> {
 	private static final Logger logger = LoggerFactory.getLogger(ApiRequestHandler.class);
 
-	public boolean handle(Command command) {
+	public CommandResponse handle(Command command) {
 		try {
 			ChannelSession channelSession = command.getChannelSession();
 			if (channelSession == null || channelSession.getChannel() == null) {
 				logger.error("{} client={} api request handler error.channelSession={}", AkxProject.PLN,
 						command.getClientIp(), channelSession);
 				// NULL，则不需要再次关闭channel
-				return false;
+				return null;
 			}
 
 			switch (RequestAction.getAction(command.getAction())) {
@@ -71,23 +71,25 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 			default: {
 				Map<Integer, String> header = command.getHeader();
 				String sessionId = header.get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
-				logger.debug("{} client={} api request sessionId={}", AkxProject.PLN, command.getClientIp(), sessionId);
+				// logger.debug("{} client={} api request sessionId={}", AkxProject.PLN,
+				// command.getClientIp(), sessionId);
 
 				if (!StringUtils.isNotEmpty(sessionId)) {
 					this.tellClientSessionError(channelSession.getChannel());
 					logger.error("{} client={} api request with sessionId is NULL", AkxProject.PLN,
 							command.getClientIp());
-					return false;
+					return null;
 				}
 
 				IUserSessionDao sessionDao = new UserSessionDaoService();
 				SimpleAuthBean authBean = sessionDao.getUserSession(sessionId);
-				logger.debug("{} client={} api session auth result {}", authBean.toString());
+				// logger.debug("{} client={} api session auth result {}", authBean.toString());
 
 				if (authBean == null || StringUtils.isAnyEmpty(authBean.getSiteUserId(), authBean.getDeviceId())) {
 					this.tellClientSessionError(channelSession.getChannel());
-					logger.error("api session auth fail.authBean={}", authBean.toString());
-					return false;
+					logger.error("{} client={} api session auth fail.authBean={}", AkxProject.PLN,
+							command.getClientIp(), authBean.toString());
+					return null;
 				}
 
 				command.setSiteUserId(authBean.getSiteUserId());
@@ -95,16 +97,15 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 			}
 			}
 			// 执行业务操作
-			this.doApiRequest(channelSession.getChannel(), command);
-			return true;
+			return this.doApiRequest(channelSession.getChannel(), command);
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} client={} api request error.", AkxProject.PLN, command.getClientIp()),
 					e);
 		}
-		return false;
+		return null;
 	}
 
-	private void doApiRequest(final Channel channel, Command command) {
+	private CommandResponse doApiRequest(final Channel channel, Command command) {
 		CommandResponse comamndResponse = new ApiRequestService().process(command);
 		// response
 		CoreProto.TransportPackageData.Builder packageBuilder = CoreProto.TransportPackageData.newBuilder();
@@ -132,7 +133,7 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command> {
 						channel.close();
 					}
 				});
-
+		return comamndResponse;
 	}
 
 	private void tellClientSessionError(final Channel channel) {

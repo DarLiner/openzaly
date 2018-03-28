@@ -53,6 +53,7 @@ public class SQLiteUserProfileDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + USER_PROFILE_TABLE
 				+ "(site_user_id,user_id_pubk,user_name,user_photo,phone_id,user_status,self_introduce,apply_info,register_time, global_user_id) VALUES(?,?,?,?,?,?,?,?,?,?)";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getSiteUserId());
 		preStatement.setString(2, bean.getUserIdPubk());
@@ -64,31 +65,27 @@ public class SQLiteUserProfileDao {
 		preStatement.setString(8, bean.getApplyInfo());
 		preStatement.setLong(9, bean.getRegisterTime());
 		preStatement.setString(10, bean.getGlobalUserId());
-
 		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + bean.toString());
-
-		if (result == 1) {
-			return true;
-		}
-		return false;
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getSiteUserId(), bean.getUserIdPubk(),
+				bean.getUserName(), bean.getUserPhoto(), bean.getPhoneId(), bean.getUserStatus(),
+				bean.getSelfIntroduce(), bean.getApplyInfo(), bean.getRegisterTime(), bean.getGlobalUserId());
+		return result == 1;
 	}
 
 	public String querySiteUserId(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String siteUserId = null;
 		String sql = "SELECT site_user_id FROM " + SQLConst.SITE_USER_PROFILE + " WHERE user_id_pubk=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, userIdPubk);
-
 		ResultSet rs = preStatement.executeQuery();
 		if (rs.next()) {
 			siteUserId = rs.getString(1);
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, siteUserId, sql + userIdPubk);
+
+		LogUtils.dbDebugLog(logger, startTime, siteUserId, sql, userIdPubk);
 		return siteUserId;
 	}
 
@@ -100,9 +97,7 @@ public class SQLiteUserProfileDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, globalUserId);
-
 		ResultSet rs = preStatement.executeQuery();
-
 		if (rs.next()) {
 			userBean.setUserId(rs.getString(1));
 			userBean.setUserName(rs.getString(2));
@@ -110,54 +105,51 @@ public class SQLiteUserProfileDao {
 			userBean.setUserStatus(rs.getInt(4));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userBean.toString(), sql + "," + globalUserId);
+		LogUtils.dbDebugLog(logger, startTime, userBean.toString(), sql, globalUserId);
 		return userBean;
 	}
 
-	public SimpleUserBean querySimpleProfileById(String userId) throws SQLException {
+	public SimpleUserBean querySimpleProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		SimpleUserBean userBean = new SimpleUserBean();
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
 				+ " WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, userId);
-
+		preStatement.setString(1, siteUserId);
 		ResultSet rs = preStatement.executeQuery();
 
+		SimpleUserBean userBean = null;
 		if (rs.next()) {
+			userBean = new SimpleUserBean();
 			userBean.setUserId(rs.getString(1));
 			userBean.setUserName(rs.getString(2));
 			userBean.setUserPhoto(rs.getString(3));
 			userBean.setUserStatus(rs.getInt(4));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userBean.toString(), sql + "," + userId);
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId);
 		return userBean;
 	}
 
 	public SimpleUserBean querySimpleProfileByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		SimpleUserBean userBean = new SimpleUserBean();
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
 				+ " WHERE user_id_pubk=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, userIdPubk);
-
 		ResultSet rs = preStatement.executeQuery();
 
+		SimpleUserBean userBean = null;
 		if (rs.next()) {
+			userBean = new SimpleUserBean();
 			userBean.setUserId(rs.getString(1));
 			userBean.setUserName(rs.getString(2));
 			userBean.setUserPhoto(rs.getString(3));
 			userBean.setUserStatus(rs.getInt(4));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userBean.toString(), sql + "," + userIdPubk);
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, userIdPubk);
 		return userBean;
 	}
 
@@ -169,7 +161,6 @@ public class SQLiteUserProfileDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, "%" + userName + "%");
-
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
 			SimpleUserBean userBean = new SimpleUserBean();
@@ -180,8 +171,7 @@ public class SQLiteUserProfileDao {
 			userList.add(userBean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userList.toString(), sql + "," + userName);
+		LogUtils.dbDebugLog(logger, startTime, userList, sql, userName);
 		return userList;
 	}
 
@@ -194,16 +184,16 @@ public class SQLiteUserProfileDao {
 	 */
 	public UserProfileBean queryUserProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		UserProfileBean userBean = new UserProfileBean();
 		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
-
 		ResultSet rs = preStatement.executeQuery();
 
+		UserProfileBean userBean = null;
 		if (rs.next()) {
+			userBean = new UserProfileBean();
 			userBean.setSiteUserId(rs.getString(1));
 			userBean.setUserIdPubk(rs.getString(2));
 			userBean.setUserName(rs.getString(3));
@@ -213,8 +203,7 @@ public class SQLiteUserProfileDao {
 			userBean.setRegisterTime(rs.getLong(7));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userBean.toString(), sql + "," + siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId);
 		return userBean;
 	}
 
@@ -225,38 +214,35 @@ public class SQLiteUserProfileDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
-
 		ResultSet rs = preStatement.executeQuery();
-
 		if (rs.next()) {
 			globalUserId = rs.getString(1);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, globalUserId, sql + "," + siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, globalUserId, sql, siteUserId);
 		return globalUserId;
 	}
 
 	/**
 	 * 通过globalUserId查询用户信息
 	 * 
-	 * @param id
+	 * @param globalUserId
 	 *            globalUserId
 	 * @return
 	 * @throws SQLException
 	 */
-	public UserProfileBean queryUserProfileByGlobalUserId(String id) throws SQLException {
+	public UserProfileBean queryUserProfileByGlobalUserId(String globalUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		UserProfileBean userBean = new UserProfileBean();
 		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE global_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, id);
-
+		preStatement.setString(1, globalUserId);
 		ResultSet rs = preStatement.executeQuery();
 
+		UserProfileBean userBean = null;
 		if (rs.next()) {
+			userBean = new UserProfileBean();
 			userBean.setSiteUserId(rs.getString(1));
 			userBean.setUserIdPubk(rs.getString(2));
 			userBean.setUserName(rs.getString(3));
@@ -266,22 +252,22 @@ public class SQLiteUserProfileDao {
 			userBean.setRegisterTime(rs.getLong(7));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userBean.toString(), sql + "," + id);
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, globalUserId);
 		return userBean;
 	}
 
 	public UserProfileBean queryUserProfileByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		UserProfileBean userBean = new UserProfileBean();
 		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,user_status,self_introduce,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE user_id_pubk=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, userIdPubk);
-
 		ResultSet rs = preStatement.executeQuery();
+
+		UserProfileBean userBean = null;
 		if (rs.next()) {
+			userBean = new UserProfileBean();
 			userBean.setSiteUserId(rs.getString(1));
 			userBean.setUserIdPubk(rs.getString(2));
 			userBean.setUserName(rs.getString(3));
@@ -291,26 +277,24 @@ public class SQLiteUserProfileDao {
 			userBean.setRegisterTime(rs.getLong(7));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userBean.toString(), sql + "," + userIdPubk);
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, userIdPubk);
 		return userBean;
 	}
 
-	public int updateUserProfile(UserProfileBean userBean) throws SQLException {
+	public int updateUserProfile(UserProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		int result = 0;
 		String sql = "UPDATE " + USER_PROFILE_TABLE
 				+ " SET user_name=?,user_photo=?,self_introduce=? WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, userBean.getUserName());
-		preStatement.setString(2, userBean.getUserPhoto());
-		preStatement.setString(3, userBean.getSelfIntroduce());
-		preStatement.setString(4, userBean.getSiteUserId());
-		result = preStatement.executeUpdate();
+		preStatement.setString(1, bean.getUserName());
+		preStatement.setString(2, bean.getUserPhoto());
+		preStatement.setString(3, bean.getSelfIntroduce());
+		preStatement.setString(4, bean.getSiteUserId());
+		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + userBean.toString());
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getUserName(), bean.getUserPhoto(),
+				bean.getSelfIntroduce(), bean.getSiteUserId());
 		return result;
 	}
 
@@ -326,32 +310,26 @@ public class SQLiteUserProfileDao {
 	 */
 	public int updateUserStatus(String siteUserId, int status) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		int result = 0;
 		String sql = "UPDATE " + USER_PROFILE_TABLE + " SET user_status=? WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, status);
 		preStatement.setString(2, siteUserId);
-		result = preStatement.executeUpdate();
+		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + siteUserId + "," + status);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, status, siteUserId);
 		return result;
 	}
 
-	public List<SimpleUserBean> queryUserFriends(String userId) throws SQLException {
+	public List<SimpleUserBean> queryUserFriends(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
-
 		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + USER_FRIEND_TABLE + " AS a LEFT JOIN "
 				+ USER_PROFILE_TABLE + " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, userId);
-
+		preStatement.setString(1, siteUserId);
 		ResultSet rs = preStatement.executeQuery();
-
 		while (rs.next()) {
 			SimpleUserBean bean = new SimpleUserBean();
 			bean.setUserId(rs.getString(1));
@@ -360,9 +338,7 @@ public class SQLiteUserProfileDao {
 			userFriendList.add(bean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userFriendList.toString(), sql + userId + "," + userId);
-
+		LogUtils.dbDebugLog(logger, startTime, userFriendList.size(), sql, siteUserId);
 		return userFriendList;
 	}
 
@@ -383,12 +359,12 @@ public class SQLiteUserProfileDao {
 				+ USER_PROFILE_TABLE + " AS a LEFT JOIN (SELECT site_user_id,site_friend_id FROM "
 				+ SQLConst.SITE_USER_FRIEND
 				+ " WHERE site_user_id=?) AS b ON a.site_user_id=b.site_friend_id ORDER BY a.id DESC LIMIT ?,?;";
+
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
 		preStatement.setInt(2, startNum);
 		preStatement.setInt(3, pageSize);
-
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
 			SimpleUserRelationBean bean = new SimpleUserRelationBean();
@@ -404,9 +380,7 @@ public class SQLiteUserProfileDao {
 			userPageList.add(bean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userPageList.toString(), sql + startNum + "," + pageSize);
-
+		LogUtils.dbDebugLog(logger, startTime, userPageList.size(), sql, startNum, pageSize);
 		return userPageList;
 	}
 
@@ -424,10 +398,9 @@ public class SQLiteUserProfileDao {
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
 				+ "  ORDER BY id DESC LIMIT ?,?;";
 		int startNum = (pageNum - 1) * pageSize;
-		int endNum = pageNum * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, startNum);
-		preStatement.setInt(2, endNum);
+		preStatement.setInt(2, pageSize);
 
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
@@ -439,9 +412,7 @@ public class SQLiteUserProfileDao {
 			userPageList.add(bean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userPageList.toString(), sql + startNum + "," + endNum);
-
+		LogUtils.dbDebugLog(logger, startTime, userPageList.size(), sql, startNum, pageSize);
 		return userPageList;
 	}
 
@@ -452,30 +423,25 @@ public class SQLiteUserProfileDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
-
 		ResultSet rs = preStatement.executeQuery();
-
 		if (rs.next()) {
 			mute = rs.getBoolean(1);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, mute, sql + "," + siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, mute, sql, siteUserId);
 		return mute;
 	}
 
 	public boolean updateMute(String siteUserId, boolean mute) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		int result = 0;
 		String sql = "UPDATE " + USER_PROFILE_TABLE + " SET mute=? WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setBoolean(1, mute);
 		preStatement.setString(2, siteUserId);
-		result = preStatement.executeUpdate();
+		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + siteUserId + "," + mute);
+		LogUtils.dbDebugLog(logger, startTime, result, sql, mute, siteUserId);
 		return result > 0;
 	}
 

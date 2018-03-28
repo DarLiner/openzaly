@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.crypto.AESCrypto;
@@ -52,9 +53,9 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
 
 	private HttpRequest request;
-	private AbstracteExecutor<Command> executor;
-
-	public HttpServerHandler(AbstracteExecutor<Command> executor) {
+	private AbstracteExecutor<Command, CommandResponse> executor;
+	
+	public HttpServerHandler(AbstracteExecutor<Command, CommandResponse> executor) {
 		this.executor = executor;
 	}
 

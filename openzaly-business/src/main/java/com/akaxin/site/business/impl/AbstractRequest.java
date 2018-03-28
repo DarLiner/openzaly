@@ -38,11 +38,7 @@ public abstract class AbstractRequest implements IRequestService {
 			response = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
 					.setAction(CommandConst.ACTION_RES).setErrCode2(errCode);
 		}
-		LogUtils.requestResultLog(logger, command, getResponseResult(response));
 		return response;
 	}
 
-	private String getResponseResult(CommandResponse res) {
-		return "errCode=" + res.getErrCode() + ",errInfo=" + res.getErrInfo();
-	}
 }

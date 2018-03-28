@@ -36,7 +36,7 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupMessageImageHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 
 		try {

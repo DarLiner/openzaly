@@ -49,19 +49,17 @@ public class SQLiteGroupProfileDao {
 		preStatement.setInt(1, startNum);
 		preStatement.setInt(2, pageSize);
 		ResultSet rs = preStatement.executeQuery();
-		List<SimpleGroupBean> sgbList = new ArrayList<SimpleGroupBean>();
+		List<SimpleGroupBean> beanList = new ArrayList<SimpleGroupBean>();
 		while (rs.next()) {
 			SimpleGroupBean bean = new SimpleGroupBean();
 			bean.setGroupId(rs.getString(1));
 			bean.setGroupName(rs.getString(2));
 			bean.setGroupPhoto(rs.getString(3));
-			sgbList.add(bean);
+			beanList.add(bean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, sgbList, sql + pageNum + "," + pageSize);
-
-		return sgbList;
+		LogUtils.dbDebugLog(logger, startTime, beanList.size(), sql, pageNum, pageSize);
+		return beanList;
 	}
 
 	public String getMaxGroupId() throws SQLException {
@@ -77,9 +75,8 @@ public class SQLiteGroupProfileDao {
 			}
 			newGroupId = currentGroupId + 1;
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, newGroupId + "", sql);
 
+		LogUtils.dbDebugLog(logger, startTime, newGroupId, sql);
 		return String.valueOf(newGroupId);
 	}
 
@@ -99,23 +96,20 @@ public class SQLiteGroupProfileDao {
 		preStatement.setString(5, bean.getCreateUserId());
 		preStatement.setBoolean(6, true);// 默认允许群成员添加新的群聊成员
 		preStatement.setLong(7, bean.getCreateTime());
-
 		int result = preStatement.executeUpdate();
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + "," + bean.getGroupId());
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getGroupId());
 		return bean;
 	}
 
-	public GroupProfileBean queryGroupProfile(String groupId) throws SQLException {
+	public GroupProfileBean queryGroupProfile(String siteGroupId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		GroupProfileBean profileBean = null;
-
-		String querySql = "SELECT site_group_id,group_name,group_photo,group_notice,ts_status,create_user_id,group_status,close_invite_group_chat,create_time FROM "
+		String sql = "SELECT site_group_id,group_name,group_photo,group_notice,ts_status,create_user_id,group_status,close_invite_group_chat,create_time FROM "
 				+ GROUP_PROFILE_TABLE + " WHERE site_group_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
-		preStatement.setString(1, groupId);
-
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteGroupId);
 		ResultSet rs = preStatement.executeQuery();
 
 		if (rs.next()) {
@@ -131,22 +125,18 @@ public class SQLiteGroupProfileDao {
 			profileBean.setCreateTime(rs.getLong(9));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, profileBean.toString(), querySql + "," + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, profileBean.toString(), sql, siteGroupId);
 		return profileBean;
 	}
 
-	public GroupProfileBean querySimpleGroupProfile(String groupId) throws SQLException {
+	public GroupProfileBean querySimpleGroupProfile(String siteGroupId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		GroupProfileBean profileBean = null;
-
-		String querySql = "SELECT site_group_id,group_name,group_photo FROM " + GROUP_PROFILE_TABLE
+		String sql = "SELECT site_group_id,group_name,group_photo FROM " + GROUP_PROFILE_TABLE
 				+ " WHERE site_group_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
-		preStatement.setString(1, groupId);
-
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteGroupId);
 		ResultSet rs = preStatement.executeQuery();
 
 		if (rs.next()) {
@@ -156,9 +146,7 @@ public class SQLiteGroupProfileDao {
 			profileBean.setGroupPhoto(rs.getString(3));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, profileBean.toString(), querySql + "," + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, profileBean.toString(), sql, siteGroupId);
 		return profileBean;
 	}
 
@@ -172,12 +160,10 @@ public class SQLiteGroupProfileDao {
 		preStatement.setString(2, bean.getGroupPhoto());
 		preStatement.setString(3, bean.getGroupNotice());
 		preStatement.setString(4, bean.getGroupId());
-
 		result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + bean.toString());
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getGroupName(), bean.getGroupPhoto(),
+				bean.getGroupNotice(), bean.getGroupId());
 		return result;
 	}
 
@@ -196,10 +182,9 @@ public class SQLiteGroupProfileDao {
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setBoolean(1, bean.isCloseInviteGroupChat());
 		preStatement.setString(2, bean.getGroupId());
-
 		result = preStatement.executeUpdate();
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + bean.toString());
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.isCloseInviteGroupChat(), bean.getGroupId());
 		return result;
 	}
 
@@ -207,26 +192,25 @@ public class SQLiteGroupProfileDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + GROUP_PROFILE_TABLE + " SET create_user_id=? WHERE site_group_id=?;";
 		int result = 0;
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
 		preStatement.setString(2, groupId);
-
 		result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + siteUserId + "," + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, groupId);
 		return result;
 	}
 
 	public boolean deleteGroupProfile(String groupId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + GROUP_PROFILE_TABLE + " SET group_status=0 WHERE site_group_id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, groupId);
 		int result = preStatement.executeUpdate();
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql);
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql);
 		return result >= 1;
 	}
 
@@ -243,8 +227,7 @@ public class SQLiteGroupProfileDao {
 			siteUserId = rs.getString(1);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, siteUserId, sql + groupId);
+		LogUtils.dbDebugLog(logger, startTime, siteUserId, sql, groupId);
 		return siteUserId;
 	}
 

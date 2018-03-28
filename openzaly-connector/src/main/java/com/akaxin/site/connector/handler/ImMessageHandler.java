@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.channel.ChannelManager;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.RequestAction;
@@ -39,10 +40,10 @@ import com.akaxin.site.message.service.ImMessageService;
  *
  * @param <Command>
  */
-public class ImMessageHandler extends AbstractCommonHandler<Command> {
+public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResponse> {
 	private static final Logger logger = LoggerFactory.getLogger(ImMessageHandler.class);
 
-	public boolean handle(Command command) {
+	public CommandResponse handle(Command command) {
 		try {
 			ChannelSession channelSession = command.getChannelSession();
 			String deviceId = channelSession.getDeviceId();
@@ -50,21 +51,21 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 				channelSession.getChannel().close();
 				logger.error("{} client={} im request error with deviceId={}.", AkxProject.PLN, command.getClientIp(),
 						deviceId);
-				return false;
+				return null;
 			}
 
 			ChannelSession acsession = ChannelManager.getChannelSession(deviceId);
 			if (acsession == null) {
 				channelSession.getChannel().close();
 				logger.info("{} client={} im request error with channelSession={}", acsession);
-				return false;
+				return null;
 			}
 
 			if (!checkSiteUserId(command.getSiteUserId(), acsession.getUserId())) {
 				channelSession.getChannel().close();
 				logger.info("im request fail.cmdUserId={},sessionUserId={}", command.getSiteUserId(),
 						acsession.getUserId());
-				return false;
+				return null;
 			}
 
 			if (RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
@@ -85,11 +86,12 @@ public class ImMessageHandler extends AbstractCommonHandler<Command> {
 
 			}
 
-			return new ImMessageService().execute(command);
+			new ImMessageService().execute(command);
+
 		} catch (Exception e) {
 			logger.error("im request error.", e);
 		}
-		return false;
+		return null;
 	}
 
 	/**

@@ -29,7 +29,7 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 	private static Logger logger = LoggerFactory.getLogger(SyncFinishHandler.class);
 	private IMessageDao syncDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		logger.info("this is Im.SyncFinish Handler");
 		try {
 			ImSyncFinishProto.ImSyncFinishRequest request = ImSyncFinishProto.ImSyncFinishRequest

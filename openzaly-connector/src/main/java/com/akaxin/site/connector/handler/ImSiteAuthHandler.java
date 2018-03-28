@@ -51,7 +51,7 @@ import io.netty.channel.Channel;
  *
  * @param <Command>
  */
-public class ImSiteAuthHandler extends MethodReflectHandler<Command> {
+public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResponse> {
 	private static final Logger logger = LoggerFactory.getLogger(ImSiteAuthHandler.class);
 	private static final int IM = 1;
 

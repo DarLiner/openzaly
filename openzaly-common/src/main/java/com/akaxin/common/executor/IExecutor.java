@@ -15,6 +15,6 @@
  */
 package com.akaxin.common.executor;
 
-public interface IExecutor<T> {
-	public boolean execute(String name, T t);
+public interface IExecutor<T, R> {
+	public R execute(String name, T t);
 }

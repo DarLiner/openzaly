@@ -45,26 +45,25 @@ public class SQLiteGroupMessageDao {
 		return instance;
 	}
 
-	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException {
+	public boolean saveGroupMessage(GroupMessageBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String insertSql = "INSERT INTO " + GROUP_MESSAGE_TABLE
+		String sql = "INSERT INTO " + GROUP_MESSAGE_TABLE
 				+ "(site_group_id,msg_id,send_user_id,send_device_id,msg_type,content,msg_time) VALUES(?,?,?,?,?,?,?);";
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(insertSql);
-		preStatement.setString(1, gmsgBean.getSiteGroupId());
-		preStatement.setString(2, gmsgBean.getMsgId());
-		preStatement.setString(3, gmsgBean.getSendUserId());
-		preStatement.setString(4, gmsgBean.getSendDeviceId());
-		preStatement.setLong(5, gmsgBean.getMsgType());
-		preStatement.setString(6, gmsgBean.getContent());
-		preStatement.setLong(7, gmsgBean.getMsgTime());
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, bean.getSiteGroupId());
+		preStatement.setString(2, bean.getMsgId());
+		preStatement.setString(3, bean.getSendUserId());
+		preStatement.setString(4, bean.getSendDeviceId());
+		preStatement.setLong(5, bean.getMsgType());
+		preStatement.setString(6, bean.getContent());
+		preStatement.setLong(7, bean.getMsgTime());
 
 		int insertResult = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, insertResult, insertSql);
+		LogUtils.dbDebugLog(logger, startTime, insertResult, sql, bean.getSiteGroupId(), bean.getMsgId(),
+				bean.getSendUserId(), bean.getSendDeviceId(), bean.getMsgType(), bean.getContent(), bean.getMsgTime());
 
 		return insertResult == 1;
-
 	}
 
 	/**
@@ -81,7 +80,7 @@ public class SQLiteGroupMessageDao {
 			int limit) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<GroupMessageBean> gmsgList = new ArrayList<GroupMessageBean>();
-		String querySql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
+		String sql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
 				+ GROUP_MESSAGE_TABLE
 				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id IS NOT ? LIMIT ?;";
 
@@ -91,7 +90,7 @@ public class SQLiteGroupMessageDao {
 			start = queryMaxGroupPointerWithUser(groupId, userId) - 10;
 		}
 
-		PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
+		PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		statement.setString(1, groupId);
 		statement.setLong(2, start);
 		statement.setString(3, deviceId);
@@ -112,19 +111,13 @@ public class SQLiteGroupMessageDao {
 			gmsgList.add(gmsgBean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, "gListSize=" + String.valueOf(gmsgList.size()),
-				querySql + ",start=" + start + ",userid=" + userId + ",deviceId=" + deviceId + ",groupId=" + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, gmsgList.size(), sql, groupId, start, deviceId, limit);
 		return gmsgList;
 	}
 
 	public boolean updateGroupMessagePointer(String groupId, String siteUserId, String deviceId, long finishPointer)
 			throws SQLException {
 		int result = updateGroupPointer(groupId, siteUserId, deviceId, finishPointer);
-
-		logger.info("Update Group Pointer siteUserId={} groupId={} gPointers={} result={}", siteUserId, groupId,
-				finishPointer, result);
 
 		if (result >= 1) {
 			return true;
@@ -133,42 +126,35 @@ public class SQLiteGroupMessageDao {
 	}
 
 	public boolean saveGroupPointer(String groupId, String userId, String deviceId, long finish) throws SQLException {
-		int result = 0;
-		String updateSql = "INSERT INTO " + GROUP_POINTER_TABLE
-				+ "(site_group_id,site_user_id,device_id,pointer) VALUES(?,?,?,?);";
 		long startTime = System.currentTimeMillis();
-		PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(updateSql);
+		int result = 0;
+		String sql = "INSERT INTO " + GROUP_POINTER_TABLE
+				+ "(site_group_id,site_user_id,device_id,pointer) VALUES(?,?,?,?);";
+		PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		pStatement.setString(1, groupId);
 		pStatement.setString(2, userId);
 		pStatement.setString(3, deviceId);
 		pStatement.setLong(4, finish);
-
 		result = pStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result,
-				updateSql + "," + finish + "," + userId + "," + groupId + "," + deviceId);
+		LogUtils.dbDebugLog(logger, startTime, result, sql, groupId, userId, deviceId, finish);
 		return result == 1;
 	}
 
 	private int updateGroupPointer(String groupId, String userId, String deviceId, long finish) throws SQLException {
-		int result = 0;
-		String updateSql = "UPDATE " + GROUP_POINTER_TABLE
-				+ " SET pointer=? WHERE site_user_id=? AND site_group_id=? AND device_id=?;";
 		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "UPDATE " + GROUP_POINTER_TABLE
+				+ " SET pointer=? WHERE site_user_id=? AND site_group_id=? AND device_id=?;";
 
-		PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(updateSql);
+		PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		pStatement.setLong(1, finish);
 		pStatement.setString(2, userId);
 		pStatement.setString(3, groupId);
 		pStatement.setString(4, deviceId);
-
 		result = pStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result,
-				updateSql + "," + finish + "," + userId + "," + groupId + "," + deviceId);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, finish, userId, groupId, deviceId);
 		return result;
 	}
 
@@ -177,7 +163,6 @@ public class SQLiteGroupMessageDao {
 		long pointer = 0;
 		String sql = "SELECT pointer FROM " + GROUP_POINTER_TABLE
 				+ " WHERE site_user_id=? AND site_group_id=? AND device_id=?;";
-
 		try {
 			PreparedStatement pStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 			pStatement.setString(1, userId);
@@ -192,9 +177,8 @@ public class SQLiteGroupMessageDao {
 			logger.error("query group message pointer error.", e);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pointer, sql + "," + userId + "," + groupId + "," + deviceId);
-
+		LogUtils.dbDebugLog(logger, startTime, "pointer:" + pointer + ",start:" + start, sql, userId, groupId,
+				deviceId);
 		return pointer > start ? pointer : start;
 	}
 
@@ -215,9 +199,7 @@ public class SQLiteGroupMessageDao {
 			logger.error("query group message pointer error.", e);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pointer, sql + "," + siteUserId + "," + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, pointer, sql, siteUserId, groupId);
 		return pointer;
 	}
 
@@ -237,9 +219,7 @@ public class SQLiteGroupMessageDao {
 			logger.error("query max group message pointer error.", e);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pointer, sql + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, pointer, sql, groupId);
 		return pointer;
 	}
 
@@ -260,9 +240,7 @@ public class SQLiteGroupMessageDao {
 			logger.error("query max user group message pointer error.", e);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pointer, sql + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, pointer, sql, groupId);
 		return pointer;
 	}
 

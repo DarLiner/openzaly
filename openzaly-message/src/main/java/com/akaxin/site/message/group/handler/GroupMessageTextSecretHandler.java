@@ -33,7 +33,7 @@ public class GroupMessageTextSecretHandler extends AbstractGroupHandler<Command>
 
 	private IMessageDao messageDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 
 		try {

@@ -39,7 +39,7 @@ public class U2MessageTextSecretHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageTextSecretHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest

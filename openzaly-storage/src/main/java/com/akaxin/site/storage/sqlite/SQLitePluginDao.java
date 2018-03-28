@@ -61,6 +61,7 @@ public class SQLitePluginDao {
 				+ "display_mode,"//
 				+ "permission_status,"//
 				+ "add_time) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getName());
 		preStatement.setString(2, bean.getIcon());
@@ -73,10 +74,11 @@ public class SQLitePluginDao {
 		preStatement.setInt(9, bean.getDisplayMode());
 		preStatement.setInt(10, bean.getPermissionStatus());
 		preStatement.setLong(11, bean.getAddTime());
-
 		int result = preStatement.executeUpdate();
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + bean.toString());
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getName(), bean.getIcon(), bean.getUrlPage(),
+				bean.getApiUrl(), bean.getAuthKey(), bean.getAllowedIp(), bean.getPosition(), bean.getSort(),
+				bean.getDisplayMode(), bean.getPermissionStatus(), bean.getAddTime());
 		return result > 0;
 	}
 
@@ -93,6 +95,7 @@ public class SQLitePluginDao {
 				+ "display_mode=?,"//
 				+ "permission_status=? "//
 				+ "WHERE id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getName());
 		preStatement.setString(2, bean.getIcon());
@@ -106,19 +109,21 @@ public class SQLitePluginDao {
 		preStatement.setInt(10, bean.getId());
 		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + bean.toString());
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getName(), bean.getIcon(), bean.getUrlPage(),
+				bean.getApiUrl(), bean.getAllowedIp(), bean.getPosition(), bean.getSort(), bean.getDisplayMode(),
+				bean.getPermissionStatus(), bean.getId());
 		return result > 0;
 	}
 
 	public boolean deletePlugin(int pluginId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "DELETE FROM " + PLUGIN_TABLE + " WHERE id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, pluginId);
 		int result = preStatement.executeUpdate();
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + pluginId);
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, pluginId);
 		return result > 0;
 	}
 
@@ -137,6 +142,7 @@ public class SQLitePluginDao {
 				+ "display_mode,"//
 				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " WHERE id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, pluginId);
 		ResultSet rs = preStatement.executeQuery();
@@ -153,8 +159,8 @@ public class SQLitePluginDao {
 			pluginBean.setDisplayMode(rs.getInt(10));
 			pluginBean.setPermissionStatus(rs.getInt(11));
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pluginBean.toString(), sql + pluginId);
+
+		LogUtils.dbDebugLog(logger, startTime, pluginBean.toString(), sql, pluginId);
 		return pluginBean;
 	}
 
@@ -182,6 +188,7 @@ public class SQLitePluginDao {
 				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " WHERE "//
 				+ "position=? AND " + "permission_status=? " + "ORDER BY sort LIMIT ?,?;";
+
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, position);
@@ -189,7 +196,6 @@ public class SQLitePluginDao {
 		preStatement.setInt(3, startNum);
 		preStatement.setInt(4, pageSize);
 		ResultSet rs = preStatement.executeQuery();
-
 		while (rs.next()) {
 			PluginBean bean = new PluginBean();
 			bean.setId(rs.getInt(1));
@@ -202,8 +208,8 @@ public class SQLitePluginDao {
 			bean.setPermissionStatus(rs.getInt(8));
 			pluginList.add(bean);
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pluginList, sql);
+
+		LogUtils.dbDebugLog(logger, startTime, pluginList.size(), sql, position, permissionStatus, startNum, pageSize);
 		return pluginList;
 	}
 
@@ -229,13 +235,13 @@ public class SQLitePluginDao {
 				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " WHERE "//
 				+ "position=? ORDER BY sort LIMIT ?,?;";
+
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, position);
 		preStatement.setInt(2, startNum);
 		preStatement.setInt(3, pageSize);
 		ResultSet rs = preStatement.executeQuery();
-
 		while (rs.next()) {
 			PluginBean bean = new PluginBean();
 			bean.setId(rs.getInt(1));
@@ -248,8 +254,8 @@ public class SQLitePluginDao {
 			bean.setPermissionStatus(rs.getInt(8));
 			pluginList.add(bean);
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pluginList, sql);
+
+		LogUtils.dbDebugLog(logger, startTime, pluginList.size(), sql, position, startNum, pageSize);
 		return pluginList;
 	}
 
@@ -273,6 +279,7 @@ public class SQLitePluginDao {
 				+ "position,"//
 				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " ORDER BY sort LIMIT ?,?;";
+
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setInt(1, startNum);
@@ -290,8 +297,8 @@ public class SQLitePluginDao {
 			bean.setPermissionStatus(rs.getInt(8));
 			pluginList.add(bean);
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, pluginList, sql);
+
+		LogUtils.dbDebugLog(logger, startTime, pluginList.size(), sql, startNum, pageSize);
 		return pluginList;
 	}
 }

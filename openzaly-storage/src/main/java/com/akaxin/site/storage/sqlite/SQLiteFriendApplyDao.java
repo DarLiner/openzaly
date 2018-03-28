@@ -58,8 +58,7 @@ public class SQLiteFriendApplyDao {
 		preState.setLong(4, System.currentTimeMillis());
 		result = preState.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, +result, sql + siteUserId + "," + siteFriendId);
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, siteFriendId);
 		return result > 0;
 	}
 
@@ -73,8 +72,7 @@ public class SQLiteFriendApplyDao {
 		preState.setString(2, siteFriendId);
 		result = preState.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, ",result=" + result, sql + siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId);
 		return result > 0;
 	}
 
@@ -90,8 +88,7 @@ public class SQLiteFriendApplyDao {
 		ResultSet rs = preState.executeQuery();
 		num = rs.getInt(1);
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, num, sql + siteUserId + "," + siteFriendId);
+		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId, siteFriendId);
 		return num;
 	}
 
@@ -105,8 +102,7 @@ public class SQLiteFriendApplyDao {
 		ResultSet rs = preState.executeQuery();
 		num = rs.getInt(1);
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, num, sql + siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
 		return num;
 	}
 
@@ -138,8 +134,7 @@ public class SQLiteFriendApplyDao {
 			applyUsers.add(userBean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, applyUsers.size(), sql + siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, applyUsers.size(), sql, siteUserId);
 		return applyUsers;
 	}
 }

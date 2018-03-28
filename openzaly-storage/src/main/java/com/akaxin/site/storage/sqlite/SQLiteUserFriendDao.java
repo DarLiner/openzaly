@@ -51,12 +51,11 @@ public class SQLiteUserFriendDao {
 		preState.setString(1, siteUserId);
 		preState.setString(2, siteFriendId);
 		preState.setInt(3, relation);
-		preState.setLong(4, System.currentTimeMillis());
+		long currentTime = System.currentTimeMillis();
+		preState.setLong(4, currentTime);
 		result = preState.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, siteFriendId, relation, currentTime);
 		return result > 0;
 	}
 
@@ -68,15 +67,12 @@ public class SQLiteUserFriendDao {
 
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setInt(1, relation);
-		preState.setLong(2, System.currentTimeMillis());
+		preState.setLong(2, startTime);
 		preState.setString(3, siteUserId);
 		preState.setString(4, siteFriendId);
 		result = preState.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result,
-				sql + relation + "," + System.currentTimeMillis() + "," + siteUserId + "," + siteFriendId);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql + relation, startTime, siteUserId, siteFriendId);
 		return result > 0;
 	}
 
@@ -88,31 +84,25 @@ public class SQLiteUserFriendDao {
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setString(1, siteUserId);
 		preState.setString(2, siteFriendId);
-
 		ResultSet rs = preState.executeQuery();
 		if (rs.next()) {
 			relation = rs.getInt(1);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, relation + "", sql + siteUserId + "," + siteFriendId);
-
+		LogUtils.dbDebugLog(logger, startTime, relation, sql + siteUserId, siteFriendId);
 		return relation;
 	}
 
 	public boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		int result = 0;
 		String sql = "DELETE FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";
 
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setString(1, siteUserId);
 		preState.setString(2, siteFriendId);
-		result = preState.executeUpdate();
+		int result = preState.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result + "", sql + siteUserId + "," + siteFriendId);
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, siteFriendId);
 		return result > 0;
 	}
 
@@ -131,26 +121,21 @@ public class SQLiteUserFriendDao {
 			bean.setMute(rs.getBoolean(1));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + siteFriendId);
-
+		LogUtils.dbDebugLog(logger, startTime, bean, sql, siteUserId, siteFriendId);
 		return bean;
 	}
 
 	public boolean updateUserFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		int result = 0;
 		String sql = "UPDATE " + USER_FRIEND_TABLE + " SET mute=? WHERE site_user_id=? AND site_friend_id=?;";
 
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setBoolean(1, bean.isMute());
 		preState.setString(2, siteUserId);
 		preState.setString(3, bean.getSiteUserId());
-		result = preState.executeUpdate();
+		int result = preState.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + bean.toString());
-
+		LogUtils.dbDebugLog(logger, startTime, result, sql + siteUserId + "," + bean.toString());
 		return result > 0;
 	}
 
@@ -169,7 +154,7 @@ public class SQLiteUserFriendDao {
 		}
 
 		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, bean, sql + siteUserId + "," + siteFriendId);
+		LogUtils.dbDebugLog(logger, startTime, bean, sql + siteUserId + "," + siteFriendId);
 
 		return true;
 	}
@@ -184,10 +169,8 @@ public class SQLiteUserFriendDao {
 		preState.setString(2, siteUserId);
 		preState.setString(3, siteFriendId);
 		result = preState.executeUpdate();
-
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, result, sql + siteUserId + "," + siteFriendId + "," + mute);
-
+		
+		LogUtils.dbDebugLog(logger, startTime, result, sql, mute, siteUserId, siteFriendId);
 		return result > 0;
 	}
 }

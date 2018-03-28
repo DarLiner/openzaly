@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
@@ -124,7 +125,7 @@ public class Bootstrap {
 		new HttpServer() {
 
 			@Override
-			public void loadExecutor(AbstracteExecutor<Command> executor) {
+			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
 				executor.addChain(HttpUriAction.HTTP_ACTION.getUri(), new HttpRequestHandler());
 			}
 
@@ -143,7 +144,7 @@ public class Bootstrap {
 		new NettyServer() {
 
 			@Override
-			public void loadExecutor(AbstracteExecutor<Command> executor) {
+			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
 				executor.addChain(RequestAction.IM_SITE.getName(), new ImSiteAuthHandler());
 				executor.addChain(RequestAction.IM.getName(), new ImMessageHandler());
 				executor.addChain(RequestAction.API.getName(), new ApiRequestHandler());

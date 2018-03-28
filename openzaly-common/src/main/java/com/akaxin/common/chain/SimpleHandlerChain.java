@@ -22,17 +22,16 @@ package com.akaxin.common.chain;
  * @since 2017-09.30
  * @param <T>
  */
-public class SimpleHandlerChain<T> extends AbstractHandlerChain<T> {
+public class SimpleHandlerChain<T> extends AbstractHandlerChain<T, Boolean> {
 
 	@Override
-	public boolean handle(T t) {
-
-		for (IHandler<T> handler : getHandlers()) {
+	public Boolean handle(T t) {
+		
+		for (IHandler<T, Boolean> handler : getHandlers()) {
 			if (!handler.handle(t)) {
 				return false;
 			}
 		}
-
 		return true;
 	}
 

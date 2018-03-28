@@ -25,25 +25,25 @@ import com.akaxin.common.chain.IHandler;
  * @since 2018-01-31 12:31:26
  * @param <T>
  */
-public abstract class AbstracteExecutor<T> implements IExecutor<T> {
+public abstract class AbstracteExecutor<T,R> implements IExecutor<T,R> {
 
-	protected Map<String, IHandler<T>> executors = new HashMap<String, IHandler<T>>();
-	protected Map<String, IHandler<T>> regexExecutors = new HashMap<String, IHandler<T>>();
+	protected Map<String, IHandler<T,R>> executors = new HashMap<String, IHandler<T,R>>();
+	protected Map<String, IHandler<T,R>> regexExecutors = new HashMap<String, IHandler<T,R>>();
 
-	public abstract boolean execute(String name, T t);
+	public abstract R execute(String name, T t);
 
-	public AbstracteExecutor<T> addChain(String name, IHandler<T> chain) {
+	public AbstracteExecutor<T,R> addChain(String name, IHandler<T,R> chain) {
 		executors.put(name, chain);
 		return this;
 	}
 
-	public AbstracteExecutor<T> addRegexChain(String regexName, IHandler<T> regexChain) {
+	public AbstracteExecutor<T,R> addRegexChain(String regexName, IHandler<T,R> regexChain) {
 		regexExecutors.put(regexName, regexChain);
 		return this;
 	}
 
-	public IHandler<T> getChain(String name) {
-		IHandler<T> handler = executors.get(name);
+	public IHandler<T,R> getChain(String name) {
+		IHandler<T,R> handler = executors.get(name);
 		return handler;
 	}
 

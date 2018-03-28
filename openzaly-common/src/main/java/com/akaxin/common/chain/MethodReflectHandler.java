@@ -28,10 +28,11 @@ import com.akaxin.common.command.Command;
  * @since 2018-01-31 12:26:07
  * @param <T>
  */
-public class MethodReflectHandler<T> implements IHandler<T> {
+public class MethodReflectHandler<T, R> implements IHandler<T, R> {
 	private static final Logger logger = LoggerFactory.getLogger(MethodReflectHandler.class);
 
-	public boolean handle(T t) {
+	@SuppressWarnings("unchecked")
+	public R handle(T t) {
 		try {
 			Command cmd = (Command) t;
 			String methodName = cmd.getMethod();
@@ -39,8 +40,8 @@ public class MethodReflectHandler<T> implements IHandler<T> {
 			Method m = this.getClass().getDeclaredMethod(methodName, cmd.getClass());
 			Object result = m.invoke(this, t);
 
-			if (result != null && result instanceof Boolean) {
-				return (Boolean) result;
+			if (result != null) {
+				return (R) result;
 			}
 		} catch (NoSuchMethodException e) {
 			logger.error("method handler NoSuchMethod error.", e);
@@ -53,7 +54,7 @@ public class MethodReflectHandler<T> implements IHandler<T> {
 		} catch (InvocationTargetException e) {
 			logger.error("method handler InvocationTarget error.", e);
 		}
-		return false;
+		return null;
 	}
 
 }

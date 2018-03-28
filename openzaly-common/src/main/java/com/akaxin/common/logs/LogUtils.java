@@ -20,6 +20,7 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.utils.StringHelper;
 
 /**
@@ -47,13 +48,17 @@ public class LogUtils extends LogCreater {
 				command.getSiteUserId(), command.getAction(), command.getUri()), t);
 	}
 
-	public static void requestResultLog(Logger logger, Command command, String errCode) {
-		logger.debug("client={} siteUserId={} action={} uri={} result={}", command.getClientIp(),
-				command.getSiteUserId(), command.getAction(), command.getUri(), errCode);
+	public static void requestResultLog(Logger logger, Command command, CommandResponse response) {
+		logger.info("client={} siteUserId={} action={} uri={} cost={}ms result={}", command.getClientIp(),
+				command.getSiteUserId(), command.getAction(), command.getUri(),
+				System.currentTimeMillis() - command.getStartTime(), response.getErrorCodeInfo());
 	}
 
-	public static void printDBLog(Logger logger, long cost, Object result, String sql) {
-		logger.info("DB -> costTime:{} result:{} sql:{}", cost, result, sql);
+	public static void dbDebugLog(Logger logger, long startTime, Object result, String sql, Object... objects) {
+		String messagePattern = sql.replace("?", "{}");
+		FormattingTuple format = MessageFormatter.arrayFormat(messagePattern, objects);
+		logger.debug("[openzaly-db] cost:{}ms result:{} sql:{}", System.currentTimeMillis() - startTime, result,
+				format.getMessage());
 	}
 
 	public static void info(org.apache.log4j.Logger logger, String messagePattern, Object object) {

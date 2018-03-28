@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.connector.constant.AkxProject;
@@ -42,11 +43,11 @@ public abstract class HttpServer {
 	private ServerBootstrap bootstrap;
 	private EventLoopGroup parentGroup;
 	private EventLoopGroup childGroup;
-	private AbstracteExecutor<Command> executor;
+	private AbstracteExecutor<Command, CommandResponse> executor;
 
 	public HttpServer() {
 		try {
-			executor = new SimpleExecutor<Command>();
+			executor = new SimpleExecutor<Command, CommandResponse>();
 			loadExecutor(executor);
 			bootstrap = new ServerBootstrap();
 			parentGroup = new NioEventLoopGroup();
@@ -104,5 +105,5 @@ public abstract class HttpServer {
 		}
 	}
 
-	public abstract void loadExecutor(AbstracteExecutor<Command> executor);
+	public abstract void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor);
 }

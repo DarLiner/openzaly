@@ -38,8 +38,8 @@ import com.google.protobuf.ByteString;
 
 public class UserPushHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPushHandler.class);
-
-	public boolean handle(Command command) {
+	
+	public Boolean handle(Command command) {
 		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 
 		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
@@ -61,7 +61,6 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(siteFriendId);
 					logger.info("u2 message push globalUserId={} command={}", globalUserId, command.toString());
 
-					
 					// 一、用户对站点是否消息免打扰
 					// 二、用户对该好友是否消息免打扰
 					if (ImUserProfileDao.getInstance().isMute(siteFriendId)

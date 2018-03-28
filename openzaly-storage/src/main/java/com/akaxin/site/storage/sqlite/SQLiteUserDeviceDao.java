@@ -54,19 +54,16 @@ public class SQLiteUserDeviceDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, devicePuk);
-
 		ResultSet rs = preStatement.executeQuery();
 		if (rs.next()) {
 			deviceId = rs.getString(1);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, deviceId, sql + " = " + devicePuk);
+		LogUtils.dbDebugLog(logger, startTime, deviceId, sql, devicePuk);
 		return deviceId;
 	}
 
 	public boolean save(UserDeviceBean bean) throws SQLException {
-		boolean saveResult = false;
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + USER_DEVICE_TABLE
 				+ "(site_user_id,device_id,user_device_pubk,device_name,device_ip,user_token,active_time,add_time) VALUES(?,?,?,?,?,?,?,?);";
@@ -80,24 +77,19 @@ public class SQLiteUserDeviceDao {
 		preStatement.setString(6, bean.getUserToken());
 		preStatement.setLong(7, bean.getActiveTime());
 		preStatement.setLong(8, bean.getAddTime());
-
 		int result = preStatement.executeUpdate();
 
-		if (result == 1) {
-			saveResult = true;
-		}
-
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, String.valueOf(saveResult), sql + bean.toString());
-
-		return saveResult;
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getSiteUserId(), bean.getDeviceId(),
+				bean.getUserDevicePubk(), bean.getDeviceName(), bean.getDeviceIp(), bean.getUserToken(),
+				bean.getActiveTime(), bean.getAddTime());
+		return result == 1;
 	}
 
 	public boolean update(UserDeviceBean bean) throws SQLException {
-		boolean updateResult = false;
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_DEVICE_TABLE
 				+ " SET user_device_pubk=?,device_name=?,device_ip=?,user_token=?,active_time=? WHERE site_user_id=? AND device_id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, bean.getUserDevicePubk());
 		preStatement.setString(2, bean.getDeviceName());
@@ -106,38 +98,26 @@ public class SQLiteUserDeviceDao {
 		preStatement.setLong(5, bean.getActiveTime());
 		preStatement.setString(6, bean.getSiteUserId());
 		preStatement.setString(7, bean.getDeviceId());
-
 		int result = preStatement.executeUpdate();
 
-		if (result > 0) {
-			updateResult = true;
-		}
-
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, updateResult, sql + bean.toString());
-
-		return updateResult;
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getUserDevicePubk(), bean.getDeviceName(),
+				bean.getDeviceIp(), bean.getUserToken(), bean.getActiveTime(), bean.getSiteUserId(),
+				bean.getDeviceId());
+		return result == 1;
 	}
 
 	public boolean updateActiveTime(String siteUserId, String deviceId) throws SQLException {
-		boolean updateResult = false;
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_DEVICE_TABLE + " SET active_time=? WHERE site_user_id=? AND device_id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setLong(1, System.currentTimeMillis());
 		preStatement.setString(2, siteUserId);
 		preStatement.setString(3, deviceId);
-
 		int result = preStatement.executeUpdate();
 
-		if (result > 0) {
-			updateResult = true;
-		}
-
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, updateResult, sql + siteUserId + "," + deviceId);
-
-		return updateResult;
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, deviceId);
+		return result == 1;
 	}
 
 	public UserDeviceBean queryDeviceDetails(String siteUserId, String deviceId) throws SQLException {
@@ -146,6 +126,7 @@ public class SQLiteUserDeviceDao {
 		String sql = "SELECT a.site_user_id,a.device_id,a.login_time,b.device_name,b.device_ip,b.active_time,b.add_time from "
 				+ USER_SESSION_TABLE + " AS a LEFT JOIN " + USER_DEVICE_TABLE
 				+ " AS b WHERE a.site_user_id=b.site_user_id AND a.device_id=b.device_id AND a.site_user_id=? AND a.device_id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
 		preStatement.setString(2, deviceId);
@@ -160,9 +141,7 @@ public class SQLiteUserDeviceDao {
 			deviceBean.setAddTime(rs.getLong(7));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, deviceBean.toString(),
-				sql + " = " + siteUserId + "," + deviceId);
+		LogUtils.dbDebugLog(logger, startTime, deviceBean.toString(), sql, siteUserId, deviceId);
 		return deviceBean;
 	}
 
@@ -179,28 +158,25 @@ public class SQLiteUserDeviceDao {
 			deviceId = rs.getString(1);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, ",deviceId=" + deviceId,
-				sql + " = " + site_user_id + "," + device_id);
+		LogUtils.dbDebugLog(logger, startTime, deviceId, sql, site_user_id, device_id);
 		return deviceId;
 	}
 
 	/**
 	 * 最新的用户设备，用户最近一次活跃时间算
 	 * 
-	 * @param site_user_id
+	 * @param siteUserId
 	 * @return
 	 * @throws SQLException
 	 */
-	public UserDeviceBean queryLatestDevice(String site_user_id) throws SQLException {
+	public UserDeviceBean queryLatestDevice(String siteUserId) throws SQLException {
 		UserDeviceBean deviceBean = new UserDeviceBean();
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,device_id,user_device_pubk,device_name,max(active_time) FROM "
 				+ USER_DEVICE_TABLE + " WHERE site_user_id=? LIMIT 1;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, site_user_id);
-
+		preStatement.setString(1, siteUserId);
 		ResultSet rs = preStatement.executeQuery();
 		if (rs.next()) {
 			deviceBean.setSiteUserId(rs.getString(1));
@@ -210,20 +186,18 @@ public class SQLiteUserDeviceDao {
 			deviceBean.setActiveTime(rs.getLong(5));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, deviceBean.toString(), sql + " = " + site_user_id);
+		LogUtils.dbDebugLog(logger, startTime, deviceBean.toString(), sql, siteUserId);
 		return deviceBean;
 	}
 
-	public List<UserDeviceBean> queryDeviceList(String site_user_id) throws SQLException {
+	public List<UserDeviceBean> queryDeviceList(String siteUserId) throws SQLException {
 		List<UserDeviceBean> devicesBean = new ArrayList<UserDeviceBean>();
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,device_id,user_device_pubk,device_name,active_time FROM " + USER_DEVICE_TABLE
 				+ " WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, site_user_id);
-
+		preStatement.setString(1, siteUserId);
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
 			UserDeviceBean deviceBean = new UserDeviceBean();
@@ -235,9 +209,7 @@ public class SQLiteUserDeviceDao {
 			devicesBean.add(deviceBean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, devicesBean.size() + "", sql + " = " + site_user_id);
-
+		LogUtils.dbDebugLog(logger, startTime, devicesBean.size(), sql, siteUserId);
 		return devicesBean;
 	}
 
@@ -250,7 +222,6 @@ public class SQLiteUserDeviceDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
-
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
 			UserDeviceBean deviceBean = new UserDeviceBean();
@@ -263,9 +234,7 @@ public class SQLiteUserDeviceDao {
 			devicesBean.add(deviceBean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, devicesBean.size() + "", sql + " = " + siteUserId);
-
+		LogUtils.dbDebugLog(logger, startTime, devicesBean.size(), sql, siteUserId);
 		return devicesBean;
 	}
 
@@ -277,13 +246,12 @@ public class SQLiteUserDeviceDao {
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
-
 		ResultSet rs = preStatement.executeQuery();
 		if (rs.next()) {
 			userToken = rs.getString(1);
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.printDBLog(logger, endTime - startTime, userToken, sql + siteUserId);
+
+		LogUtils.dbDebugLog(logger, startTime, userToken, sql, siteUserId);
 		return userToken;
 	}
 }

@@ -17,6 +17,6 @@ package com.akaxin.site.message.group.handler;
 
 import com.akaxin.common.chain.IHandler;
 
-public abstract class AbstractGroupHandler<Command> implements IHandler<Command> {
+public abstract class AbstractGroupHandler<Command> implements IHandler<Command, Boolean> {
 	// do something fo all handlers
 }

@@ -19,7 +19,7 @@ import com.akaxin.common.chain.IHandler;
 
 import io.netty.channel.Channel;
 
-public abstract class AbstractCommonHandler<T> implements IHandler<T> {
+public abstract class AbstractCommonHandler<T, R> implements IHandler<T, R> {
 
 	protected void closeChannel(Channel channel) {
 		channel.close();

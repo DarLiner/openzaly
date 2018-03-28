@@ -36,7 +36,7 @@ public class U2MessageImageHandler extends AbstractUserHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageImageHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
-	public boolean handle(Command command) {
+	public Boolean handle(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 
 		try {
