@@ -65,7 +65,7 @@ public class AESCrypto {
 			cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
 			return cipher.doFinal(content);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("aes encrypt error tsk-size={} content-size={}", tsk.length, content.length);
 		}
 		return null;
 	}
@@ -84,7 +84,7 @@ public class AESCrypto {
 			cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
 			return cipher.doFinal(content);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("AES decrypt error,tsk-len={} content-len={}", tsk.length, content.length);
 		}
 		return null;
 	}
