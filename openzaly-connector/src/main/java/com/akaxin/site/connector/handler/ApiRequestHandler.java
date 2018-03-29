@@ -39,6 +39,7 @@ import com.akaxin.site.storage.service.UserSessionDaoService;
 import com.google.protobuf.ByteString;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -125,14 +126,17 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandRes
 		// 协议版本 CommandConst.PROTOCOL_VERSION=1.0
 		String protocolVersion = CommandConst.PROTOCOL_VERSION;
 		String action = comamndResponse.getAction() == null ? CommandConst.ACTION_RES : comamndResponse.getAction();
-		channel.writeAndFlush(
-				new RedisCommand().add(protocolVersion).add(action).add(packageBuilder.build().toByteArray()))
+		ChannelFuture future = channel
+				.writeAndFlush(
+						new RedisCommand().add(protocolVersion).add(action).add(packageBuilder.build().toByteArray()))
 				.addListener(new GenericFutureListener<Future<? super Void>>() {
 
+					@Override
 					public void operationComplete(Future<? super Void> future) throws Exception {
 						channel.close();
 					}
 				});
+//		future.await(timeoutMillis);
 		return comamndResponse;
 	}
 
