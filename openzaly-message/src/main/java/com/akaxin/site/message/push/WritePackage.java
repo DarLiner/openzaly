@@ -82,7 +82,7 @@ public class WritePackage {
 			Future<IRedisCommandResponse> future = nettyClient.sendRedisCommand(new RedisCommand()
 					.add(CommandConst.PROTOCOL_VERSION).add(action).add(packageDataBuilder.build().toByteArray()));
 			IRedisCommandResponse response = future.get(5, TimeUnit.SECONDS);
-			logger.info("write push to platform finish response={}", response);
+			logger.debug("write push to platform finish response={}", response);
 			nettyClient.disconnect();
 		} catch (Exception e) {
 			logger.error("async send package to platform error", e);
@@ -94,7 +94,7 @@ public class WritePackage {
 			String version = redisCommand.getParameterByIndex(0);
 			String action = redisCommand.getParameterByIndex(1);
 			byte[] params = redisCommand.getBytesParamByIndex(2);
-			logger.info("get package bytes from platform {},{},{}", version, action, params);
+			logger.debug("get package bytes from platform {},{},{}", version, action, params);
 			if (CommandConst.ACTION_RES.equals(action)) {
 				CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(params);
 				CoreProto.ErrorInfo error = packageData.getErr();
