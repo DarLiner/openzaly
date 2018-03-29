@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.site.message.group.handler;
+package com.akaxin.site.message.user2.handler;
 
 import com.akaxin.common.chain.IHandler;
 import com.akaxin.common.channel.ChannelWriter;
@@ -24,14 +24,18 @@ import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 
-/**
- * 
- * @author Sam{@link an.guoyue254@gmail.com}
- * @since 2018-02-05 11:50:15
- * @param <Command>
- */
-public abstract class AbstractGroupHandler<T> implements IHandler<T, Boolean> {
+import io.netty.channel.Channel;
 
+public abstract class AbstractU2Handler<T> implements IHandler<T, Boolean> {
+
+	/**
+	 * <pre>
+	 * 	status=1:发送成功
+	 * 	status=0：默认发送失败状态
+	 * 	status=-1:非好友，不能发送
+	 * 	status=-2:非群成员，发送失败
+	 * </pre>
+	 */
 	protected void msgStatusResponse(Command command, String msgId, long msgTime, boolean success) {
 		int statusValue = success ? 1 : 0;
 
@@ -67,5 +71,28 @@ public abstract class AbstractGroupHandler<T> implements IHandler<T, Boolean> {
 
 		ChannelWriter.writeByDeviceId(command.getDeviceId(), new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
 				.add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+	}
+
+	/**
+	 * 通过channel回执消息状态
+	 */
+	@Deprecated
+	protected void msgStatusResponse(Channel channel, Command command, String from, String to, String msgId,
+			long msgTime) {
+		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+				.setMsgStatus(1).build();
+
+		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+				.setType(MsgType.MSG_STATUS).setStatus(status).build();
+
+		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
+				.addList(statusMsg).build();
+
+		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
+				.setData(request.toByteString()).build();
+
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
+
 	}
 }

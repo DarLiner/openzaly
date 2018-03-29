@@ -28,7 +28,9 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.message.service.ImMessageService;
@@ -36,9 +38,8 @@ import com.akaxin.site.message.service.ImMessageService;
 /**
  * 这里负责下发消息至message模块进行处理
  * 
- * @author sam
- *
- * @param <Command>
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2017-11-15 11:11:42
  */
 public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResponse> {
 	private static final Logger logger = LoggerFactory.getLogger(ImMessageHandler.class);
@@ -51,21 +52,22 @@ public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResp
 				channelSession.getChannel().close();
 				logger.error("{} client={} im request error with deviceId={}.", AkxProject.PLN, command.getClientIp(),
 						deviceId);
-				return null;
+				return customResponse(ErrorCode2.ERROR);
 			}
 
 			ChannelSession acsession = ChannelManager.getChannelSession(deviceId);
 			if (acsession == null) {
 				channelSession.getChannel().close();
-				logger.info("{} client={} im request error with channelSession={}", acsession);
-				return null;
+				logger.error("{} client={} im request error with channelSession={}", AkxProject.PLN,
+						command.getClientIp(), acsession);
+				return customResponse(ErrorCode2.ERROR);
 			}
 
 			if (!checkSiteUserId(command.getSiteUserId(), acsession.getUserId())) {
 				channelSession.getChannel().close();
-				logger.info("im request fail.cmdUserId={},sessionUserId={}", command.getSiteUserId(),
-						acsession.getUserId());
-				return null;
+				logger.error("{} client={} im request fail siteUserId={},sessionUserId={}", AkxProject.PLN,
+						command.getClientIp(), command.getSiteUserId(), acsession.getUserId());
+				return customResponse(ErrorCode2.ERROR);
 			}
 
 			if (RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
@@ -87,11 +89,13 @@ public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResp
 			}
 
 			new ImMessageService().execute(command);
+			return customResponse(ErrorCode2.SUCCESS);
 
 		} catch (Exception e) {
-			logger.error("im request error.", e);
+			logger.error(StringHelper.format("{} client={} im request error.", AkxProject.PLN, command.getClientIp()),
+					e);
 		}
-		return null;
+		return defaultErrorResponse();
 	}
 
 	/**

@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.message.group.handler;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +26,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcPsnProto;
 import com.akaxin.site.message.dao.ImUserSessionDao;
 import com.akaxin.site.storage.api.IGroupDao;
@@ -37,26 +37,27 @@ public class GroupPsnHandler extends AbstractGroupHandler<Command> {
 	private IGroupDao groupDao = new GroupDaoService();
 
 	public Boolean handle(Command command) {
-		String siteGroupId = command.getSiteGroupId();
-		String siteUserId = command.getSiteUserId();
-		String siteDeviceId = command.getDeviceId();
-		logger.info("PSH to group members, groupId={},sendUserId={} device={}", siteGroupId, siteUserId, siteDeviceId);
-
 		try {
+			String siteGroupId = command.getSiteGroupId();
+			String siteUserId = command.getSiteUserId();
+			String siteDeviceId = command.getDeviceId();
+			String siteFriendId = command.getSiteFriendId();
+
 			List<String> groupMembers = groupDao.getGroupMembersId(siteGroupId);
 			for (String userId : groupMembers) {
 				List<String> deivceIds = ImUserSessionDao.getInstance().getSessionDevices(userId);
 				for (String deviceId : deivceIds) {
 					if (StringUtils.isNotEmpty(deviceId) && !deviceId.equals(siteDeviceId)) {
 						writePSN(deviceId);
-						logger.info("psn to group={} user={} deviceId={}", siteGroupId, siteUserId, deviceId);
+						logger.debug("client={} siteUserId={} PSN to groupId={} siteFriendId={}, deviceId={}",
+								command.getClientIp(), siteUserId, siteGroupId, siteFriendId, deviceId);
 					}
 				}
 
 			}
 			return true;
-		} catch (SQLException e) {
-			logger.error("send group psn error.", e);
+		} catch (Exception e) {
+			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
 
 		return false;

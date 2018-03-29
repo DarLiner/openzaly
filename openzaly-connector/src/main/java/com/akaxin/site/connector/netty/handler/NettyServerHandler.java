@@ -54,7 +54,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		// connect to netty server
 		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String clientIp = socketAddress.getAddress().getHostAddress();
 		ctx.channel().attr(ParserConst.CHANNELSESSION).set(new ChannelSession(ctx.channel()));
@@ -86,9 +85,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		String clientIp = socketAddress.getAddress().getHostAddress();
 		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
 
-		// 如果channel不活跃，关闭tcp连接
+		// Channel不可用情况下，关闭连接事件
+		// disconnect tcp connection as channel is unavailable
 		if (channelSession.getChannel() == null || !channelSession.getChannel().isActive()) {
-			ctx.disconnect();// 关闭tcp连接
+			ctx.disconnect();// 断开连接事件(与对方的连接断开)
 			logger.warn("{} close client={} as its channel is not active ", AkxProject.PLN, clientIp);
 		}
 
@@ -122,18 +122,33 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 				String anoRequest = command.getRety() + "." + command.getService();
 				command.setRety(anoRequest);
 			}
-			this.executor.execute(command.getRety(), command);
+			CommandResponse response = this.executor.execute(command.getRety(), command);
+			// 输出IM请求结果
+			LogUtils.requestResultLog(logger, command, response);
 		} else if (RequestAction.API.getName().equalsIgnoreCase(command.getRety())) {
 			CommandResponse response = this.executor.execute(command.getRety(), command);
+			// 输出API请求结果
 			LogUtils.requestResultLog(logger, command, response);
 		} else {
-			logger.warn("{} client={} siteUserId={} action={} unknow request method", AkxProject.PLN,
+			/**
+			 * <pre>
+			 * 
+			 * pipeline.addLast("A", new AHandler());
+			 * pipeline.addLast("B", new BHandler());
+			 * pipeline.addLast("C", new CHandler());
+			 * 
+			 * ctx.close() && channel().close();
+			 * 		ctx.close(): close the channel in current handler,will start from the tail of the ChannelPipeline
+			 * 				do A.close() ,B.close(),C.close();
+			 * 		channel().close():close channel in all handler from pointer
+			 * 				do C.close() , B.close(), A.close();
+			 * </pre>
+			 */
+			ctx.channel().close();// 关闭channel事件(关闭自己的连接)
+			logger.error("{} client={} siteUserId={} action={} unknow request method", AkxProject.PLN,
 					command.getClientIp(), command.getSiteUserId(), command.getAction());
 			return;
 		}
-
-		logger.debug("{} client={} siteUserId={} action={} ", AkxProject.PLN, command.getClientIp(),
-				command.getSiteUserId(), command.getAction(), System.currentTimeMillis() - command.getStartTime());
 	}
 
 	@Override

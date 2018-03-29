@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PushProto;
@@ -44,9 +45,8 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 	private IGroupDao groupDao = new GroupDaoService();
 
 	public Boolean handle(Command command) {
-		logger.info("开始发送群PUSH command={}", command.toString());
+		// 1.检测当前站点是否开启PUSH开关，开启才支持PUSH功能
 		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
-
 		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
 			logger.warn("push to client error. cause: pushClientStatus={}", ConfigProto.PushClientStatus.PUSH_NO);
 			return true;
@@ -63,10 +63,8 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					String siteUserId = command.getSiteUserId();
 					String siteFromId = siteUserId;
 					String siteGroupId = command.getSiteGroupId();
-					logger.info("group push command={}", command.toString());
 
 					GroupProfileBean groupBean = ImUserGroupDao.getInstance().getSimpleGroupProfile(siteGroupId);
-
 					if (groupBean == null) {
 						return;
 					}
@@ -84,7 +82,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							}
 
 							String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(memberUserId);
-							logger.info("push from groupid={} to siteUserId={} globalUserId={}.", siteGroupId,
+							logger.debug("push from groupid={} to siteUserId={} globalUserId={}.", siteGroupId,
 									memberUserId, globalUserId);
 
 							ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
@@ -118,8 +116,10 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							if (StringUtils.isNotBlank(userToken)) {
 								notification.setUserToken(userToken);
 								requestBuilder.setNotification(notification.build());
-								logger.info("Akaxin Push: {}", requestBuilder.toString());
 
+								logger.debug("client={} siteUserId={} push to groupId={] siteFriend={} content={}",
+										command.getClientIp(), command.getSiteUserId(), command.getSiteGroupId(),
+										command.getSiteFriendId(), requestBuilder.toString());
 								WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
 										requestBuilder.build().toByteArray());
 							}
@@ -128,12 +128,12 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					}
 
 				} catch (Exception e) {
-					logger.error("group push error.", e);
+					LogUtils.requestErrorLog(logger, command, GroupPushHandler.class, e);
 				}
 			}
 		});
 
-		return false;
+		return true;
 	}
 
 }

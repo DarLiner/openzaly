@@ -25,30 +25,34 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcPsnProto;
 import com.akaxin.site.message.dao.ImUserSessionDao;
 
-public class UserPsnHandler extends AbstractUserHandler<Command> {
+public class UserPsnHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPsnHandler.class);
 
 	public Boolean handle(Command command) {
 		try {
-			String site_friend_id = command.getSiteFriendId();
-			logger.info("psn to user command={}", command.toString());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = command.getSiteFriendId();
 
 			// 查找对方的设备信息，发送psh
-			List<String> deivceIds = ImUserSessionDao.getInstance().getSessionDevices(site_friend_id);
-			command.setField("deviceIdList", deivceIds);
-			for (String deviceId : deivceIds) {
+			List<String> deviceIdList = ImUserSessionDao.getInstance().getSessionDevices(siteFriendId);
+			command.setField("deviceIdList", deviceIdList);
+
+			for (String deviceId : deviceIdList) {
 				if (deviceId != null) {
 					writePsn(deviceId);
-					logger.info("U2 message PSH to siteUserId={}, deviceId", site_friend_id, deviceId);
+					logger.debug("client={} siteUserId={} PSH to siteFriendId={}, deviceId={}", siteUserId,
+							siteFriendId, deviceId);
 				}
 			}
+			return true;
 		} catch (Exception e) {
-			logger.error("send u2 psn error", e);
+			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
-		return true;
+		return false;
 	}
 
 	private void writePsn(String deviceId) {

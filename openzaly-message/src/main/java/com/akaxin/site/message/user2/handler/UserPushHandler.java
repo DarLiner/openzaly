@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PushProto;
@@ -36,12 +37,12 @@ import com.akaxin.site.message.utils.SiteConfigHelper;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.google.protobuf.ByteString;
 
-public class UserPushHandler extends AbstractUserHandler<Command> {
+public class UserPushHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPushHandler.class);
-	
-	public Boolean handle(Command command) {
-		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 
+	public Boolean handle(Command command) {
+		// 1.判断站点是否开启PUSH发送功能
+		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
 			logger.warn("push to client error. cause: pushClientStatus={}", ConfigProto.PushClientStatus.PUSH_NO);
 			return true;
@@ -59,7 +60,7 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 					String siteFromId = siteUserId; // 为什么这样写了，保持读者的阅读性
 					String siteFriendId = command.getSiteFriendId();// 接受者 这里是用户生成的站点ID
 					String globalUserId = ImUserProfileDao.getInstance().getGlobalUserId(siteFriendId);
-					logger.info("u2 message push globalUserId={} command={}", globalUserId, command.toString());
+					LogUtils.requestDebugLog(logger, command, request.toString());
 
 					// 一、用户对站点是否消息免打扰
 					// 二、用户对该好友是否消息免打扰
@@ -97,15 +98,17 @@ public class UserPushHandler extends AbstractUserHandler<Command> {
 						notification.setUserToken(userToken);
 						requestBuilder.setNotification(notification.build());
 						requestBuilder.setPushType(request.getType());
-						logger.info("Akaxin Push: {}", requestBuilder.toString());
 
 						WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
 								requestBuilder.build().toByteArray());
+						logger.debug("client={} siteUserId={} push to siteFriend={} content={}", command.getClientIp(),
+								command.getSiteUserId(), command.getSiteFriendId(), requestBuilder.toString());
 					} else {
-						logger.warn("Akaxin Push error,usertoken={}", userToken);
+						logger.warn("client={} siteUserId={} push to siteFriend={} error as userToken={}",
+								command.getClientIp(), command.getSiteUserId(), command.getSiteFriendId(), userToken);
 					}
 				} catch (Exception e) {
-					logger.error("u2 message push error", e);
+					LogUtils.requestErrorLog(logger, command, UserPushHandler.class, e);
 				}
 			}
 		});

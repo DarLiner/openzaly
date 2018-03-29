@@ -22,6 +22,7 @@ import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -32,6 +33,11 @@ import com.akaxin.site.storage.service.MessageDaoService;
 
 import io.netty.channel.Channel;
 
+/**
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-02-05 11:50:30
+ */
 public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupMessageImageHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
@@ -42,8 +48,8 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
-
 			int type = request.getType().getNumber();
+
 			if (CoreProto.MsgType.GROUP_IMAGE_VALUE == type) {
 				String siteUserId = command.getSiteUserId();
 				String deviceId = command.getDeviceId();
@@ -61,36 +67,36 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 				gmsgBean.setMsgType(type);
 				gmsgBean.setMsgTime(msgTime);
 
-				logger.info("Group Image message bean={}", gmsgBean.toString());
+				LogUtils.requestDebugLog(logger, command, gmsgBean.toString());
 
-				messageDao.saveGroupMessage(gmsgBean);
-				msgResponse(channelSession.getChannel(), command, siteUserId, groupId, gmsgId, msgTime);
-
+				boolean success = messageDao.saveGroupMessage(gmsgBean);
+				msgStatusResponse(command, gmsgId, msgTime, success);
+				return success;
 			}
 			return true;
 		} catch (Exception e) {
-			logger.error("save group image message error.", e);
+			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
 
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
-				.setMsgStatus(1).build();
-
-		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-				.setType(MsgType.MSG_STATUS).setStatus(status).build();
-
-		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-				.addList(0, statusMsg).build();
-
-		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
-				.setData(request.toByteString()).build();
-
-		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
-				.add(data.toByteArray()));
-
-	}
+//	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
+//		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+//				.setMsgStatus(1).build();
+//
+//		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+//				.setType(MsgType.MSG_STATUS).setStatus(status).build();
+//
+//		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
+//				.addList(0, statusMsg).build();
+//
+//		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
+//				.setData(request.toByteString()).build();
+//
+//		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+//				.add(data.toByteArray()));
+//
+//	}
 
 }

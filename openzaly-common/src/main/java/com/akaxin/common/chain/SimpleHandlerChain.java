@@ -16,7 +16,11 @@
 package com.akaxin.common.chain;
 
 /**
- * 简单的来说，只有返回true，此条消息链才算处理成功，如果返回false，则消息链终止执行，返回false
+ * <pre>
+ * 	简单的来说(Chain中每个Handler的返回值)
+ * 		返回true，此条消息链才算处理成功，继续执行
+ * 		返回false，则消息链终止执行，返回false
+ * </pre>
  * 
  * @author Sam
  * @since 2017-09.30
@@ -26,7 +30,8 @@ public class SimpleHandlerChain<T> extends AbstractHandlerChain<T, Boolean> {
 
 	@Override
 	public Boolean handle(T t) {
-		
+		// hander.handle(t) == false ，return fasle and break
+		// hander.handle(t) == true ，return true and go on
 		for (IHandler<T, Boolean> handler : getHandlers()) {
 			if (!handler.handle(t)) {
 				return false;

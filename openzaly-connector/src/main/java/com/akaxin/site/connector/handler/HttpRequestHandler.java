@@ -53,6 +53,7 @@ import io.netty.handler.codec.http.HttpVersion;
 public class HttpRequestHandler extends AbstractCommonHandler<Command, CommandResponse> {
 	private static final Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
 
+	@Override
 	public CommandResponse handle(Command command) {
 		try {
 			ChannelHandlerContext context = command.getChannelContext();

@@ -16,13 +16,13 @@
 package com.akaxin.common.chain;
 
 /**
- * 永远只执行chain中最后一个handler
+ * 自定义返回值<R>的handler
  * 
  * @author Sam
  * @since 2017-09.30
  * @param <T>
  */
-public class SimpleRHandlerChain<T, R> extends AbstractHandlerChain<T, R> {
+public class CustomRHandlerChain<T, R> extends AbstractHandlerChain<T, R> {
 
 	@Override
 	public R handle(T t) {

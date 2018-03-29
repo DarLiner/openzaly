@@ -48,6 +48,11 @@ public class LogUtils extends LogCreater {
 				command.getSiteUserId(), command.getAction(), command.getUri()), t);
 	}
 
+	public static void requestErrorLog(Logger logger, Command command, Class<?> clazz, Throwable t) {
+		logger.error(StringHelper.format("client={} siteUserId={} action={} uri={} {} error", command.getClientIp(),
+				command.getSiteUserId(), command.getAction(), command.getUri(), clazz.getClass().getName()), t);
+	}
+
 	public static void requestResultLog(Logger logger, Command command, CommandResponse response) {
 		logger.info("client={} siteUserId={} action={} uri={} cost={}ms result={}", command.getClientIp(),
 				command.getSiteUserId(), command.getAction(), command.getUri(),

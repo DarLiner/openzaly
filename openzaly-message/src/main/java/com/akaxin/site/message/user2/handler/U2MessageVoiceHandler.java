@@ -22,6 +22,7 @@ import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -32,44 +33,36 @@ import com.akaxin.site.storage.service.MessageDaoService;
 
 import io.netty.channel.Channel;
 
-public class U2MessageVoiceHandler extends AbstractUserHandler<Command> {
+public class U2MessageVoiceHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageVoiceHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
-		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
-
 			int type = request.getType().getNumber();
 
 			if (CoreProto.MsgType.VOICE_VALUE == type) {
-				logger.info("U2Message Voice type={}", type);
-
-				String site_user_id = request.getVoice().getSiteUserId();
-				String site_friend_id = request.getVoice().getSiteFriendId();
-				String msg_id = request.getVoice().getMsgId();
+				String siteUserId = command.getSiteUserId();
+				String siteFriendId = command.getSiteFriendId();
+				String msgId = request.getVoice().getMsgId();
 				String voiceId = request.getVoice().getVoiceId();
 
-				command.setSiteUserId(site_user_id);
-				command.setSiteFriendId(site_friend_id);
-
-				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();
-				u2Bean.setMsgId(msg_id);
+				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(site_user_id);
-				u2Bean.setSiteUserId(site_friend_id);
+				u2Bean.setSendUserId(siteUserId);
+				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(voiceId);
+				long msgTime = System.currentTimeMillis();
 				u2Bean.setMsgTime(msgTime);
 
-				logger.info("U2 Message Bean={}", u2Bean.toString());
-
-				boolean saveRes = messageDao.saveU2Message(u2Bean);
-
-				msgResponse(channelSession.getChannel(), command, site_user_id, site_friend_id, msg_id, msgTime);
-				return saveRes;
+				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
+				
+				boolean success = messageDao.saveU2Message(u2Bean);
+				msgStatusResponse(command, msgId, msgTime, success);
+				return success;
 			}
 
 			return true;
@@ -80,24 +73,24 @@ public class U2MessageVoiceHandler extends AbstractUserHandler<Command> {
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
-
-		logger.info("response to client msgId:{} from:{} to:{}", msgId, from, to);
-
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
-				.setMsgStatus(1).build();
-
-		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-				.setType(MsgType.MSG_STATUS).setStatus(status).build();
-
-		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-				.addList(0, statusMsg).build();
-
-		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
-				.setData(request.toByteString()).build();
-
-		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
-				.add(data.toByteArray()));
-
-	}
+//	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
+//
+//		logger.info("response to client msgId:{} from:{} to:{}", msgId, from, to);
+//
+//		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+//				.setMsgStatus(1).build();
+//
+//		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+//				.setType(MsgType.MSG_STATUS).setStatus(status).build();
+//
+//		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
+//				.addList(0, statusMsg).build();
+//
+//		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
+//				.setData(request.toByteString()).build();
+//
+//		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+//				.add(data.toByteArray()));
+//
+//	}
 }

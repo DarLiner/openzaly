@@ -42,8 +42,8 @@ import io.netty.channel.Channel;
 /**
  * <pre>
  * 处理用户登陆站点之前认证行为 
- * 	1.hello行为，获取站点版本号<im.site.hello> 
- * 	2.auth行为，进行用户个人身份认证<im.site.auth>
+ * 		1.hello行为，获取站点版本号<im.site.hello> 
+ * 		2.auth行为，进行用户个人身份认证<im.site.auth>
  * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -55,7 +55,7 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 	private static final Logger logger = LoggerFactory.getLogger(ImSiteAuthHandler.class);
 	private static final int IM = 1;
 
-	public boolean hello(Command command) {
+	public CommandResponse hello(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			if (channelSession != null) {
@@ -64,17 +64,16 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 				String clientVersion = request.getClientVersion();
 				logger.debug("{} client={} siteUserId={} action={} clientVersion={}", AkxProject.PLN,
 						command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_HELLO, clientVersion);
-				helloResponse(channelSession.getChannel());
-				return true;
+				return helloResponse(channelSession.getChannel());
 			}
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} client={} siteUserId={} action={} error.", AkxProject.PLN,
 					command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_HELLO), e);
 		}
-		return false;
+		return defaultErrorResponse();
 	}
 
-	private void helloResponse(Channel channel) {
+	private CommandResponse helloResponse(Channel channel) {
 		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
 				.setAction(CommandConst.ACTION_RES);
 		ImSiteHelloProto.ImSiteHelloResponse response = ImSiteHelloProto.ImSiteHelloResponse.newBuilder()
@@ -82,16 +81,16 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 		commandResponse.setErrCode(ErrorCode.SUCCESS);
 		commandResponse.setParams(response.toByteArray());
 		ChannelWriter.write(channel, commandResponse);
+		return commandResponse;
 	}
 
-	public boolean auth(Command command) {
-		boolean authResult = false;
+	public CommandResponse auth(Command command) {
 		ChannelSession channelSession = command.getChannelSession();
 		if (channelSession != null) {
-			authResult = authentication(channelSession, command);
-			authResponse(channelSession.getChannel(), command, authResult);
+			boolean authResult = authentication(channelSession, command);
+			return authResponse(channelSession.getChannel(), command, authResult);
 		}
-		return authResult;
+		return defaultErrorResponse();
 	}
 
 	private boolean authentication(ChannelSession channelSession, Command command) {
@@ -119,7 +118,7 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 					// 3. update active time
 					SessionManager.getInstance().updateActiveTime(siteUserId, authSession.getDeviceId());
 					// 4. log
-					logger.info("{} client={} siteUserId={} action={} AUTH SUCCESS ChannelSessionSize{}",
+					logger.debug("{} client={} siteUserId={} action={} AUTH SUCCESS ChannelSessionSize{}",
 							AkxProject.PLN, command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_AUTH,
 							ChannelManager.getChannelSessionSize());
 					return true;
@@ -132,7 +131,7 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 		return false;
 	}
 
-	private void authResponse(Channel channel, Command command, boolean result) {
+	private CommandResponse authResponse(Channel channel, Command command, boolean result) {
 		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
 				.setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR2_IMAUTH_FAIL;
@@ -148,6 +147,13 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 		}
 		logger.debug("{} client={} siteUserId={} action={} auth response result={}", AkxProject.PLN,
 				command.getClientIp(), command.getSiteUserId(), RequestAction.IM_SITE_AUTH, errCode.toString());
+		return commandResponse;
 	}
 
+	private CommandResponse defaultErrorResponse() {
+		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
+				.setAction(CommandConst.ACTION_RES);
+		commandResponse.setErrCode2(ErrorCode2.ERROR);
+		return commandResponse;
+	}
 }

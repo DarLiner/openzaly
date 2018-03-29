@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.executor.MessageExecutor;
@@ -29,7 +31,9 @@ public class MessageDispatcher {
 
 	public static boolean dispatch(Command command) {
 		String action = command.getAction();
-		if (action.equalsIgnoreCase(RequestAction.IM_CTS_MESSAGE.getName())) {
+		LogUtils.requestDebugLog(logger, command, "");
+
+		if (RequestAction.IM_CTS_MESSAGE.getName().equalsIgnoreCase(action)) {
 			try {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
@@ -47,7 +51,7 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.SECRET_MAP_VALUE:
 				case CoreProto.MsgType.U2_NOTICE_VALUE:
 					MessageExecutor.getExecutor().execute("im.cts.message.u2", command);
-					break;
+					return true;
 				case CoreProto.MsgType.GROUP_TEXT_VALUE:
 				case CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE:
 				case CoreProto.MsgType.GROUP_IMAGE_VALUE:
@@ -58,18 +62,22 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.GROUP_SECRET_MAP_VALUE:
 				case CoreProto.MsgType.GROUP_NOTICE_VALUE:
 					MessageExecutor.getExecutor().execute("im.cts.message.group", command);
-					break;
-				default:
-					break;
+					return true;
 				}
 			} catch (Exception e) {
-				logger.error("message dispatch exception", e);
+				logger.error(StringHelper.format("client={} siteUserId={} action={} im message dispatch error",
+						command.getClientIp(), command.getSiteUserId(), command.getAction()), e);
 			}
-		} else if (action.equalsIgnoreCase(RequestAction.IM_SYNC_MESSAGE.getName())) {
-			MessageExecutor.getExecutor().execute("im.sync.message", command);
-		} else if (action.equalsIgnoreCase(RequestAction.IM_SYNC_FINISH.getName())) {
-			MessageExecutor.getExecutor().execute("im.sync.finish", command);
+		} else if (RequestAction.IM_SYNC_MESSAGE.getName().equalsIgnoreCase(action)) {
+			MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_MESSAGE.getName(), command);
+			return true;
+		} else if (RequestAction.IM_SYNC_FINISH.getName().equalsIgnoreCase(action)) {
+			MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_FINISH.getName(), command);
+			return true;
 		}
-		return true;
+
+		logger.error("client={} siteUserId={} action={} im message with error command={}", command.getClientIp(),
+				command.toString());
+		return false;
 	}
 }

@@ -18,46 +18,29 @@ package com.akaxin.site.message.user2.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
-import com.akaxin.common.command.RedisCommand;
-import com.akaxin.common.constant.CommandConst;
-import com.akaxin.proto.client.ImStcMessageProto;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
-import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
-import io.netty.channel.Channel;
-
-public class U2MessageImageHandler extends AbstractUserHandler<Command> {
+public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageImageHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
-		ChannelSession channelSession = command.getChannelSession();
-
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
-
 			int type = request.getType().getNumber();
 
 			if (CoreProto.MsgType.IMAGE_VALUE == type) {
-				logger.info("Im.msg U2Message Image");
-
-				String siteUserId = request.getImage().getSiteUserId();
-				String siteFriendId = request.getImage().getSiteFriendId();
+				String siteUserId = command.getSiteUserId();
+				String siteFriendId = command.getSiteFriendId();
 				String msgId = request.getImage().getMsgId();
 				String imageId = request.getImage().getImageId();
-
-				command.setSiteUserId(siteUserId);
-				command.setSiteFriendId(siteFriendId);
-
-				logger.info("Msg msgid:{} type:{} from:{} to:{} imageId:{}", msgId, type, siteUserId, siteFriendId,
-						imageId);
 
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
@@ -65,40 +48,48 @@ public class U2MessageImageHandler extends AbstractUserHandler<Command> {
 				u2Bean.setSendUserId(siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(imageId);
-				u2Bean.setMsgTime(System.currentTimeMillis());
+				long msgTime = System.currentTimeMillis();
+				u2Bean.setMsgTime(msgTime);
 
-				boolean saveRes = messageDao.saveU2Message(u2Bean);
+				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
 
-				msgResponse(channelSession.getChannel(), command, siteUserId, siteFriendId, msgId);
-				return saveRes;
+				boolean success = messageDao.saveU2Message(u2Bean);
+				msgStatusResponse(command, msgId, msgTime, success);
+
+				return success;
 			}
 
 			return true;
 		} catch (Exception e) {
-			logger.error("message u2 Image error!", e);
-
+			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
 
 		return false;
 	}
 
-	private void msgResponse(Channel channel, Command command, String from, String to, String msgId) {
-
-		logger.info("response to client from:{} to:{} msgId:{}", from, to, msgId);
-
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
-
-		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-				.setType(MsgType.MSG_STATUS).setStatus(status).build();
-
-		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-				.addList(0, statusMsg).build();
-
-		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
-				.setData(request.toByteString()).build();
-
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
-
-	}
+	// private void msgResponse(Channel channel, Command command, String from,
+	// String to, String msgId) {
+	//
+	// logger.info("response to client from:{} to:{} msgId:{}", from, to, msgId);
+	//
+	// CoreProto.MsgStatus status =
+	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
+	//
+	// ImStcMessageProto.MsgWithPointer statusMsg =
+	// ImStcMessageProto.MsgWithPointer.newBuilder()
+	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
+	//
+	// ImStcMessageProto.ImStcMessageRequest request =
+	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
+	// .addList(0, statusMsg).build();
+	//
+	// CoreProto.TransportPackageData data =
+	// CoreProto.TransportPackageData.newBuilder()
+	// .setData(request.toByteString()).build();
+	//
+	// channel.writeAndFlush(new
+	// RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+	// .add(data.toByteArray()));
+	//
+	// }
 }

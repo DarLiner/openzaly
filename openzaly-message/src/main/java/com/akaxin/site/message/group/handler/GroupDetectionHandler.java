@@ -19,11 +19,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -31,81 +31,96 @@ import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.dao.ImUserGroupDao;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 
+/**
+ * <pre>
+ * 检测群消息发送，是否满足条件
+ * 	1.群成员
+ * 	2.用户是否被seal up
+ * 	3.群是否存在或群状态
+ * 	4.设置command中必要参数
+ * </pre>
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-02-05 11:47:47
+ */
 public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupDetectionHandler.class);
 
 	public Boolean handle(Command command) {
-		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
+			int type = request.getType().getNumber();
 
 			String siteUserId = null;
-			String groupId = null;
+			String siteGroupId = null;
 			String gmsgId = null;
-			int type = request.getType().getNumber();
 			switch (type) {
 			case CoreProto.MsgType.GROUP_TEXT_VALUE:
 				siteUserId = request.getGroupText().getSiteUserId();
 				gmsgId = request.getGroupText().getMsgId();
-				groupId = request.getGroupText().getSiteGroupId();
+				siteGroupId = request.getGroupText().getSiteGroupId();
 			case CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE:
 				break;
 			case CoreProto.MsgType.GROUP_IMAGE_VALUE:
 				siteUserId = request.getGroupImage().getSiteUserId();
 				gmsgId = request.getGroupImage().getMsgId();
-				groupId = request.getGroupImage().getSiteGroupId();
+				siteGroupId = request.getGroupImage().getSiteGroupId();
 				break;
 			case CoreProto.MsgType.GROUP_SECRET_IMAGE_VALUE:
 				break;
 			case CoreProto.MsgType.GROUP_VOICE_VALUE:
 				siteUserId = request.getGroupVoice().getSiteUserId();
 				gmsgId = request.getGroupVoice().getMsgId();
-				groupId = request.getGroupVoice().getSiteGroupId();
+				siteGroupId = request.getGroupVoice().getSiteGroupId();
 				break;
 			case CoreProto.MsgType.GROUP_SECRET_VOICE_VALUE:
 				break;
 			case CoreProto.MsgType.GROUP_NOTICE_VALUE:
+				siteGroupId = request.getGroupMsgNotice().getSiteGroupId();
 				return true;
 			default:
 				break;
 			}
-			command.setSiteGroupId(groupId);
+			// 群消息设置siteGroupId
+			command.setSiteGroupId(siteGroupId);
 
-			if (StringUtils.isEmpty(command.getSiteUserId()) || StringUtils.isEmpty(command.getSiteGroupId())) {
+			if (StringUtils.isAnyEmpty(command.getSiteUserId(), command.getSiteGroupId())) {
 				return false;
 			}
 
-			if (checkGroupStatus(groupId) && isGroupMember(siteUserId, groupId)) {
+			if (checkGroupStatus(siteGroupId) && isGroupMember(siteUserId, siteGroupId)) {
 				return true;
 			} else {
-				logger.info("user is not group member.user:{},group:{}", siteUserId, groupId);
-				response(command, siteUserId, groupId, gmsgId);
+				logger.warn("client={} siteUserId={} is not group={} member", command.getClientIp(), siteUserId,
+						siteGroupId);
+				int statusValue = -2;
+				msgStatusResponse(command, gmsgId, System.currentTimeMillis(), statusValue);
 			}
 
 		} catch (Exception e) {
-			logger.error("group detection error!", e);
+			LogUtils.requestErrorLog(logger, command, GroupDetectionHandler.class, e);
 		}
 
 		return false;
 	}
 
-	private void response(Command command, String from, String to, String msgId) {
-		logger.info("Group detection error response to client:{}", "用户不是群成员，不能发送消息");
-		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(-2).build();
-
-		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-				.setType(MsgType.MSG_STATUS).setStatus(status).build();
-
-		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-				.addList(statusMsg).build();
-
-		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
-				.setData(request.toByteString()).build();
-
-		ChannelWriter.writeByDeviceId(command.getDeviceId(),
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
-	}
+//	private void response(Command command, String from, String to, String msgId) {
+//		logger.info("Group detection error response to client:{}", "用户不是群成员，不能发送消息");
+//		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(-2).build();
+//
+//		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+//				.setType(MsgType.MSG_STATUS).setStatus(status).build();
+//
+//		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
+//				.addList(statusMsg).build();
+//
+//		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
+//				.setData(request.toByteString()).build();
+//
+//		ChannelWriter.writeByDeviceId(command.getDeviceId(), new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
+//				.add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+//	}
 
 	private boolean checkGroupStatus(String groupId) {
 		try {

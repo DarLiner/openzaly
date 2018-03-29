@@ -15,21 +15,19 @@
  */
 package com.akaxin.site.message.group.handler;
 
-import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
-import com.google.protobuf.InvalidProtocolBufferException;
 
-public class GroupMsgNoticeHandler extends AbstractGroupHandler<Command> {
-	private static final Logger logger = LoggerFactory.getLogger(GroupMsgNoticeHandler.class);
+public class GroupMessageNoticeHandler extends AbstractGroupHandler<Command> {
+	private static final Logger logger = LoggerFactory.getLogger(GroupMessageNoticeHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	@Override
@@ -38,12 +36,13 @@ public class GroupMsgNoticeHandler extends AbstractGroupHandler<Command> {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
 			int type = request.getType().getNumber();
+
 			if (CoreProto.MsgType.GROUP_NOTICE_VALUE == type) {
 				String siteUserId = command.getSiteUserId();
 				String deviceId = command.getDeviceId();
 				String groupId = request.getGroupMsgNotice().getSiteGroupId();
 				String groupNoticeText = request.getGroupMsgNotice().getText().toStringUtf8();
-				
+
 				GroupMessageBean bean = new GroupMessageBean();
 				bean.setSendUserId(siteUserId);
 				bean.setSendDeviceId(deviceId);
@@ -52,15 +51,13 @@ public class GroupMsgNoticeHandler extends AbstractGroupHandler<Command> {
 				bean.setMsgType(type);
 				bean.setMsgTime(System.currentTimeMillis());
 
-				logger.info("Group Msg Notice bean={}", bean.toString());
+				LogUtils.requestDebugLog(logger, command, bean.toString());
 
-				messageDao.saveGroupMessage(bean);
+				return messageDao.saveGroupMessage(bean);
 			}
 			return true;
-		} catch (InvalidProtocolBufferException e) {
-			logger.error("group msg notice protobuffer error.", e);
-		} catch (SQLException e) {
-			logger.error("save group msg notice to database error.", e);
+		} catch (Exception e) {
+			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
 		return false;
 	}

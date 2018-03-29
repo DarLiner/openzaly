@@ -16,10 +16,29 @@
 package com.akaxin.site.connector.handler;
 
 import com.akaxin.common.chain.IHandler;
+import com.akaxin.common.command.CommandResponse;
+import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.constant.ErrorCode2;
 
 import io.netty.channel.Channel;
 
 public abstract class AbstractCommonHandler<T, R> implements IHandler<T, R> {
+
+	// default error ressponse by ErrorCode2.ERROR
+	protected CommandResponse defaultErrorResponse() {
+		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
+				.setAction(CommandConst.ACTION_RES);
+		commandResponse.setErrCode2(ErrorCode2.ERROR);
+		return commandResponse;
+	}
+
+	// defined by user
+	protected CommandResponse customResponse(ErrorCode2 errCode) {
+		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
+				.setAction(CommandConst.ACTION_RES);
+		commandResponse.setErrCode2(errCode);
+		return commandResponse;
+	}
 
 	protected void closeChannel(Channel channel) {
 		channel.close();

@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.group.handler.AbstractGroupHandler;
@@ -28,8 +29,8 @@ import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
-public class U2MsgNoticeHandler extends AbstractGroupHandler<Command> {
-	private static final Logger logger = LoggerFactory.getLogger(U2MsgNoticeHandler.class);
+public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
+	private static final Logger logger = LoggerFactory.getLogger(U2MessageNoticeHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	@Override
@@ -38,9 +39,10 @@ public class U2MsgNoticeHandler extends AbstractGroupHandler<Command> {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
 			int type = request.getType().getNumber();
+
 			if (CoreProto.MsgType.U2_NOTICE_VALUE == type) {
-				String siteUserId = request.getU2MsgNotice().getSiteUserId();
-				String siteFriendId = request.getU2MsgNotice().getSiteFriendId();
+				String siteUserId = command.getSiteUserId();
+				String siteFriendId = command.getSiteFriendId();
 				String text = request.getU2MsgNotice().getText().toStringUtf8();
 
 				long msgTime = System.currentTimeMillis();
@@ -51,14 +53,15 @@ public class U2MsgNoticeHandler extends AbstractGroupHandler<Command> {
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(text);
 				u2Bean.setMsgTime(msgTime);
+				
+				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
 
-				logger.info("save u2 message notice bean={}", u2Bean.toString());
 				return messageDao.saveU2Message(u2Bean);
 			}
 
 			return true;
 		} catch (Exception e) {
-			logger.error("u2 message notice error.", e);
+			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
 		return false;
 	}
