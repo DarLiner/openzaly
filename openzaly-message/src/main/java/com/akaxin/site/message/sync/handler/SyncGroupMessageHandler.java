@@ -26,6 +26,7 @@ import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -47,7 +48,6 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 	private IMessageDao syncDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
-		int syncCount = 0;
 		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImSyncMessageProto.ImSyncMessageRequest syncRequest = ImSyncMessageProto.ImSyncMessageRequest
@@ -55,9 +55,10 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 			String siteUserId = command.getSiteUserId();
 			String deviceId = command.getDeviceId();
 			Map<String, Long> groupPointerMap = syncRequest.getGroupsPointerMap();
-			logger.info("[Start sync group] siteUserId={} deviceId={} request={}", siteUserId, deviceId,
-					syncRequest.toString());
 
+			LogUtils.requestDebugLog(logger, command, syncRequest.toString());
+
+			int syncTotalCount = 0;
 			// 查找个人有多少群
 			List<String> userGroups = userGroupDao.getUserGroupsId(siteUserId);
 			if (userGroups != null) {
@@ -66,37 +67,32 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 					if (groupPointerMap != null && groupPointerMap.get(groupId) != null) {
 						clientGroupPointer = groupPointerMap.get(groupId);
 					}
-					logger.info("[Syncing group={}] siteUserId={} deviceId={} gpointer={}", groupId, siteUserId,
-							deviceId, clientGroupPointer);
-
 					// 校验群消息游标
 					long maxGroupMessagePointer = syncDao.queryGroupMessagePointer(groupId, siteUserId, deviceId);
 					long startPointer = NumUtils.getMax(maxGroupMessagePointer, clientGroupPointer);
 
 					while (true) {
-						List<GroupMessageBean> groupMessageList = syncDao.queryGroupMessage(groupId, siteUserId,
-								deviceId, startPointer, SYNC_MAX_MESSAGE_COUNT);
+						List<GroupMessageBean> msgList = syncDao.queryGroupMessage(groupId, siteUserId, deviceId,
+								startPointer, SYNC_MAX_MESSAGE_COUNT);
 
-						if (groupMessageList != null && groupMessageList.size() > 0) {
-							syncCount += groupMessageList.size();
-							startPointer = groupMessageToClient(channelSession.getChannel(), siteUserId,
-									groupMessageList);
+						if (msgList != null && msgList.size() > 0) {
+							startPointer = groupMessageToClient(channelSession.getChannel(), siteUserId, msgList);
+							syncTotalCount += msgList.size();
 						}
-						logger.info("[Syncing group={}] syncSize={}", groupId, groupMessageList.size());
 
-						if (groupMessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
+						if (msgList == null || msgList.size() < SYNC_MAX_MESSAGE_COUNT) {
 							break;
 						}
 					}
 
 				}
 			}
-			logger.info("[End sync group] siteUserId={} deviceId={} syncCount={}", siteUserId, deviceId, syncCount);
 
+			logger.debug("client={} siteUserId={} deviceId={} sync group-msg count={}", command.getClientIp(),
+					siteUserId, deviceId, syncTotalCount);
 			msgFinishToClient(channelSession.getChannel(), siteUserId, deviceId);
-
 		} catch (Exception e) {
-			logger.error("sync group message error.", e);
+			logger.error("sync group message error.command=" + command, e);
 		}
 
 		return true;
@@ -107,7 +103,6 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 		ImStcMessageProto.ImStcMessageRequest.Builder requestBuilder = ImStcMessageProto.ImStcMessageRequest
 				.newBuilder();
 		for (GroupMessageBean gmsgBean : groupMessageList) {
-			logger.info("[Syncing group={}] OK. bean={}", gmsgBean.getSiteGroupId(), gmsgBean.toString());
 			nextPointer = NumUtils.getMax(nextPointer, gmsgBean.getId());
 
 			switch (gmsgBean.getMsgType()) {
@@ -121,7 +116,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 							.setType(MsgType.GROUP_TEXT).setPointer(gmsgBean.getId()).setGroupText(groupText).build();
 					requestBuilder.addList(gmsg);
 				} catch (Exception et) {
-					logger.error("sync group text messge error", et);
+					logger.error("sync group text messge error,bean=" + gmsgBean, et);
 				}
 				break;
 
@@ -138,7 +133,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 							.build();
 					requestBuilder.addList(groupImageMsg);
 				} catch (Exception egi) {
-					logger.error("sync group image message error.", egi);
+					logger.error("sync group image message error.bean=" + gmsgBean, egi);
 				}
 				break;
 			case CoreProto.MsgType.GROUP_SECRET_IMAGE_VALUE:
@@ -146,20 +141,15 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 				break;
 			case CoreProto.MsgType.GROUP_VOICE_VALUE:
 				try {
-					try {
-						CoreProto.GroupVoice groupVoice = CoreProto.GroupVoice.newBuilder()
-								.setMsgId(gmsgBean.getMsgId()).setSiteUserId(gmsgBean.getSendUserId())
-								.setSiteGroupId(gmsgBean.getSiteGroupId()).setVoiceId(gmsgBean.getContent())
-								.setTime(gmsgBean.getMsgTime()).build();
-						ImStcMessageProto.MsgWithPointer groupVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-								.setType(MsgType.GROUP_VOICE).setPointer(gmsgBean.getId()).setGroupVoice(groupVoice)
-								.build();
-						requestBuilder.addList(groupVoiceMsg);
-					} catch (Exception egv) {
-						logger.error("sync group voice message error.", egv);
-					}
+					CoreProto.GroupVoice groupVoice = CoreProto.GroupVoice.newBuilder().setMsgId(gmsgBean.getMsgId())
+							.setSiteUserId(gmsgBean.getSendUserId()).setSiteGroupId(gmsgBean.getSiteGroupId())
+							.setVoiceId(gmsgBean.getContent()).setTime(gmsgBean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer groupVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setType(MsgType.GROUP_VOICE).setPointer(gmsgBean.getId()).setGroupVoice(groupVoice)
+							.build();
+					requestBuilder.addList(groupVoiceMsg);
 				} catch (Exception egv) {
-					logger.error("sync group voice message error.", egv);
+					logger.error("sync group voice message error.bean=" + gmsgBean, egv);
 				}
 				break;
 			case CoreProto.MsgType.GROUP_SECRET_VOICE_VALUE:
@@ -181,13 +171,11 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 	}
 
 	private void msgFinishToClient(Channel channel, String siteUserId, String deviceId) {
-		logger.info("[Start Msg Finish] siteUserId={} deviceId={}", siteUserId, deviceId);
 		Map<Integer, String> header = new HashMap<Integer, String>();
 		header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder().putAllHeader(header).build();
 		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_FINISH)
 				.add(data.toByteArray()));
-		logger.info("[End Msg Finish] siteUserId={} deviceId={}", siteUserId, deviceId);
 	}
 
 }

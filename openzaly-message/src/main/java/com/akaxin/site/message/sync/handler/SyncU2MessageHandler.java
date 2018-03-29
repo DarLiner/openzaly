@@ -27,6 +27,7 @@ import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -57,28 +58,30 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String deviceId = command.getDeviceId();
-			logger.info("[Start sync u2]siteUserId={} deviceId={} sync U2 Message.", siteUserId, deviceId);
+			LogUtils.requestDebugLog(logger, command, syncRequest.toString());
 
 			long clientU2Pointer = syncRequest.getU2Pointer();
 			long u2Pointer = syncDao.queryU2Pointer(siteUserId, deviceId);
 			long startPointer = NumUtils.getMax(clientU2Pointer, u2Pointer);
-			int syncCount = 0;
+			int syncTotalCount = 0;
 
 			while (true) {
+				// 批量一次查询100条U2消息
 				List<U2MessageBean> u2MessageList = syncDao.queryU2Message(siteUserId, deviceId, startPointer,
 						SYNC_MAX_MESSAGE_COUNT);
-				// 有二人消息才会发送给客户端
+				// 有二人消息才会发送给客户端，同时返回最大的游标
 				if (u2MessageList != null && u2MessageList.size() > 0) {
 					startPointer = u2MessageToClient(channelSession.getChannel(), u2MessageList);
+					syncTotalCount += u2MessageList.size();
 				}
 				// 判断跳出循环的条件
 				if (u2MessageList == null || u2MessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
 					break;
 				}
 			}
-
-			logger.info("[End sync u2]siteUserId={} deviceId={} sync U2 Message from pointer={} count={}.", siteUserId,
-					deviceId, startPointer, syncCount);
+			
+			logger.debug("client={} siteUserId={} deviceId={} sync u2-msg from pointer={} count={}.",
+					command.getClientIp(), siteUserId, deviceId, startPointer, syncTotalCount);
 		} catch (Exception e) {
 			logger.error("sync u2 message error", e);
 		}
@@ -102,10 +105,10 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setText(ByteString.copyFromUtf8(u2Bean.getContent())).setTime(u2Bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer textMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.TEXT).setPointer(u2Bean.getId()).setText(MsgText).build();
-					logger.info("[Syncing U2] text message OK. bean={}", u2Bean.toString());
+					// logger.info("[Syncing U2] text message OK. bean={}", u2Bean);
 					requestBuilder.addList(textMsg);
 				} catch (Exception et) {
-					logger.error("sync text message error", et);
+					logger.error("sync text message error，bean=" + u2Bean, et);
 				}
 				break;
 			case CoreProto.MsgType.SECRET_TEXT_VALUE:
@@ -118,10 +121,11 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setTime(u2Bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_TEXT).setPointer(u2Bean.getId()).setSecretText(secretText).build();
-					logger.info("[Syncing U2] secret text message OK. bean={}", u2Bean.toString());
+					// logger.info("[Syncing U2] secret text message OK. bean={}",
+					// u2Bean);
 					requestBuilder.addList(secretTextMsg);
 				} catch (Exception est) {
-					logger.error("sync secret text message error.", est);
+					logger.error("sync secret text message error.bean=" + u2Bean, est);
 				}
 				break;
 			case CoreProto.MsgType.IMAGE_VALUE:
@@ -132,10 +136,10 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setImageId(u2Bean.getContent()).build();
 					ImStcMessageProto.MsgWithPointer imageMsgWithPointer = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.IMAGE).setPointer(u2Bean.getId()).setImage(msgImage).build();
-					logger.info("[Syncing U2] image message OK. bean={}", u2Bean.toString());
+					// logger.info("[Syncing U2] image message OK. bean={}", u2Bean);
 					requestBuilder.addList(imageMsgWithPointer);
 				} catch (Exception ei) {
-					logger.error("synce image message error.", ei);
+					logger.error("synce image message error.bean=" + u2Bean, ei);
 				}
 				break;
 			case CoreProto.MsgType.SECRET_IMAGE_VALUE:
@@ -148,10 +152,11 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_IMAGE).setPointer(u2Bean.getId()).setSecretImage(secretImage)
 							.build();
-					logger.info("[Syncing U2] secret image message OK. bean={}", u2Bean.toString());
+					// logger.info("[Syncing U2] secret image message OK. bean={}",
+					// u2Bean);
 					requestBuilder.addList(secretImageMsg);
 				} catch (Exception esi) {
-					logger.error("sync secret image message error.", esi);
+					logger.error("sync secret image message error.bean=" + u2Bean, esi);
 				}
 				break;
 			case CoreProto.MsgType.VOICE_VALUE:
@@ -161,10 +166,10 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setVoiceId(u2Bean.getContent()).setTime(u2Bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer voiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.VOICE).setPointer(u2Bean.getId()).setVoice(voice).build();
-					logger.info("[Syncing U2] voice message OK. bean={0}", u2Bean.toString());
+					// logger.info("[Syncing U2] voice message OK. bean={0}", u2Bean);
 					requestBuilder.addList(voiceMsg);
 				} catch (Exception ev) {
-					logger.error("sync voice message error.", ev);
+					logger.error("sync voice message error.bean={}" + u2Bean, ev);
 				}
 				break;
 			case CoreProto.MsgType.SECRET_VOICE_VALUE:
@@ -177,14 +182,15 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_VOICE).setPointer(u2Bean.getId()).setSecretVoice(secretVoice)
 							.build();
-					logger.info("[Syncing U2] secret voice message OK. bean={}", u2Bean.toString());
+					// logger.info("[Syncing U2] secret voice message OK. bean={}",
+					// u2Bean);
 					requestBuilder.addList(secretVoiceMsg);
 				} catch (Exception esv) {
-					logger.error("sync secret voice message error.", esv);
+					logger.error("sync secret voice message error.bean=" + u2Bean, esv);
 				}
 				break;
 			default:
-				logger.error("Message type error! when Sync to Client");
+				logger.error("Message type error! when sync to client bean={}", u2Bean);
 				break;
 
 			}
