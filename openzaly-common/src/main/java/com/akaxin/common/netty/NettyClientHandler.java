@@ -44,7 +44,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RedisCommand
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		logger.info("------Close channel of tcp socket.-----");
+//		logger.info("------Close channel of tcp socket.-----");
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RedisCommand
 		command.setHeader(packageData.getHeaderMap());
 		command.setParams(packageData.getData().toByteArray());
 
-		logger.info("netty client channel handler command={}", command.toString());
+//		logger.info("netty client channel handler command={}", command.toString());
 
 		NettyClientHandler.this.nettyClient
 				.handleResponse(new RedisCommandResponse(redisCmd, errInfo.getCode(), errInfo.getInfo()));

@@ -86,11 +86,12 @@ public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResp
 							channelSession.getPsnTime(), channelSession.getSynFinTime());
 				}
 
+			} else {
+				// 排除ping请求，其他请求走im服务
+				new ImMessageService().execute(command);
 			}
 
-			new ImMessageService().execute(command);
 			return customResponse(ErrorCode2.SUCCESS);
-
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} client={} im request error.", AkxProject.PLN, command.getClientIp()),
 					e);

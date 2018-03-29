@@ -77,7 +77,7 @@ public class MessageDispatcher {
 		}
 
 		logger.error("client={} siteUserId={} action={} im message with error command={}", command.getClientIp(),
-				command.toString());
+				command.getSiteUserId(), command.getAction(), command.toString());
 		return false;
 	}
 }

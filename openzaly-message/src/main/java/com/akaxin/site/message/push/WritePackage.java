@@ -63,9 +63,9 @@ public class WritePackage {
 			if (response != null && response.isSuccess()) {
 				return getPackageBytes(response.getRedisCommand());
 			}
-			logger.info("write push to platform finish response={}", response);
+			logger.debug("write push to platform finish response={}", response);
 		} catch (Exception e) {
-			logger.error("sync send package error to ", e);
+			logger.error("sync send package error ", e);
 		}
 		return null;
 	}
