@@ -95,13 +95,14 @@ public class NettyClient2 {
 				}
 
 			}
-			if (this.channelPromise != null) {
-				logger.info("Finish this APNs connect isSuccess={} AND its channel isActive={}",
-						this.channelPromise.isSuccess(), this.channelPromise.channel().isActive());
-			}
+			// if (this.channelPromise != null) {
+			// logger.info("Finish this APNs connect isSuccess={} AND its channel
+			// isActive={}",
+			// this.channelPromise.isSuccess(), this.channelPromise.channel().isActive());
+			// }
 			connectionFuture = this.channelPromise;
 		}
-		logger.info("connect to server connectionFuture={}", connectionFuture);
+		// logger.info("connect to server connectionFuture={}", connectionFuture);
 		return connectionFuture;
 	}
 
@@ -111,7 +112,7 @@ public class NettyClient2 {
 				eventLoopGroup.shutdownGracefully();
 				eventLoopGroup.terminationFuture().sync();
 			}
-			logger.info("=========shut down  gracefully==========");
+			// logger.info("=========shut down gracefully==========");
 		} catch (InterruptedException e) {
 			logger.error("shutdown netty client error.", e);
 		}
@@ -119,8 +120,9 @@ public class NettyClient2 {
 
 	public Future<IRedisCommandResponse> sendRedisCommand(final RedisCommand redisCommand) {
 		final Future<IRedisCommandResponse> responseFuture;
-		logger.info("send push message {} {} {}", channelPromise, channelPromise.isSuccess(),
-				channelPromise.channel().isActive());
+		// logger.info("send push message {} {} {}", channelPromise,
+		// channelPromise.isSuccess(),
+		// channelPromise.channel().isActive());
 		if (channelPromise != null) {
 			final ChannelPromise readyPromise = this.channelPromise;
 
@@ -134,16 +136,16 @@ public class NettyClient2 {
 					NettyClient2.this.responsePromise = responsePromise;
 				}
 			});
-			
+
 			readyPromise.channel().writeAndFlush(redisCommand).addListener(new GenericFutureListener<ChannelFuture>() {
 				@Override
 				public void operationComplete(final ChannelFuture future) throws Exception {
 					if (!future.isSuccess()) {
-						logger.error("send push message error: {},cause={}", redisCommand, future.cause());
 						// 如果失败了，直接将promise返回
 						responsePromise.tryFailure(future.cause());
+						logger.error("send push message error: {},cause={}", redisCommand, future.cause());
 					} else {
-						logger.info("write data to platform success");
+						// logger.info("write data to platform success");
 					}
 				}
 			});
@@ -165,7 +167,7 @@ public class NettyClient2 {
 	}
 
 	public void disconnect() {
-		logger.info("close tcp socket, Disconnecting.");
+		// logger.info("close tcp socket, Disconnecting.");
 		synchronized (this.clientBoot) {
 			this.channelPromise = null;
 			final Future<Void> channelCloseFuture;
@@ -181,6 +183,6 @@ public class NettyClient2 {
 				}
 			});
 		}
-		logger.info("close netty tcp socket connection");
+		// logger.info("close netty tcp socket connection");
 	}
 }

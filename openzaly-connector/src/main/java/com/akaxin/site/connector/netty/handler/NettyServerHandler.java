@@ -123,8 +123,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 				command.setRety(anoRequest);
 			}
 			CommandResponse response = this.executor.execute(command.getRety(), command);
-			// 输出IM请求结果
-			LogUtils.requestResultLog(logger, command, response);
+
+			if (!RequestAction.IM_CTS_PING.getName().equals(command.getAction())) {
+				// 输出IM请求结果
+				LogUtils.requestResultLog(logger, command, response);
+			}
 		} else if (RequestAction.API.getName().equalsIgnoreCase(command.getRety())) {
 			CommandResponse response = this.executor.execute(command.getRety(), command);
 			// 输出API请求结果
