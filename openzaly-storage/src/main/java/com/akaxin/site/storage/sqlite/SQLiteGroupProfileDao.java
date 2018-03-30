@@ -125,7 +125,7 @@ public class SQLiteGroupProfileDao {
 			profileBean.setCreateTime(rs.getLong(9));
 		}
 
-		LogUtils.dbDebugLog(logger, startTime, profileBean.toString(), sql, siteGroupId);
+		LogUtils.dbDebugLog(logger, startTime, profileBean, sql, siteGroupId);
 		return profileBean;
 	}
 
@@ -146,7 +146,7 @@ public class SQLiteGroupProfileDao {
 			profileBean.setGroupPhoto(rs.getString(3));
 		}
 
-		LogUtils.dbDebugLog(logger, startTime, profileBean.toString(), sql, siteGroupId);
+		LogUtils.dbDebugLog(logger, startTime, profileBean, sql, siteGroupId);
 		return profileBean;
 	}
 
