@@ -156,7 +156,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				}
 			} catch (Exception e) {
-				logger.error(StringHelper.format("sync group message error bean={}", bean.getMsgType()), e);
+				logger.error(StringHelper.format("sync group message error bean={}", bean), e);
 			}
 		}
 
