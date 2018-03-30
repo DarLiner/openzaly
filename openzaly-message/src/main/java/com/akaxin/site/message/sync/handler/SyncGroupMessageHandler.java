@@ -27,6 +27,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -102,59 +103,60 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 		long nextPointer = 0;
 		ImStcMessageProto.ImStcMessageRequest.Builder requestBuilder = ImStcMessageProto.ImStcMessageRequest
 				.newBuilder();
-		for (GroupMessageBean gmsgBean : groupMessageList) {
-			nextPointer = NumUtils.getMax(nextPointer, gmsgBean.getId());
+		for (GroupMessageBean bean : groupMessageList) {
+			try {
+				nextPointer = NumUtils.getMax(nextPointer, bean.getId());
 
-			switch (gmsgBean.getMsgType()) {
-			case CoreProto.MsgType.GROUP_TEXT_VALUE:
-				try {
-					CoreProto.GroupText groupText = CoreProto.GroupText.newBuilder().setMsgId(gmsgBean.getMsgId())
-							.setSiteUserId(gmsgBean.getSendUserId()).setSiteGroupId(gmsgBean.getSiteGroupId())
-							.setText(ByteString.copyFromUtf8(gmsgBean.getContent())).setTime(gmsgBean.getMsgTime())
-							.build();
+				switch (bean.getMsgType()) {
+				case CoreProto.MsgType.GROUP_TEXT_VALUE:
+					CoreProto.GroupText groupText = CoreProto.GroupText.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteGroupId(bean.getSiteGroupId())
+							.setText(ByteString.copyFromUtf8(bean.getContent())).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer gmsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.GROUP_TEXT).setPointer(gmsgBean.getId()).setGroupText(groupText).build();
+							.setType(MsgType.GROUP_TEXT).setPointer(bean.getId()).setGroupText(groupText).build();
 					requestBuilder.addList(gmsg);
-				} catch (Exception et) {
-					logger.error("sync group text messge error,bean=" + gmsgBean, et);
-				}
-				break;
+					break;
 
-			case CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE:
-				// do nothing
-				break;
-			case CoreProto.MsgType.GROUP_IMAGE_VALUE:
-				try {
-					CoreProto.GroupImage groupImage = CoreProto.GroupImage.newBuilder().setMsgId(gmsgBean.getMsgId())
-							.setSiteUserId(gmsgBean.getSendUserId()).setSiteGroupId(gmsgBean.getSiteGroupId())
-							.setImageId(gmsgBean.getContent()).setTime(gmsgBean.getMsgTime()).build();
+				case CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE:
+					// do nothing
+					break;
+				case CoreProto.MsgType.GROUP_IMAGE_VALUE:
+					CoreProto.GroupImage groupImage = CoreProto.GroupImage.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteGroupId(bean.getSiteGroupId())
+							.setImageId(bean.getContent()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer groupImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.GROUP_IMAGE).setPointer(gmsgBean.getId()).setGroupImage(groupImage)
-							.build();
+							.setType(MsgType.GROUP_IMAGE).setPointer(bean.getId()).setGroupImage(groupImage).build();
 					requestBuilder.addList(groupImageMsg);
-				} catch (Exception egi) {
-					logger.error("sync group image message error.bean=" + gmsgBean, egi);
-				}
-				break;
-			case CoreProto.MsgType.GROUP_SECRET_IMAGE_VALUE:
-				// do nothing
-				break;
-			case CoreProto.MsgType.GROUP_VOICE_VALUE:
-				try {
-					CoreProto.GroupVoice groupVoice = CoreProto.GroupVoice.newBuilder().setMsgId(gmsgBean.getMsgId())
-							.setSiteUserId(gmsgBean.getSendUserId()).setSiteGroupId(gmsgBean.getSiteGroupId())
-							.setVoiceId(gmsgBean.getContent()).setTime(gmsgBean.getMsgTime()).build();
+					break;
+				case CoreProto.MsgType.GROUP_SECRET_IMAGE_VALUE:
+					// do nothing
+					break;
+				case CoreProto.MsgType.GROUP_VOICE_VALUE:
+					CoreProto.GroupVoice groupVoice = CoreProto.GroupVoice.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteGroupId(bean.getSiteGroupId())
+							.setVoiceId(bean.getContent()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer groupVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.GROUP_VOICE).setPointer(gmsgBean.getId()).setGroupVoice(groupVoice)
-							.build();
+							.setType(MsgType.GROUP_VOICE).setPointer(bean.getId()).setGroupVoice(groupVoice).build();
 					requestBuilder.addList(groupVoiceMsg);
-				} catch (Exception egv) {
-					logger.error("sync group voice message error.bean=" + gmsgBean, egv);
+					break;
+
+				case CoreProto.MsgType.GROUP_SECRET_VOICE_VALUE:
+					// do nothing
+					break;
+
+				case CoreProto.MsgType.GROUP_NOTICE_VALUE:
+					CoreProto.GroupMsgNotice groupNotice = CoreProto.GroupMsgNotice.newBuilder()
+							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteGroupId(bean.getSiteGroupId()).setText(ByteString.copyFromUtf8((bean.getContent())))
+							.setTime(bean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer groupMsgNotice = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setPointer(bean.getId()).setType(MsgType.GROUP_NOTICE).setGroupMsgNotice(groupNotice)
+							.build();
+					requestBuilder.addList(groupMsgNotice);
+					break;
 				}
-				break;
-			case CoreProto.MsgType.GROUP_SECRET_VOICE_VALUE:
-				// do nothing
-				break;
+			} catch (Exception e) {
+				logger.error(StringHelper.format("sync group message error bean={}", bean.getMsgType()), e);
 			}
 		}
 

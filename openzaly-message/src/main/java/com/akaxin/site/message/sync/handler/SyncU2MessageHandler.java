@@ -28,6 +28,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
@@ -79,7 +80,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				}
 			}
-			
+
 			logger.debug("client={} siteUserId={} deviceId={} sync u2-msg from pointer={} count={}.",
 					command.getClientIp(), siteUserId, deviceId, startPointer, syncTotalCount);
 		} catch (Exception e) {
@@ -90,109 +91,95 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 	}
 
 	private long u2MessageToClient(Channel channel, List<U2MessageBean> u2MessageList) {
-		long nestPointer = 0;
+		long nextPointer = 0;
 		ImStcMessageProto.ImStcMessageRequest.Builder requestBuilder = ImStcMessageProto.ImStcMessageRequest
 				.newBuilder();
 
-		for (U2MessageBean u2Bean : u2MessageList) {
-			nestPointer = NumUtils.getMax(nestPointer, u2Bean.getId());
+		for (U2MessageBean bean : u2MessageList) {
+			try {
+				nextPointer = NumUtils.getMax(nextPointer, bean.getId());
 
-			switch (u2Bean.getMsgType()) {
-			case CoreProto.MsgType.TEXT_VALUE:
-				try {
-					CoreProto.MsgText MsgText = CoreProto.MsgText.newBuilder().setMsgId(u2Bean.getMsgId())
-							.setSiteUserId(u2Bean.getSendUserId()).setSiteFriendId(u2Bean.getSiteUserId())
-							.setText(ByteString.copyFromUtf8(u2Bean.getContent())).setTime(u2Bean.getMsgTime()).build();
+				switch (bean.getMsgType()) {
+				case CoreProto.MsgType.TEXT_VALUE:
+					CoreProto.MsgText MsgText = CoreProto.MsgText.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setText(ByteString.copyFromUtf8(bean.getContent())).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer textMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.TEXT).setPointer(u2Bean.getId()).setText(MsgText).build();
+							.setType(MsgType.TEXT).setPointer(bean.getId()).setText(MsgText).build();
 					// logger.info("[Syncing U2] text message OK. bean={}", u2Bean);
 					requestBuilder.addList(textMsg);
-				} catch (Exception et) {
-					logger.error("sync text message error，bean=" + u2Bean, et);
-				}
-				break;
-			case CoreProto.MsgType.SECRET_TEXT_VALUE:
-				try {
-					byte[] secretTexgt = Base64.getDecoder().decode(u2Bean.getContent());
-					CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder()
-							.setMsgId(u2Bean.getMsgId()).setSiteUserId(u2Bean.getSendUserId())
-							.setSiteFriendId(u2Bean.getSiteUserId()).setText(ByteString.copyFrom(secretTexgt))
-							.setSiteDeviceId(String.valueOf(u2Bean.getDeviceId())).setTsKey(u2Bean.getTsKey())
-							.setTime(u2Bean.getMsgTime()).build();
+					break;
+				case CoreProto.MsgType.SECRET_TEXT_VALUE:
+					byte[] secretTexgt = Base64.getDecoder().decode(bean.getContent());
+					CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setText(ByteString.copyFrom(secretTexgt))
+							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.SECRET_TEXT).setPointer(u2Bean.getId()).setSecretText(secretText).build();
+							.setType(MsgType.SECRET_TEXT).setPointer(bean.getId()).setSecretText(secretText).build();
 					// logger.info("[Syncing U2] secret text message OK. bean={}",
 					// u2Bean);
 					requestBuilder.addList(secretTextMsg);
-				} catch (Exception est) {
-					logger.error("sync secret text message error.bean=" + u2Bean, est);
-				}
-				break;
-			case CoreProto.MsgType.IMAGE_VALUE:
-				try {
-					CoreProto.MsgImage msgImage = CoreProto.MsgImage.newBuilder().setImageId(u2Bean.getContent())
-							.setMsgId(u2Bean.getMsgId()).setSiteUserId(u2Bean.getSendUserId())
-							.setSiteFriendId(u2Bean.getSiteUserId()).setTime(u2Bean.getMsgTime())
-							.setImageId(u2Bean.getContent()).build();
+					break;
+				case CoreProto.MsgType.IMAGE_VALUE:
+					CoreProto.MsgImage msgImage = CoreProto.MsgImage.newBuilder().setImageId(bean.getContent())
+							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getSiteUserId()).setTime(bean.getMsgTime())
+							.setImageId(bean.getContent()).build();
 					ImStcMessageProto.MsgWithPointer imageMsgWithPointer = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.IMAGE).setPointer(u2Bean.getId()).setImage(msgImage).build();
+							.setType(MsgType.IMAGE).setPointer(bean.getId()).setImage(msgImage).build();
 					// logger.info("[Syncing U2] image message OK. bean={}", u2Bean);
 					requestBuilder.addList(imageMsgWithPointer);
-				} catch (Exception ei) {
-					logger.error("synce image message error.bean=" + u2Bean, ei);
-				}
-				break;
-			case CoreProto.MsgType.SECRET_IMAGE_VALUE:
-				try {
+					break;
+				case CoreProto.MsgType.SECRET_IMAGE_VALUE:
 					CoreProto.MsgSecretImage secretImage = CoreProto.MsgSecretImage.newBuilder()
-							.setMsgId(u2Bean.getMsgId()).setSiteUserId(u2Bean.getSendUserId())
-							.setSiteFriendId(u2Bean.getSiteUserId()).setImageId(u2Bean.getContent())
-							.setSiteDeviceId(String.valueOf(u2Bean.getDeviceId())).setTsKey(u2Bean.getTsKey())
-							.setTime(u2Bean.getMsgTime()).build();
+							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getSiteUserId()).setImageId(bean.getContent())
+							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.SECRET_IMAGE).setPointer(u2Bean.getId()).setSecretImage(secretImage)
-							.build();
+							.setType(MsgType.SECRET_IMAGE).setPointer(bean.getId()).setSecretImage(secretImage).build();
 					// logger.info("[Syncing U2] secret image message OK. bean={}",
 					// u2Bean);
 					requestBuilder.addList(secretImageMsg);
-				} catch (Exception esi) {
-					logger.error("sync secret image message error.bean=" + u2Bean, esi);
-				}
-				break;
-			case CoreProto.MsgType.VOICE_VALUE:
-				try {
-					CoreProto.MsgVoice voice = CoreProto.MsgVoice.newBuilder().setMsgId(u2Bean.getMsgId())
-							.setSiteUserId(u2Bean.getSendUserId()).setSiteFriendId(u2Bean.getSiteUserId())
-							.setVoiceId(u2Bean.getContent()).setTime(u2Bean.getMsgTime()).build();
+					break;
+				case CoreProto.MsgType.VOICE_VALUE:
+					CoreProto.MsgVoice voice = CoreProto.MsgVoice.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setVoiceId(bean.getContent()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer voiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.VOICE).setPointer(u2Bean.getId()).setVoice(voice).build();
+							.setType(MsgType.VOICE).setPointer(bean.getId()).setVoice(voice).build();
 					// logger.info("[Syncing U2] voice message OK. bean={0}", u2Bean);
 					requestBuilder.addList(voiceMsg);
-				} catch (Exception ev) {
-					logger.error("sync voice message error.bean={}" + u2Bean, ev);
-				}
-				break;
-			case CoreProto.MsgType.SECRET_VOICE_VALUE:
-				try {
+					break;
+				case CoreProto.MsgType.SECRET_VOICE_VALUE:
 					CoreProto.MsgSecretVoice secretVoice = CoreProto.MsgSecretVoice.newBuilder()
-							.setMsgId(u2Bean.getMsgId()).setSiteUserId(u2Bean.getSendUserId())
-							.setSiteFriendId(u2Bean.getSiteUserId()).setVoicdId(u2Bean.getContent())
-							.setSiteDeviceId(String.valueOf(u2Bean.getDeviceId())).setTsKey(u2Bean.getTsKey())
-							.setTime(u2Bean.getMsgTime()).build();
+							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getSiteUserId()).setVoicdId(bean.getContent())
+							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-							.setType(MsgType.SECRET_VOICE).setPointer(u2Bean.getId()).setSecretVoice(secretVoice)
-							.build();
+							.setType(MsgType.SECRET_VOICE).setPointer(bean.getId()).setSecretVoice(secretVoice).build();
 					// logger.info("[Syncing U2] secret voice message OK. bean={}",
 					// u2Bean);
 					requestBuilder.addList(secretVoiceMsg);
-				} catch (Exception esv) {
-					logger.error("sync secret voice message error.bean=" + u2Bean, esv);
-				}
-				break;
-			default:
-				logger.error("Message type error! when sync to client bean={}", u2Bean);
-				break;
+					break;
+				case CoreProto.MsgType.U2_NOTICE_VALUE:
+					CoreProto.U2MsgNotice u2Notice = CoreProto.U2MsgNotice.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setText(ByteString.copyFromUtf8(bean.getContent())).setTime(bean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer u2NoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setPointer(bean.getId()).setType(MsgType.U2_NOTICE).setU2MsgNotice(u2Notice).build();
+					requestBuilder.addList(u2NoticeMsg);
+					break;
+				default:
+					logger.error("Message type error! when sync to client bean={}", bean);
+					break;
 
+				}
+			} catch (Exception e) {
+				logger.error(StringHelper.format("sync u2 message error bean={}", bean), e);
 			}
 
 		}
@@ -205,7 +192,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 
 		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
 				.add(data.toByteArray()));
-		return nestPointer;
+		return nextPointer;
 	}
 
 }
