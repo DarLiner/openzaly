@@ -75,7 +75,7 @@ public class ApiFriendService extends AbstractRequest {
 			String userIdPubk = request.getUserIdPubk(); // 等待查询的用户公钥，优先级高
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (userIdPubk == null && globalOrSiteFriendId == null) {
+			if (StringUtils.isAllEmpty(userIdPubk, globalOrSiteFriendId)) {
 				errCode = ErrorCode2.ERROR_PARAMETER;
 				return commandResponse.setErrCode2(errCode);
 			}
