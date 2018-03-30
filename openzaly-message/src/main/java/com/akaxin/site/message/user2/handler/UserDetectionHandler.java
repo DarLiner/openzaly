@@ -84,7 +84,7 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 				msgId = request.getSecretVoice().getMsgId();
 				break;
 			case CoreProto.MsgType.U2_NOTICE_VALUE:
-				return true;
+				break;
 			default:
 				break;
 			}
@@ -137,4 +137,5 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 		}
 		return false;
 	}
+
 }

@@ -50,7 +50,6 @@ public class SiteConfig {
 	public static Map<Integer, String> updateConfig() {
 		try {
 			configMap = SiteConfigDao.getInstance().getSiteConfig();
-			logger.info("update site config : {}", configMap);
 		} catch (Exception e) {
 			logger.error("update site config error.", e);
 		}

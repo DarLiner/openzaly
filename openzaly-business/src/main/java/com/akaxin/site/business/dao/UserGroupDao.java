@@ -133,6 +133,7 @@ public class UserGroupDao {
 			bean.setGroupStatus(GroupProto.GroupStatus.GROUP_NORMAL_VALUE);
 			// 1.创建群资料
 			bean = groupDao.addGroupProfile(bean);
+			// 2.添加群成员入库
 			for (String memberId : userIds) {
 				int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
 				if (createUserId.equals(memberId)) {
@@ -140,6 +141,8 @@ public class UserGroupDao {
 				}
 				groupDao.addGroupMember(memberId, bean.getGroupId(), status);
 			}
+			// 3.群消息中发送通知
+			new GroupNotice().newGroupMemberNotice(createUserId, bean.getGroupId(), userIds);
 
 		} catch (Exception e) {
 			logger.error("create group error.", e);
@@ -165,7 +168,7 @@ public class UserGroupDao {
 			logger.error("add group member error.", e);
 		} finally {
 			// 添加完用户，向群消息中添加GroupMsgNotice
-			new GroupNotice().userAddGroupNotice(siteUserId, groupId, userIdList);
+			new GroupNotice().newGroupMemberNotice(siteUserId, groupId, userIdList);
 		}
 		return false;
 	}

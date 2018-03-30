@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.message.user2.handler;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.akaxin.common.chain.IHandler;
 import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
@@ -29,6 +31,23 @@ import io.netty.channel.Channel;
 public abstract class AbstractU2Handler<T> implements IHandler<T, Boolean> {
 
 	/**
+	 * 生成msgId
+	 * 
+	 * @param siteUserid
+	 * @return
+	 */
+	protected String buildU2MsgId(String siteUserid) {
+		StringBuilder sb = new StringBuilder("U2-");
+		if (StringUtils.isNotEmpty(siteUserid)) {
+			int len = siteUserid.length();
+			sb.append(siteUserid.substring(0, len >= 8 ? 8 : len));
+			sb.append("-");
+		}
+		sb.append(System.currentTimeMillis());
+		return sb.toString();
+	}
+
+	/**
 	 * <pre>
 	 * 	status=1:发送成功
 	 * 	status=0：默认发送失败状态
@@ -37,6 +56,9 @@ public abstract class AbstractU2Handler<T> implements IHandler<T, Boolean> {
 	 * </pre>
 	 */
 	protected void msgStatusResponse(Command command, String msgId, long msgTime, boolean success) {
+		if (command == null || StringUtils.isEmpty(command.getDeviceId())) {
+			return;
+		}
 		int statusValue = success ? 1 : 0;
 
 		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
@@ -57,6 +79,9 @@ public abstract class AbstractU2Handler<T> implements IHandler<T, Boolean> {
 	}
 
 	protected void msgStatusResponse(Command command, String msgId, long msgTime, int statusValue) {
+		if (command == null || StringUtils.isEmpty(command.getDeviceId())) {
+			return;
+		}
 		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(statusValue)
 				.setMsgServerTime(msgTime).build();
 

@@ -27,15 +27,15 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.client.ImStcNoticeProto;
 import com.akaxin.proto.core.CoreProto;
+import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.business.constant.NoticeText;
-import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.dao.UserSessionDao;
 import com.akaxin.site.message.api.IMessageService;
 import com.akaxin.site.message.service.ImMessageService;
-import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.google.protobuf.ByteString;
 
 public class User2Notice {
@@ -60,26 +60,27 @@ public class User2Notice {
 			commandResponse.setParams(noticeRequest.toByteArray());
 			commandResponse.setErrCode(ErrorCode.SUCCESS);
 			ChannelWriter.writeByDeviceId(deviceId, commandResponse);
-			logger.info("apply friend notice. to siteUserId={} deviceId={}", siteUserId, deviceId);
+			logger.debug("apply friend notice. to siteUserId={} deviceId={}", siteUserId, deviceId);
 		}
 	}
 
 	/**
-	 * A同意B的好友添加之后，A&&B分别收到对方已互为好友的消息
+	 * <pre>
+	 * 代发一条U2本文消息 
+	 * AB成为好友，同时发送A/B一条消息
+	 * </pre>
 	 * 
 	 * @param siteUserId
 	 * @param siteFriendId
 	 */
-	public void firstFriendMessageNotice(String siteUserId, String siteFriendId) {
+	public void addFriendTextMessage(String siteUserId, String siteFriendId) {
 		try {
-			SimpleUserBean userBean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
-			String siteUserText = StringUtils.isEmpty(userBean.getUserName()) ? siteUserId
-					: userBean.getUserName() + NoticeText.USER_ADD_FRIEND;
-			CoreProto.U2MsgNotice msgNotice = CoreProto.U2MsgNotice.newBuilder().setSiteUserId(siteUserId)
-					.setSiteFriendId(siteFriendId).setText(ByteString.copyFromUtf8(siteUserText))
-					.setTime(System.currentTimeMillis()).build();
+			CoreProto.MsgText textMsg = CoreProto.MsgText.newBuilder().setMsgId(buildU2MsgId(siteUserId))
+					.setSiteUserId(siteUserId).setSiteFriendId(siteFriendId)
+					.setText(ByteString.copyFromUtf8(NoticeText.USER_ADD_FRIEND)).setTime(System.currentTimeMillis())
+					.build();
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
-					.setU2MsgNotice(msgNotice).setType(CoreProto.MsgType.U2_NOTICE).build();
+					.setType(MsgType.TEXT).setText(textMsg).build();
 
 			Command command = new Command();
 			command.setAction(RequestAction.IM_CTS_MESSAGE.getName());
@@ -88,20 +89,20 @@ public class User2Notice {
 			command.setParams(request.toByteArray());
 
 			boolean result = u2MsgService.execute(command);
-			logger.info("first friend message siteUserId={} text={} result={}", siteUserId, siteUserText, result);
+			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", siteUserId, siteFriendId,
+					result);
 		} catch (Exception e) {
-			logger.error("first friend message error. siteUserId=" + siteUserId, e);
+			logger.error(StringHelper.format("send add friend text message error. siteUserId={} siteFriendId={}",
+					siteUserId, siteFriendId), e);
 		}
 
 		try {
-			SimpleUserBean friendBean = UserProfileDao.getInstance().getSimpleProfileById(siteFriendId);
-			String siteFriendText = StringUtils.isEmpty(friendBean.getUserName()) ? siteFriendId
-					: friendBean.getUserName() + NoticeText.USER_ADD_FRIEND;
-			CoreProto.U2MsgNotice msgNotice = CoreProto.U2MsgNotice.newBuilder().setSiteUserId(siteFriendId)
-					.setSiteFriendId(siteUserId).setText(ByteString.copyFromUtf8(siteFriendText))
-					.setTime(System.currentTimeMillis()).build();
+			CoreProto.MsgText textMsg = CoreProto.MsgText.newBuilder().setMsgId(buildU2MsgId(siteFriendId))
+					.setSiteUserId(siteFriendId).setSiteFriendId(siteUserId)
+					.setText(ByteString.copyFromUtf8(NoticeText.USER_ADD_FRIEND)).setTime(System.currentTimeMillis())
+					.build();
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
-					.setU2MsgNotice(msgNotice).setType(CoreProto.MsgType.U2_NOTICE).build();
+					.setType(MsgType.TEXT).setText(textMsg).build();
 
 			Command command = new Command();
 			command.setAction(RequestAction.IM_CTS_MESSAGE.getName());
@@ -110,9 +111,22 @@ public class User2Notice {
 			command.setParams(request.toByteArray());
 
 			boolean result = u2MsgService.execute(command);
-			logger.info("first friend message siteFriendId={} text={} result={}", siteFriendId, siteFriendText, result);
+			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", siteFriendId, siteUserId,
+					result);
 		} catch (Exception e) {
-			logger.error("first friend message error.siteFriend=" + siteFriendId, e);
+			logger.error(StringHelper.format("send add friend text message error. siteUserId={} siteFriendId={}",
+					siteFriendId, siteUserId), e);
 		}
+	}
+
+	private String buildU2MsgId(String siteUserid) {
+		StringBuilder sb = new StringBuilder("U2-");
+		if (StringUtils.isNotEmpty(siteUserid)) {
+			int len = siteUserid.length();
+			sb.append(siteUserid.substring(0, len >= 8 ? 8 : len));
+			sb.append("-");
+		}
+		sb.append(System.currentTimeMillis());
+		return sb.toString();
 	}
 }

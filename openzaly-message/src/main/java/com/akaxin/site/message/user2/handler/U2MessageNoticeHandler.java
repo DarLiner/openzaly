@@ -15,8 +15,6 @@
  */
 package com.akaxin.site.message.user2.handler;
 
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,16 +42,17 @@ public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String text = request.getU2MsgNotice().getText().toStringUtf8();
+				String msgId = request.getU2MsgNotice().getMsgId();
 
 				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();
-				u2Bean.setMsgId(UUID.randomUUID().toString().substring(0, 8));
+				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
 				u2Bean.setSendUserId(siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(text);
 				u2Bean.setMsgTime(msgTime);
-				
+
 				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
 
 				return messageDao.saveU2Message(u2Bean);

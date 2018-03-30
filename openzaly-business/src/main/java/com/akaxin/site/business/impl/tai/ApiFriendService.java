@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.UserProto;
@@ -275,9 +274,10 @@ public class ApiFriendService extends AbstractRequest {
 					errCode = ErrorCode2.SUCCESS;
 				}
 
-				if (ErrorCode.SUCCESS.equals(errCode) && result) {
-					logger.info("user new friend notice. siteUserId={}", siteFriendId);
-					new User2Notice().firstFriendMessageNotice(siteUserId, siteFriendId);
+				if (ErrorCode2.SUCCESS.equals(errCode) && result) {
+					new User2Notice().addFriendTextMessage(siteUserId, siteFriendId);
+					logger.debug("client={} siteUserId={} add friend notice to siteUserId={}", command.getClientIp(),
+							siteFriendId);
 				}
 			} else {
 				errCode = ErrorCode2.ERROR_PARAMETER;

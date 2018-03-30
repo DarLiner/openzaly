@@ -127,7 +127,7 @@ public class ApiGroupService extends AbstractRequest {
 					}
 					GroupProfileBean groupBean = UserGroupDao.getInstance().createGroup(createUserId, groupName,
 							groupMemberIds);
-					logger.info("siteUserId={} create new groupName={} resultBean={}", groupBean.toString());
+
 					if (StringUtils.isNotEmpty(groupBean.getGroupId())) {
 						GroupProto.GroupProfile.Builder groupProfileBuilder = GroupProto.GroupProfile.newBuilder();
 

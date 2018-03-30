@@ -20,7 +20,6 @@ import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
@@ -35,7 +34,6 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
 	private IMessageDao messageDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
-		ChannelSession channelSession = command.getChannelSession();
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());

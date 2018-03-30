@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.message.group.handler;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.akaxin.common.chain.IHandler;
 import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
@@ -33,8 +35,11 @@ import com.akaxin.proto.core.CoreProto.MsgType;
 public abstract class AbstractGroupHandler<T> implements IHandler<T, Boolean> {
 
 	protected void msgStatusResponse(Command command, String msgId, long msgTime, boolean success) {
-		int statusValue = success ? 1 : 0;
+		if (command == null || StringUtils.isEmpty(command.getDeviceId())) {
+			return;
+		}
 
+		int statusValue = success ? 1 : 0;
 		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
 				.setMsgStatus(statusValue).build();
 
@@ -53,6 +58,10 @@ public abstract class AbstractGroupHandler<T> implements IHandler<T, Boolean> {
 	}
 
 	protected void msgStatusResponse(Command command, String msgId, long msgTime, int statusValue) {
+		if (command == null || StringUtils.isEmpty(command.getDeviceId())) {
+			return;
+		}
+
 		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(statusValue)
 				.setMsgServerTime(msgTime).build();
 
