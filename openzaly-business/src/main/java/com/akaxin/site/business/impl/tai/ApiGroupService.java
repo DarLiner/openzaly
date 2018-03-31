@@ -216,11 +216,11 @@ public class ApiGroupService extends AbstractRequest {
 					SimpleUserBean ownerProfileBean = UserProfileDao.getInstance()
 							.getSimpleProfileById(groupBean.getCreateUserId());
 
-					logger.info("get groupId={},groupOwner={}", groupId, ownerProfileBean.toString());
+					logger.debug("get groupId={},groupOwner={}", groupId, ownerProfileBean.toString());
 
 					int groupMembersCount = UserGroupDao.getInstance().getGroupMemberCount(groupId);
 
-					logger.info("get groupId={},groupMembers={}", groupId, groupMembersCount);
+					logger.debug("get groupId={},groupMembers={}", groupId, groupMembersCount);
 
 					List<GroupMemberBean> groupMemberList = UserGroupDao.getInstance().getGroupMemberList(groupId,
 							pageNum, pageSize);
@@ -424,7 +424,6 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		logger.info("api.group.removeMember", errCode.toString());
 		return commandResponse.setErrCode2(errCode);
 	}
 

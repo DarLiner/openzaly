@@ -81,7 +81,7 @@ public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResp
 				if (channelSession.detectPsn()) {
 					channelSession.getChannel().writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
 							.add(RequestAction.IM_STC_PSN.getName()).add(packBuilder.build().toByteArray()));
-					logger.info("{} client={} siteUserId={} deviceId={} push psn {} {}", AkxProject.PLN,
+					logger.debug("{} client={} siteUserId={} deviceId={} push psn {} {}", AkxProject.PLN,
 							command.getClientIp(), command.getSiteUserId(), command.getDeviceId(),
 							channelSession.getPsnTime(), channelSession.getSynFinTime());
 				}

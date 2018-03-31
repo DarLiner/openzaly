@@ -59,7 +59,6 @@ public class HttpGroupService extends AbstractRequest {
 	 * @return
 	 */
 	public CommandResponse list(Command command) {
-		logger.info("/hai/group/list");
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {

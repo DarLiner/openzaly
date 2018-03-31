@@ -58,7 +58,7 @@ public class ApiServiceFactory {
 		case API_PLUGIN:
 			return new ApiPluginService();
 		default:
-			logger.info("api business service error.service={}", nameEnum.getName());
+			logger.error("api business service error.service={}", nameEnum.getName());
 			break;
 		}
 		return null;

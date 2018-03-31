@@ -93,7 +93,7 @@ public class SQLiteJDBCManager {
 			} else {
 				dbUrl += "./" + DB_FILE_PATH;
 			}
-			logger.info("load data base connectionUrl={}", dbUrl);
+//			logger.info("load data base connectionUrl={}", dbUrl);
 			sqlitConnection = DriverManager.getConnection(dbUrl);
 		} catch (ClassNotFoundException e) {
 			logger.error("class not found.", e);
@@ -269,7 +269,7 @@ public class SQLiteJDBCManager {
 			bean.setCreateTime(System.currentTimeMillis());
 			result = SQLiteUICDao.getInstance().addUIC(bean);
 		} catch (SQLException e) {
-			logger.error("add new uic to db error");
+			logger.warn("add new uic to db error,you can ignore it");
 		}
 		if (result) {
 			logger.info("init addmin uic success");

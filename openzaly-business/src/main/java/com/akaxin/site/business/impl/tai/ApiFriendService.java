@@ -180,7 +180,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 			if (ErrorCode2.SUCCESS.equals(errCode)) {
-				logger.info("api.friend.apply notice. to siteUserId={}", siteFriendId);
+				logger.debug("api.friend.apply notice. to siteUserId={}", siteFriendId);
 				new User2Notice().applyFriendNotice(siteFriendId);
 			}
 

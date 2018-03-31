@@ -121,7 +121,7 @@ public class HttpRequestService implements IRequest {
 		} catch (Exception e) {
 			logger.error("plugin chekc permissions error", e);
 		}
-		logger.info("check plugin permission result={}", result);
+		logger.debug("check plugin permission result={}", result);
 		return result;
 	}
 }

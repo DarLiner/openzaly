@@ -47,7 +47,7 @@ public class UserPhone {
 		try {
 			ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest request = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest
 					.newBuilder().setPhoneToken(phoneToken).build();
-			logger.info("实名认证 获取用户手机信息 : phoneToken={} {}", phoneToken, request.getPhoneToken());
+			logger.debug("实名认证 获取用户手机信息 : phoneToken={} {}", phoneToken, request.getPhoneToken());
 			byte[] responseBytes = WritePackage.getInstance().syncWrite(CommandConst.API_PHONE_CONFIRETOKEN,
 					request.toByteArray());
 
@@ -55,7 +55,7 @@ public class UserPhone {
 				ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse resposne = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse
 						.parseFrom(responseBytes);
 				String phoneCode = resposne.getGlobalRoaming() + resposne.getPhoneId();
-				logger.info("get phoncode={} from platform", phoneCode);
+				logger.debug("get phoncode={} from platform", phoneCode);
 				return phoneCode;
 			}
 		} catch (Exception e) {

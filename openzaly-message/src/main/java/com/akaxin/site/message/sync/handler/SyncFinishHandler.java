@@ -52,7 +52,7 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 
 			syncDao.updateU2Pointer(siteUserId, deviceId, u2Pointer);
 
-			logger.info("siteUserId={} GroupMessage syncFinish groupPointer={}", siteUserId, groupPointer);
+			logger.debug("siteUserId={} GroupMessage syncFinish groupPointer={}", siteUserId, groupPointer);
 
 			for (Map.Entry<String, Long> gidEntry : groupPointer.entrySet()) {
 				String siteGroupId = gidEntry.getKey();

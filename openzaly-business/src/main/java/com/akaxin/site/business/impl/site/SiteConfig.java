@@ -123,7 +123,6 @@ public class SiteConfig {
 
 	public static boolean hasAdminUser() {
 		String adminUser = SiteConfig.getSiteAdmin();
-		logger.info("======= site admin user adminUser={} ", adminUser);
 		if (StringUtils.isNotEmpty(adminUser) && !ConfigConst.DEFAULT_SITE_ADMIN.equals(adminUser)) {
 			return true;
 		}

@@ -207,7 +207,7 @@ public class ApiSiteService extends AbstractRequest {
 	private void justForAdminUser(String siteUserId, Map<Integer, String> header) {
 		// 如果站点没有管理员
 		if (SiteConfig.hasNoAdminUser()) {
-			logger.info("user first time to register site server ,set it as admin:{} map:{}", siteUserId, header);
+			logger.debug("user first time to register site server ,set it as admin:{} map:{}", siteUserId, header);
 			SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_ADMIN_VALUE, siteUserId);
 			if (header != null) {
 				String host = header.get(CoreProto.HeaderKey.CLIENT_REQUEST_SERVER_HOST_VALUE);

@@ -70,7 +70,6 @@ public class HttpUICService extends AbstractRequest {
 			} else {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
 			}
-			logger.info("create uic siteUserId={},succNum={},totalNumber={}", siteUserId, successCount, num);
 		} catch (Exception e) {
 			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);

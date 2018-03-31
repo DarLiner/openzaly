@@ -154,7 +154,7 @@ public class UserGroupDao {
 		try {
 			// 1.获取当前，群消息最大游标
 			long maxPointer = messageDao.queryMaxGroupPointer(groupId);
-			logger.info("add group member,maxPointer={}", maxPointer);
+//			logger.info("add group member,maxPointer={}", maxPointer);
 			// 2.设置个人默认游标
 			// 3.增加群成员
 			for (String memberId : userIdList) {

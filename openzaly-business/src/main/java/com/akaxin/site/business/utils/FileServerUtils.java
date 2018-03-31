@@ -61,7 +61,7 @@ public class FileServerUtils {
 
 			fileUrl = storageFile.getPath();
 
-			logger.info("upload file URL={}", fileUrl);
+			logger.debug("upload file URL={}", fileUrl);
 		} catch (IOException e) {
 			logger.error("uplaod file error.", e);
 		} finally {
