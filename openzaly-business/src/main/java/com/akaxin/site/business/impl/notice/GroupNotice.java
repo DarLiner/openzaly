@@ -55,8 +55,12 @@ public class GroupNotice {
 		if (StringUtils.isAnyEmpty(siteUserId, groupId) || userIdList == null || userIdList.size() == 0) {
 			return;
 		}
+
 		StringBuilder noticeText = new StringBuilder();
 		try {
+			// 移除群主,群创建者
+			userIdList.remove(siteUserId);
+			// 查询群主信息
 			SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
 			if (bean != null && StringUtils.isNotEmpty(bean.getUserName())) {
 				noticeText.append(bean.getUserName());
