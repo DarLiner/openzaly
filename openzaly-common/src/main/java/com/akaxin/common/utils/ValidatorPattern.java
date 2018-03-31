@@ -6,7 +6,7 @@ public class ValidatorPattern {
 	/**
 	 * 正则表达式：验证手机号
 	 */
-	public static final String REGEX_PHONDID = "^((13[0-9])|(15[^4,\\D])|(16[0-9])|(18[0,5-9])|(19[0-9]))\\d{8}$";
+	public static final String REGEX_PHONDID = "^((13[0-9])|(15[^4,\\D])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";
 
 	/**
 	 * 正则表达式：验证邮箱
