@@ -142,7 +142,7 @@ public class UserGroupDao {
 				groupDao.addGroupMember(memberId, bean.getGroupId(), status);
 			}
 			// 3.群消息中发送通知
-			new GroupNotice().newGroupMemberNotice(createUserId, bean.getGroupId(), userIds);
+			new GroupNotice().addGroupMemberNotice(createUserId, bean.getGroupId(), userIds);
 
 		} catch (Exception e) {
 			logger.error("create group error.", e);
@@ -154,13 +154,15 @@ public class UserGroupDao {
 		try {
 			// 1.获取当前，群消息最大游标
 			long maxPointer = messageDao.queryMaxGroupPointer(groupId);
-//			logger.info("add group member,maxPointer={}", maxPointer);
+			// logger.info("add group member,maxPointer={}", maxPointer);
 			// 2.设置个人默认游标
 			// 3.增加群成员
 			for (String memberId : userIdList) {
 				messageDao.updateGroupPointer(groupId, memberId, null, maxPointer);
 				int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
-				groupDao.addGroupMember(memberId, groupId, status);
+				if (!groupDao.addGroupMember(memberId, groupId, status)) {
+					return false;
+				}
 			}
 
 			return true;
@@ -168,7 +170,7 @@ public class UserGroupDao {
 			logger.error("add group member error.", e);
 		} finally {
 			// 添加完用户，向群消息中添加GroupMsgNotice
-			new GroupNotice().newGroupMemberNotice(siteUserId, groupId, userIdList);
+			new GroupNotice().addGroupMemberNotice(siteUserId, groupId, userIdList);
 		}
 		return false;
 	}

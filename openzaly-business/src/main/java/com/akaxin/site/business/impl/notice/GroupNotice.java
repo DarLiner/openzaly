@@ -51,7 +51,7 @@ public class GroupNotice {
 	 * 新用户加入了群聊 <br>
 	 * eg：群聊天界面中，<张三 加入了群聊天>
 	 */
-	public void newGroupMemberNotice(String siteUserId, String groupId, List<String> userIdList) {
+	public void addGroupMemberNotice(String siteUserId, String groupId, List<String> userIdList) {
 		if (StringUtils.isAnyEmpty(siteUserId, groupId) || userIdList == null || userIdList.size() == 0) {
 			return;
 		}
