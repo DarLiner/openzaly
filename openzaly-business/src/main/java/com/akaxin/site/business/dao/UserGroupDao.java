@@ -154,7 +154,6 @@ public class UserGroupDao {
 		try {
 			// 1.获取当前，群消息最大游标
 			long maxPointer = messageDao.queryMaxGroupPointer(groupId);
-			// logger.info("add group member,maxPointer={}", maxPointer);
 			// 2.设置个人默认游标
 			// 3.增加群成员
 			for (String memberId : userIdList) {
@@ -164,13 +163,11 @@ public class UserGroupDao {
 					return false;
 				}
 			}
-
+			// 添加完用户，向群消息中添加GroupMsgNotice
+			new GroupNotice().addGroupMemberNotice(siteUserId, groupId, userIdList);
 			return true;
 		} catch (Exception e) {
 			logger.error("add group member error.", e);
-		} finally {
-			// 添加完用户，向群消息中添加GroupMsgNotice
-			new GroupNotice().addGroupMemberNotice(siteUserId, groupId, userIdList);
 		}
 		return false;
 	}
