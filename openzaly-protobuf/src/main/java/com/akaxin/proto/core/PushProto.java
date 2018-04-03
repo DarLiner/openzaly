@@ -14,6 +14,324 @@ public final class PushProto {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  /**
+   * Protobuf enum {@code core.PushType}
+   */
+  public enum PushType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *系统通知
+     * </pre>
+     *
+     * <code>PUSH_NOTICE = 0;</code>
+     */
+    PUSH_NOTICE(0),
+    /**
+     * <code>PUSH_MSG_STATUS = 1;</code>
+     */
+    PUSH_MSG_STATUS(1),
+    /**
+     * <pre>
+     *这个不是废弃了么？
+     * </pre>
+     *
+     * <code>PUSH_MSG_FINISH = 2;</code>
+     */
+    PUSH_MSG_FINISH(2),
+    /**
+     * <code>PUSH_TEXT = 3;</code>
+     */
+    PUSH_TEXT(3),
+    /**
+     * <code>PUSH_SECRET_TEXT = 4;</code>
+     */
+    PUSH_SECRET_TEXT(4),
+    /**
+     * <code>PUSH_GROUP_TEXT = 5;</code>
+     */
+    PUSH_GROUP_TEXT(5),
+    /**
+     * <code>PUSH_GROUP_SECRET_TEXT = 6;</code>
+     */
+    PUSH_GROUP_SECRET_TEXT(6),
+    /**
+     * <code>PUSH_IMAGE = 7;</code>
+     */
+    PUSH_IMAGE(7),
+    /**
+     * <code>PUSH_SECRET_IMAGE = 8;</code>
+     */
+    PUSH_SECRET_IMAGE(8),
+    /**
+     * <code>PUSH_GROUP_IMAGE = 9;</code>
+     */
+    PUSH_GROUP_IMAGE(9),
+    /**
+     * <code>PUSH_GROUP_SECRET_IMAGE = 10;</code>
+     */
+    PUSH_GROUP_SECRET_IMAGE(10),
+    /**
+     * <code>PUSH_VOICE = 11;</code>
+     */
+    PUSH_VOICE(11),
+    /**
+     * <code>PUSH_SECRET_VOICE = 12;</code>
+     */
+    PUSH_SECRET_VOICE(12),
+    /**
+     * <code>PUSH_GROUP_VOICE = 13;</code>
+     */
+    PUSH_GROUP_VOICE(13),
+    /**
+     * <code>PUSH_GROUP_SECRET_VOICE = 14;</code>
+     */
+    PUSH_GROUP_SECRET_VOICE(14),
+    /**
+     * <code>PUSH_MAP = 15;</code>
+     */
+    PUSH_MAP(15),
+    /**
+     * <code>PUSH_SECRET_MAP = 16;</code>
+     */
+    PUSH_SECRET_MAP(16),
+    /**
+     * <code>PUSH_GROUP_MAP = 17;</code>
+     */
+    PUSH_GROUP_MAP(17),
+    /**
+     * <code>PUSH_GROUP_SECRET_MAP = 18;</code>
+     */
+    PUSH_GROUP_SECRET_MAP(18),
+    /**
+     * <pre>
+     *二人消息中的通知消息
+     * </pre>
+     *
+     * <code>PUSH_U2_NOTICE = 19;</code>
+     */
+    PUSH_U2_NOTICE(19),
+    /**
+     * <pre>
+     *群消息中的通知消息
+     * </pre>
+     *
+     * <code>PUSH_GROUP_NOTICE = 20;</code>
+     */
+    PUSH_GROUP_NOTICE(20),
+    /**
+     * <pre>
+     *申请添加好友通知
+     * </pre>
+     *
+     * <code>PUSH_APPLY_FRIEND_NOTICE = 100;</code>
+     */
+    PUSH_APPLY_FRIEND_NOTICE(100),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *系统通知
+     * </pre>
+     *
+     * <code>PUSH_NOTICE = 0;</code>
+     */
+    public static final int PUSH_NOTICE_VALUE = 0;
+    /**
+     * <code>PUSH_MSG_STATUS = 1;</code>
+     */
+    public static final int PUSH_MSG_STATUS_VALUE = 1;
+    /**
+     * <pre>
+     *这个不是废弃了么？
+     * </pre>
+     *
+     * <code>PUSH_MSG_FINISH = 2;</code>
+     */
+    public static final int PUSH_MSG_FINISH_VALUE = 2;
+    /**
+     * <code>PUSH_TEXT = 3;</code>
+     */
+    public static final int PUSH_TEXT_VALUE = 3;
+    /**
+     * <code>PUSH_SECRET_TEXT = 4;</code>
+     */
+    public static final int PUSH_SECRET_TEXT_VALUE = 4;
+    /**
+     * <code>PUSH_GROUP_TEXT = 5;</code>
+     */
+    public static final int PUSH_GROUP_TEXT_VALUE = 5;
+    /**
+     * <code>PUSH_GROUP_SECRET_TEXT = 6;</code>
+     */
+    public static final int PUSH_GROUP_SECRET_TEXT_VALUE = 6;
+    /**
+     * <code>PUSH_IMAGE = 7;</code>
+     */
+    public static final int PUSH_IMAGE_VALUE = 7;
+    /**
+     * <code>PUSH_SECRET_IMAGE = 8;</code>
+     */
+    public static final int PUSH_SECRET_IMAGE_VALUE = 8;
+    /**
+     * <code>PUSH_GROUP_IMAGE = 9;</code>
+     */
+    public static final int PUSH_GROUP_IMAGE_VALUE = 9;
+    /**
+     * <code>PUSH_GROUP_SECRET_IMAGE = 10;</code>
+     */
+    public static final int PUSH_GROUP_SECRET_IMAGE_VALUE = 10;
+    /**
+     * <code>PUSH_VOICE = 11;</code>
+     */
+    public static final int PUSH_VOICE_VALUE = 11;
+    /**
+     * <code>PUSH_SECRET_VOICE = 12;</code>
+     */
+    public static final int PUSH_SECRET_VOICE_VALUE = 12;
+    /**
+     * <code>PUSH_GROUP_VOICE = 13;</code>
+     */
+    public static final int PUSH_GROUP_VOICE_VALUE = 13;
+    /**
+     * <code>PUSH_GROUP_SECRET_VOICE = 14;</code>
+     */
+    public static final int PUSH_GROUP_SECRET_VOICE_VALUE = 14;
+    /**
+     * <code>PUSH_MAP = 15;</code>
+     */
+    public static final int PUSH_MAP_VALUE = 15;
+    /**
+     * <code>PUSH_SECRET_MAP = 16;</code>
+     */
+    public static final int PUSH_SECRET_MAP_VALUE = 16;
+    /**
+     * <code>PUSH_GROUP_MAP = 17;</code>
+     */
+    public static final int PUSH_GROUP_MAP_VALUE = 17;
+    /**
+     * <code>PUSH_GROUP_SECRET_MAP = 18;</code>
+     */
+    public static final int PUSH_GROUP_SECRET_MAP_VALUE = 18;
+    /**
+     * <pre>
+     *二人消息中的通知消息
+     * </pre>
+     *
+     * <code>PUSH_U2_NOTICE = 19;</code>
+     */
+    public static final int PUSH_U2_NOTICE_VALUE = 19;
+    /**
+     * <pre>
+     *群消息中的通知消息
+     * </pre>
+     *
+     * <code>PUSH_GROUP_NOTICE = 20;</code>
+     */
+    public static final int PUSH_GROUP_NOTICE_VALUE = 20;
+    /**
+     * <pre>
+     *申请添加好友通知
+     * </pre>
+     *
+     * <code>PUSH_APPLY_FRIEND_NOTICE = 100;</code>
+     */
+    public static final int PUSH_APPLY_FRIEND_NOTICE_VALUE = 100;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static PushType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static PushType forNumber(int value) {
+      switch (value) {
+        case 0: return PUSH_NOTICE;
+        case 1: return PUSH_MSG_STATUS;
+        case 2: return PUSH_MSG_FINISH;
+        case 3: return PUSH_TEXT;
+        case 4: return PUSH_SECRET_TEXT;
+        case 5: return PUSH_GROUP_TEXT;
+        case 6: return PUSH_GROUP_SECRET_TEXT;
+        case 7: return PUSH_IMAGE;
+        case 8: return PUSH_SECRET_IMAGE;
+        case 9: return PUSH_GROUP_IMAGE;
+        case 10: return PUSH_GROUP_SECRET_IMAGE;
+        case 11: return PUSH_VOICE;
+        case 12: return PUSH_SECRET_VOICE;
+        case 13: return PUSH_GROUP_VOICE;
+        case 14: return PUSH_GROUP_SECRET_VOICE;
+        case 15: return PUSH_MAP;
+        case 16: return PUSH_SECRET_MAP;
+        case 17: return PUSH_GROUP_MAP;
+        case 18: return PUSH_GROUP_SECRET_MAP;
+        case 19: return PUSH_U2_NOTICE;
+        case 20: return PUSH_GROUP_NOTICE;
+        case 100: return PUSH_APPLY_FRIEND_NOTICE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<PushType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        PushType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<PushType>() {
+            public PushType findValueByNumber(int number) {
+              return PushType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.PushProto.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final PushType[] VALUES = values();
+
+    public static PushType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private PushType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.PushType)
+  }
+
   public interface NotificationOrBuilder extends
       // @@protoc_insertion_point(interface_extends:core.Notification)
       com.google.protobuf.MessageOrBuilder {
@@ -77,18 +395,18 @@ public final class PushProto {
      *Push跳转位置
      * </pre>
      *
-     * <code>optional string push_jump = 4;</code>
+     * <code>optional string push_goto = 4;</code>
      */
-    java.lang.String getPushJump();
+    java.lang.String getPushGoto();
     /**
      * <pre>
      *Push跳转位置
      * </pre>
      *
-     * <code>optional string push_jump = 4;</code>
+     * <code>optional string push_goto = 4;</code>
      */
     com.google.protobuf.ByteString
-        getPushJumpBytes();
+        getPushGotoBytes();
 
     /**
      * <pre>
@@ -208,7 +526,7 @@ public final class PushProto {
       siteServer_ = "";
       pushTitle_ = "";
       pushAlert_ = "";
-      pushJump_ = "";
+      pushGoto_ = "";
       pushBadge_ = 0;
       pushSound_ = "";
       userId_ = "";
@@ -263,7 +581,7 @@ public final class PushProto {
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              pushJump_ = s;
+              pushGoto_ = s;
               break;
             }
             case 40: {
@@ -450,24 +768,24 @@ public final class PushProto {
       }
     }
 
-    public static final int PUSH_JUMP_FIELD_NUMBER = 4;
-    private volatile java.lang.Object pushJump_;
+    public static final int PUSH_GOTO_FIELD_NUMBER = 4;
+    private volatile java.lang.Object pushGoto_;
     /**
      * <pre>
      *Push跳转位置
      * </pre>
      *
-     * <code>optional string push_jump = 4;</code>
+     * <code>optional string push_goto = 4;</code>
      */
-    public java.lang.String getPushJump() {
-      java.lang.Object ref = pushJump_;
+    public java.lang.String getPushGoto() {
+      java.lang.Object ref = pushGoto_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        pushJump_ = s;
+        pushGoto_ = s;
         return s;
       }
     }
@@ -476,16 +794,16 @@ public final class PushProto {
      *Push跳转位置
      * </pre>
      *
-     * <code>optional string push_jump = 4;</code>
+     * <code>optional string push_goto = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getPushJumpBytes() {
-      java.lang.Object ref = pushJump_;
+        getPushGotoBytes() {
+      java.lang.Object ref = pushGoto_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        pushJump_ = b;
+        pushGoto_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -736,8 +1054,8 @@ public final class PushProto {
       if (!getPushAlertBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pushAlert_);
       }
-      if (!getPushJumpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, pushJump_);
+      if (!getPushGotoBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, pushGoto_);
       }
       if (pushBadge_ != 0) {
         output.writeInt32(5, pushBadge_);
@@ -773,8 +1091,8 @@ public final class PushProto {
       if (!getPushAlertBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, pushAlert_);
       }
-      if (!getPushJumpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, pushJump_);
+      if (!getPushGotoBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, pushGoto_);
       }
       if (pushBadge_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -817,8 +1135,8 @@ public final class PushProto {
           .equals(other.getPushTitle());
       result = result && getPushAlert()
           .equals(other.getPushAlert());
-      result = result && getPushJump()
-          .equals(other.getPushJump());
+      result = result && getPushGoto()
+          .equals(other.getPushGoto());
       result = result && (getPushBadge()
           == other.getPushBadge());
       result = result && getPushSound()
@@ -847,8 +1165,8 @@ public final class PushProto {
       hash = (53 * hash) + getPushTitle().hashCode();
       hash = (37 * hash) + PUSH_ALERT_FIELD_NUMBER;
       hash = (53 * hash) + getPushAlert().hashCode();
-      hash = (37 * hash) + PUSH_JUMP_FIELD_NUMBER;
-      hash = (53 * hash) + getPushJump().hashCode();
+      hash = (37 * hash) + PUSH_GOTO_FIELD_NUMBER;
+      hash = (53 * hash) + getPushGoto().hashCode();
       hash = (37 * hash) + PUSH_BADGE_FIELD_NUMBER;
       hash = (53 * hash) + getPushBadge();
       hash = (37 * hash) + PUSH_SOUND_FIELD_NUMBER;
@@ -989,7 +1307,7 @@ public final class PushProto {
 
         pushAlert_ = "";
 
-        pushJump_ = "";
+        pushGoto_ = "";
 
         pushBadge_ = 0;
 
@@ -1028,7 +1346,7 @@ public final class PushProto {
         result.siteServer_ = siteServer_;
         result.pushTitle_ = pushTitle_;
         result.pushAlert_ = pushAlert_;
-        result.pushJump_ = pushJump_;
+        result.pushGoto_ = pushGoto_;
         result.pushBadge_ = pushBadge_;
         result.pushSound_ = pushSound_;
         result.userId_ = userId_;
@@ -1088,8 +1406,8 @@ public final class PushProto {
           pushAlert_ = other.pushAlert_;
           onChanged();
         }
-        if (!other.getPushJump().isEmpty()) {
-          pushJump_ = other.pushJump_;
+        if (!other.getPushGoto().isEmpty()) {
+          pushGoto_ = other.pushGoto_;
           onChanged();
         }
         if (other.getPushBadge() != 0) {
@@ -1408,21 +1726,21 @@ public final class PushProto {
         return this;
       }
 
-      private java.lang.Object pushJump_ = "";
+      private java.lang.Object pushGoto_ = "";
       /**
        * <pre>
        *Push跳转位置
        * </pre>
        *
-       * <code>optional string push_jump = 4;</code>
+       * <code>optional string push_goto = 4;</code>
        */
-      public java.lang.String getPushJump() {
-        java.lang.Object ref = pushJump_;
+      public java.lang.String getPushGoto() {
+        java.lang.Object ref = pushGoto_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          pushJump_ = s;
+          pushGoto_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1433,16 +1751,16 @@ public final class PushProto {
        *Push跳转位置
        * </pre>
        *
-       * <code>optional string push_jump = 4;</code>
+       * <code>optional string push_goto = 4;</code>
        */
       public com.google.protobuf.ByteString
-          getPushJumpBytes() {
-        java.lang.Object ref = pushJump_;
+          getPushGotoBytes() {
+        java.lang.Object ref = pushGoto_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          pushJump_ = b;
+          pushGoto_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -1453,15 +1771,15 @@ public final class PushProto {
        *Push跳转位置
        * </pre>
        *
-       * <code>optional string push_jump = 4;</code>
+       * <code>optional string push_goto = 4;</code>
        */
-      public Builder setPushJump(
+      public Builder setPushGoto(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        pushJump_ = value;
+        pushGoto_ = value;
         onChanged();
         return this;
       }
@@ -1470,11 +1788,11 @@ public final class PushProto {
        *Push跳转位置
        * </pre>
        *
-       * <code>optional string push_jump = 4;</code>
+       * <code>optional string push_goto = 4;</code>
        */
-      public Builder clearPushJump() {
+      public Builder clearPushGoto() {
         
-        pushJump_ = getDefaultInstance().getPushJump();
+        pushGoto_ = getDefaultInstance().getPushGoto();
         onChanged();
         return this;
       }
@@ -1483,16 +1801,16 @@ public final class PushProto {
        *Push跳转位置
        * </pre>
        *
-       * <code>optional string push_jump = 4;</code>
+       * <code>optional string push_goto = 4;</code>
        */
-      public Builder setPushJumpBytes(
+      public Builder setPushGotoBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        pushJump_ = value;
+        pushGoto_ = value;
         onChanged();
         return this;
       }
@@ -2044,12 +2362,24 @@ public final class PushProto {
     java.lang.String[] descriptorData = {
       "\n\017core/push.proto\022\004core\"\331\001\n\014Notification" +
       "\022\023\n\013site_server\030\001 \001(\t\022\022\n\npush_title\030\002 \001(" +
-      "\t\022\022\n\npush_alert\030\003 \001(\t\022\021\n\tpush_jump\030\004 \001(\t" +
+      "\t\022\022\n\npush_alert\030\003 \001(\t\022\021\n\tpush_goto\030\004 \001(\t" +
       "\022\022\n\npush_badge\030\005 \001(\005\022\022\n\npush_sound\030\006 \001(\t" +
       "\022\017\n\007user_id\030\007 \001(\t\022\022\n\nuser_token\030\010 \001(\t\022\024\n" +
       "\014push_from_id\030\t \001(\t\022\026\n\016push_from_name\030\n " +
-      "\001(\tB\"\n\025com.akaxin.proto.coreB\tPushProtob" +
-      "\006proto3"
+      "\001(\t*\352\003\n\010PushType\022\017\n\013PUSH_NOTICE\020\000\022\023\n\017PUS" +
+      "H_MSG_STATUS\020\001\022\023\n\017PUSH_MSG_FINISH\020\002\022\r\n\tP" +
+      "USH_TEXT\020\003\022\024\n\020PUSH_SECRET_TEXT\020\004\022\023\n\017PUSH" +
+      "_GROUP_TEXT\020\005\022\032\n\026PUSH_GROUP_SECRET_TEXT\020",
+      "\006\022\016\n\nPUSH_IMAGE\020\007\022\025\n\021PUSH_SECRET_IMAGE\020\010" +
+      "\022\024\n\020PUSH_GROUP_IMAGE\020\t\022\033\n\027PUSH_GROUP_SEC" +
+      "RET_IMAGE\020\n\022\016\n\nPUSH_VOICE\020\013\022\025\n\021PUSH_SECR" +
+      "ET_VOICE\020\014\022\024\n\020PUSH_GROUP_VOICE\020\r\022\033\n\027PUSH" +
+      "_GROUP_SECRET_VOICE\020\016\022\014\n\010PUSH_MAP\020\017\022\023\n\017P" +
+      "USH_SECRET_MAP\020\020\022\022\n\016PUSH_GROUP_MAP\020\021\022\031\n\025" +
+      "PUSH_GROUP_SECRET_MAP\020\022\022\022\n\016PUSH_U2_NOTIC" +
+      "E\020\023\022\025\n\021PUSH_GROUP_NOTICE\020\024\022\034\n\030PUSH_APPLY" +
+      "_FRIEND_NOTICE\020dB\"\n\025com.akaxin.proto.cor" +
+      "eB\tPushProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2068,7 +2398,7 @@ public final class PushProto {
     internal_static_core_Notification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_Notification_descriptor,
-        new java.lang.String[] { "SiteServer", "PushTitle", "PushAlert", "PushJump", "PushBadge", "PushSound", "UserId", "UserToken", "PushFromId", "PushFromName", });
+        new java.lang.String[] { "SiteServer", "PushTitle", "PushAlert", "PushGoto", "PushBadge", "PushSound", "UserId", "UserToken", "PushFromId", "PushFromName", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

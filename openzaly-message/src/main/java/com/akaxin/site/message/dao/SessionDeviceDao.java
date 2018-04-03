@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.site.business.dao;
+package com.akaxin.site.message.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,12 +25,19 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.site.storage.api.IUserSessionDao;
 import com.akaxin.site.storage.service.UserSessionDaoService;
 
-public class UserSessionDao {
-	private static final Logger logger = LoggerFactory.getLogger(UserSessionDao.class);
-	private static UserSessionDao instance = new UserSessionDao();
+/**
+ * 
+ * 从session表中，获取在先的设备
+ *
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-03 19:12:44
+ */
+public class SessionDeviceDao {
+	private static final Logger logger = LoggerFactory.getLogger(SessionDeviceDao.class);
+	private static SessionDeviceDao instance = new SessionDeviceDao();
 	private IUserSessionDao userSessionDao = new UserSessionDaoService();
 
-	public static UserSessionDao getInstance() {
+	public static SessionDeviceDao getInstance() {
 		return instance;
 	}
 

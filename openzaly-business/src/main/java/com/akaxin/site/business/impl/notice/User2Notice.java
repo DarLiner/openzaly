@@ -15,17 +15,11 @@
  */
 package com.akaxin.site.business.impl.notice;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
-import com.akaxin.common.command.CommandResponse;
-import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.client.ImStcNoticeProto;
@@ -33,14 +27,13 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.business.constant.NoticeText;
-import com.akaxin.site.business.dao.UserSessionDao;
 import com.akaxin.site.message.api.IMessageService;
 import com.akaxin.site.message.service.ImMessageService;
 import com.google.protobuf.ByteString;
 
 public class User2Notice {
 	private static final Logger logger = LoggerFactory.getLogger(User2Notice.class);
-	private IMessageService u2MsgService = new ImMessageService();
+	private IMessageService imService = new ImMessageService();
 
 	/**
 	 * A用户添加用户B为好友，发送B有好友添加的申请 <br>
@@ -50,18 +43,16 @@ public class User2Notice {
 	 * @param siteUserId
 	 *            用户B的用户ID
 	 */
-	public void applyFriendNotice(String siteUserId) {
-		List<String> deviceList = UserSessionDao.getInstance().getSessionDevices(siteUserId);
-		for (String deviceId : deviceList) {
-			CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
-					.setAction(CommandConst.IM_NOTICE);
-			ImStcNoticeProto.ImStcNoticeRequest noticeRequest = ImStcNoticeProto.ImStcNoticeRequest.newBuilder()
-					.setType(ImStcNoticeProto.NoticeType.APPLY_FRIEND).build();
-			commandResponse.setParams(noticeRequest.toByteArray());
-			commandResponse.setErrCode(ErrorCode.SUCCESS);
-			ChannelWriter.writeByDeviceId(deviceId, commandResponse);
-			logger.debug("apply friend notice. to siteUserId={} deviceId={}", siteUserId, deviceId);
-		}
+	public void applyFriendNotice(String siteUserId, String siteFriendId) {
+		Command command = new Command();
+		command.setSiteUserId(siteUserId);
+		command.setSiteFriendId(siteFriendId);
+		command.setAction(RequestAction.IM_STC_NOTICE.getName());
+		ImStcNoticeProto.ImStcNoticeRequest noticeRequest = ImStcNoticeProto.ImStcNoticeRequest.newBuilder()
+				.setType(ImStcNoticeProto.NoticeType.APPLY_FRIEND).build();
+		command.setParams(noticeRequest.toByteArray());
+		boolean result = imService.execute(command);
+		logger.debug("siteUserId={} apply friend notice friendId={} result={}", siteUserId, siteFriendId, result);
 	}
 
 	/**
@@ -88,7 +79,7 @@ public class User2Notice {
 			command.setSiteFriendId(siteFriendId);
 			command.setParams(request.toByteArray());
 
-			boolean result = u2MsgService.execute(command);
+			boolean result = imService.execute(command);
 			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", siteUserId, siteFriendId,
 					result);
 		} catch (Exception e) {
@@ -110,7 +101,7 @@ public class User2Notice {
 			command.setSiteFriendId(siteUserId);
 			command.setParams(request.toByteArray());
 
-			boolean result = u2MsgService.execute(command);
+			boolean result = imService.execute(command);
 			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", siteFriendId, siteUserId,
 					result);
 		} catch (Exception e) {

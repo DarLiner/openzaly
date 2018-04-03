@@ -74,6 +74,9 @@ public class MessageDispatcher {
 		} else if (RequestAction.IM_SYNC_FINISH.getName().equalsIgnoreCase(action)) {
 			MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_FINISH.getName(), command);
 			return true;
+		} else if (RequestAction.IM_STC_NOTICE.getName().equalsIgnoreCase(action)) {
+			MessageExecutor.getExecutor().execute(RequestAction.IM_STC_NOTICE.getName(), command);
+			return true;
 		}
 
 		logger.error("client={} siteUserId={} action={} im message with error command={}", command.getClientIp(),

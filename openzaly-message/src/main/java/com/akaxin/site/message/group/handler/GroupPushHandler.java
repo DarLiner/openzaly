@@ -87,7 +87,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 
 							ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
 									.newBuilder();
-							requestBuilder.setPushType(request.getType());
+							requestBuilder.setPushTypeValue(request.getType().getNumber());
 							PushProto.Notification.Builder notification = PushProto.Notification.newBuilder();
 
 							notification.setUserId(globalUserId);

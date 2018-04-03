@@ -37,6 +37,7 @@ public enum RequestAction {
 	IM_STC_PSN(109, "im.stc.psn"), // 站点给客户端发送psn
 	IM_SYNC_MESSAGE(110, "im.sync.message"), //
 	IM_SYNC_FINISH(111, "im.sync.finish"), //
+	IM_STC_NOTICE(112, "im.stc.notice"), // 站点给客户端发送通知命令
 
 	API(200, "api"), // api request
 	API_SITE(201, "api.site"), //

@@ -23,21 +23,23 @@ import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.message.group.handler.GroupDetectionHandler;
 import com.akaxin.site.message.group.handler.GroupMessageImageHandler;
+import com.akaxin.site.message.group.handler.GroupMessageNoticeHandler;
 import com.akaxin.site.message.group.handler.GroupMessageTextHandler;
 import com.akaxin.site.message.group.handler.GroupMessageVoiceHandler;
-import com.akaxin.site.message.group.handler.GroupMessageNoticeHandler;
 import com.akaxin.site.message.group.handler.GroupPsnHandler;
 import com.akaxin.site.message.group.handler.GroupPushHandler;
+import com.akaxin.site.message.notice.handler.NoticeHandler;
+import com.akaxin.site.message.notice.handler.NoticePushHandler;
 import com.akaxin.site.message.sync.handler.SyncFinishHandler;
 import com.akaxin.site.message.sync.handler.SyncGroupMessageHandler;
 import com.akaxin.site.message.sync.handler.SyncU2MessageHandler;
 import com.akaxin.site.message.user2.handler.U2MessageImageHandler;
 import com.akaxin.site.message.user2.handler.U2MessageImageSecretHandler;
+import com.akaxin.site.message.user2.handler.U2MessageNoticeHandler;
 import com.akaxin.site.message.user2.handler.U2MessageTextHandler;
 import com.akaxin.site.message.user2.handler.U2MessageTextSecretHandler;
 import com.akaxin.site.message.user2.handler.U2MessageVoiceHandler;
 import com.akaxin.site.message.user2.handler.U2MessageVoiceSecretHandler;
-import com.akaxin.site.message.user2.handler.U2MessageNoticeHandler;
 import com.akaxin.site.message.user2.handler.UserDetectionHandler;
 import com.akaxin.site.message.user2.handler.UserPsnHandler;
 import com.akaxin.site.message.user2.handler.UserPushHandler;
@@ -76,6 +78,10 @@ public class MessageExecutor {
 		syncMessageChain.addHandler(new SyncU2MessageHandler());
 		syncMessageChain.addHandler(new SyncGroupMessageHandler());
 
+		AbstractHandlerChain<Command, Boolean> noticeChain = new SimpleHandlerChain<Command>();
+		noticeChain.addHandler(new NoticeHandler());
+		noticeChain.addHandler(new NoticePushHandler());
+
 		// "im.cts.message.u2"
 		executor.addChain(RequestAction.IM_CTS_MESSAGE_U2.getName(), u2MessageChain);
 		// "im.cts.message.group"
@@ -84,6 +90,8 @@ public class MessageExecutor {
 		executor.addChain(RequestAction.IM_SYNC_MESSAGE.getName(), syncMessageChain);
 		// "im.sync.finish"
 		executor.addChain(RequestAction.IM_SYNC_FINISH.getName(), new SyncFinishHandler());
+		// "im.stc.notice"
+		executor.addChain(RequestAction.IM_STC_NOTICE.getName(), noticeChain);
 	}
 
 	public static AbstracteExecutor<Command, Boolean> getExecutor() {

@@ -19,13 +19,13 @@ public final class ApiPushNotificationProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .core.MsgType push_type = 1;</code>
+     * <code>optional .core.PushType push_type = 1;</code>
      */
     int getPushTypeValue();
     /**
-     * <code>optional .core.MsgType push_type = 1;</code>
+     * <code>optional .core.PushType push_type = 1;</code>
      */
-    com.akaxin.proto.core.CoreProto.MsgType getPushType();
+    com.akaxin.proto.core.PushProto.PushType getPushType();
 
     /**
      * <pre>
@@ -137,17 +137,17 @@ public final class ApiPushNotificationProto {
     public static final int PUSH_TYPE_FIELD_NUMBER = 1;
     private int pushType_;
     /**
-     * <code>optional .core.MsgType push_type = 1;</code>
+     * <code>optional .core.PushType push_type = 1;</code>
      */
     public int getPushTypeValue() {
       return pushType_;
     }
     /**
-     * <code>optional .core.MsgType push_type = 1;</code>
+     * <code>optional .core.PushType push_type = 1;</code>
      */
-    public com.akaxin.proto.core.CoreProto.MsgType getPushType() {
-      com.akaxin.proto.core.CoreProto.MsgType result = com.akaxin.proto.core.CoreProto.MsgType.valueOf(pushType_);
-      return result == null ? com.akaxin.proto.core.CoreProto.MsgType.UNRECOGNIZED : result;
+    public com.akaxin.proto.core.PushProto.PushType getPushType() {
+      com.akaxin.proto.core.PushProto.PushType result = com.akaxin.proto.core.PushProto.PushType.valueOf(pushType_);
+      return result == null ? com.akaxin.proto.core.PushProto.PushType.UNRECOGNIZED : result;
     }
 
     public static final int NOTIFICATION_FIELD_NUMBER = 2;
@@ -195,7 +195,7 @@ public final class ApiPushNotificationProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (pushType_ != com.akaxin.proto.core.CoreProto.MsgType.NOTICE.getNumber()) {
+      if (pushType_ != com.akaxin.proto.core.PushProto.PushType.PUSH_NOTICE.getNumber()) {
         output.writeEnum(1, pushType_);
       }
       if (notification_ != null) {
@@ -208,7 +208,7 @@ public final class ApiPushNotificationProto {
       if (size != -1) return size;
 
       size = 0;
-      if (pushType_ != com.akaxin.proto.core.CoreProto.MsgType.NOTICE.getNumber()) {
+      if (pushType_ != com.akaxin.proto.core.PushProto.PushType.PUSH_NOTICE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, pushType_);
       }
@@ -483,13 +483,13 @@ public final class ApiPushNotificationProto {
 
       private int pushType_ = 0;
       /**
-       * <code>optional .core.MsgType push_type = 1;</code>
+       * <code>optional .core.PushType push_type = 1;</code>
        */
       public int getPushTypeValue() {
         return pushType_;
       }
       /**
-       * <code>optional .core.MsgType push_type = 1;</code>
+       * <code>optional .core.PushType push_type = 1;</code>
        */
       public Builder setPushTypeValue(int value) {
         pushType_ = value;
@@ -497,16 +497,16 @@ public final class ApiPushNotificationProto {
         return this;
       }
       /**
-       * <code>optional .core.MsgType push_type = 1;</code>
+       * <code>optional .core.PushType push_type = 1;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgType getPushType() {
-        com.akaxin.proto.core.CoreProto.MsgType result = com.akaxin.proto.core.CoreProto.MsgType.valueOf(pushType_);
-        return result == null ? com.akaxin.proto.core.CoreProto.MsgType.UNRECOGNIZED : result;
+      public com.akaxin.proto.core.PushProto.PushType getPushType() {
+        com.akaxin.proto.core.PushProto.PushType result = com.akaxin.proto.core.PushProto.PushType.valueOf(pushType_);
+        return result == null ? com.akaxin.proto.core.PushProto.PushType.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .core.MsgType push_type = 1;</code>
+       * <code>optional .core.PushType push_type = 1;</code>
        */
-      public Builder setPushType(com.akaxin.proto.core.CoreProto.MsgType value) {
+      public Builder setPushType(com.akaxin.proto.core.PushProto.PushType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -516,7 +516,7 @@ public final class ApiPushNotificationProto {
         return this;
       }
       /**
-       * <code>optional .core.MsgType push_type = 1;</code>
+       * <code>optional .core.PushType push_type = 1;</code>
        */
       public Builder clearPushType() {
         
@@ -742,13 +742,13 @@ public final class ApiPushNotificationProto {
     java.lang.String[] descriptorData = {
       "\n$platform/api_push_notification.proto\022\010" +
       "platform\032\017core/core.proto\032\017core/push.pro" +
-      "to\"h\n\032ApiPushNotificationRequest\022 \n\tpush" +
-      "_type\030\001 \001(\0162\r.core.MsgType\022(\n\014notificati" +
-      "on\030\002 \001(\0132\022.core.Notification2f\n\032ApiPushN" +
-      "otificationService\022H\n\014notification\022$.pla" +
-      "tform.ApiPushNotificationRequest\032\022.core." +
-      "NoneResponseB5\n\031com.akaxin.proto.platfor" +
-      "mB\030ApiPushNotificationProtob\006proto3"
+      "to\"i\n\032ApiPushNotificationRequest\022!\n\tpush" +
+      "_type\030\001 \001(\0162\016.core.PushType\022(\n\014notificat" +
+      "ion\030\002 \001(\0132\022.core.Notification2f\n\032ApiPush" +
+      "NotificationService\022H\n\014notification\022$.pl" +
+      "atform.ApiPushNotificationRequest\032\022.core" +
+      ".NoneResponseB5\n\031com.akaxin.proto.platfo" +
+      "rmB\030ApiPushNotificationProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

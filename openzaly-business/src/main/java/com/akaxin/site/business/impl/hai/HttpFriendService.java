@@ -70,8 +70,7 @@ public class HttpFriendService extends AbstractRequest {
 			}
 
 			if (ErrorCode2.SUCCESS.equals(errCode)) {
-				logger.debug("user apply friend notice. to siteUserId={}", siteFriendId);
-				new User2Notice().applyFriendNotice(siteFriendId);
+				new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
 			}
 
 		} catch (Exception e) {

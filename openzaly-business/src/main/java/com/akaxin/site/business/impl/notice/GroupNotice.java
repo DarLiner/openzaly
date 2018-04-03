@@ -45,7 +45,7 @@ import com.google.protobuf.ByteString;
 public class GroupNotice {
 	private static final Logger logger = LoggerFactory.getLogger(GroupNotice.class);
 
-	private IMessageService groupMsgService = new ImMessageService();
+	private IMessageService imService = new ImMessageService();
 
 	/**
 	 * 新用户加入了群聊 <br>
@@ -105,7 +105,7 @@ public class GroupNotice {
 		command.setSiteGroupId(siteGroupId);
 		command.setParams(request.toByteArray());
 		logger.debug("group msg notice command={}", command.toString());
-		groupMsgService.execute(command);
+		imService.execute(command);
 	}
 
 	private String buildGroupMsgId(String siteUserid) {
