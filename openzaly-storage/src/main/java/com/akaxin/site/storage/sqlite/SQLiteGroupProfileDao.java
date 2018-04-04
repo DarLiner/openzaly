@@ -99,7 +99,7 @@ public class SQLiteGroupProfileDao {
 		int result = preStatement.executeUpdate();
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getGroupId());
-		return bean;
+		return result > 0 ? bean : null;
 	}
 
 	public GroupProfileBean queryGroupProfile(String siteGroupId) throws SQLException {

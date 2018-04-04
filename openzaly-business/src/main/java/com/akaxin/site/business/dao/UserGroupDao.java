@@ -134,17 +134,21 @@ public class UserGroupDao {
 			// 1.创建群资料
 			bean = groupDao.addGroupProfile(bean);
 			// 2.添加群成员入库
-			for (String memberId : userIds) {
-				int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
-				if (createUserId.equals(memberId)) {
-					status = GroupProto.GroupMemberRole.OWNER_VALUE;
+			if (bean != null) {
+				for (String memberId : userIds) {
+					int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
+					if (createUserId.equals(memberId)) {
+						status = GroupProto.GroupMemberRole.OWNER_VALUE;
+					}
+					groupDao.addGroupMember(memberId, bean.getGroupId(), status);
 				}
-				groupDao.addGroupMember(memberId, bean.getGroupId(), status);
+				// 3.群消息中发送通知
+				new GroupNotice().addGroupMemberNotice(createUserId, bean.getGroupId(), userIds);
 			}
-			// 3.群消息中发送通知
-			new GroupNotice().addGroupMemberNotice(createUserId, bean.getGroupId(), userIds);
-
 		} catch (Exception e) {
+			// 事务回滚，删除操作
+			// 删除1.群资料
+			// 删除2.群成员
 			logger.error("create group error.", e);
 		}
 		return bean;
