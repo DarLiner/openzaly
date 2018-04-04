@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.site.storage.api.IFriendApplyDao;
 import com.akaxin.site.storage.api.IUserFriendDao;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
@@ -77,15 +78,27 @@ public class UserFriendDao {
 				if (userFriendDao.queryRelation(siteFriendId, siteUserId) != RELATION_NUMBERo) {
 					result = userFriendDao.saveRelation(siteFriendId, siteUserId, RELATION_NUMBERo) && result;
 				}
+			} else {
+				// 拒绝，也同样返回true
+				result = true;
 			}
-			if (result = true) {
-				result = friendApplyDao.deleteApply(siteFriendId, siteUserId);
-				result = friendApplyDao.deleteApply(siteUserId, siteFriendId);
-			}
+
 		} catch (Exception e) {
 			logger.error("agree friend apply error.", e);
 		}
 		return result;
+	}
+
+	public ApplyFriendBean agreeApplyWithClear(String siteUserId, String siteFriendId) {
+		ApplyFriendBean bean = null;
+		try {
+			bean = friendApplyDao.getApplyInfo(siteUserId, siteFriendId);
+			friendApplyDao.deleteApply(siteFriendId, siteUserId);
+			friendApplyDao.deleteApply(siteUserId, siteFriendId);
+		} catch (SQLException e) {
+			logger.error("get apply friend info error", e);
+		}
+		return bean;
 	}
 
 	public UserProto.UserRelation getUserRelation(String siteUserId, String siteFriendId) {

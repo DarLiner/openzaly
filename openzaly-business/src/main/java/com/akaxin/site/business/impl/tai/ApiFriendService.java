@@ -42,6 +42,7 @@ import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
@@ -180,7 +181,7 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 			if (ErrorCode2.SUCCESS.equals(errCode)) {
-				new User2Notice().applyFriendNotice(siteUserId,siteFriendId);
+				new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
 			}
 
 		} catch (Exception e) {
@@ -274,7 +275,9 @@ public class ApiFriendService extends AbstractRequest {
 				}
 
 				if (ErrorCode2.SUCCESS.equals(errCode) && result) {
-					new User2Notice().addFriendTextMessage(siteUserId, siteFriendId);
+					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
+							siteFriendId);
+					new User2Notice().addFriendTextMessage(applyBean);
 					logger.debug("client={} siteUserId={} add friend notice to siteUserId={}", command.getClientIp(),
 							siteFriendId);
 				}

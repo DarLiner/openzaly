@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.akaxin.site.storage.api.IFriendApplyDao;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.sqlite.SQLiteFriendApplyDao;
 
@@ -50,7 +51,13 @@ public class FriendApplyDaoService implements IFriendApplyDao {
 	}
 
 	@Override
+	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId) throws SQLException {
+		return SQLiteFriendApplyDao.getInstance().getApplyInfo(siteUserId, siteFriendId);
+	}
+
+	@Override
 	public List<ApplyUserBean> getApplyUsers(String siteUserId) throws SQLException {
 		return SQLiteFriendApplyDao.getInstance().queryApplyUsers(siteUserId);
 	}
+
 }

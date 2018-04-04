@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
@@ -104,6 +105,37 @@ public class SQLiteFriendApplyDao {
 
 		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
 		return num;
+	}
+
+	/**
+	 * 
+	 * @param siteUserId
+	 *            被请求者
+	 * @param siteFriendId
+	 *            请求者
+	 * @return
+	 * @throws SQLException
+	 */
+	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT site_user_id,site_friend_id,apply_reason,MAX(apply_time) FROM " + FRIEND_APPLY_TABLE
+				+ " WHERE site_user_id=? AND site_friend_id=?;";
+
+		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preState.setString(1, siteUserId);
+		preState.setString(2, siteFriendId);
+		ResultSet rs = preState.executeQuery();
+		ApplyFriendBean bean = null;
+		if (rs.next()) {
+			bean = new ApplyFriendBean();
+			bean.setSiteUserId(rs.getString(1));
+			bean.setSiteFriendId(rs.getString(2));
+			bean.setApplyInfo(rs.getString(3));
+			bean.setApplyTime(rs.getLong(4));
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, bean, sql, siteUserId, siteFriendId);
+		return bean;
 	}
 
 	/**

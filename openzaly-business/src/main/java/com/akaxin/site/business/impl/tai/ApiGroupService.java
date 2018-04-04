@@ -51,6 +51,7 @@ import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserGroupBean;
+import com.google.common.collect.Lists;
 import com.google.protobuf.ProtocolStringList;
 
 /**
@@ -116,8 +117,9 @@ public class ApiGroupService extends AbstractRequest {
 			ApiGroupCreateProto.ApiGroupCreateRequest request = ApiGroupCreateProto.ApiGroupCreateRequest
 					.parseFrom(command.getParams());
 			String groupName = request.getGroupName();
-			ProtocolStringList groupMemberIds = request.getSiteUserIdsList();
 			String createUserId = command.getSiteUserId();
+			ProtocolStringList groupMembers = request.getSiteUserIdsList();
+			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotEmpty(createUserId) && groupMemberIds != null) {
@@ -338,7 +340,8 @@ public class ApiGroupService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
-			ProtocolStringList addMemberList = request.getUserListList();
+			ProtocolStringList memberList = request.getUserListList();
+			List<String> addMemberList = Lists.newArrayList(memberList);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId) && addMemberList != null) {

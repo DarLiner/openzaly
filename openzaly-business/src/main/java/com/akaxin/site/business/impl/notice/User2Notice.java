@@ -29,6 +29,7 @@ import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.business.constant.NoticeText;
 import com.akaxin.site.message.api.IMessageService;
 import com.akaxin.site.message.service.ImMessageService;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.google.protobuf.ByteString;
 
 public class User2Notice {
@@ -62,12 +63,15 @@ public class User2Notice {
 	 * </pre>
 	 * 
 	 * @param siteUserId
+	 *            接受请求方
 	 * @param siteFriendId
+	 *            发送请求方，注意二者的关系
 	 */
-	public void addFriendTextMessage(String siteUserId, String siteFriendId) {
+	public void addFriendTextMessage(ApplyFriendBean bean) {
 		try {
-			CoreProto.MsgText textMsg = CoreProto.MsgText.newBuilder().setMsgId(buildU2MsgId(siteUserId))
-					.setSiteUserId(siteUserId).setSiteFriendId(siteFriendId)
+			// 给“发送请求方”下发的文本消息
+			CoreProto.MsgText textMsg = CoreProto.MsgText.newBuilder().setMsgId(buildU2MsgId(bean.getSiteUserId()))
+					.setSiteUserId(bean.getSiteUserId()).setSiteFriendId(bean.getSiteFriendId())
 					.setText(ByteString.copyFromUtf8(NoticeText.USER_ADD_FRIEND)).setTime(System.currentTimeMillis())
 					.build();
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
@@ -75,38 +79,44 @@ public class User2Notice {
 
 			Command command = new Command();
 			command.setAction(RequestAction.IM_CTS_MESSAGE.getName());
-			command.setSiteUserId(siteUserId);
-			command.setSiteFriendId(siteFriendId);
+			command.setSiteUserId(bean.getSiteUserId());
+			command.setSiteFriendId(bean.getSiteFriendId());
 			command.setParams(request.toByteArray());
 
 			boolean result = imService.execute(command);
-			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", siteUserId, siteFriendId,
-					result);
+			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", bean.getSiteUserId(),
+					bean.getSiteFriendId(), result);
 		} catch (Exception e) {
-			logger.error(StringHelper.format("send add friend text message error. siteUserId={} siteFriendId={}",
-					siteUserId, siteFriendId), e);
+			logger.error(StringHelper.format("send add friend text message error. bean={}", bean), e);
 		}
 
 		try {
-			CoreProto.MsgText textMsg = CoreProto.MsgText.newBuilder().setMsgId(buildU2MsgId(siteFriendId))
-					.setSiteUserId(siteFriendId).setSiteFriendId(siteUserId)
-					.setText(ByteString.copyFromUtf8(NoticeText.USER_ADD_FRIEND)).setTime(System.currentTimeMillis())
-					.build();
+			// 给“接受请求方”下发消息，文案使用“发送请求方”方添加好友时候使用的文案eg：“我是章三，添加你为好友”
+			String applyText = "我添加了你为好友";// 默认文案
+			long applyTime = System.currentTimeMillis();
+			if (StringUtils.isNotEmpty(bean.getApplyInfo())) {
+				applyText = bean.getApplyInfo();
+			}
+			if (bean.getApplyTime() > 0) {
+				applyTime = bean.getApplyTime();
+			}
+			CoreProto.MsgText textMsg = CoreProto.MsgText.newBuilder().setMsgId(buildU2MsgId(bean.getSiteFriendId()))
+					.setSiteUserId(bean.getSiteFriendId()).setSiteFriendId(bean.getSiteUserId())
+					.setText(ByteString.copyFromUtf8(applyText)).setTime(applyTime).build();
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
 					.setType(MsgType.TEXT).setText(textMsg).build();
 
 			Command command = new Command();
 			command.setAction(RequestAction.IM_CTS_MESSAGE.getName());
-			command.setSiteUserId(siteFriendId);
-			command.setSiteFriendId(siteUserId);
+			command.setSiteUserId(bean.getSiteFriendId());
+			command.setSiteFriendId(bean.getSiteUserId());
 			command.setParams(request.toByteArray());
 
 			boolean result = imService.execute(command);
-			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", siteFriendId, siteUserId,
-					result);
+			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", bean.getSiteFriendId(),
+					bean.getSiteUserId(), result);
 		} catch (Exception e) {
-			logger.error(StringHelper.format("send add friend text message error. siteUserId={} siteFriendId={}",
-					siteFriendId, siteUserId), e);
+			logger.error(StringHelper.format("send add friend text message error. bean={}", bean), e);
 		}
 	}
 
