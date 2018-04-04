@@ -18,7 +18,7 @@ import com.akaxin.site.message.utils.SiteConfigHelper;
  * @since 2018-02-01 14:52:50
  */
 public class ConfigListener {
-	private static final Logger logger = LogCreater.createTimeLogger("siteConfig");
+	private static final Logger logger = LogCreater.createTimeLogger("config");
 
 	static {
 		Executors.newSingleThreadScheduledExecutor().scheduleWithFixedDelay(new Runnable() {
