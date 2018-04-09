@@ -32,6 +32,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class Command {
 	private String siteUserId;
 	private String deviceId;
+	private String globalUserId;
 	private String rety; // request type
 	private String service;
 	private String method;
@@ -69,6 +70,14 @@ public class Command {
 
 	public void setSiteUserId(String siteUserId) {
 		this.siteUserId = siteUserId;
+	}
+
+	public String getGlobalUserId() {
+		return globalUserId;
+	}
+
+	public void setGlobalUserId(String globalUserId) {
+		this.globalUserId = globalUserId;
 	}
 
 	public String getRety() {
