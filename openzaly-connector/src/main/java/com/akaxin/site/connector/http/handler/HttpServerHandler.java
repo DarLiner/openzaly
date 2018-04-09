@@ -122,6 +122,12 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				httpByteBuf.readBytes(contentBytes);
 				httpByteBuf.release();
 
+				logger.debug("{} http request IP={} pluginId={}", AkxProject.PLN, clientIp, sitePluginId);
+
+				if (StringUtils.isEmpty(sitePluginId)) {
+					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, clientIp, sitePluginId);
+				}
+
 				// 查询扩展的auth——key
 				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
 				if (StringUtils.isNotEmpty(authKey)) {
