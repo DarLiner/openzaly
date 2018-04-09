@@ -23,6 +23,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.site.business.impl.notice.GroupNotice;
 import com.akaxin.site.storage.api.IGroupDao;
@@ -71,10 +72,10 @@ public class UserGroupDao {
 		return null;
 	}
 
-	public List<SimpleGroupBean> getUserGroups(String userId) {
+	public List<SimpleGroupBean> getUserGroups(String siteUserId) {
 		List<SimpleGroupBean> goupList = new ArrayList<SimpleGroupBean>();
 		try {
-			goupList = groupDao.getUserGroups(userId);
+			goupList = groupDao.getUserGroups(siteUserId);
 		} catch (Exception e) {
 			logger.error("get user group list error.", e);
 		}
@@ -186,6 +187,15 @@ public class UserGroupDao {
 		return profileBean;
 	}
 
+	public int getGroupStatus(String siteGroupId) {
+		try {
+			return groupDao.getGroupStatus(siteGroupId);
+		} catch (SQLException e) {
+			logger.error(StringHelper.format("get group={} status error", siteGroupId), e);
+		}
+		return 0;// 默认不可用的群组
+	}
+
 	public boolean updateGroupProfile(GroupProfileBean gprofileBean) {
 		int result = 0;
 		try {
@@ -200,8 +210,8 @@ public class UserGroupDao {
 		int result = 0;
 		try {
 			result = groupDao.updateGroupIGC(bean);
-		} catch (SQLException e) {
-			logger.error("update group profile error.");
+		} catch (Exception e) {
+			logger.error(StringHelper.format("update group profile error.bean={}", bean), e);
 		}
 		return result > 0;
 	}
@@ -210,7 +220,7 @@ public class UserGroupDao {
 		try {
 			return groupDao.deleteGroupProfile(groupId);
 		} catch (Exception e) {
-			logger.error("delete group error.", e);
+			logger.error("delete group error,groupId=" + groupId, e);
 		}
 		return false;
 	}

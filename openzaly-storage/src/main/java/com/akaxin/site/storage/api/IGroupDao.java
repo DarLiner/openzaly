@@ -32,6 +32,8 @@ public interface IGroupDao {
 
 	public GroupProfileBean querySimpleGroupProfile(String groupId) throws SQLException;
 
+	public int getGroupStatus(String groupId) throws SQLException;
+
 	public List<String> getUserGroupsId(String userId) throws SQLException;
 
 	public List<SimpleGroupBean> getUserGroups(String userId) throws SQLException;

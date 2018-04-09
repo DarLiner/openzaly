@@ -150,6 +150,33 @@ public class SQLiteGroupProfileDao {
 		return profileBean;
 	}
 
+	/**
+	 * <pre>
+	 * status = 0:删除的群组
+	 * status = 1:正常的群
+	 * </pre>
+	 * 
+	 * @param siteGroupId
+	 * @return
+	 * @throws SQLException
+	 */
+	public int queryGroupStatus(String siteGroupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT group_status FROM " + GROUP_PROFILE_TABLE + " WHERE site_group_id=?;";
+		int result = 0;
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteGroupId);
+		ResultSet rs = preStatement.executeQuery();
+
+		if (rs.next()) {
+			result = rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteGroupId);
+		return result;
+	}
+
 	public int updateGroupProfile(GroupProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + GROUP_PROFILE_TABLE

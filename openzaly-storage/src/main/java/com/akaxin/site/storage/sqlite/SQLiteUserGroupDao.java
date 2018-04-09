@@ -95,8 +95,8 @@ public class SQLiteUserGroupDao {
 		preStatement.setLong(4, System.currentTimeMillis());
 		int result = preStatement.executeUpdate();
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, result, sql + siteUserId + "," + groupId + "," + status);
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, groupId,
+				GroupProto.GroupMemberRole.OWNER_VALUE);
 		return result > 0;
 	}
 
@@ -118,20 +118,16 @@ public class SQLiteUserGroupDao {
 			bean.setGroupId(rs.getString(1));
 			bean.setGroupName(rs.getString(2));
 			bean.setGroupPhoto(rs.getString(3));
-
 			groupList.add(bean);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, groupList.toString(), sql + userId + "," + userId);
-
+		LogUtils.dbDebugLog(logger, startTime, groupList, sql, userId);
 		return groupList;
 	}
 
 	public List<String> queryUserGroupsId(String userId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<String> groupsIdList = new ArrayList<String>();
-
 		String sql = "SELECT site_group_id FROM site_user_group WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -144,17 +140,15 @@ public class SQLiteUserGroupDao {
 			groupsIdList.add(groupId);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, groupsIdList.toString(), sql + userId + "," + userId);
-
+		LogUtils.dbDebugLog(logger, startTime, groupsIdList.toString(), sql, userId);
 		return groupsIdList;
 	}
 
 	public List<String> queryGroupMembersId(String groupId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<String> userIdList = new ArrayList<String>();
-
 		String sql = "SELECT DISTINCT site_user_id FROM " + USER_GROUP_TABLE + " WHERE site_group_id=?;";
+
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, groupId);
 
@@ -164,9 +158,7 @@ public class SQLiteUserGroupDao {
 			userIdList.add(userId);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, userIdList.toString(), sql + "," + groupId);
-
+		LogUtils.dbDebugLog(logger, startTime, userIdList.toString(), sql, groupId);
 		return userIdList;
 	}
 
@@ -192,8 +184,7 @@ public class SQLiteUserGroupDao {
 			membersList.add(member);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, membersList.toString(), sql + "," + groupId);
+		LogUtils.dbDebugLog(logger, startTime, membersList.toString(), sql, groupId, startNum, pageSize);
 		return membersList;
 	}
 
@@ -220,8 +211,7 @@ public class SQLiteUserGroupDao {
 			membersList.add(member);
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, membersList.toString(), sql + "," + groupId);
+		LogUtils.dbDebugLog(logger, startTime, membersList.toString(), sql, groupId, startNum, pageSize);
 		return membersList;
 	}
 
@@ -257,9 +247,8 @@ public class SQLiteUserGroupDao {
 			userBean.setUserPhoto(rs.getString(3));
 			userList.add(userBean);
 		}
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, userList.toString(),
-				sql + "," + groupId + "," + startNum + "," + pageSize);
+
+		LogUtils.dbDebugLog(logger, startTime, userList, sql, siteUserId, groupId, startNum, pageSize);
 		return userList;
 	}
 
@@ -279,8 +268,7 @@ public class SQLiteUserGroupDao {
 			member.setUserRole(rs.getInt(2));
 		}
 
-		long endTime = System.currentTimeMillis();
-		LogUtils.dbDebugLog(logger, startTime, member.toString(), sql + siteUserId + "," + groupId);
+		LogUtils.dbDebugLog(logger, startTime, member.toString(), sql, siteUserId, groupId);
 		return member;
 	}
 
@@ -301,7 +289,7 @@ public class SQLiteUserGroupDao {
 				logger.error("delete groupId={} memberUserId={} error", groupId, siteUserId);
 			}
 		}
-		
+
 		LogUtils.dbDebugLog(logger, startTime, userIds.size(), sql);
 		return result >= userIds.size();
 	}

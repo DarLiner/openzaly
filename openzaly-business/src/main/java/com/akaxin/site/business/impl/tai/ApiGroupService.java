@@ -25,6 +25,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.exceptions.ZalyException;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;
@@ -84,11 +85,16 @@ public class ApiGroupService extends AbstractRequest {
 				ApiGroupListProto.ApiGroupListResponse.Builder responseBuilder = ApiGroupListProto.ApiGroupListResponse
 						.newBuilder();
 				for (SimpleGroupBean groupBean : groupBeanList) {
-					GroupProto.SimpleGroupProfile groupProfile = GroupProto.SimpleGroupProfile.newBuilder()
-							.setGroupId(String.valueOf(groupBean.getGroupId()))
-							.setGroupName(String.valueOf(groupBean.getGroupName()))
-							.setGroupIcon(String.valueOf(groupBean.getGroupPhoto())).build();
-					responseBuilder.addList(groupProfile);
+					GroupProto.SimpleGroupProfile.Builder groupProfileBuilder = GroupProto.SimpleGroupProfile
+							.newBuilder();
+					groupProfileBuilder.setGroupId(groupBean.getGroupId());
+					if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
+						groupProfileBuilder.setGroupName(groupBean.getGroupName());
+					}
+					if (StringUtils.isNotEmpty(groupBean.getGroupPhoto())) {
+						groupProfileBuilder.setGroupIcon(groupBean.getGroupPhoto());
+					}
+					responseBuilder.addList(groupProfileBuilder.build());
 				}
 				ApiGroupListProto.ApiGroupListResponse response = responseBuilder.build();
 				commandResponse.setParams(response.toByteArray());
@@ -116,49 +122,60 @@ public class ApiGroupService extends AbstractRequest {
 		try {
 			ApiGroupCreateProto.ApiGroupCreateRequest request = ApiGroupCreateProto.ApiGroupCreateRequest
 					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();// group owner
 			String groupName = request.getGroupName();
-			String createUserId = command.getSiteUserId();
 			ProtocolStringList groupMembers = request.getSiteUserIdsList();
 			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotEmpty(createUserId) && groupMemberIds != null) {
-				if (groupMemberIds.size() >= 3) {
-					if (!groupMemberIds.contains(createUserId)) {
-						groupMemberIds.add(createUserId);
-					}
-					GroupProfileBean groupBean = UserGroupDao.getInstance().createGroup(createUserId, groupName,
-							groupMemberIds);
-
-					if (StringUtils.isNotEmpty(groupBean.getGroupId())) {
-						GroupProto.GroupProfile.Builder groupProfileBuilder = GroupProto.GroupProfile.newBuilder();
-
-						groupProfileBuilder.setId(String.valueOf(groupBean.getGroupId()));
-						groupProfileBuilder.setName(String.valueOf(groupBean.getGroupName()));
-						groupProfileBuilder.setIcon(String.valueOf(groupBean.getGroupPhoto()));
-
-						ApiGroupCreateProto.ApiGroupCreateResponse response = ApiGroupCreateProto.ApiGroupCreateResponse
-								.newBuilder().setProfile(groupProfileBuilder.build()).build();
-						commandResponse.setParams(response.toByteArray());
-						errCode = ErrorCode2.SUCCESS;
-					}
-				} else {
-					errCode = ErrorCode2.ERROR_GROUP_MEMBERLESS3;
+			if (StringUtils.isNotEmpty(siteUserId) && groupMemberIds != null) {
+				if (groupMemberIds.size() < 3) {
+					throw new ZalyException(ErrorCode2.ERROR_GROUP_MEMBERLESS3);
 				}
+
+				if (!groupMemberIds.contains(siteUserId)) {
+					groupMemberIds.add(siteUserId);
+				}
+
+				GroupProfileBean groupBean = UserGroupDao.getInstance().createGroup(siteUserId, groupName,
+						groupMemberIds);
+				if (groupBean != null && StringUtils.isNotEmpty(groupBean.getGroupId())) {
+					GroupProto.GroupProfile.Builder groupProfileBuilder = GroupProto.GroupProfile.newBuilder();
+					groupProfileBuilder.setId(groupBean.getGroupId());
+					if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
+						groupProfileBuilder.setName(groupBean.getGroupName());
+					}
+					if (StringUtils.isNotEmpty(groupBean.getGroupPhoto())) {
+						groupProfileBuilder.setIcon(String.valueOf(groupBean.getGroupPhoto()));
+					}
+
+					ApiGroupCreateProto.ApiGroupCreateResponse response = ApiGroupCreateProto.ApiGroupCreateResponse
+							.newBuilder().setProfile(groupProfileBuilder.build()).build();
+					commandResponse.setParams(response.toByteArray());
+					errCode = ErrorCode2.SUCCESS;
+				} else {
+					errCode = ErrorCode2.ERROR_GROUP_WHEN_CREATE;
+				}
+
 			} else {
 				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
 
 	/**
+	 * <pre>
 	 * 用户删除群，此时需要验证用户是否具有权限 <br>
-	 * 目前：具有权限的仅为群的创建者 <br>
-	 * 群主／管理员权限限制
+	 * 目前：具有权限的仅为群的创建者 (群主)
+	 * </pre>
 	 * 
 	 * @param command
 	 * @return
@@ -173,7 +190,12 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
+			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
+
+				if (!checkGroupStatus(groupId)) {
+					throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				}
+
 				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
 				if (siteUserId.equals(groupMasterId)) {
 					if (UserGroupDao.getInstance().deleteGroup(groupId)) {
@@ -182,9 +204,15 @@ public class ApiGroupService extends AbstractRequest {
 				} else {
 					errCode = ErrorCode2.ERROR_NOPERMISSION;
 				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -206,62 +234,66 @@ public class ApiGroupService extends AbstractRequest {
 		try {
 			ApiGroupProfileProto.ApiGroupProfileRequest request = ApiGroupProfileProto.ApiGroupProfileRequest
 					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
 			String groupId = request.getGroupId();
 			int pageNum = 1;
 			int pageSize = GroupConfig.GROUP_MIN_MEMBER_COUNT;
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(groupId)) {
-				GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
-
-				if (groupBean != null && StringUtils.isNotBlank(groupBean.getGroupId())) {
-					SimpleUserBean ownerProfileBean = UserProfileDao.getInstance()
-							.getSimpleProfileById(groupBean.getCreateUserId());
-
-					logger.debug("get groupId={},groupOwner={}", groupId, ownerProfileBean.toString());
-
-					int groupMembersCount = UserGroupDao.getInstance().getGroupMemberCount(groupId);
-
-					logger.debug("get groupId={},groupMembers={}", groupId, groupMembersCount);
-
-					List<GroupMemberBean> groupMemberList = UserGroupDao.getInstance().getGroupMemberList(groupId,
-							pageNum, pageSize);
-
-					UserProto.UserProfile ownerProfile = UserProto.UserProfile.newBuilder()
-							.setSiteUserId(String.valueOf(ownerProfileBean.getUserId()))
-							.setUserPhoto(String.valueOf(ownerProfileBean.getUserPhoto()))
-							.setUserName(String.valueOf(ownerProfileBean.getUserName())).build();
-					GroupProto.GroupProfile groupProfile = GroupProto.GroupProfile.newBuilder()
-							.setId(groupBean.getGroupId()).setName(String.valueOf(groupBean.getGroupName()))
-							.setIcon(String.valueOf(groupBean.getGroupPhoto())).build();
-
-					ApiGroupProfileProto.ApiGroupProfileResponse.Builder responseBuilder = ApiGroupProfileProto.ApiGroupProfileResponse
-							.newBuilder();
-					responseBuilder.setOwner(ownerProfile);
-					responseBuilder.setProfile(groupProfile);
-					responseBuilder.setGroupMemberCount(groupMembersCount);
-
-					for (GroupMemberBean memberBean : groupMemberList) {
-						UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
-								.setSiteUserId(String.valueOf(memberBean.getUserId()))
-								.setUserPhoto(String.valueOf(memberBean.getUserPhoto()))
-								.setUserName(String.valueOf(memberBean.getUserName())).build();
-						GroupProto.GroupMemberProfile groupMemberProfile = GroupProto.GroupMemberProfile.newBuilder()
-								.setProfile(memberProfile).build();
-						responseBuilder.addGroupLastestMember(groupMemberProfile);
-					}
-					// 是否可以邀请群聊（除了群主以外）
-					responseBuilder.setCloseInviteGroupChat(groupBean.isCloseInviteGroupChat());
-					ApiGroupProfileProto.ApiGroupProfileResponse response = responseBuilder.build();
-
-					commandResponse.setParams(response.toByteArray());
-					errCode = ErrorCode2.SUCCESS;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
+
+			GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
+			if (groupBean != null && StringUtils.isNotBlank(groupBean.getGroupId())) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_QUERY_PROFILE);
+			}
+
+			SimpleUserBean ownerProfileBean = UserProfileDao.getInstance()
+					.getSimpleProfileById(groupBean.getCreateUserId());
+			logger.debug("get groupId={},groupOwner={}", groupId, ownerProfileBean.toString());
+
+			int groupMembersCount = UserGroupDao.getInstance().getGroupMemberCount(groupId);
+			logger.debug("get groupId={},groupMembers={}", groupId, groupMembersCount);
+
+			List<GroupMemberBean> groupMemberList = UserGroupDao.getInstance().getGroupMemberList(groupId, pageNum,
+					pageSize);
+
+			UserProto.UserProfile ownerProfile = UserProto.UserProfile.newBuilder()
+					.setSiteUserId(String.valueOf(ownerProfileBean.getUserId()))
+					.setUserPhoto(String.valueOf(ownerProfileBean.getUserPhoto()))
+					.setUserName(String.valueOf(ownerProfileBean.getUserName())).build();
+			GroupProto.GroupProfile groupProfile = GroupProto.GroupProfile.newBuilder().setId(groupBean.getGroupId())
+					.setName(String.valueOf(groupBean.getGroupName()))
+					.setIcon(String.valueOf(groupBean.getGroupPhoto())).build();
+
+			ApiGroupProfileProto.ApiGroupProfileResponse.Builder responseBuilder = ApiGroupProfileProto.ApiGroupProfileResponse
+					.newBuilder();
+			responseBuilder.setOwner(ownerProfile);
+			responseBuilder.setProfile(groupProfile);
+			responseBuilder.setGroupMemberCount(groupMembersCount);
+
+			for (GroupMemberBean memberBean : groupMemberList) {
+				UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
+						.setSiteUserId(String.valueOf(memberBean.getUserId()))
+						.setUserPhoto(String.valueOf(memberBean.getUserPhoto()))
+						.setUserName(String.valueOf(memberBean.getUserName())).build();
+				GroupProto.GroupMemberProfile groupMemberProfile = GroupProto.GroupMemberProfile.newBuilder()
+						.setProfile(memberProfile).build();
+				responseBuilder.addGroupLastestMember(groupMemberProfile);
+			}
+			// 是否可以邀请群聊（除了群主以外）
+			responseBuilder.setCloseInviteGroupChat(groupBean.isCloseInviteGroupChat());
+			ApiGroupProfileProto.ApiGroupProfileResponse response = responseBuilder.build();
+
+			commandResponse.setParams(response.toByteArray());
+			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -291,35 +323,44 @@ public class ApiGroupService extends AbstractRequest {
 			boolean closeInviteGroupChat = request.getCloseInviteGroupChat();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
-				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
+			if (StringUtils.isAnyEmpty(siteUserId, groupId, groupName)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
 
-				if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(groupMasterId)) {
-					GroupProfileBean gprofileBean = new GroupProfileBean();
-					gprofileBean.setGroupId(groupId);
-					gprofileBean.setGroupName(groupName);
-					gprofileBean.setGroupPhoto(photoId);
-					gprofileBean.setGroupNotice(groupNotice);
-					gprofileBean.setCreateUserId(newGroupOwner);
-					gprofileBean.setCloseInviteGroupChat(closeInviteGroupChat);
+			if (!checkGroupStatus(groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+			}
 
-					if (StringUtils.isNotEmpty(groupName)) {
-						if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
-							errCode = ErrorCode2.SUCCESS;
-						}
-					} else {
-						if (UserGroupDao.getInstance().updateGroupIGC(gprofileBean)) {
-							errCode = ErrorCode2.SUCCESS;
-						}
+			// 判断是否具有权限，群主拥有权限
+			String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
+			if (siteUserId.equals(groupMasterId)) {
+				GroupProfileBean gprofileBean = new GroupProfileBean();
+				gprofileBean.setGroupId(groupId);
+				gprofileBean.setGroupName(groupName);
+				gprofileBean.setGroupPhoto(photoId);
+				gprofileBean.setGroupNotice(groupNotice);
+				gprofileBean.setCreateUserId(newGroupOwner);
+				gprofileBean.setCloseInviteGroupChat(closeInviteGroupChat);
+
+				if (StringUtils.isNotEmpty(groupName)) {
+					if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
+						errCode = ErrorCode2.SUCCESS;
 					}
 				} else {
-					errCode = ErrorCode2.ERROR_NOPERMISSION;
+					if (UserGroupDao.getInstance().updateGroupIGC(gprofileBean)) {
+						errCode = ErrorCode2.SUCCESS;
+					}
 				}
 			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_NOPERMISSION;
 			}
+
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -344,25 +385,36 @@ public class ApiGroupService extends AbstractRequest {
 			List<String> addMemberList = Lists.newArrayList(memberList);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId) && addMemberList != null) {
-				GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
-				// 先校验权限
-				if (checkAddMemberPermission(siteUserId, bean)) {
-					int currentSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
-					int maxSize = SiteConfig.getMaxGroupMemberSize();
-					if (currentSize + addMemberList.size() <= maxSize) {
-						if (UserGroupDao.getInstance().addGroupMember(siteUserId, groupId, addMemberList)) {
-							errCode = ErrorCode2.SUCCESS;
-						}
-					} else {
-						errCode = ErrorCode2.ERROR_GROUP_MAXMEMBERCOUNT;
+			if (StringUtils.isAnyEmpty(siteUserId, groupId) || addMemberList == null) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+			// 群是否存在
+			if (!checkGroupStatus(groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+			}
+
+			GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
+			// 校验权限
+			if (checkAddMemberPermission(siteUserId, bean)) {
+				int currentSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
+				int maxSize = SiteConfig.getMaxGroupMemberSize();
+				if (currentSize + addMemberList.size() <= maxSize) {
+					if (UserGroupDao.getInstance().addGroupMember(siteUserId, groupId, addMemberList)) {
+						errCode = ErrorCode2.SUCCESS;
 					}
 				} else {
-					errCode = ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE;
+					errCode = ErrorCode2.ERROR_GROUP_MAXMEMBERCOUNT;
 				}
+			} else {
+				errCode = ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE;
 			}
+
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -410,21 +462,29 @@ public class ApiGroupService extends AbstractRequest {
 			ProtocolStringList deleteMemberIds = request.getSiteUserIdList();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNoneBlank(groupId) && deleteMemberIds != null) {
-				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
+			if (StringUtils.isAnyBlank(siteUserId, groupId) || deleteMemberIds == null) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
 
-				if (siteUserId.equals(groupMasterId)) {
-					if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
-						errCode = ErrorCode2.SUCCESS;
-					}
-				} else {
-					errCode = ErrorCode2.ERROR_NOPERMISSION;
+			if (!checkGroupStatus(groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+			}
+
+			String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
+			if (siteUserId.equals(groupMasterId)) {
+				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
+					errCode = ErrorCode2.SUCCESS;
 				}
 			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_NOPERMISSION;
 			}
+
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -447,7 +507,7 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNotBlank(groupId)) {
+			if (StringUtils.isAnyBlank(siteUserId, groupId)) {
 				if (UserGroupDao.getInstance().quitGroup(groupId, siteUserId)) {
 					errCode = ErrorCode2.SUCCESS;
 				}
@@ -474,33 +534,42 @@ public class ApiGroupService extends AbstractRequest {
 		try {
 			ApiGroupMembersProto.ApiGroupMembersRequest request = ApiGroupMembersProto.ApiGroupMembersRequest
 					.parseFrom(command.getParams());
-			String groupId = request.getGroupId();
+			String siteUserId = command.getSiteUserId();
+			String siteGroupId = request.getGroupId();
 			int pageNum = 1;
 			int pageSize = GroupConfig.GROUP_MAX_MEMBER_COUNT;
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(groupId)) {
-				List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(groupId, pageNum,
-						pageSize);
-
-				ApiGroupMembersProto.ApiGroupMembersResponse.Builder responseBuilder = ApiGroupMembersProto.ApiGroupMembersResponse
-						.newBuilder();
-				for (GroupMemberBean member : memberList) {
-					GroupProto.GroupMemberRole memberRole = GroupProto.GroupMemberRole.forNumber(member.getUserRole());
-					UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
-							.setSiteUserId(member.getUserId()).setUserName(String.valueOf(member.getUserName()))
-							.setUserPhoto(String.valueOf(member.getUserPhoto())).build();
-					GroupProto.GroupMemberProfile groupMember = GroupProto.GroupMemberProfile.newBuilder()
-							.setRole(memberRole).setProfile(memberProfile).build();
-					responseBuilder.addList(groupMember);
-				}
-				commandResponse.setParams(responseBuilder.build().toByteArray());
-				errCode = ErrorCode2.SUCCESS;
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+			if (StringUtils.isAnyEmpty(siteUserId, siteGroupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
+
+			if (!checkGroupStatus(siteGroupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+			}
+
+			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(siteGroupId, pageNum,
+					pageSize);
+			ApiGroupMembersProto.ApiGroupMembersResponse.Builder responseBuilder = ApiGroupMembersProto.ApiGroupMembersResponse
+					.newBuilder();
+			for (GroupMemberBean member : memberList) {
+				GroupProto.GroupMemberRole memberRole = GroupProto.GroupMemberRole.forNumber(member.getUserRole());
+				UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
+						.setSiteUserId(member.getUserId()).setUserName(String.valueOf(member.getUserName()))
+						.setUserPhoto(String.valueOf(member.getUserPhoto())).build();
+				GroupProto.GroupMemberProfile groupMember = GroupProto.GroupMemberProfile.newBuilder()
+						.setRole(memberRole).setProfile(memberProfile).build();
+				responseBuilder.addList(groupMember);
+			}
+			commandResponse.setParams(responseBuilder.build().toByteArray());
+			errCode = ErrorCode2.SUCCESS;
+
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -522,9 +591,17 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-			LogUtils.requestDebugLog(logger, command, request.toString());
 			if (pageNum == 0 && pageSize == 0) {
 				pageSize = 100;
+			}
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkGroupStatus(groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
 			}
 
 			List<SimpleUserBean> userFriendList = UserGroupDao.getInstance().getUserFriendNonGroupMemberList(siteUserId,
@@ -541,7 +618,11 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.SUCCESS;
 
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -553,6 +634,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * @param command
 	 * @return
 	 */
+	@Deprecated
 	public CommandResponse setting(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR;
@@ -590,6 +672,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * @param command
 	 * @return
 	 */
+	@Deprecated
 	public CommandResponse updateSetting(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR;
@@ -631,22 +714,30 @@ public class ApiGroupService extends AbstractRequest {
 			String siteGroupId = request.getSiteGroupId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNoneEmpty(siteGroupId, siteUserId)) {
-				UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
-				if (bean != null) {
-					ApiGroupSettingProto.ApiGroupSettingResponse response = ApiGroupSettingProto.ApiGroupSettingResponse
-							.newBuilder().setMessageMute(bean.isMute()).build();
-					commandResponse.setParams(response.toByteArray());
-					errCode = ErrorCode2.SUCCESS;
-				} else {
-					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
-				}
+			if (StringUtils.isAnyEmpty(siteUserId, siteGroupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkGroupStatus(siteUserId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+			}
+
+			UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
+			if (bean != null) {
+				ApiGroupSettingProto.ApiGroupSettingResponse response = ApiGroupSettingProto.ApiGroupSettingResponse
+						.newBuilder().setMessageMute(bean.isMute()).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
 			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
 			}
 
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
@@ -669,24 +760,37 @@ public class ApiGroupService extends AbstractRequest {
 			boolean isMute = request.getMessageMute();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
-				UserGroupBean bean = new UserGroupBean();
-				bean.setSiteGroupId(groupId);
-				bean.setMute(isMute);
-				if (UserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean)) {
-					errCode = ErrorCode2.SUCCESS;
-				} else {
-					errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
-				}
+			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkGroupStatus(siteUserId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+			}
+
+			UserGroupBean bean = new UserGroupBean();
+			bean.setSiteGroupId(groupId);
+			bean.setMute(isMute);
+			if (UserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean)) {
+				errCode = ErrorCode2.SUCCESS;
 			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+				errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
 			}
 
 		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
 
+	// 检测群主是否存在
+	private boolean checkGroupStatus(String groupId) {
+		int status = UserGroupDao.getInstance().getGroupStatus(groupId);
+		return status == 1;
+	}
 }

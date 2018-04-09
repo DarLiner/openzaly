@@ -111,6 +111,11 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public int getGroupStatus(String groupId) throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().queryGroupStatus(groupId);
+	}
+
+	@Override
 	public int getGroupMembersCount(String groupId) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().queryGroupMembersCount(groupId);
 	}
