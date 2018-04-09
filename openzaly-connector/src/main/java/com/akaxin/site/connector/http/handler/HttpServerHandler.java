@@ -126,6 +126,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 				if (StringUtils.isEmpty(sitePluginId)) {
 					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, clientIp, sitePluginId);
+					ctx.close();
+					return;
 				}
 
 				// 查询扩展的auth——key
