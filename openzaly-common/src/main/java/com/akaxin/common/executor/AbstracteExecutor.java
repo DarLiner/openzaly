@@ -18,7 +18,7 @@ package com.akaxin.common.executor;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.akaxin.common.chain.IHandler;
+import com.akaxin.common.executor.chain.handler.IHandler;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

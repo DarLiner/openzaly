@@ -15,7 +15,7 @@
  */
 package com.akaxin.common.executor;
 
-import com.akaxin.common.chain.IHandler;
+import com.akaxin.common.executor.chain.handler.IHandler;
 
 /**
  * 定义一个简单统一的执行器

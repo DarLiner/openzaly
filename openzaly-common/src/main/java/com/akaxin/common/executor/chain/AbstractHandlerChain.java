@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.common.chain;
+package com.akaxin.common.executor.chain;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.akaxin.common.executor.chain.handler.IHandler;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

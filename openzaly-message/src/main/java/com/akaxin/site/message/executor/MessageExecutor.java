@@ -15,12 +15,12 @@
  */
 package com.akaxin.site.message.executor;
 
-import com.akaxin.common.chain.AbstractHandlerChain;
-import com.akaxin.common.chain.SimpleHandlerChain;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
+import com.akaxin.common.executor.chain.AbstractHandlerChain;
+import com.akaxin.common.executor.chain.SimpleHandlerChain;
 import com.akaxin.site.message.group.handler.GroupDetectionHandler;
 import com.akaxin.site.message.group.handler.GroupMessageImageHandler;
 import com.akaxin.site.message.group.handler.GroupMessageNoticeHandler;

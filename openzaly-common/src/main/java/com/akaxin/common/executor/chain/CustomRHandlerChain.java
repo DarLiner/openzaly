@@ -13,31 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.common.chain;
+package com.akaxin.common.executor.chain;
+
+import com.akaxin.common.executor.chain.handler.IHandler;
 
 /**
- * <pre>
- * 	简单的来说(Chain中每个Handler的返回值)
- * 		返回true，此条消息链才算处理成功，继续执行
- * 		返回false，则消息链终止执行，返回false
- * </pre>
+ * 自定义返回值<R>的handler
  * 
  * @author Sam
  * @since 2017-09.30
  * @param <T>
  */
-public class SimpleHandlerChain<T> extends AbstractHandlerChain<T, Boolean> {
+public class CustomRHandlerChain<T, R> extends AbstractHandlerChain<T, R> {
 
 	@Override
-	public Boolean handle(T t) {
-		// hander.handle(t) == false ，return fasle and break
-		// hander.handle(t) == true ，return true and go on
-		for (IHandler<T, Boolean> handler : getHandlers()) {
-			if (!handler.handle(t)) {
-				return false;
-			}
+	public R handle(T t) {
+
+		for (IHandler<T, R> handler : getHandlers()) {
+			return handler.handle(t);
 		}
-		return true;
+		return null;
 	}
 
 }

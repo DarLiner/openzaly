@@ -15,10 +15,10 @@
  */
 package com.akaxin.site.connector.handler;
 
-import com.akaxin.common.chain.IHandler;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.executor.chain.handler.IHandler;
 
 import io.netty.channel.Channel;
 

@@ -15,7 +15,7 @@
  */
 package com.akaxin.site.message.notice.handler;
 
-import com.akaxin.common.chain.IHandler;
+import com.akaxin.common.executor.chain.handler.IHandler;
 
 public abstract class AbstractNoticeHandler<T> implements IHandler<T, Boolean> {
 

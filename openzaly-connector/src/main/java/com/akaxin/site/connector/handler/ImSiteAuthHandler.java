@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.chain.MethodReflectHandler;
 import com.akaxin.common.channel.ChannelManager;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.channel.ChannelWriter;
@@ -28,6 +27,7 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.executor.chain.handler.MethodReflectHandler;
 import com.akaxin.common.utils.ServerAddressUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.site.ImSiteAuthProto;
