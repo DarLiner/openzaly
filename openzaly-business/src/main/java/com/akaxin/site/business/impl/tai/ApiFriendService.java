@@ -50,7 +50,16 @@ import com.akaxin.site.storage.bean.UserProfileBean;
 
 /**
  * <pre>
- * 关于用户好友相关功能处理
+ * 	用户好友相关功能处理
+ * 		1.好友profile资料
+ * 		2.好友列表
+ * 		3.申请好友
+ * 		4.好友申请列表
+ * 		5.好友申请总数
+ * 		6.好友申请结果	（是否同意）
+ * 		7.删除好友
+ * 		8.好友静音状态	
+ * 		9.更新好友静音
  * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -60,7 +69,7 @@ public class ApiFriendService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(ApiFriendService.class);
 
 	/**
-	 * 查询好友的个人资料
+	 * 查询好友的资料信息，点击好友头像查看使用
 	 * 
 	 * @param command
 	 * @return
@@ -108,6 +117,12 @@ public class ApiFriendService extends AbstractRequest {
 		return commandResponse.setErrCode2(errCode);
 	}
 
+	/**
+	 * 获取个人的好友列表，通讯录中使用
+	 * 
+	 * @param command
+	 * @return
+	 */
 	public CommandResponse list(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR;
@@ -147,7 +162,7 @@ public class ApiFriendService extends AbstractRequest {
 	}
 
 	/**
-	 * A请求添加B好友
+	 * 用户好友添加申请
 	 * 
 	 * @param command
 	 * @return
@@ -234,6 +249,12 @@ public class ApiFriendService extends AbstractRequest {
 		return commandResponse.setErrCode2(errCode);
 	}
 
+	/**
+	 * 获取申请用户为好友的申请人数
+	 * 
+	 * @param command
+	 * @return
+	 */
 	public CommandResponse applyCount(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR;
@@ -256,7 +277,7 @@ public class ApiFriendService extends AbstractRequest {
 	}
 
 	/**
-	 * 是否同意用户的好友申请结果
+	 * 是否同意用户的好友申请处理
 	 * 
 	 * @param command
 	 * @return
@@ -296,7 +317,7 @@ public class ApiFriendService extends AbstractRequest {
 	}
 
 	/**
-	 * 用户删除好友列表中的其他用户
+	 * 删除好友
 	 * 
 	 * @param command
 	 * @return
@@ -401,6 +422,12 @@ public class ApiFriendService extends AbstractRequest {
 		return commandResponse.setErrCode2(errCode);
 	}
 
+	/**
+	 * 获取用户对好友的静音（消息免打扰）状态
+	 * 
+	 * @param command
+	 * @return
+	 */
 	public CommandResponse mute(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR;
@@ -428,7 +455,7 @@ public class ApiFriendService extends AbstractRequest {
 	}
 
 	/**
-	 * 对用户设置消息免打扰功能
+	 * 对好友设置静音（消息免打扰）状态
 	 * 
 	 * @param command
 	 * @return
