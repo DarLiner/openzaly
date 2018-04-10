@@ -15,12 +15,12 @@
  */
 package com.akaxin.common.constant;
 
-public interface ErrorCode {
-	String SUCCESS = "success";
-	String ERROR = "error.alter";
+public interface IErrorCode {
+	public String getCode();
 
-	String REGISTER_ALTER = "error.register.alert"; // 注册失败，展示注册失败信息
+	public String getInfo();
 
-	String LOGIN_NEED_REGISTER = "error.login.need_register"; // 登陆失败，需要注册
+	public boolean isSuccess();
 
+	public String toString();
 }

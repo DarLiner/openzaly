@@ -26,7 +26,6 @@ import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.constant.ErrorCode;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.utils.ServerAddressUtils;
@@ -78,7 +77,7 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 				.setAction(CommandConst.ACTION_RES);
 		ImSiteHelloProto.ImSiteHelloResponse response = ImSiteHelloProto.ImSiteHelloResponse.newBuilder()
 				.setSiteVersion(CommandConst.SITE_VERSION).build();
-		commandResponse.setErrCode(ErrorCode.SUCCESS);
+		commandResponse.setErrCode2(ErrorCode2.SUCCESS);
 		commandResponse.setParams(response.toByteArray());
 		ChannelWriter.write(channel, commandResponse);
 		return commandResponse;

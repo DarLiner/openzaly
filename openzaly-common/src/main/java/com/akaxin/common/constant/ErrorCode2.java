@@ -26,7 +26,7 @@ package com.akaxin.common.constant;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-02 18:05:31
  */
-public enum ErrorCode2 {
+public enum ErrorCode2 implements IErrorCode {
 	SUCCESS("success", ""), // 操作成功
 
 	ERROR_SYSTEMERROR("error.alter", "系统异常"), //
@@ -91,18 +91,22 @@ public enum ErrorCode2 {
 		this.info = info;
 	}
 
+	@Override
 	public String getCode() {
 		return this.code;
 	}
 
+	@Override
 	public String getInfo() {
 		return this.info;
 	}
 
+	@Override
 	public boolean isSuccess() {
 		return "success".equals(this.code) ? true : false;
 	}
 
+	@Override
 	public String toString() {
 		return "errCode:" + this.code + " errInfo:" + this.info;
 	}

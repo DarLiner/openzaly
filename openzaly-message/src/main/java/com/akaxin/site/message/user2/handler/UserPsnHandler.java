@@ -24,7 +24,7 @@ import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.constant.ErrorCode;
+import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcPsnProto;
 import com.akaxin.site.message.dao.ImUserSessionDao;
@@ -60,7 +60,7 @@ public class UserPsnHandler extends AbstractU2Handler<Command> {
 				.setAction(CommandConst.IM_STC_PSN);
 		ImStcPsnProto.ImStcPsnRequest pshRequest = ImStcPsnProto.ImStcPsnRequest.newBuilder().build();
 		commandResponse.setParams(pshRequest.toByteArray());
-		commandResponse.setErrCode(ErrorCode.SUCCESS);
+		commandResponse.setErrCode2(ErrorCode2.SUCCESS);
 		ChannelWriter.writeByDeviceId(deviceId, commandResponse);
 	}
 
