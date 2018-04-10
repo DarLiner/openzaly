@@ -25,6 +25,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
 import com.akaxin.common.exceptions.ZalyException;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
@@ -73,7 +74,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse list(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupListProto.ApiGroupListRequest request = ApiGroupListProto.ApiGroupListRequest
 					.parseFrom(command.getParams());
@@ -106,7 +107,7 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -118,7 +119,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse create(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupCreateProto.ApiGroupCreateRequest request = ApiGroupCreateProto.ApiGroupCreateRequest
 					.parseFrom(command.getParams());
@@ -168,7 +169,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -182,7 +183,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse delete(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupDeleteProto.ApiGroupDeleteRequest request = ApiGroupDeleteProto.ApiGroupDeleteRequest
 					.parseFrom(command.getParams());
@@ -215,7 +216,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -230,7 +231,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse profile(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupProfileProto.ApiGroupProfileRequest request = ApiGroupProfileProto.ApiGroupProfileRequest
 					.parseFrom(command.getParams());
@@ -296,7 +297,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -308,7 +309,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse updateProfile(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupUpdateProfileProto.ApiGroupUpdateProfileRequest request = ApiGroupUpdateProfileProto.ApiGroupUpdateProfileRequest
 					.parseFrom(command.getParams());
@@ -363,7 +364,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -375,7 +376,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse addMember(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupAddMemberProto.ApiGroupAddMemberRequest request = ApiGroupAddMemberProto.ApiGroupAddMemberRequest
 					.parseFrom(command.getParams());
@@ -417,7 +418,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -453,7 +454,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse deleteMember(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupRemoveMemberProto.ApiGroupRemoveMemberRequest request = ApiGroupRemoveMemberProto.ApiGroupRemoveMemberRequest
 					.parseFrom(command.getParams());
@@ -487,7 +488,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -499,7 +500,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse quit(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupQuitProto.ApiGroupQuitRequest request = ApiGroupQuitProto.ApiGroupQuitRequest
 					.parseFrom(command.getParams());
@@ -518,7 +519,7 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -530,7 +531,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse members(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupMembersProto.ApiGroupMembersRequest request = ApiGroupMembersProto.ApiGroupMembersRequest
 					.parseFrom(command.getParams());
@@ -572,7 +573,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -583,7 +584,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse nonMembers(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupNonMembersProto.ApiGroupNonMembersRequest request = ApiGroupNonMembersProto.ApiGroupNonMembersRequest
 					.parseFrom(command.getParams());
@@ -625,7 +626,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -637,7 +638,7 @@ public class ApiGroupService extends AbstractRequest {
 	@Deprecated
 	public CommandResponse setting(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupSettingProto.ApiGroupSettingRequest request = ApiGroupSettingProto.ApiGroupSettingRequest
 					.parseFrom(command.getParams());
@@ -663,7 +664,7 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -675,7 +676,7 @@ public class ApiGroupService extends AbstractRequest {
 	@Deprecated
 	public CommandResponse updateSetting(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest request = ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest
 					.parseFrom(command.getParams());
@@ -701,12 +702,12 @@ public class ApiGroupService extends AbstractRequest {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	public CommandResponse mute(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupMuteProto.ApiGroupMuteRequest request = ApiGroupMuteProto.ApiGroupMuteRequest
 					.parseFrom(command.getParams());
@@ -740,7 +741,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -751,7 +752,7 @@ public class ApiGroupService extends AbstractRequest {
 	 */
 	public CommandResponse updateMute(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest request = ApiGroupUpdateSettingProto.ApiGroupUpdateSettingRequest
 					.parseFrom(command.getParams());
@@ -785,7 +786,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	// 检测群主是否存在

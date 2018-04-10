@@ -15,7 +15,6 @@
  */
 package com.akaxin.common.exceptions;
 
-import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.IErrorCode;
 
 /**
@@ -31,7 +30,7 @@ public class ZalyException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private IErrorCode errCode;
 
-	public ZalyException(ErrorCode2 errCode) {
+	public ZalyException(IErrorCode errCode) {
 		super(errCode.toString());
 		this.errCode = errCode;
 	}
