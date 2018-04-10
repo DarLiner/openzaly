@@ -21,7 +21,8 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
-import com.akaxin.common.constant.ErrorCode;
+import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.site.business.api.IRequest;
 
 /**
@@ -38,10 +39,10 @@ public class ApiRequestService implements IRequest {
 		try {
 			return ApiServiceFactory.getService(command.getService()).execute(command);
 		} catch (Exception e) {
-			logger.error("api request service error.", e);
+			logger.error(StringHelper.format("api request service error.command={}", command), e);
 		}
 		return new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION).setAction(CommandConst.ACTION_RES)
-				.setErrCode(ErrorCode.ERROR);
+				.setErrCode2(ErrorCode2.ERROR);
 	}
 
 }
