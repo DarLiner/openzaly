@@ -124,11 +124,15 @@ public class ApiFriendService extends AbstractRequest {
 				ApiFriendListProto.ApiFriendListResponse.Builder responseBuilder = ApiFriendListProto.ApiFriendListResponse
 						.newBuilder();
 				for (SimpleUserBean friendBean : friendBeanList) {
-					UserProto.SimpleUserProfile friend = UserProto.SimpleUserProfile.newBuilder()
-							.setSiteUserId(String.valueOf(friendBean.getUserId()))
-							.setUserName(String.valueOf(friendBean.getUserName()))
-							.setUserPhoto(String.valueOf(friendBean.getUserPhoto())).build();
-					responseBuilder.addList(friend);
+					UserProto.SimpleUserProfile.Builder friendBuilder = UserProto.SimpleUserProfile.newBuilder();
+					friendBuilder.setSiteUserId(friendBean.getUserId());
+					if (StringUtils.isNotEmpty(friendBean.getUserName())) {
+						friendBuilder.setUserName(String.valueOf(friendBean.getUserName()));
+					}
+					if (StringUtils.isNotEmpty(friendBean.getUserPhoto())) {
+						friendBuilder.setUserPhoto(String.valueOf(friendBean.getUserPhoto()));
+					}
+					responseBuilder.addList(friendBuilder.build());
 				}
 				commandResponse.setParams(responseBuilder.build().toByteArray());
 				errCode = ErrorCode2.SUCCESS;
