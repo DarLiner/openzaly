@@ -194,7 +194,7 @@ public class ApiGroupService extends AbstractRequest {
 			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
 
 				if (!checkGroupStatus(groupId)) {
-					throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+					throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 				}
 
 				String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
@@ -243,6 +243,10 @@ public class ApiGroupService extends AbstractRequest {
 
 			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkGroupStatus(groupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
@@ -329,7 +333,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			if (!checkGroupStatus(groupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			// 判断是否具有权限，群主拥有权限
@@ -391,7 +395,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			// 群是否存在
 			if (!checkGroupStatus(groupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
@@ -468,7 +472,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			if (!checkGroupStatus(groupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			String groupMasterId = UserGroupDao.getInstance().getGroupMaster(groupId);
@@ -546,7 +550,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			if (!checkGroupStatus(siteGroupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(siteGroupId, pageNum,
@@ -602,7 +606,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			if (!checkGroupStatus(groupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			List<SimpleUserBean> userFriendList = UserGroupDao.getInstance().getUserFriendNonGroupMemberList(siteUserId,
@@ -720,7 +724,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			if (!checkGroupStatus(siteUserId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			UserGroupBean bean = UserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
@@ -766,7 +770,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			if (!checkGroupStatus(siteUserId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_NOTEXISTS);
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			UserGroupBean bean = new UserGroupBean();
