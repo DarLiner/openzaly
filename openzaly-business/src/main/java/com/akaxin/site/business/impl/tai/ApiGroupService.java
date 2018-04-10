@@ -245,7 +245,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 			GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
-			if (groupBean != null && StringUtils.isNotBlank(groupBean.getGroupId())) {
+			if (groupBean == null || StringUtils.isEmpty(groupBean.getGroupId())) {
 				throw new ZalyException(ErrorCode2.ERROR_GROUP_QUERY_PROFILE);
 			}
 
