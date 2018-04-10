@@ -16,6 +16,7 @@
 package com.akaxin.common.exceptions;
 
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
 
 /**
  * 自定义API请求过程中产生的特殊异常
@@ -28,13 +29,14 @@ public class ZalyException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ErrorCode2 errCode;
+	private IErrorCode errCode;
 
 	public ZalyException(ErrorCode2 errCode) {
 		super(errCode.toString());
+		this.errCode = errCode;
 	}
 
-	public ErrorCode2 getErrCode() {
+	public IErrorCode getErrCode() {
 		return this.errCode;
 	}
 }
