@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
@@ -81,13 +82,19 @@ public class SQLiteSiteConfigDao {
 		return result;
 	}
 
-	public int updateSiteConfig(Map<Integer, String> configMap) throws SQLException {
+	public int updateSiteConfig(Map<Integer, String> configMap, boolean isAdmin) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		int result = 0;
 		String sql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		for (Map.Entry<Integer, String> configEntry : configMap.entrySet()) {
+			int configKey = configEntry.getKey();
+
+			if (ConfigProto.ConfigKey.SITE_MANAGER_VALUE == configKey && !isAdmin) {
+				continue;
+			}
+
 			preStatement.setString(1, configEntry.getValue());
 			preStatement.setInt(2, configEntry.getKey());
 			int updateResult = preStatement.executeUpdate();

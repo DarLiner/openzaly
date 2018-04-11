@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.business.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,15 +111,7 @@ public class HttpRequestService implements IRequest {
 	}
 
 	private boolean checkPermissions(String siteUserId) {
-		boolean result = false;
-		try {
-			String siteAdmin = SiteConfig.getSiteAdmin();
-			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(siteAdmin)) {
-				result = true;
-			}
-		} catch (Exception e) {
-			logger.error("plugin chekc permissions error", e);
-		}
+		boolean result = SiteConfig.isSiteManager(siteUserId);
 		logger.debug("check plugin permission result={}", result);
 		return result;
 	}

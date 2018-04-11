@@ -87,12 +87,13 @@ public class Bootstrap {
 			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
 
 			initDataSource(config);
+			addConfigListener();
 			startHttpServer(httpAddress, httpPort);
 			startNettyServer(siteAddress, sitePort);
-			addConfigListener();
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			System.exit(-1);// 直接退出程序
+			logger.error("openzaly-boot exit!!!");
 		}
 	}
 

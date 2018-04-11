@@ -117,7 +117,7 @@ public final class ConfigProto {
     SITE_STATUS_INFO(11),
     /**
      * <pre>
-     *站点管理员
+     *站点超级管理员，唯一一个用户
      * </pre>
      *
      * <code>SITE_ADMIN = 12;</code>
@@ -156,6 +156,10 @@ public final class ConfigProto {
      */
     DB_PATH(16),
     /**
+     * <pre>
+     *PushClientStatus
+     * </pre>
+     *
      * <code>PUSH_CLIENT_STATUS = 17;</code>
      */
     PUSH_CLIENT_STATUS(17),
@@ -167,6 +171,14 @@ public final class ConfigProto {
      * <code>LOG_LEVEL = 18;</code>
      */
     LOG_LEVEL(18),
+    /**
+     * <pre>
+     *站点管理员，多个用户，用“,”隔开
+     * </pre>
+     *
+     * <code>SITE_MANAGER = 19;</code>
+     */
+    SITE_MANAGER(19),
     UNRECOGNIZED(-1),
     ;
 
@@ -268,7 +280,7 @@ public final class ConfigProto {
     public static final int SITE_STATUS_INFO_VALUE = 11;
     /**
      * <pre>
-     *站点管理员
+     *站点超级管理员，唯一一个用户
      * </pre>
      *
      * <code>SITE_ADMIN = 12;</code>
@@ -307,6 +319,10 @@ public final class ConfigProto {
      */
     public static final int DB_PATH_VALUE = 16;
     /**
+     * <pre>
+     *PushClientStatus
+     * </pre>
+     *
      * <code>PUSH_CLIENT_STATUS = 17;</code>
      */
     public static final int PUSH_CLIENT_STATUS_VALUE = 17;
@@ -318,6 +334,14 @@ public final class ConfigProto {
      * <code>LOG_LEVEL = 18;</code>
      */
     public static final int LOG_LEVEL_VALUE = 18;
+    /**
+     * <pre>
+     *站点管理员，多个用户，用“,”隔开
+     * </pre>
+     *
+     * <code>SITE_MANAGER = 19;</code>
+     */
+    public static final int SITE_MANAGER_VALUE = 19;
 
 
     public final int getNumber() {
@@ -357,6 +381,7 @@ public final class ConfigProto {
         case 16: return DB_PATH;
         case 17: return PUSH_CLIENT_STATUS;
         case 18: return LOG_LEVEL;
+        case 19: return SITE_MANAGER;
         default: return null;
       }
     }
@@ -3542,7 +3567,7 @@ public final class ConfigProto {
       "\013 \001(\005\"~\n\016SiteBackConfig\0229\n\013site_config\030\001" +
       " \003(\0132$.core.SiteBackConfig.SiteConfigEnt" +
       "ry\0321\n\017SiteConfigEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005va",
-      "lue\030\002 \001(\t:\0028\001*\352\002\n\tConfigKey\022\020\n\014SITE_ADDR" +
+      "lue\030\002 \001(\t:\0028\001*\374\002\n\tConfigKey\022\020\n\014SITE_ADDR" +
       "ESS\020\000\022\r\n\tSITE_PORT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tS" +
       "ITE_LOGO\020\003\022\020\n\014SITE_VERSION\020\004\022\025\n\021SITE_INT" +
       "RODUCTION\020\005\022\020\n\014REGISTER_WAY\020\006\022\027\n\023GROUP_M" +
@@ -3551,14 +3576,14 @@ public final class ConfigProto {
       "\013\022\016\n\nSITE_ADMIN\020\014\022\025\n\021SITE_HTTP_ADDRESS\020\r" +
       "\022\022\n\016SITE_HTTP_PORT\020\016\022\030\n\024U2_ENCRYPTION_ST" +
       "ATUS\020\017\022\013\n\007DB_PATH\020\020\022\026\n\022PUSH_CLIENT_STATU" +
-      "S\020\021\022\r\n\tLOG_LEVEL\020\022*7\n\013RegisterWay\022\r\n\tANO",
-      "NYMOUS\020\000\022\014\n\010REALNAME\020\001\022\013\n\007USERUIC\020\002*!\n\nS" +
-      "iteStatus\022\t\n\005CLOSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2Encr" +
-      "yptionStatus\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*" +
-      "L\n\020PushClientStatus\022\013\n\007PUSH_NO\020\000\022\024\n\020PUSH" +
-      "_HIDDEN_TEXT\020\001\022\025\n\021PUSH_DISPLAY_TEXT\020\002B$\n" +
-      "\025com.akaxin.proto.coreB\013ConfigProtob\006pro" +
-      "to3"
+      "S\020\021\022\r\n\tLOG_LEVEL\020\022\022\020\n\014SITE_MANAGER\020\023*7\n\013",
+      "RegisterWay\022\r\n\tANONYMOUS\020\000\022\014\n\010REALNAME\020\001" +
+      "\022\013\n\007USERUIC\020\002*!\n\nSiteStatus\022\t\n\005CLOSE\020\000\022\010" +
+      "\n\004OPEN\020\001*/\n\022U2EncryptionStatus\022\014\n\010U2_CLO" +
+      "SE\020\000\022\013\n\007U2_OPEN\020\001*L\n\020PushClientStatus\022\013\n" +
+      "\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUSH" +
+      "_DISPLAY_TEXT\020\002B$\n\025com.akaxin.proto.core" +
+      "B\013ConfigProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

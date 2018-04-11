@@ -29,8 +29,8 @@ import com.akaxin.site.storage.sqlite.SQLiteSiteConfigDao;
 public class SiteConfigDaoService implements ISiteConfigDao {
 
 	@Override
-	public int updateSiteConfig(Map<Integer, String> configMap) throws SQLException {
-		return SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap);
+	public int updateSiteConfig(Map<Integer, String> configMap, boolean isAdmin) throws SQLException {
+		return SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap, isAdmin);
 	}
 
 	@Override

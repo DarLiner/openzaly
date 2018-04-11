@@ -15,13 +15,16 @@
  */
 package com.akaxin.site.business.impl.site;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.constant.ConfigConst;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.business.constant.GroupConfig;
 import com.akaxin.site.business.dao.SiteConfigDao;
@@ -36,13 +39,14 @@ public class SiteConfig {
 	private static final Logger logger = LoggerFactory.getLogger(SiteConfig.class);
 
 	private static volatile Map<Integer, String> configMap;
+	private static volatile Set<String> siteManagerSet = new HashSet<String>();
 
 	private SiteConfig() {
 	}
 
 	public static Map<Integer, String> getConfigMap() {
 		if (configMap == null) {
-			configMap = SiteConfigDao.getInstance().getSiteConfig();
+			configMap = updateConfig();
 		}
 		return configMap;
 	}
@@ -50,6 +54,15 @@ public class SiteConfig {
 	public static Map<Integer, String> updateConfig() {
 		try {
 			configMap = SiteConfigDao.getInstance().getSiteConfig();
+			if (configMap != null) {
+				String siteManageUsers = getConfigMap().get(ConfigProto.ConfigKey.SITE_MANAGER_VALUE);
+				if (StringUtils.isNotEmpty(siteManageUsers)) {
+					String[] adminUsers = siteManageUsers.split(",");
+					List<String> managerList = Arrays.asList(adminUsers);
+					siteManagerSet = new HashSet<String>(managerList);
+					logger.info("update new site manage users={}", siteManagerSet);
+				}
+			}
 		} catch (Exception e) {
 			logger.error("update site config error.", e);
 		}
@@ -110,20 +123,59 @@ public class SiteConfig {
 		return regway == null ? ConfigProto.RegisterWay.ANONYMOUS : regway;
 	}
 
-	public static String getSiteAdmin() {
+	/**
+	 * 获取超级管理员
+	 * 
+	 * @return
+	 */
+	public static String getSiteSuperAdmin() {
 		if (getConfigMap() != null) {
-			return getConfigMap().get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
+			String siteAdmin = getConfigMap().get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
+			return siteAdmin;
 		}
 		return null;
 	}
 
+	/**
+	 * 判断是否为超级管理员
+	 * 
+	 * @param siteUserId
+	 * @return
+	 */
+	public static boolean isSiteSuperAdmin(String siteUserId) {
+		if (StringUtils.isNotEmpty(siteUserId)) {
+			return siteUserId.equals(getSiteSuperAdmin());
+		}
+		return false;
+	}
+
+	/**
+	 * 判断是否为普通管理员
+	 * 
+	 * @param siteUserId
+	 * @return
+	 */
+	public static boolean isSiteManager(String siteUserId) {
+		if (isSiteSuperAdmin(siteUserId)) {
+			return true;
+		}
+		if (siteManagerSet != null && StringUtils.isNotEmpty(siteUserId)) {
+			return siteManagerSet.contains(siteUserId);
+		}
+		return false;
+	}
+
+	/**
+	 * 判断是否存在超级管理员
+	 * 
+	 * @return
+	 */
 	public static boolean hasNoAdminUser() {
 		return !hasAdminUser();
 	}
 
 	public static boolean hasAdminUser() {
-		String adminUser = SiteConfig.getSiteAdmin();
-		if (StringUtils.isNotEmpty(adminUser) && !ConfigConst.DEFAULT_SITE_ADMIN.equals(adminUser)) {
+		if (StringUtils.isNotEmpty(getSiteSuperAdmin())) {
 			return true;
 		}
 		return false;

@@ -66,10 +66,11 @@ public class HttpPluginService extends AbstractRequest {
 			bean.setApiUrl(request.getPlugin().getApiUrl());
 			bean.setAllowedIp(request.getPlugin().getAllowedIp());
 			bean.setPosition(request.getPlugin().getPositionValue());
+			bean.setSort(request.getPlugin().getOrder());
 			bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
 			bean.setPermissionStatus(request.getPlugin().getPermissionStatusValue());
 			bean.setAddTime(System.currentTimeMillis());
-			// 随机生成64位的字符串
+			// 随机生成16位的字符串
 			bean.setAuthKey(StringHelper.generateRandomString(16));
 
 			if (SitePluginDao.getInstance().addPlugin(bean)) {

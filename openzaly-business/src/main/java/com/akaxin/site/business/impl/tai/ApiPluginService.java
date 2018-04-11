@@ -68,13 +68,13 @@ public class ApiPluginService extends AbstractRequest {
 			int pageNumber = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			PluginProto.PluginPosition position = request.getPosition();
-			String siteAdmin = SiteConfig.getSiteAdmin();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
+			pageNumber = Math.max(pageNumber, 1);// 从第一页开始
 			// 先做首帧扩展
 			if (PluginProto.PluginPosition.HOME_PAGE == position) {
 				List<PluginBean> pluginList = null;
-				if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(siteAdmin)) {
+				if (StringUtils.isNotBlank(siteUserId) && SiteConfig.isSiteManager(siteUserId)) {
 					pluginList = SitePluginDao.getInstance().getAdminPluginPageList(pageNumber, pageSize,
 							position.getNumber());
 				} else {

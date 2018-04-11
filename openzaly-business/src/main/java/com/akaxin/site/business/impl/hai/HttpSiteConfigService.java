@@ -81,12 +81,14 @@ public class HttpSiteConfigService extends AbstractRequest {
 		try {
 			HaiSiteUpdateConfigProto.HaiSiteUpdateConfigRequest request = HaiSiteUpdateConfigProto.HaiSiteUpdateConfigRequest
 					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
 			Map<Integer, String> configMap = request.getSiteConfig().getSiteConfigMap();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (configMap != null) {
 				// update db config
-				if (SiteConfigDao.getInstance().updateSiteConfig(configMap)) {
+				boolean isAdmin = SiteConfig.isSiteSuperAdmin(siteUserId);
+				if (SiteConfigDao.getInstance().updateSiteConfig(configMap, isAdmin)) {
 					errorCode = ErrorCode2.SUCCESS;
 					SiteConfig.updateConfig();
 					SiteConfigHelper.updateConfig();

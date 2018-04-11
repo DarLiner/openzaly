@@ -93,7 +93,7 @@ public class SQLiteJDBCManager {
 			} else {
 				dbUrl += "./" + DB_FILE_PATH;
 			}
-//			logger.info("load data base connectionUrl={}", dbUrl);
+			// logger.info("load data base connectionUrl={}", dbUrl);
 			sqlitConnection = DriverManager.getConnection(dbUrl);
 		} catch (ClassNotFoundException e) {
 			logger.error("class not found.", e);
@@ -125,7 +125,7 @@ public class SQLiteJDBCManager {
 					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
 				}
 			}
-			SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap);
+			SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap, true);
 		} catch (SQLException e) {
 			logger.error("init site config error.");
 		}

@@ -55,27 +55,4 @@ public class SiteConfigDao {
 		return null;
 	}
 
-	public boolean updateSiteConfig(Map<Integer, String> configMap) {
-		int count = 0;
-		try {
-			if (configMap != null) {
-				count = siteConfigDao.updateSiteConfig(configMap);
-				if (count == configMap.size()) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			logger.error("update site configmap error.", e);
-		}
-		return false;
-	}
-
-	public boolean updateSiteConfig(int key, String value) {
-		try {
-			return siteConfigDao.updateSiteConfig(key, value) > 0;
-		} catch (SQLException e) {
-			logger.error("update site config error.", e);
-		}
-		return false;
-	}
 }

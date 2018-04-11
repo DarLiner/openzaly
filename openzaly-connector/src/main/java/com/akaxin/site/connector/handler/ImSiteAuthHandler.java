@@ -103,10 +103,9 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 			if (StringUtils.isNoneEmpty(siteUserId, sessionId)) {
 				SimpleAuthBean authSession = SessionManager.getInstance().getAuthSession(sessionId);
 				logger.debug("{} client={} siteUserId={} action={} sessionId={} authSession={}", AkxProject.PLN,
-						command.getClientIp(), siteUserId, RequestAction.IM_SITE_AUTH, sessionId,
-						authSession.toString());
+						command.getClientIp(), siteUserId, RequestAction.IM_SITE_AUTH, sessionId, authSession);
 
-				if (siteUserId.equals(authSession.getSiteUserId())) {
+				if (authSession != null && siteUserId.equals(authSession.getSiteUserId())) {
 					// 1. set user online
 					SessionManager.getInstance().setUserOnline(siteUserId, authSession.getDeviceId());
 					// 2. Mark IM长链接

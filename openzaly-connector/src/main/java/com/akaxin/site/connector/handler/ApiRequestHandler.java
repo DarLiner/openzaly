@@ -79,7 +79,7 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandRes
 					this.tellClientSessionError(channelSession.getChannel());
 					logger.error("{} client={} api request with sessionId is NULL", AkxProject.PLN,
 							command.getClientIp());
-					return null;
+					return customResponse(ErrorCode2.ERROR_SESSION);
 				}
 
 				IUserSessionDao sessionDao = new UserSessionDaoService();
@@ -89,8 +89,8 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandRes
 				if (authBean == null || StringUtils.isAnyEmpty(authBean.getSiteUserId(), authBean.getDeviceId())) {
 					this.tellClientSessionError(channelSession.getChannel());
 					logger.error("{} client={} api session auth fail.authBean={}", AkxProject.PLN,
-							command.getClientIp(), authBean.toString());
-					return null;
+							command.getClientIp(), authBean);
+					return customResponse(ErrorCode2.ERROR_SESSION);
 				}
 
 				command.setSiteUserId(authBean.getSiteUserId());
@@ -103,7 +103,8 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandRes
 			logger.error(StringHelper.format("{} client={} api request error.", AkxProject.PLN, command.getClientIp()),
 					e);
 		}
-		return null;
+
+		return customResponse(ErrorCode2.ERROR);
 	}
 
 	private CommandResponse doApiRequest(final Channel channel, Command command) {
@@ -136,7 +137,7 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandRes
 						channel.close();
 					}
 				});
-//		future.await(timeoutMillis);
+		// future.await(timeoutMillis);
 		return comamndResponse;
 	}
 

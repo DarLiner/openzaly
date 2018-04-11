@@ -55,11 +55,11 @@ public class SiteConfigDao {
 		return null;
 	}
 
-	public boolean updateSiteConfig(Map<Integer, String> configMap) {
+	public boolean updateSiteConfig(Map<Integer, String> configMap, boolean isAdmin) {
 		int count = 0;
 		try {
 			if (configMap != null) {
-				count = siteConfigDao.updateSiteConfig(configMap);
+				count = siteConfigDao.updateSiteConfig(configMap, isAdmin);
 				if (count == configMap.size()) {
 					return true;
 				}
