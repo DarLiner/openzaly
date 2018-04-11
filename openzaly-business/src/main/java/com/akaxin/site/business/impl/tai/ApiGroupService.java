@@ -328,7 +328,7 @@ public class ApiGroupService extends AbstractRequest {
 			boolean closeInviteGroupChat = request.getCloseInviteGroupChat();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isAnyEmpty(siteUserId, groupId, groupName)) {
+			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
 
