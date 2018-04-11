@@ -69,7 +69,7 @@ public class UserFriendDao {
 	}
 
 	public boolean agreeApply(String siteUserId, String siteFriendId, boolean agree) {
-		boolean result = false;
+		boolean result = true;
 		try {
 			if (agree) {
 				if (userFriendDao.queryRelation(siteUserId, siteFriendId) != RELATION_NUMBERo) {
@@ -78,12 +78,9 @@ public class UserFriendDao {
 				if (userFriendDao.queryRelation(siteFriendId, siteUserId) != RELATION_NUMBERo) {
 					result = userFriendDao.saveRelation(siteFriendId, siteUserId, RELATION_NUMBERo) && result;
 				}
-			} else {
-				// 拒绝，也同样返回true
-				result = true;
 			}
-
 		} catch (Exception e) {
+			result = false;
 			logger.error("agree friend apply error.", e);
 		}
 		return result;
