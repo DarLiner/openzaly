@@ -85,13 +85,21 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 
+				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
 				String clientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
+
+				if (StringUtils.isEmpty(sitePluginId)) {
+					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, clientIp, sitePluginId);
+					ctx.close();
+					return;
+				}
+
 				if (clientIp == null) {
 					InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
 					clientIp = address.getAddress().getHostAddress();
 				}
 
-				if (!checkLegalClientIp(clientIp)) {
+				if (!checkLegalClientIp(sitePluginId, clientIp)) {
 					logger.error("{} http request illegal IP={}.", AkxProject.PLN, clientIp);
 					ctx.close();
 					return;
@@ -210,9 +218,15 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	// 预留处理请求ip过滤
-	private boolean checkLegalClientIp(String ip) {
-		// #TODO
-		// logger.info("do nothing to http client ip:{}", ip);
+	private boolean checkLegalClientIp(String pluginId, String ip) {
+		// #TODO 使用缓存
+		String allowIps = PluginSession.getInstance().getPluginAllowIp(pluginId);
+		if (StringUtils.isNotEmpty(allowIps)) {
+			if (!allowIps.contains(ip)) {
+				return false;
+			}
+		}
 		return true;
 	}
+
 }

@@ -64,4 +64,18 @@ public class PluginSession {
 		}
 		return null;
 	}
+
+	public String getPluginAllowIp(String sitePluginId) {
+		try {
+			int pluginId = Integer.valueOf(sitePluginId);
+			PluginBean bean = pluginDao.getPluginProfile(pluginId);
+			if (bean != null) {
+				return bean.getAllowedIp();
+			}
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} get plugin allowIp error pluginId={}", AkxProject.PLN, sitePluginId),
+					e);
+		}
+		return null;
+	}
 }
