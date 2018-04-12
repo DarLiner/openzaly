@@ -223,8 +223,9 @@ public class Command {
 	}
 
 	public String toString() {
-		return "deviceId=" + this.deviceId + ",siteUserId=" + this.siteUserId + ",rety=" + this.rety + ",service="
-				+ this.service + ",method=" + this.method + ",uri=" + this.uri + " header={}" + this.header;
+		return "globalUserId=" + this.globalUserId + "deviceId=" + this.deviceId + ",siteUserId=" + this.siteUserId
+				+ ",rety=" + this.rety + ",service=" + this.service + ",method=" + this.method + ",uri=" + this.uri
+				+ " header={}" + this.header;
 	}
 
 }
