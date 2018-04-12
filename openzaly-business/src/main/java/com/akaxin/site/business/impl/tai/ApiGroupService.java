@@ -512,7 +512,7 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isAnyBlank(siteUserId, groupId)) {
+			if (StringUtils.isNoneEmpty(siteUserId, groupId)) {
 				if (UserGroupDao.getInstance().quitGroup(groupId, siteUserId)) {
 					errCode = ErrorCode2.SUCCESS;
 				}
