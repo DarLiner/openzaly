@@ -66,7 +66,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_LOGGIN_NOREGISTER("error.login.need_register", ""), // 用户需要在该站点注册
 	ERROR2_LOGGIN_SEALUPUSER("error.alter", "当前用户无权登陆"), // 用户需要在该站点注册
 
-	ERROR2_IMAUTH_FAIL("error.alter", "im连接认证失败"), // 用户需要在该站点注册
+//	ERROR2_IMAUTH_FAIL("error.alter", "im连接认证失败"), // 用户需要在该站点注册
 
 	ERROR2_FILE_DOWNLOAD("error.file.download", ""), //
 

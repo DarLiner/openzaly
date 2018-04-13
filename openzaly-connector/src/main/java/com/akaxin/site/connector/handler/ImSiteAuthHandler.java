@@ -132,7 +132,7 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 	private CommandResponse authResponse(Channel channel, Command command, boolean result) {
 		CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
 				.setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR2_IMAUTH_FAIL;
+		ErrorCode2 errCode = ErrorCode2.ERROR_SESSION;
 		if (result) {
 			String siteServer = ServerAddressUtils.getAddressPort();
 			ImSiteAuthProto.ImSiteAuthResponse authResponse = ImSiteAuthProto.ImSiteAuthResponse.newBuilder()
