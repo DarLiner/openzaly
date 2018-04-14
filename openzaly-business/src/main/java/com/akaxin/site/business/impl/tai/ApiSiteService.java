@@ -121,21 +121,20 @@ public class ApiSiteService extends AbstractRequest {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
-			ApiSiteRegisterProto.ApiSiteRegisterRequest registerRequest = ApiSiteRegisterProto.ApiSiteRegisterRequest
+			ApiSiteRegisterProto.ApiSiteRegisterRequest request = ApiSiteRegisterProto.ApiSiteRegisterRequest
 					.parseFrom(command.getParams());
-			// 这里需要验证邀请码，如果有需要
-			String userIdPubk = registerRequest.getUserIdPubk();
-			String userName = registerRequest.getUserName();
-			String userPhoto = registerRequest.getUserPhoto();
-			String userUic = registerRequest.getUserUic();
-			String applyInfo = registerRequest.getApplyInfo();
-			String phoneToken = registerRequest.getPhoneToken();
+			String userIdPubk = request.getUserIdPubk();
+			String userName = request.getUserName();
+			String userPhoto = request.getUserPhoto();
+			String userUic = request.getUserUic();
+			String applyInfo = request.getApplyInfo();
+			String phoneToken = request.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
-			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
-			if (registerRequest.getSiteUserId() != null) {
-				siteUserId = registerRequest.getSiteUserId();
+			String siteUserId = request.getSiteUserId();// siteUserId保证各站不同
+			if (StringUtils.isBlank(siteUserId)) {
+				siteUserId = UUID.randomUUID().toString();
 			}
-			LogUtils.requestDebugLog(logger, command, registerRequest.toString());
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userName)) {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
