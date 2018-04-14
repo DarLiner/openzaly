@@ -40,6 +40,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR_SESSION("error.session", "用户身份认证失败"), // session验证失败
 
 	ERROR_REGISTER("error.alter", "用户注册失败"), // 用户注册失败
+	ERROR_REGISTER_USERID_UNIQUE("error.unique.sui", "用户ID已存在"), // 用户注册失败
 	ERROR_REGISTER_SAVEPROFILE("error.alter", "保存用户数据失败"), // 用户注册失败
 	ERROR_REGISTER_UIC("error.alter", "用户邀请码错误"), // 用户邀请码错误
 	ERROR_REGISTER_PHONEID("error.alter", "用户实名手机号验证错误"), // 验证手机号失败
@@ -66,7 +67,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_LOGGIN_NOREGISTER("error.login.need_register", ""), // 用户需要在该站点注册
 	ERROR2_LOGGIN_SEALUPUSER("error.alter", "当前用户无权登陆"), // 用户需要在该站点注册
 
-//	ERROR2_IMAUTH_FAIL("error.alter", "im连接认证失败"), // 用户需要在该站点注册
+	// ERROR2_IMAUTH_FAIL("error.alter", "im连接认证失败"), // 用户需要在该站点注册
 
 	ERROR2_FILE_DOWNLOAD("error.file.download", ""), //
 

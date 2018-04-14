@@ -125,13 +125,16 @@ public class ApiSiteService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			// 这里需要验证邀请码，如果有需要
 			String userIdPubk = registerRequest.getUserIdPubk();
-			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
 			String userName = registerRequest.getUserName();
 			String userPhoto = registerRequest.getUserPhoto();
 			String userUic = registerRequest.getUserUic();
 			String applyInfo = registerRequest.getApplyInfo();
 			String phoneToken = registerRequest.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
+			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
+			if (registerRequest.getSiteUserId() != null) {
+				siteUserId = registerRequest.getSiteUserId();
+			}
 			LogUtils.requestDebugLog(logger, command, registerRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userName)) {
@@ -185,9 +188,8 @@ public class ApiSiteService extends AbstractRequest {
 						.newBuilder().setSiteUserId(siteUserId).build();
 				commandResponse.setParams(response.toByteArray());
 				errorCode = ErrorCode2.SUCCESS;
-
 			} else {
-				errorCode = ErrorCode2.ERROR_REGISTER_SAVEPROFILE;
+				errorCode = ErrorCode2.ERROR_REGISTER_USERID_UNIQUE;
 			}
 
 			logger.info("client={} siteUserId={} action={} register on site", command.getClientIp(), siteUserId,
