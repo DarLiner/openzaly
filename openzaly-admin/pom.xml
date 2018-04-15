@@ -1,69 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<!-- <parent> <groupId>com.akaxin</groupId> <artifactId>openzaly-parent</artifactId> 
-		<version>0.0.1-SNAPSHOT</version> </parent> -->
-	<groupId>com.akaxin.site</groupId>
-	<artifactId>openzaly-admin</artifactId>
-	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>openzaly-admin Maven Webapp</name>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- <properties> <jetty_version>9.4.9.v20180320</jetty_version> </properties> -->
+    <groupId>com.akaxin</groupId>
+    <artifactId>openzaly-admin</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
+    <name>openzaly-admin</name>
+    <description>Demo project for Spring Boot</description>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.RELEASE</version>
+    </parent>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.akaxin.site</groupId>
+            <artifactId>openzaly-connector</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
-			<version>6.1.26</version>
-			<scope>provided</scope>
-		</dependency>
 
-	</dependencies>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
-	<build>
-		<!-- 项目打包名称 -->
-		<finalName>openzaly-admin</finalName>
-
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>  
-                <artifactId>jetty-maven-plugin</artifactId>  
-				<version>8.1.16.v20140903</version>
-				<configuration>
-					<connectors>
-						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-							<name>localhost</name>
-							<port>8080</port>
-							<maxIdleTime>60000</maxIdleTime>
-						</connector>
-					</connectors>
-					<scanIntervalSeconds>15</scanIntervalSeconds>
-					<webApp>
-						<contextPath>/</contextPath>
-					</webApp>
-					<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
-						<filename>target/access.log</filename>
-						<retainDays>90</retainDays>
-						<append>false</append>
-						<extended>false</extended>
-						<logTimeZone>GMT+8:00</logTimeZone>
-					</requestLog>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

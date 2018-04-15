@@ -70,9 +70,10 @@
 	</build>
 
 	<dependencies>
+
 		<dependency>
-			<groupId>com.akaxin.site</groupId>
-			<artifactId>openzaly-connector</artifactId>
+			<groupId>com.akaxin</groupId>
+			<artifactId>openzaly-admin</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

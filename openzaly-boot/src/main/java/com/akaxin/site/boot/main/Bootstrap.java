@@ -18,6 +18,7 @@ package com.akaxin.site.boot.main;
 import java.util.Base64;
 import java.util.Map;
 
+import com.akaxin.admin.OpenzalyAdminApplication;
 import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,6 +91,7 @@ public class Bootstrap {
 			addConfigListener();
 			startHttpServer(httpAddress, httpPort);
 			startNettyServer(siteAddress, sitePort);
+			OpenzalyAdminApplication.main(new String[0]);
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			System.exit(-1);// 直接退出程序
