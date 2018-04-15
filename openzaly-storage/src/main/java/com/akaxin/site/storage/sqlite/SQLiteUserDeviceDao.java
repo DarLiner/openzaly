@@ -254,4 +254,15 @@ public class SQLiteUserDeviceDao {
 		LogUtils.dbDebugLog(logger, startTime, userToken, sql, siteUserId);
 		return userToken;
 	}
+
+	public int limitDeviceNum(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "DELETE FROM " + USER_DEVICE_TABLE + " WHERE device_id IN (SELECT device_id FROM " + USER_DEVICE_TABLE + " WHERE site_user_id =?  ORDER BY active_time DESC LIMIT 4,-1)";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1,siteUserId);
+        int i = preparedStatement.executeUpdate();
+        LogUtils.dbDebugLog(logger,startTime,i,sql,siteUserId);
+        return i;
+	}
 }
+
