@@ -5,12 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("manageInviteCode")
-public class ManageInviteCodeController {
+@RequestMapping("managePlugin")
+public class PluginManageController {
     @RequestMapping("/index")
-    public ModelAndView toManageInviteCode() {
-        ModelAndView modelAndView = new ModelAndView("platform/code/index");
+    public ModelAndView toManagePluginIndex() {
+        ModelAndView modelAndView = new ModelAndView("platform/plugin/index");
         return modelAndView;
     }
 }
-

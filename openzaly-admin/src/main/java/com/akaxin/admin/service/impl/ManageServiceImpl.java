@@ -1,11 +1,11 @@
 package com.akaxin.admin.service.impl;
 
-import com.akaxin.admin.service.ManageService;
+import com.akaxin.admin.service.IManageService;
 import com.akaxin.site.business.impl.site.SiteConfig;
 
 import java.util.Map;
 
-public class ManageServiceImpl implements ManageService {
+public class ManageServiceImpl implements IManageService {
 
     @Override
     public Map<Integer, String> getSiteConfig() {

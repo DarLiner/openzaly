@@ -2,7 +2,7 @@ package com.akaxin.admin.service;
 
 import java.util.Map;
 
-public interface ManageService {
+public interface IManageService {
 
     Map<Integer,String> getSiteConfig();
 }

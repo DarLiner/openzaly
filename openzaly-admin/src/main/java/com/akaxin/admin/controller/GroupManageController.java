@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("manageGroup")
-public class ManageGroupController {
+public class GroupManageController {
     @RequestMapping("/index")
     public ModelAndView toGroupIndex() {
         ModelAndView modelAndView = new ModelAndView("/platform/group/index");
