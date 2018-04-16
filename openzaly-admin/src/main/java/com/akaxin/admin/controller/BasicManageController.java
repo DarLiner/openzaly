@@ -16,17 +16,24 @@ import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_NAME_VALUE;
 import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_PORT_VALUE;
 import static com.akaxin.proto.core.ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.admin.service.IBasicService;
+import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.impl.site.SiteConfig;
 
 @Controller
 @RequestMapping("manage")
@@ -34,7 +41,7 @@ public class BasicManageController {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
 	@Autowired
-	private IBasicService manageService;
+	private IBasicService basicManageService;
 
 	@RequestMapping("/index")
 	public String homePage() {
@@ -46,7 +53,7 @@ public class BasicManageController {
 	public ModelAndView toBasic() {
 		ModelAndView modelAndView = new ModelAndView("platform/basic/setBasic");
 		Map<String, Object> model = modelAndView.getModel();
-		Map<Integer, String> map = manageService.getSiteConfig();
+		Map<Integer, String> map = basicManageService.getSiteConfig();
 		Set<Integer> integers = map.keySet();
 		String site_prot = "";
 		String site_address = "";
@@ -110,10 +117,39 @@ public class BasicManageController {
 
 	// 更新站点配置信息
 	@RequestMapping("/updateConfig")
-	public boolean updateBasicConfig(ModelAndView modelAndView) {
-		// #TODO 判断权限
+	@ResponseBody
+	public String updateBasicConfig(HttpServletRequest request) {
+		try {
+			String siteUserId = request.getHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE + "");
+			logger.info("siteUserId={} update config={}", siteUserId, request.getParameterMap());
 
-		return true;
+			boolean isManager = SiteConfig.isSiteManager(siteUserId);
+
+			if (isManager) {
+				Map<Integer, String> configMap = new HashMap<Integer, String>();
+				configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, request.getParameter("site_name"));
+				configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, request.getParameter("site_address"));
+				configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, request.getParameter("site_port"));
+				configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE,
+						request.getParameter("group_members_count"));
+				configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, request.getParameter("pic_path"));
+				configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, request.getParameter("site_logo"));
+				configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, request.getParameter("register_way"));
+				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
+						request.getParameter("u2_encryption_status"));
+				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE,
+						request.getParameter("push_client_status"));
+				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, request.getParameter("log_level"));
+				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, request.getParameter("site_manager"));
+				basicManageService.updateSiteConfig(siteUserId, configMap);
+				return "success";
+			} else {
+				return "no-permission";
+			}
+		} catch (Exception e) {
+			logger.error("update site config error", e);
+		}
+		return "error";
 	}
 
 }
