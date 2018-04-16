@@ -7,54 +7,53 @@
     <title>群组管理</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
     </style>
 </head>
 
 <body ontouchstart="">
-    <?php if($results) { ?>
-    <div class="weui-cells__title weui-cell ">
-        群列表
-    </div>
-    <div class="weui-cells" id="group-lists">
-        <?php foreach($results as $key => $group) {?>
-        <a class="weui-cell weui-cell_access group-info" group-id="<?php echo $group['group_id'];?>" group-name="<?php echo $group['group_name'];?>" href="javascript:;" url-data="/manageGroup/groupAdmin">
-            <div class="weui-cell__bd group_name">
-                <p>
-                    <?php echo $group['group_name'];?>
-                </p>
-            </div>
-            <div class="weui-cell__ft">
-            </div>
-        </a>
-        <?php } ?>
-    </div>
-    <?php if(!$loading) {?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_group">
-        <span class="weui-loadmore__tips">加载更多</span>
-    </div>
-    <?php } else { ?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_group">
-        <span class="weui-loadmore__tips">到底啦</span>
-    </div>
+<?php if($results) { ?>
+<div class="weui-cells__title weui-cell ">
+    群列表
+</div>
+<div class="weui-cells" id="group-lists">
+    <?php foreach($results as $key => $group) {?>
+    <a class="weui-cell weui-cell_access group-info" group-id="<?php echo $group['group_id'];?>"
+       group-name="<?php echo $group['group_name'];?>" href="javascript:;" url-data="/manageGroup/groupAdmin">
+        <div class="weui-cell__bd group_name">
+            <p>
+                <?php echo $group['group_name'];?>
+            </p>
+        </div>
+        <div class="weui-cell__ft">
+        </div>
+    </a>
     <?php } ?>
-    <?php } else {?>
-    <div class="weui-loadmore weui-loadmore_line">
-        <span class="weui-loadmore__tips">暂无数据</span>
-    </div>
-    </div>
-    <?php } ?>
-    <input type='hidden' id='init_url' url-data="/manageGroup/pullList" />
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <!-- <script type="text/javascript" src="<?php echo $host_name;?>/public/js/manage-group-list.js<?php echo $static_version?>"> </script> -->
-    <script type="text/javascript">
+</div>
+<?php if(!$loading) {?>
+<div class="weui-loadmore weui-loadmore_line loadmore_group">
+    <span class="weui-loadmore__tips">加载更多</span>
+</div>
+<?php } else { ?>
+<div class="weui-loadmore weui-loadmore_line loadmore_group">
+    <span class="weui-loadmore__tips">到底啦</span>
+</div>
+<?php } ?>
+<?php } else {?>
+<div class="weui-loadmore weui-loadmore_line">
+    <span class="weui-loadmore__tips">暂无数据</span>
+</div>
+</div>
+<?php } ?>
+<input type='hidden' id='init_url' url-data="/manageGroup/pullList"/>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<!-- <script type="text/javascript" src="<?php echo $host_name;?>/public/js/manage-group-list.js<?php echo $static_version?>"> </script> -->
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
@@ -121,7 +120,8 @@
             $.toast('暂时不支持该设备');
         }
     }
-    $(document).on("click", ".group-info", function() {
+
+    $(document).on("click", ".group-info", function () {
         var groupId = $(this).attr('group-id');
         var groupName = $(this).attr('group-name');
         console.log(groupId);
@@ -134,7 +134,7 @@
     });
     var page = 1;
     var loading = false;
-    $(document.body).infinite().on("infinite", function() {
+    $(document.body).infinite().on("infinite", function () {
         if (loading) {
             $('.loadmore_group').addClass('weui-loadmore_line');
             $('.loadmore_group span').html('暂无数据');
@@ -154,13 +154,13 @@
         results = JSON.parse(results);
         var data = results.results;
         var html = '';
-        $.each(data, function(index, group) {
+        $.each(data, function (index, group) {
             var html = '<a class="weui-cell weui-cell_access group-info" group-id="' + group.group_id + '"  href="javascript:;" group-name="' + group.group_name + '" url-data="/manageGroup/groupAdmin"> <div class="weui-cell__bd"> <p>' + group.group_name + '</p> </div> <div class="weui-cell__ft"> </div> </a>';
             $('#group-lists').append(html);
         });
         loading = results.loading;
     }
-    </script>
+</script>
 </body>
 
 </html>

@@ -9,7 +9,7 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href="Public/css/style.css"/>
+    <link rel="stylesheet" href="/Public/css/style.css"/>
     <style type="text/css">
 
     </style>
@@ -44,7 +44,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input site-port" type="text"
-                   th:value="${httpAddressAndPort}"  placeholder="InnerAPI服务器地址"
+                   th:value="${httpAddressAndPort}" placeholder="InnerAPI服务器地址"
                    disabled>
         </div>
     </div>
@@ -97,67 +97,67 @@
         </div>
     </div>
 </div>
-    <div class="weui-cells">
-        <div class="weui-cell weui-cell_switch">
-            <div class="weui-cell__bd">是否开启绝密功能</div>
-            <div class="weui-cell__ft">
-                <?php if($u2_encryption_status) {?>
-                <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox"
-                       checked="checked">
-                <?php } else {?>
-                <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox">
-                <?php   }?>
-            </div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">是否开启绝密功能</div>
+        <div class="weui-cell__ft">
+            <?php if($u2_encryption_status) {?>
+            <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox"
+                   checked="checked">
+            <?php } else {?>
+            <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox">
+            <?php   }?>
         </div>
-
-        <div class="weui-cell">
-            <div class="weui-cell__hd">子管理员账号</div>
-            <div class="weui-cell__bd">
-                <?php  if ($manager_type == 'site_manager') {?>
-                <input class="weui-input subgenus_admin" type="text" value="<?php echo $subgenus_admin;?>"
-                       placeholder="输入子管理员账号" disabled>
-                <?php } else {?>
-                <input class="weui-input subgenus_admin" type="text" value="<?php echo $subgenus_admin;?>"
-                       placeholder="输入子管理员账号">
-                <?php }?>
-            </div>
-        </div>
-
-
-        <a class="weui-cell weui-cell_access register_way" href="javascript:;">
-            <div class="weui-cell__bd">
-                <p>站点注册方式</p>
-            </div>
-            <div class="weui-cell__ft register_way—txt">
-                <?php if($site_reister_way == "0") { ?> 匿名身份
-                <?php } else if($site_reister_way == "1") { ?> 实名认证
-                <?php } else if($site_reister_way == "2") { ?> 邀请码
-                <?php } ?>
-            </div>
-        </a>
-        <a class="weui-cell weui-cell_access site_push" href="javascript:;">
-            <div class="weui-cell__bd">
-                <p>站点push</p>
-            </div>
-            <div class="weui-cell__ft site_push—txt">
-                <?php if($push_client_status == "0") { ?> 站点关闭push
-                <?php } else if($push_client_status == "1") { ?> push不显示文本内容
-                <?php } elseif($push_client_status == "2") { ?> push显示文本内容
-                <?php } ?>
-            </div>
-        </a>
-        <a class="weui-cell weui-cell_access log_level" href="javascript:;">
-            <div class="weui-cell__bd">
-                <p>日志级别</p>
-            </div>
-            <div class="weui-cell__ft log_level—txt">
-                <?php if($log_level == "DEBUG") { ?> Debug级别
-                <?php } else if($log_level == "INFO") { ?> Info级别
-                <?php } elseif($log_level == "ERROR") { ?> Error级别
-                <?php } ?>
-            </div>
-        </a>
     </div>
+
+    <div class="weui-cell">
+        <div class="weui-cell__hd">子管理员账号</div>
+        <div class="weui-cell__bd">
+            <?php  if ($manager_type == 'site_manager') {?>
+            <input class="weui-input subgenus_admin" type="text" value="<?php echo $subgenus_admin;?>"
+                   placeholder="输入子管理员账号" disabled>
+            <?php } else {?>
+            <input class="weui-input subgenus_admin" type="text" value="<?php echo $subgenus_admin;?>"
+                   placeholder="输入子管理员账号">
+            <?php }?>
+        </div>
+    </div>
+
+
+    <a class="weui-cell weui-cell_access register_way" href="javascript:;">
+        <div class="weui-cell__bd">
+            <p>站点注册方式</p>
+        </div>
+        <div class="weui-cell__ft register_way—txt">
+            <?php if($site_reister_way == "0") { ?> 匿名身份
+            <?php } else if($site_reister_way == "1") { ?> 实名认证
+            <?php } else if($site_reister_way == "2") { ?> 邀请码
+            <?php } ?>
+        </div>
+    </a>
+    <a class="weui-cell weui-cell_access site_push" href="javascript:;">
+        <div class="weui-cell__bd">
+            <p>站点push</p>
+        </div>
+        <div class="weui-cell__ft site_push—txt">
+            <?php if($push_client_status == "0") { ?> 站点关闭push
+            <?php } else if($push_client_status == "1") { ?> push不显示文本内容
+            <?php } elseif($push_client_status == "2") { ?> push显示文本内容
+            <?php } ?>
+        </div>
+    </a>
+    <a class="weui-cell weui-cell_access log_level" href="javascript:;">
+        <div class="weui-cell__bd">
+            <p>日志级别</p>
+        </div>
+        <div class="weui-cell__ft log_level—txt">
+            <?php if($log_level == "DEBUG") { ?> Debug级别
+            <?php } else if($log_level == "INFO") { ?> Info级别
+            <?php } elseif($log_level == "ERROR") { ?> Error级别
+            <?php } ?>
+        </div>
+    </a>
+</div>
 </div>
 <div class="weui-btn-area">
     <a class="weui-btn basic-weui-btn weui-btn_primary basic-color" href="javascript:" url-data="/manage/setBasic"

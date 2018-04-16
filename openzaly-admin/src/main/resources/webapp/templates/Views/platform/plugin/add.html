@@ -7,107 +7,109 @@
     <title>添加扩展</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
+
     </style>
 </head>
 
 <body ontouchstart="">
+<div class="weui-cells__title weui-cell">
+    基本信息
+</div>
+<div class="weui-cells ">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">扩展名称</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input plugin_name" type="text" placeholder="请输入扩展名称">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">url_page</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input plugin_url_page" type="text" pattern="[a-z0-9]*" placeholder="落地页">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">api_url</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input plugin_api_url" type="text" pattern="[a-z\/0-9]*"
+                   placeholder="例如http(s)://127.0.0.1">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">logo上传</p>
+                    <div class="weui-uploader__info">0/1</div>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file"
+                               accept="image/*" multiple="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
     <div class="weui-cells__title weui-cell">
-        基本信息
+        基本设置
     </div>
-    <div class="weui-cells ">
+    <div class="weui-cells">
         <div class="weui-cell">
             <div class="weui-cell__hd">
-                <label class="weui-label">扩展名称</label>
+                <label class="weui-label">扩展序号</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input plugin_name" type="text" placeholder="请输入扩展名称">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">url_page</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input plugin_url_page" type="text" pattern="[a-z0-9]*" placeholder="落地页">
+                <input class="weui-input order" type="text" pattern="[0-9]*" placeholder="输入序号">
             </div>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__hd">
-                <label class="weui-label">api_url</label>
+                <label class="weui-label">允许访问的IP</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input plugin_api_url" type="text" pattern="[a-z\/0-9]*" placeholder="例如http(s)://127.0.0.1">
+                <input class="weui-input allow_ip" type="text" pattern="[0-9]*" placeholder="输入允许访问的IP地址, 用逗号隔开">
             </div>
         </div>
-        <div class="weui-cell">
+        <a class="weui-cell weui-cell_access position" href="javascript:;">
             <div class="weui-cell__bd">
-                <div class="weui-uploader">
-                    <div class="weui-uploader__hd">
-                        <p class="weui-uploader__title">logo上传</p>
-                        <div class="weui-uploader__info">0/1</div>
-                    </div>
-                    <div class="weui-uploader__bd">
-                        <ul class="weui-uploader__files" id="uploaderFiles">
-                        </ul>
-                        <div class="weui-uploader__input-box">
-                            <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file" accept="image/*" multiple="">
-                        </div>
-                    </div>
-                </div>
+                <p>扩展位置</p>
             </div>
-        </div>
-    </div>
-    <div>
-        <div class="weui-cells__title weui-cell">
-            基本设置
-        </div>
-        <div class="weui-cells">
-            <div class="weui-cell">
-                <div class="weui-cell__hd">
-                    <label class="weui-label">扩展序号</label>
-                </div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input order" type="text" pattern="[0-9]*" placeholder="输入序号">
-                </div>
+            <div class="weui-cell__ft position-txt">
             </div>
-            <div class="weui-cell">
-                <div class="weui-cell__hd">
-                    <label class="weui-label">允许访问的IP</label>
-                </div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input allow_ip" type="text" pattern="[0-9]*" placeholder="输入允许访问的IP地址, 用逗号隔开">
-                </div>
+        </a>
+        <a class="weui-cell weui-cell_access per_status" href="javascript:;">
+            <div class="weui-cell__bd">
+                <p>扩展状态</p>
             </div>
-            <a class="weui-cell weui-cell_access position" href="javascript:;">
-                <div class="weui-cell__bd">
-                    <p>扩展位置</p>
-                </div>
-                <div class="weui-cell__ft position-txt">
-                </div>
-            </a>
-            <a class="weui-cell weui-cell_access per_status" href="javascript:;">
-                <div class="weui-cell__bd">
-                    <p>扩展状态</p>
-                </div>
-                <div class="weui-cell__ft per_status-txt">
+            <div class="weui-cell__ft per_status-txt">
 
-                </div>
-            </a>
-        </div>
-        <div class="weui-btn-area">
-            <a class="weui-btn basic-weui-btn weui-btn_primary basic-color addPluginButton" url-data="/managePlugin/addPlugin" href="javascript:" id="addPluginButton">确定</a>
-        </div>
+            </div>
+        </a>
     </div>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <script type="text/javascript">
+    <div class="weui-btn-area">
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color addPluginButton"
+           url-data="/managePlugin/addPlugin" href="javascript:" id="addPluginButton">确定</a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -198,24 +200,24 @@
         return false;
     }
 
-    $(document).on("click", '.position', function() {
+    $(document).on("click", '.position', function () {
         $.actions({
             title: "",
-            onClose: function() {
+            onClose: function () {
                 console.log("close");
             },
             actions: [{
-                    text: "首页位置",
-                    className: "color-primary weui-dialog__btn ",
-                    onClick: function() {
-                        $(".position-txt").html("首页位置");
-                        $(".position").attr("data", "0");
-                    }
-                },
+                text: "首页位置",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".position-txt").html("首页位置");
+                    $(".position").attr("data", "0");
+                }
+            },
                 {
                     text: "消息帧扩展",
                     className: "color-warning weui-dialog__btn",
-                    onClick: function() {
+                    onClick: function () {
                         $(".position-txt").html("消息帧扩展");
                         $(".position").attr("data", "1");
                     }
@@ -224,24 +226,24 @@
         });
     });
 
-    $(document).on("click", '.per_status', function() {
+    $(document).on("click", '.per_status', function () {
         $.actions({
             title: "",
-            onClose: function() {
+            onClose: function () {
                 console.log("close");
             },
             actions: [{
-                    text: "禁用",
-                    className: "color-primary weui-dialog__btn ",
-                    onClick: function() {
-                        $(".per_status-txt").html("禁用");
-                        $(".per_status").attr("data", "0");
-                    }
-                },
+                text: "禁用",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".per_status-txt").html("禁用");
+                    $(".per_status").attr("data", "0");
+                }
+            },
                 {
                     text: "启用",
                     className: "color-warning weui-dialog__btn",
-                    onClick: function() {
+                    onClick: function () {
                         $(".per_status-txt").html("启用");
                         $(".per_status").attr("data", "1");
                     }
@@ -251,7 +253,7 @@
     });
 
 
-    $(document).on("click", ".addPluginButton", function() {
+    $(document).on("click", ".addPluginButton", function () {
         var reqUri = $(this).attr('url-data');
         var apiUrl = $('.plugin_api_url').val();
         var urlPage = $('.plugin_url_page').val();
@@ -272,7 +274,7 @@
             return false;
         }
 
-        if (!perStatus ||  perStatus.length < 1) {
+        if (!perStatus || perStatus.length < 1) {
             $.toptip('请选择插件状态', 'error');
             return false;
         }
@@ -284,8 +286,8 @@
             'plugin_icon': pluginIcon,
             'position': position,
             'per_status': perStatus,
-            'order' : order,
-            'allow_ip' : allowIp
+            'order': order,
+            'allow_ip': allowIp
         };
         reqUrl(reqUri, JSON.stringify(params), 'addPlugin');
         $('.addPluginButton').removeClass('weui-btn_primary');
@@ -312,7 +314,7 @@
         }
     }
 
-    $(document).on("click", '.uploaderInput', function() {
+    $(document).on("click", '.uploaderInput', function () {
         reqImageUpload("jsimageUpload");
     });
 
@@ -330,7 +332,7 @@
             $.toast('上传图片失败', 'forbidden');
         }
     }
-    </script>
+</script>
 </body>
 
 </html>

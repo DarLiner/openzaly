@@ -7,62 +7,64 @@
     <title>群成员管理</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
     </style>
 </head>
 
 <body ontouchstart="">
-    <?php if(isset($results) && $results) { ?>
-    <div class="weui-cells__title weui-cell" style="margin: auto;">
+<?php if(isset($results) && $results) { ?>
+<div class="weui-cells__title weui-cell" style="margin: auto;">
+    <div class="weui-cell__bd">
+        <p>群成员列表</p>
+    </div>
+    <div class="weui-cell__ft">
+        <a class="weui-btn weui-btn_mini weui-btn_warn  remove-group-user"
+           site-user-id="<?php echo $member['site_user_id'];?>" group-id="<?php echo $group_id;?>"
+           url-data="/manageGroup/removeGroupMember" href="javascript:">移除用户</a>
+    </div>
+</div>
+<div class="weui-cells group-member-lists weui-cells_checkbox" id='group-member-lists'>
+    <?php foreach($results as $key => $member) { ?>
+    <label class="weui-cell weui-check__label <?php echo $member['site_user_id'];?>"
+           for="<?php echo $member['site_user_id'];?>">
+        <div class="weui-cell__hd">
+            <input type="checkbox" class="weui-check" name="remove_user" id="<?php echo $member['site_user_id'];?>">
+            <i class="weui-icon-checked"></i>
+        </div>
+        <div name="user_image" class="weui-cell__hd user_image <?php echo $member['user_photo'];?>"
+             user-image="<?php echo $member['user_photo'];?>"></div>
         <div class="weui-cell__bd">
-            <p>群成员列表</p>
+            <p>
+                <?php echo $member['user_name'];?>
+            </p>
         </div>
-        <div class="weui-cell__ft">
-            <a class="weui-btn weui-btn_mini weui-btn_warn  remove-group-user" site-user-id="<?php echo $member['site_user_id'];?>" group-id="<?php echo $group_id;?>" url-data="/manageGroup/removeGroupMember" href="javascript:">移除用户</a>
-        </div>
-    </div>
-    <div class="weui-cells group-member-lists weui-cells_checkbox" id='group-member-lists'>
-        <?php foreach($results as $key => $member) { ?>
-        <label class="weui-cell weui-check__label <?php echo $member['site_user_id'];?>" for="<?php echo $member['site_user_id'];?>">
-            <div class="weui-cell__hd">
-                <input type="checkbox" class="weui-check" name="remove_user" id="<?php echo $member['site_user_id'];?>">
-                <i class="weui-icon-checked"></i>
-            </div>
-            <div name="user_image" class="weui-cell__hd user_image <?php echo $member['user_photo'];?>" user-image="<?php echo $member['user_photo'];?>"></div>
-            <div class="weui-cell__bd">
-                <p>
-                    <?php echo $member['user_name'];?>
-                </p>
-            </div>
-        </label>
-        <?php } ?>
-    </div>
-    <?php if(!$loading) {?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_group_member">
-        <span class="weui-loadmore__tips">加载更多</span>
-    </div>
-    <?php } else { ?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_group_member">
-        <span class="weui-loadmore__tips">到底啦</span>
-    </div>
+    </label>
     <?php } ?>
-    <?php } else { ?>
-    <div class="weui-loadmore weui-loadmore_line">
-        <span class="weui-loadmore__tips">暂无数据</span>
-    </div>
-    <?php } ?>
-    <input type="hidden" id="remove_group_user" site-user-id="">
-    <input type="hidden" id="init_url" group-id="<?php echo $group_id;?>" url-data="/manageGroup/pullGroupMembers">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <!-- <script type="text/javascript" src="<?php echo $host_name;?>/public/js/manage-group-admin.js<?php echo $static_version?>"> </script> -->
-    <script type="text/javascript">
+</div>
+<?php if(!$loading) {?>
+<div class="weui-loadmore weui-loadmore_line loadmore_group_member">
+    <span class="weui-loadmore__tips">加载更多</span>
+</div>
+<?php } else { ?>
+<div class="weui-loadmore weui-loadmore_line loadmore_group_member">
+    <span class="weui-loadmore__tips">到底啦</span>
+</div>
+<?php } ?>
+<?php } else { ?>
+<div class="weui-loadmore weui-loadmore_line">
+    <span class="weui-loadmore__tips">暂无数据</span>
+</div>
+<?php } ?>
+<input type="hidden" id="remove_group_user" site-user-id="">
+<input type="hidden" id="init_url" group-id="<?php echo $group_id;?>" url-data="/manageGroup/pullGroupMembers">
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<!-- <script type="text/javascript" src="<?php echo $host_name;?>/public/js/manage-group-admin.js<?php echo $static_version?>"> </script> -->
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -128,11 +130,12 @@
             $.toast('暂时不支持该设备');
         }
     }
-    $(document).on("click", ".remove-group-user", function() {
+
+    $(document).on("click", ".remove-group-user", function () {
         var groupId = $(this).attr('group-id');
         var reqUri = $(this).attr('url-data');
         var removeSiteUserIds = [];
-        $('input[name=remove_user]').each(function() {
+        $('input[name=remove_user]').each(function () {
             var checkedFlag = $(this).prop('checked');
             var siteUserId = $(this).attr('id');
             if (checkedFlag) {
@@ -153,11 +156,11 @@
         $.confirm({
             title: '移除群成员',
             text: '确定移除群成员？',
-            onOK: function() {
+            onOK: function () {
                 reqUrl(reqUri, JSON.stringify(params), "removeGroupUser");
                 $.closeModal();
             },
-            onCancel: function() {
+            onCancel: function () {
                 console.log('cancle');
                 toast('取消操作');
                 $.closeModal();
@@ -171,7 +174,7 @@
         } else {
             var siteUserIds = $('#remove_group_user').attr('site-user-id');
             siteUserIds = JSON.parse(siteUserIds);
-            $.each(siteUserIds, function(index, siteUserId) {
+            $.each(siteUserIds, function (index, siteUserId) {
                 console.log(index);
                 $('.' + siteUserId).remove();
             });
@@ -189,7 +192,7 @@
 
     var page = 1;
     var loading = false;
-    $(document.body).infinite().on("infinite", function() {
+    $(document.body).infinite().on("infinite", function () {
         if (loading) {
             $('.loadmore_group_member').addClass('weui-loadmore_line');
             $('.loadmore_group_member span').html('暂无数据');
@@ -211,14 +214,14 @@
         results = JSON.parse(results);
         var data = results.results;
         var html = '';
-        $.each(data, function(index, groupMember) {
+        $.each(data, function (index, groupMember) {
             var html = '<label class="weui-cell weui-check__label" for="' + groupMember.site_user_id + '"> <div class="weui-cell__hd"> <input type="checkbox" class="weui-check" name="remove_user" id="' + groupMember.site_user_id + '" > <i class="weui-icon-checked"></i> </div> <div name="user_image" class="weui-cell__hd user_image ' + groupMember.user_photo + '" user-image="' + groupMember.user_photo + '"></div> <div class="weui-cell__bd"> <p>' + groupMember.user_name + '</p> </div> </label>';
             console.log(html);
             $('#group-member-lists').append(html);
         });
         loading = results.loading;
     }
-    </script>
+</script>
 </body>
 
 </html>

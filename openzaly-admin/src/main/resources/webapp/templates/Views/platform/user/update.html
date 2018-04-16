@@ -7,67 +7,75 @@
     <title>编辑用户信息</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
+
     </style>
 </head>
 
 <body ontouchstart="">
-    <div class="weui-cells weui-cells_form margin_top_30px">
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">用户名称</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input user_name" type="text" name="user_name" value="<?php echo $user_name?>" placeholder="用户名称">
-            </div>
+<div class="weui-cells weui-cells_form margin_top_30px">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">用户名称</label>
         </div>
-        <input class="site_user_id" type="hidden" data="<?php echo $user_id?>">
-        <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <div class="weui-uploader">
-                    <div class="weui-uploader__hd">
-                        <p class="weui-uploader__title">图片上传</p>
+        <div class="weui-cell__bd">
+            <input class="weui-input user_name" type="text" name="user_name" value="<?php echo $user_name?>"
+                   placeholder="用户名称">
+        </div>
+    </div>
+    <input class="site_user_id" type="hidden" data="<?php echo $user_id?>">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">图片上传</p>
+                    <?php if(isset($user_photo) && $user_photo) {?>
+                    <div class="weui-uploader__info">1/1</div>
+                    <?php } else {?>
+                    <div class="weui-uploader__info">0/1</div>
+                    <?php }?>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
                         <?php if(isset($user_photo) && $user_photo) {?>
-                        <div class="weui-uploader__info">1/1</div>
-                        <?php } else {?>
-                        <div class="weui-uploader__info">0/1</div>
+                        <li class="weui-uploader__file user_photo" id="user_photo"
+                            user-photo="<?php echo $user_photo;?>"></li>
                         <?php }?>
-                    </div>
-                    <div class="weui-uploader__bd">
-                        <ul class="weui-uploader__files" id="uploaderFiles">
-                            <?php if(isset($user_photo) && $user_photo) {?>
-                            <li class="weui-uploader__file user_photo" id="user_photo" user-photo="<?php echo $user_photo;?>"></li>
-                            <?php }?>
-                        </ul>
-                        <div class="weui-uploader__input-box">
-                            <input id="uploaderInput" class="weui-uploader__input  uploaderInput" type="file" accept="image/*" multiple="">
-                        </div>
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="uploaderInput" class="weui-uploader__input  uploaderInput" type="file"
+                               accept="image/*" multiple="">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="weui-btn-area">
-            <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info" url-data="/manageUser/updateSiteUserInfo" href="javascript:" id="update_user_info">确定</a>
-            <?php if($user_status == 0) { ?>
-            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="sealup-site-user weui-btn weui-btn_warn " url-data="/manageUser/sealupSiteUser">封禁用户</a>
-            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="unfreeze-site-user weui-btn weui-btn_warn " url-data="/manageUser/sealupSiteUser" style="display:none">解禁用户</a>
-            <?php } else { ?>
-            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="sealup-site-user weui-btn weui-btn_warn" style="display:none" url-data="/manageUser/sealupSiteUser">封禁用户</a>
-            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="unfreeze-site-user weui-btn weui-btn_warn" url-data="/manageUser/sealupSiteUser">解禁用户</a>
-            <?php } ?>
-        </div>
     </div>
-    <input type='hidden' id='host_name' data="<?php echo $host_name;?>" />
-    <input type='hidden' id='edit_user_id' user_id="<?php echo $user_id;?>" user_name="" />
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <script type="text/javascript">
+    <div class="weui-btn-area">
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info"
+           url-data="/manageUser/updateSiteUserInfo" href="javascript:" id="update_user_info">确定</a>
+        <?php if($user_status == 0) { ?>
+        <a href="javascript:;" name='del-user' data="<?php echo $user_id?>"
+           class="sealup-site-user weui-btn weui-btn_warn " url-data="/manageUser/sealupSiteUser">封禁用户</a>
+        <a href="javascript:;" name='del-user' data="<?php echo $user_id?>"
+           class="unfreeze-site-user weui-btn weui-btn_warn " url-data="/manageUser/sealupSiteUser"
+           style="display:none">解禁用户</a>
+        <?php } else { ?>
+        <a href="javascript:;" name='del-user' data="<?php echo $user_id?>"
+           class="sealup-site-user weui-btn weui-btn_warn" style="display:none" url-data="/manageUser/sealupSiteUser">封禁用户</a>
+        <a href="javascript:;" name='del-user' data="<?php echo $user_id?>"
+           class="unfreeze-site-user weui-btn weui-btn_warn" url-data="/manageUser/sealupSiteUser">解禁用户</a>
+        <?php } ?>
+    </div>
+</div>
+<input type='hidden' id='host_name' data="<?php echo $host_name;?>"/>
+<input type='hidden' id='edit_user_id' user_id="<?php echo $user_id;?>" user_name=""/>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
@@ -136,14 +144,14 @@
         }
     }
 
-    $(document).on("click", ".sealup-site-user", function() {
+    $(document).on("click", ".sealup-site-user", function () {
         var siteUserId = $(this).attr('data');
         var url = $(this).attr('url-data');
         $('#sealUpUserId').attr('data', siteUserId);
         $.confirm({
             title: '封禁用户',
             text: '确定要封禁用户？',
-            onOK: function() {
+            onOK: function () {
                 var userInfo = {
                     'site_user_id': siteUserId,
                     'type': 'freeze'
@@ -151,7 +159,7 @@
                 reqUrl(url, JSON.stringify(userInfo), "sealupSiteUser");
                 $.closeModal();
             },
-            onCancel: function() {
+            onCancel: function () {
                 console.log('cancle');
                 toast('取消操作');
                 $.closeModal();
@@ -170,14 +178,14 @@
         }
     }
 
-    $(document).on("click", ".unfreeze-site-user", function() {
+    $(document).on("click", ".unfreeze-site-user", function () {
         var siteUserId = $(this).attr('data');
         var url = $(this).attr('url-data');
         $('#unfreezeUserId').attr('data', siteUserId);
         $.confirm({
             title: '解禁用户',
             text: '解禁后，用户可以访问该站点',
-            onOK: function() {
+            onOK: function () {
                 var userInfo = {
                     'site_user_id': siteUserId,
                     'type': 'unfreeze'
@@ -185,7 +193,7 @@
                 reqUrl(url, JSON.stringify(userInfo), "unfreezeSiteUser");
                 $.closeModal();
             },
-            onCancel: function() {
+            onCancel: function () {
                 console.log('cancle');
                 toast('取消操作');
                 $.closeModal();
@@ -194,7 +202,7 @@
     });
 
 
-    $(document).on("click", ".update_user_info", function() {
+    $(document).on("click", ".update_user_info", function () {
         var userName = $('.user_name').val();
         var siteUserId = $('.site_user_id').attr('data');
         var userPhoto = $('.user_photo').attr('user-photo');
@@ -230,7 +238,7 @@
         }
     }
 
-    $(document).on("click", '.uploaderInput', function() {
+    $(document).on("click", '.uploaderInput', function () {
         reqImageUpload("jsimageUpload");
     });
 
@@ -249,7 +257,7 @@
         }
     }
 
-    $(window).load(function() {
+    $(window).load(function () {
         var imageid = $('.user_photo').attr('user-photo');
         reqImageDownload(imageid, "jsimageDownload");
     });
@@ -263,7 +271,7 @@
         }
         $('#user_photo').html(html);
     }
-    </script>
+</script>
 </body>
 
 </html>

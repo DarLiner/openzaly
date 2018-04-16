@@ -7,41 +7,41 @@
     <title>扩展管理</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
     </style>
 </head>
 
 <body ontouchstart="">
-    <div class="bd margin_top_30px">
-        <div class="page__bd">
-            <div class="weui-cells__title"></div>
-            <div class="weui-cells">
-                <a class="weui-cell weui-cell_access manage-plugin-add-html" url-data="/managePlugin/addPluginHtml" href="javascript:;">
-                    <div class="weui-cell__bd">
-                        <p>添加扩展</p>
-                    </div>
-                    <div class="weui-cell__ft">
-                    </div>
-                </a>
-                <a class="weui-cell weui-cell_access manage-plugin-html" url-data="/managePlugin/pluginList" href="javascript:;">
-                    <div class="weui-cell__bd">
-                        <p>扩展列表</p>
-                    </div>
-                    <div class="weui-cell__ft">
-                    </div>
-                </a>
-            </div>
+<div class="bd margin_top_30px">
+    <div class="page__bd">
+        <div class="weui-cells__title"></div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access manage-plugin-add-html" url-data="/managePlugin/addPluginHtml"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>添加扩展</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access manage-plugin-html" url-data="/managePlugin/pluginList"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>扩展列表</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
         </div>
     </div>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <script type="text/javascript">
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -107,16 +107,17 @@
             $.toast('暂时不支持该设备');
         }
     }
-    $(document).on("click", ".manage-plugin-html", function() {
+
+    $(document).on("click", ".manage-plugin-html", function () {
         var reqUri = $(this).attr('url-data');
         reqHtml(reqUri, "");
     });
 
-    $(document).on("click", ".manage-plugin-add-html", function() {
+    $(document).on("click", ".manage-plugin-add-html", function () {
         var reqUri = $(this).attr('url-data');
         reqHtml(reqUri, "");
     });
-    </script>
+</script>
 </body>
 
 </html>

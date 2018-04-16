@@ -7,54 +7,54 @@
     <title>扩展列表</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
     </style>
 </head>
 
 <body ontouchstart="">
-    <div class="weui-cells__title weui-cell">
-        扩展列表
-    </div>
-    <?php if(isset($results) && count($results)) { ?>
-    <div class="weui-cells plugin-lists">
-        <?php foreach($results as $plugin) { ?>
-        <a class="weui-cell weui-cell_access update-plugin" url-data="/managePlugin/pluginInfo" plugin-id="<?php echo $plugin['id'];?>" id="<?php echo $plugin['id'];?>" href="javascript:;">
+<div class="weui-cells__title weui-cell">
+    扩展列表
+</div>
+<?php if(isset($results) && count($results)) { ?>
+<div class="weui-cells plugin-lists">
+    <?php foreach($results as $plugin) { ?>
+    <a class="weui-cell weui-cell_access update-plugin" url-data="/managePlugin/pluginInfo"
+       plugin-id="<?php echo $plugin['id'];?>" id="<?php echo $plugin['id'];?>" href="javascript:;">
 
-                    <div class="weui-cell__hd <?php echo $plugin['plugin_icon'];?>" name="plugin_icon" plugin-icon="<?php echo $plugin['plugin_icon'];?>"></div>
-                    <div class="weui-cell__bd">
-                        <p>
-                            <?php echo $plugin['name']?>
-                        </p>
-                    </div>
-                    <div class="weui-cell__ft"></div>
-        </a>
-        <?php } ?>
-    </div>
-    <?php if(!$loading) {?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_plugin_list">
-        <span class="weui-loadmore__tips">加载更多</span>
-    </div>
-    <?php } else { ?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_plugin_list">
-        <span class="weui-loadmore__tips">到底啦</span>
-    </div>
+        <div class="weui-cell__hd <?php echo $plugin['plugin_icon'];?>" name="plugin_icon"
+             plugin-icon="<?php echo $plugin['plugin_icon'];?>"></div>
+        <div class="weui-cell__bd">
+            <p>
+                <?php echo $plugin['name']?>
+            </p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
     <?php } ?>
-    <?php } else {?>
-    <div class="weui-loadmore weui-loadmore_line">
-        <span class="weui-loadmore__tips">暂无数据</span>
-    </div>
-    <?php } ?>
-    <input type='hidden' id='init_url' url-data="/managePlugin/pullPluginList" />
-    <input type='hidden' id='del_plugin' plugin-id="" />
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <script type="text/javascript">
+</div>
+<?php if(!$loading) {?>
+<div class="weui-loadmore weui-loadmore_line loadmore_plugin_list">
+    <span class="weui-loadmore__tips">加载更多</span>
+</div>
+<?php } else { ?>
+<div class="weui-loadmore weui-loadmore_line loadmore_plugin_list">
+    <span class="weui-loadmore__tips">到底啦</span>
+</div>
+<?php } ?>
+<?php } else {?>
+<div class="weui-loadmore weui-loadmore_line">
+    <span class="weui-loadmore__tips">暂无数据</span>
+</div>
+<?php } ?>
+<input type='hidden' id='init_url' url-data="/managePlugin/pullPluginList"/>
+<input type='hidden' id='del_plugin' plugin-id=""/>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -121,7 +121,7 @@
         }
     }
 
-    $(document).on('click', '.update-plugin', function() {
+    $(document).on('click', '.update-plugin', function () {
         var reqUri = $(this).attr('url-data');
         var pluginId = $(this).attr('plugin-id');
         var params = {
@@ -130,14 +130,14 @@
         reqHtml(reqUri, JSON.stringify(params));
     });
 
-    $(document).on("click", ".delete-plugin", function() {
+    $(document).on("click", ".delete-plugin", function () {
         var pluginId = $(this).attr('plugin-id');
         var reqUri = $(this).attr('url-data');
         $('#del_plugin').attr('plugin-id', pluginId);
         $.confirm({
             title: '删除插件',
             text: '插件删除后，将不能使用！',
-            onOK: function() {
+            onOK: function () {
                 var params = {
                     'plugin_id': pluginId,
                 };
@@ -145,7 +145,7 @@
                 delPlugin('success');
                 $.closeModal();
             },
-            onCancel: function() {
+            onCancel: function () {
                 console.log('cancle');
                 toast('取消操作');
                 $.closeModal();
@@ -162,9 +162,10 @@
             $.toast('删除失败', 'forbidden');
         }
     }
+
     var page = 1;
     var loading = false;
-    $(document.body).infinite().on("infinite", function() {
+    $(document.body).infinite().on("infinite", function () {
         if (loading) {
             $('.loadmore_plugin_list').addClass('weui-loadmore_line');
             $('.loadmore_plugin_list span').html('暂无数据');
@@ -184,13 +185,13 @@
         results = JSON.parse(results);
         var data = results.results;
         var html = '';
-        $.each(data, function(index, plugin) {
+        $.each(data, function (index, plugin) {
             var html = '<a class="weui-cell weui-cell_access  update-plugin" url-data="/managePlugin/pluginInfo" plugin-id="' + plugin.id + '"  href="javascript:;" >  <div class="weui-cell__bd"> <p>' + plugin.name + '</p> </div> <div class="weui-cell__ft"></div> </a>';
             $('.plugin-lists').append(html);
         });
         loading = results.loading;
     }
-    </script>
+</script>
 </body>
 
 </html>

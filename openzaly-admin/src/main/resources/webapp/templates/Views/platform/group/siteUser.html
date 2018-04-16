@@ -4,63 +4,65 @@
 <head>
     <title>添加群成员</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
-    <?php echo $css_code;
-    ?>
     </style>
 </head>
 
 <body ontouchstart>
-    <?php if(count($data)) {?>
-    <div class="weui-cells__title weui-cell" style="margin: auto;">
-        <div class="weui-cell__hd"><img src=""></div>
+<?php if(count($data)) {?>
+<div class="weui-cells__title weui-cell" style="margin: auto;">
+    <div class="weui-cell__hd"><img src=""></div>
+    <div class="weui-cell__bd">
+        <p></p>
+    </div>
+    <div class="weui-cell__ft">
+        <a class="weui-btn weui-btn-basic weui-btn_mini weui-btn_primary add-user-to-group basic-color"
+           style="background-color: #1E88E5;" group-id="<?php echo $group_id;?>" url-data="/manageGroup/addGroupUser"
+           href="javascript:">添加入群</a>
+    </div>
+</div>
+<div class="weui-cells weui-cells_checkbox" id='user-lists'>
+    <?php foreach($data as $key => $user) {?>
+    <label class="weui-cell weui-check__label <?php echo $user['site_user_id'];?>"
+           for="<?php echo $user['site_user_id'];?>">
+        <div class="weui-cell__hd">
+            <input type="checkbox" class="weui-check" name="select_user" id="<?php echo $user['site_user_id'];?>">
+            <i class="weui-icon-checked"></i>
+        </div>
+        <div name="user_image" class="weui-cell__hd user_image  <?php echo $user['site_user_photo'];?> "
+             user-image="<?php echo $user['site_user_photo'];?> ">
+        </div>
         <div class="weui-cell__bd">
-            <p></p>
+            <p>
+                <?php echo $user['site_user_name'];?>
+            </p>
         </div>
-        <div class="weui-cell__ft">
-            <a class="weui-btn weui-btn-basic weui-btn_mini weui-btn_primary add-user-to-group basic-color" style="background-color: #1E88E5;" group-id="<?php echo $group_id;?>" url-data="/manageGroup/addGroupUser" href="javascript:">添加入群</a>
-        </div>
-    </div>
-    <div class="weui-cells weui-cells_checkbox" id='user-lists'>
-        <?php foreach($data as $key => $user) {?>
-        <label class="weui-cell weui-check__label <?php echo $user['site_user_id'];?>" for="<?php echo $user['site_user_id'];?>">
-            <div class="weui-cell__hd">
-                <input type="checkbox" class="weui-check" name="select_user" id="<?php echo $user['site_user_id'];?>">
-                <i class="weui-icon-checked"></i>
-            </div>
-            <div name="user_image" class="weui-cell__hd user_image  <?php echo $user['site_user_photo'];?> " user-image="<?php echo $user['site_user_photo'];?> ">
-            </div>
-            <div class="weui-cell__bd">
-                <p>
-                    <?php echo $user['site_user_name'];?>
-                </p>
-            </div>
-        </label>
-        <?php } ?>
-    </div>
-    <?php if(!$loading) {?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_site_user">
-        <span class="weui-loadmore__tips">加载更多</span>
-    </div>
-    <?php } else { ?>
-    <div class="weui-loadmore weui-loadmore_line loadmore_site_user">
-        <span class="weui-loadmore__tips">到底啦</span>
-    </div>
+    </label>
     <?php } ?>
-    <?php }  else {?>
-    <div class="weui-loadmore weui-loadmore_line">
-        <span class="weui-loadmore__tips">暂无数据</span>
-    </div>
-    <?php } ?>
-    <input type='hidden' id='init_url' url-data="/manageGroup/pullSiteUsers" />
-    <input type="hidden" id="add_group_user" site-user-id="">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-    <script type="text/javascript">
+</div>
+<?php if(!$loading) {?>
+<div class="weui-loadmore weui-loadmore_line loadmore_site_user">
+    <span class="weui-loadmore__tips">加载更多</span>
+</div>
+<?php } else { ?>
+<div class="weui-loadmore weui-loadmore_line loadmore_site_user">
+    <span class="weui-loadmore__tips">到底啦</span>
+</div>
+<?php } ?>
+<?php }  else {?>
+<div class="weui-loadmore weui-loadmore_line">
+    <span class="weui-loadmore__tips">暂无数据</span>
+</div>
+<?php } ?>
+<input type='hidden' id='init_url' url-data="/manageGroup/pullSiteUsers"/>
+<input type="hidden" id="add_group_user" site-user-id="">
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -116,11 +118,11 @@
         }
     }
 
-    $(document).on("click", ".add-user-to-group", function() {
+    $(document).on("click", ".add-user-to-group", function () {
         var reqUri = $(this).attr('url-data');
         var groupId = $(this).attr('group-id');
         var userIds = [];
-        $('input[name=select_user]').each(function() {
+        $('input[name=select_user]').each(function () {
             var checkedFlag = $(this).prop('checked');
             var siteUserId = $(this).attr('id');
             if (checkedFlag) {
@@ -135,7 +137,7 @@
         $.confirm({
             title: '添加用户',
             text: '确定要添加选中用户到当前群？',
-            onOK: function() {
+            onOK: function () {
                 var params = {
                     "add_site_user_id": userIds,
                     "group_id": groupId
@@ -143,7 +145,7 @@
                 reqUrl(reqUri, JSON.stringify(params), "addGroupUser");
                 $.closeModal();
             },
-            onCancel: function() {
+            onCancel: function () {
                 console.log('cancle');
                 toast('取消操作');
                 $.closeModal();
@@ -155,7 +157,7 @@
         if (result == 'success') {
             var siteUserIds = $('#add_group_user').attr('site-user-id');
             siteUserIds = JSON.parse(siteUserIds);
-            $.each(siteUserIds, function(index, siteUserId) {
+            $.each(siteUserIds, function (index, siteUserId) {
                 console.log(index);
                 $('.' + siteUserId).remove();
             });
@@ -167,7 +169,7 @@
 
     var page = 1;
     var loading = false;
-    $(document.body).infinite().on("infinite", function() {
+    $(document.body).infinite().on("infinite", function () {
         if (loading) {
             $('.loadmore_site_user').addClass('weui-loadmore_line');
             $('.loadmore_site_user span').html('暂无数据');
@@ -188,13 +190,13 @@
         console.log(results);
         var data = results.data;
         var html = '';
-        $.each(data, function(index, user) {
+        $.each(data, function (index, user) {
             var html = '<label class="weui-cell weui-check__label" for="' + user.site_user_id + '"> <div class="weui-cell__hd"> <input type="checkbox" class="weui-check" name="select_user" id="' + user.site_user_id + '" > <i class="weui-icon-checked"></i> </div><div name="user_image" class="weui-cell__hd user_image  ' + user.site_user_photo + ' " user-image="' + user.site_user_photo + '" ></div>  <div class="weui-cell__bd"> <p>' + user.site_user_name + '</p> </div> </label>';
             $('#user-lists').append(html);
         });
         loading = results.loading;
     }
-    </script>
+</script>
 </body>
 
 </html>
