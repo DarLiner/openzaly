@@ -74,7 +74,6 @@
 			<groupId>com.akaxin.site</groupId>
 			<artifactId>openzaly-admin</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<type>war</type>
 		</dependency>
 
 	</dependencies>
