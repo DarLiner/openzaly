@@ -24,8 +24,7 @@ public class BasicManageService implements IBasicService {
 	public boolean updateSiteConfig(String siteUserId, Map<Integer, String> config) {
 		boolean isAdmin = SiteConfig.isSiteSuperAdmin(siteUserId);
 		logger.info("siteUserId={} isAdmin={} update configMap={}", siteUserId, isAdmin, config);
-		// return SiteConfigDao.getInstance().updateSiteConfig(config, isAdmin);
-		return true;
+		return SiteConfigDao.getInstance().updateSiteConfig(config, isAdmin);
 	}
 
 }
