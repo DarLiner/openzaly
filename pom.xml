@@ -34,6 +34,7 @@
 		<module>openzaly-protobuf</module>
 		<module>openzaly-storage</module>
 		<module>openzaly-common</module>
+		<module>openzaly-admin</module>
 	</modules>
 
 	<properties>
