@@ -16,7 +16,7 @@ public class UserManageController {
 
 	@RequestMapping("/index")
 	public ModelAndView toUserIndex() {
-		ModelAndView modelAndView = new ModelAndView("platform/user/index");
+		ModelAndView modelAndView = new ModelAndView("user/index");
 		return modelAndView;
 	}
 

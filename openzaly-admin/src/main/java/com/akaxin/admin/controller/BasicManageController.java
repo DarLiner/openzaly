@@ -54,7 +54,7 @@ public class BasicManageController {
 	// 获取站点配置信息
 	@RequestMapping("/basicConfig")
 	public ModelAndView toBasic() {
-		ModelAndView modelAndView = new ModelAndView("platform/basic/setBasic");
+		ModelAndView modelAndView = new ModelAndView("/basic/config");
 		Map<String, Object> model = modelAndView.getModel();
 		Map<Integer, String> map = basicManageService.getSiteConfig();
 		Set<Integer> integers = map.keySet();
