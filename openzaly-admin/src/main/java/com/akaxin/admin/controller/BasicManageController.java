@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.admin.service.IBasicService;
-import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
@@ -58,6 +57,14 @@ public class BasicManageController {
 		Map<String, Object> model = modelAndView.getModel();
 		Map<Integer, String> map = basicManageService.getSiteConfig();
 		Set<Integer> integers = map.keySet();
+		// 设置默认属性
+		model.put("site_register_way", "0");
+		model.put("pic_size", "1");
+		model.put("pic_path", "/akaxin");
+		model.put("group_members_count", "100");
+		model.put("u2_encryption_status", "1");
+		model.put("push_client_status", "0");
+		model.put("log_level", "DEBUG");
 		String site_prot = "";
 		String site_address = "";
 		String http_prot = "";
@@ -128,7 +135,7 @@ public class BasicManageController {
 			Map<Integer, String> headermap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headermap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			logger.info("siteUserId={} update config={}", siteUserId, request.getParameterMap());
-			
+
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
 			if (isManager) {
