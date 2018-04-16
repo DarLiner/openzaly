@@ -19,24 +19,30 @@ import static com.akaxin.proto.core.ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_V
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.admin.service.IManageService;
-import com.akaxin.admin.service.impl.ManageServiceImpl;
+import com.akaxin.admin.service.IBasicService;
 
 @Controller
 @RequestMapping("manage")
 public class BasicManageController {
-	private IManageService manageService = new ManageServiceImpl();
+	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
+
+	@Autowired
+	private IBasicService manageService;
 
 	@RequestMapping("/index")
 	public String homePage() {
 		return "index";
 	}
 
-	@RequestMapping("/basic")
+	// 获取站点配置信息
+	@RequestMapping("/basicConfig")
 	public ModelAndView toBasic() {
 		ModelAndView modelAndView = new ModelAndView("platform/basic/setBasic");
 		Map<String, Object> model = modelAndView.getModel();
@@ -102,8 +108,11 @@ public class BasicManageController {
 		return modelAndView;
 	}
 
-	@RequestMapping("/setBasic")
-	public boolean setBasic(ModelAndView modelAndView) {
+	// 更新站点配置信息
+	@RequestMapping("/updateConfig")
+	public boolean updateBasicConfig(ModelAndView modelAndView) {
+		// #TODO 判断权限
+
 		return true;
 	}
 
