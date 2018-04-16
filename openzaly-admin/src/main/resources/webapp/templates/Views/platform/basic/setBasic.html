@@ -83,10 +83,8 @@
                 </div>
                 <div class="weui-uploader__bd">
                     <ul class="weui-uploader__files uploaderFiles" id="uploaderFiles">
-                        <?php if($site_logo) {?>
                         <li class="weui-uploader__file site_logo" id="site_logo"
-                            site-logo="<?php echo $site_logo;?>"></li>
-                        <?php } ?>
+                            site-logo="${site_logo}" th:if="${site_logo}!=null"></li>
                     </ul>
                     <div class="weui-uploader__input-box">
                         <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file"
@@ -100,13 +98,12 @@
 <div class="weui-cells">
     <div class="weui-cell weui-cell_switch">
         <div class="weui-cell__bd">是否开启绝密功能</div>
-        <div class="weui-cell__ft">
-            <?php if($u2_encryption_status) {?>
+        <div class="weui-cell__ft" th:switch="${u2_encryption_status}">
+
             <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox"
-                   checked="checked">
-            <?php } else {?>
-            <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox">
-            <?php   }?>
+                   checked="checked" th:case="1">
+
+            <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox"th:case="0">
         </div>
     </div>
 
