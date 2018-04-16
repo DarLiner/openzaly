@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.admin.service.IBasicService;
+import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
@@ -126,34 +127,32 @@ public class BasicManageController {
 	}
 
 	// 更新站点配置信息
+	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, value = "/updateConfig")
 	@ResponseBody
 	public String updateBasicConfig(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
-			Map<Integer, String> headermap = pluginPackage.getPluginHeaderMap();
-			String siteUserId = headermap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-			logger.info("siteUserId={} update config={}", siteUserId, request.getParameterMap());
-
+			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+			logger.info("siteUserId={} update config={}", siteUserId);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
 			if (isManager) {
+				Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 				Map<Integer, String> configMap = new HashMap<Integer, String>();
-				configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, request.getParameter("site_name"));
-				configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, request.getParameter("site_address"));
-				configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, request.getParameter("site_port"));
-				configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE,
-						request.getParameter("group_members_count"));
-				configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, request.getParameter("pic_path"));
-				configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, request.getParameter("site_logo"));
-				configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, request.getParameter("register_way"));
-				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
-						request.getParameter("u2_encryption_status"));
-				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE,
-						request.getParameter("push_client_status"));
-				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, request.getParameter("log_level"));
-				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, request.getParameter("site_manager"));
+				configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, dataMap.get("site_name"));
+				configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, dataMap.get("site_address"));
+				configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, dataMap.get("site_port"));
+				configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, dataMap.get("group_members_count"));
+				configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, dataMap.get("pic_path"));
+				configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
+				configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, dataMap.get("register_way"));
+				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE, dataMap.get("u2_encryption_status"));
+				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
+				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
+				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, dataMap.get("site_manager"));
 				basicManageService.updateSiteConfig(siteUserId, configMap);
 				return "success";
 			} else {
