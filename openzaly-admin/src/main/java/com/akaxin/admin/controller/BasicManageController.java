@@ -56,8 +56,6 @@ public class BasicManageController {
 	public ModelAndView toBasic() {
 		ModelAndView modelAndView = new ModelAndView("/basic/config");
 		Map<String, Object> model = modelAndView.getModel();
-		Map<Integer, String> map = basicManageService.getSiteConfig();
-		Set<Integer> integers = map.keySet();
 		// 设置默认属性
 		model.put("site_register_way", "0");
 		model.put("pic_size", "1");
@@ -66,6 +64,9 @@ public class BasicManageController {
 		model.put("u2_encryption_status", "1");
 		model.put("push_client_status", "0");
 		model.put("log_level", "DEBUG");
+
+		Map<Integer, String> map = basicManageService.getSiteConfig();
+		Set<Integer> integers = map.keySet();
 		String site_prot = "";
 		String site_address = "";
 		String http_prot = "";
@@ -136,11 +137,11 @@ public class BasicManageController {
 
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-			logger.info("siteUserId={} update config={}", siteUserId);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
 			if (isManager) {
 				Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
+				logger.info("siteUserId={} update config={}", siteUserId, dataMap);
 				Map<Integer, String> configMap = new HashMap<Integer, String>();
 				configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, dataMap.get("site_name"));
 				configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, dataMap.get("site_address"));
