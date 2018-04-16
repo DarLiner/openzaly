@@ -23,7 +23,7 @@ public class ManageController {
     }
 
     @RequestMapping("/basic")
-    public ModelAndView toSetBasic() {
+    public ModelAndView toBasic() {
         ModelAndView modelAndView = new ModelAndView("platform/basic/setBasic");
         Map<String, Object> model = modelAndView.getModel();
         Map<Integer, String> map = manageService.getSiteConfig();
@@ -88,4 +88,10 @@ public class ManageController {
         model.put("httpAddressAndPort", http_address + ":" + http_prot);
         return modelAndView;
     }
+
+    @RequestMapping("/setBasic")
+    public boolean setBasic(ModelAndView modelAndView) {
+        return true;
+    }
+
 }
