@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>编辑用户信息</title>
+    </title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
+    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <style type="text/css">
+    <?php echo $css_code;
+    ?>
+    </style>
+</head>
+
+<body ontouchstart="">
+    <div class="weui-cells weui-cells_form margin_top_30px">
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">用户名称</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input user_name" type="text" name="user_name" value="<?php echo $user_name?>" placeholder="用户名称">
+            </div>
+        </div>
+        <input class="site_user_id" type="hidden" data="<?php echo $user_id?>">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <div class="weui-uploader">
+                    <div class="weui-uploader__hd">
+                        <p class="weui-uploader__title">图片上传</p>
+                        <?php if(isset($user_photo) && $user_photo) {?>
+                        <div class="weui-uploader__info">1/1</div>
+                        <?php } else {?>
+                        <div class="weui-uploader__info">0/1</div>
+                        <?php }?>
+                    </div>
+                    <div class="weui-uploader__bd">
+                        <ul class="weui-uploader__files" id="uploaderFiles">
+                            <?php if(isset($user_photo) && $user_photo) {?>
+                            <li class="weui-uploader__file user_photo" id="user_photo" user-photo="<?php echo $user_photo;?>"></li>
+                            <?php }?>
+                        </ul>
+                        <div class="weui-uploader__input-box">
+                            <input id="uploaderInput" class="weui-uploader__input  uploaderInput" type="file" accept="image/*" multiple="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info" url-data="/manageUser/updateSiteUserInfo" href="javascript:" id="update_user_info">确定</a>
+            <?php if($user_status == 0) { ?>
+            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="sealup-site-user weui-btn weui-btn_warn " url-data="/manageUser/sealupSiteUser">封禁用户</a>
+            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="unfreeze-site-user weui-btn weui-btn_warn " url-data="/manageUser/sealupSiteUser" style="display:none">解禁用户</a>
+            <?php } else { ?>
+            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="sealup-site-user weui-btn weui-btn_warn" style="display:none" url-data="/manageUser/sealupSiteUser">封禁用户</a>
+            <a href="javascript:;" name='del-user' data="<?php echo $user_id?>" class="unfreeze-site-user weui-btn weui-btn_warn" url-data="/manageUser/sealupSiteUser">解禁用户</a>
+            <?php } ?>
+        </div>
+    </div>
+    <input type='hidden' id='host_name' data="<?php echo $host_name;?>" />
+    <input type='hidden' id='edit_user_id' user_id="<?php echo $user_id;?>" user_name="" />
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+    <script type="text/javascript">
+    function getOsType() {
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
+            return 'Android';
+        } else if (u.indexOf('iPhone') > -1) {
+            return 'IOS';
+        } else {
+            return 'PC';
+        }
+    }
+
+    function reqUrl(reqUri, params, callbackName) {
+        var type = getOsType();
+        console.log('utl' + type);
+
+        if (type == 'Android') {
+            Android.requestPost(reqUri, params, callbackName);
+        } else if (type == 'IOS') {
+            ios_requestPost(reqUri, params, callbackName);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqHtml(reqUri, params) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.requestPage(reqUri, params)
+        } else if (type == 'IOS') {
+            ios_requestPage(reqUri, params);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageUpload(callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageUpload(callback);
+        } else if (type == 'IOS') {
+            ios_imageUpload(callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageDownload(imageid, callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageDownload(imageid, callback);
+        } else if (type == 'IOS') {
+            ios_imageDownload(imageid, callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function toast(msg) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.showToast(msg);
+        } else if (type == 'IOS') {
+            $.toast(msg);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    $(document).on("click", ".sealup-site-user", function() {
+        var siteUserId = $(this).attr('data');
+        var url = $(this).attr('url-data');
+        $('#sealUpUserId').attr('data', siteUserId);
+        $.confirm({
+            title: '封禁用户',
+            text: '确定要封禁用户？',
+            onOK: function() {
+                var userInfo = {
+                    'site_user_id': siteUserId,
+                    'type': 'freeze'
+                };
+                reqUrl(url, JSON.stringify(userInfo), "sealupSiteUser");
+                $.closeModal();
+            },
+            onCancel: function() {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
+    function sealupSiteUser(results) {
+        console.log('sealupUser');
+        if (results == 'fail') {
+            $.toast("操作失败", "forbidden");
+        } else {
+            $('.sealup-site-user').hide();
+            $('.unfreeze-site-user').show();
+            $.toast("操作成功");
+        }
+    }
+
+    $(document).on("click", ".unfreeze-site-user", function() {
+        var siteUserId = $(this).attr('data');
+        var url = $(this).attr('url-data');
+        $('#unfreezeUserId').attr('data', siteUserId);
+        $.confirm({
+            title: '解禁用户',
+            text: '解禁后，用户可以访问该站点',
+            onOK: function() {
+                var userInfo = {
+                    'site_user_id': siteUserId,
+                    'type': 'unfreeze'
+                };
+                reqUrl(url, JSON.stringify(userInfo), "unfreezeSiteUser");
+                $.closeModal();
+            },
+            onCancel: function() {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
+
+    $(document).on("click", ".update_user_info", function() {
+        var userName = $('.user_name').val();
+        var siteUserId = $('.site_user_id').attr('data');
+        var userPhoto = $('.user_photo').attr('user-photo');
+        $('#edit_user_id').attr('user_name', userName);
+        var userInfo = {
+            "site_user_id": siteUserId,
+            "user_name": userName,
+            "user_photo": userPhoto,
+            'type': 'update'
+        };
+        var reqUri = $(this).attr('url-data');
+        reqUrl(reqUri, JSON.stringify(userInfo), 'updateSiteUser');
+    });
+
+    function unfreezeSiteUser(results) {
+        console.log('sealupUser');
+        if (results == 'fail') {
+            $.toast("操作失败", "forbidden");
+        } else {
+            $('.sealup-site-user').show();
+            $('.unfreeze-site-user').hide();
+            $.toast("操作成功");
+        }
+    }
+
+    function updateSiteUser(results) {
+        if (results == 'fail') {
+            $.toast("操作失败", "forbidden");
+        } else {
+            var userName = $('#edit_user_id').attr('user_name');
+            $('.user_name').attr('value', userName);
+            $.toast("操作成功");
+        }
+    }
+
+    $(document).on("click", '.uploaderInput', function() {
+        reqImageUpload("jsimageUpload");
+    });
+
+    function jsimageUpload(result, imageId, imageLocalPath) {
+        var type = getOsType();
+        if (result == 1) {
+            if (type == 'Android') {
+                var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
+            } else {
+                var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
+            }
+            $('#uploaderFiles').html(img);
+            $('.pic_num').html('1/1');
+        } else {
+            $.toast('上传图片失败', 'forbidden');
+        }
+    }
+
+    $(window).load(function() {
+        var imageid = $('.user_photo').attr('user-photo');
+        reqImageDownload(imageid, "jsimageDownload");
+    });
+
+    function jsimageDownload(result, imageid, imageLocalPath) {
+        var type = getOsType();
+        if (type == 'Android') {
+            var html = '<img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" />';
+        } else {
+            var html = '<img src="' + imageLocalPath + '" style="height:75px; width:75px;" />';
+        }
+        $('#user_photo').html(html);
+    }
+    </script>
+</body>
+
+</html>

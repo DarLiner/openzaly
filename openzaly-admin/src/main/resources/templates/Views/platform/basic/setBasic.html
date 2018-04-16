@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>站点设置</title>
+    </title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <link rel="stylesheet" href="Public/css/style.css"/>
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body ontouchstart="">
+<div class="weui-cells__title weui-cell">站点基本设置<a href="https://github.com/akaxincom/faq/blob/master/basic_config.md"
+                                                  class="weui-cell_link">-设置说明</a></div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">站点名称</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input site-name" name='site_name' type="text" th:value="${site_name}"
+                   placeholder="请输入站点名称" pattern="[^'\x22]+">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">站点地址</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input site-addr site_address_info" type="text"
+                   th:value="${siteAddressAndPort}" placeholder="请输入站点地址" autocapitalize="off"
+                   pattern="[a-zA-Z0-9:：]*">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">InnerAPI服务器地址</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input site-port" type="text"
+                   th:value="${httpAddressAndPort}"  placeholder="InnerAPI服务器地址"
+                   disabled>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">群成员限制</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input site-group-maxnum" type="number" th:value="${group_members_count}"
+                   pattern="[0-9]*" placeholder="请输入群成员总量限制">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">站点根目录</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input site-img-addr" type="text" name='pic_path' th:value="${pic_path}"
+                   placeholder="请输入站点根目录" disabled>
+        </div>
+    </div>
+    <div class="weui-gallery" id="gallery">
+        <span class="weui-gallery__img" id="galleryImg"></span>
+        <div class="weui-gallery__opr">
+            <a href="javascript:" class="weui-gallery__del">
+                <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+            </a>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">站点Logo上传</p>
+                    <div class="weui-uploader__info pic_num">0/1</div>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files uploaderFiles" id="uploaderFiles">
+                        <?php if($site_logo) {?>
+                        <li class="weui-uploader__file site_logo" id="site_logo"
+                            site-logo="<?php echo $site_logo;?>"></li>
+                        <?php } ?>
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file"
+                               accept="image/*" multiple="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="weui-cells">
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">是否开启绝密功能</div>
+            <div class="weui-cell__ft">
+                <?php if($u2_encryption_status) {?>
+                <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox"
+                       checked="checked">
+                <?php } else {?>
+                <input class="weui-switch open_secret" key-data='U2_ENCRYPTION_STATUS' type="checkbox">
+                <?php   }?>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__hd">子管理员账号</div>
+            <div class="weui-cell__bd">
+                <?php  if ($manager_type == 'site_manager') {?>
+                <input class="weui-input subgenus_admin" type="text" value="<?php echo $subgenus_admin;?>"
+                       placeholder="输入子管理员账号" disabled>
+                <?php } else {?>
+                <input class="weui-input subgenus_admin" type="text" value="<?php echo $subgenus_admin;?>"
+                       placeholder="输入子管理员账号">
+                <?php }?>
+            </div>
+        </div>
+
+
+        <a class="weui-cell weui-cell_access register_way" href="javascript:;">
+            <div class="weui-cell__bd">
+                <p>站点注册方式</p>
+            </div>
+            <div class="weui-cell__ft register_way—txt">
+                <?php if($site_reister_way == "0") { ?> 匿名身份
+                <?php } else if($site_reister_way == "1") { ?> 实名认证
+                <?php } else if($site_reister_way == "2") { ?> 邀请码
+                <?php } ?>
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access site_push" href="javascript:;">
+            <div class="weui-cell__bd">
+                <p>站点push</p>
+            </div>
+            <div class="weui-cell__ft site_push—txt">
+                <?php if($push_client_status == "0") { ?> 站点关闭push
+                <?php } else if($push_client_status == "1") { ?> push不显示文本内容
+                <?php } elseif($push_client_status == "2") { ?> push显示文本内容
+                <?php } ?>
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access log_level" href="javascript:;">
+            <div class="weui-cell__bd">
+                <p>日志级别</p>
+            </div>
+            <div class="weui-cell__ft log_level—txt">
+                <?php if($log_level == "DEBUG") { ?> Debug级别
+                <?php } else if($log_level == "INFO") { ?> Info级别
+                <?php } elseif($log_level == "ERROR") { ?> Error级别
+                <?php } ?>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="weui-btn-area">
+    <a class="weui-btn basic-weui-btn weui-btn_primary basic-color" href="javascript:" url-data="/manage/setBasic"
+       id="setBasicConfigButton">确定</a>
+</div>
+<div class="weui-gallery" id="gallery">
+    <span class="weui-gallery__img" id="galleryImg"></span>
+    <div class="weui-gallery__opr">
+        <a href="javascript:" class="weui-gallery__del">
+            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
+    function getOsType() {
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+            return 'Android';
+        } else if (u.indexOf('iPhone') > -1) {
+            return 'IOS';
+        } else {
+            return 'PC';
+        }
+    }
+
+    function reqUrl(reqUri, params, callbackName) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.requestPost(reqUri, params, callbackName);
+        } else if (type == 'IOS') {
+            ios_requestPost(reqUri, params, callbackName);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqHtml(reqUri, params) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.requestPage(reqUri, params)
+        } else if (type == 'IOS') {
+            ios_requestPage(reqUri, params);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageUpload(callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageUpload(callback);
+        } else if (type == 'IOS') {
+            ios_imageUpload(callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageDownload(imageid, callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageDownload(imageid, callback);
+        } else if (type == 'IOS') {
+            ios_imageDownload(imageid, callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function toast(msg) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.showToast(msg);
+        } else if (type == 'IOS') {
+            $.toast(msg);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function isDomain(siteAddress) {
+
+        if (siteAddress.indexOf("://") > -1) {
+            hostname = siteAddress.split('/')[2];
+        } else {
+            hostname = siteAddress.split('/')[0];
+        }
+        var domain = hostname.split(':')[0];
+        domain = domain.split('?')[0];
+
+        if (domain) {
+            if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(domain)) {
+                return true;
+            }
+
+            var re2 = /^(.+\.)(com|edu|gov|int|mil|net|org|biz|info|name|museum|coop|aero|xyz|top|store|team|cc|shop|club|vip|ink|site|fun|online|work|red|group|tv|[a-z][a-z])$/;
+            if (re2.test(domain)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $(document).on("click", "#setBasicConfigButton", function () {
+        var siteName = $('.site-name').val();
+        var siteGroupMaxnum = $('.site-group-maxnum').val();
+        var siteImgAddr = $('.site-img-addr').val();
+        var siteRegisterType = $(".register_way").attr("data");
+        var pushClientStatus = $("site_push").attr("data");
+        var logLevel = $(".log_level").attr("data");
+        var siteAddressInfo = $('.site_address_info').val();
+        var openSecret = $('.open_secret').prop('checked');
+        var siteManager = $('.subgenus_admin').val();
+
+        if (openSecret) {
+            openSecret = '1';
+        } else {
+            openSecret = '0';
+        }
+
+
+        var blobImgUrl = $('.blob_img_url').attr('data');
+        if (siteName.length < 1) {
+            $.toptip('站点名称不能为空', 'error');
+            return false;
+        }
+        var siteAddres = '';
+        var sitePort = '';
+        var siteAddressInfos = siteAddressInfo.replace('：', ':').split(':');
+        if (siteAddressInfos.length > 2) {
+            $.toptip('请填写正确的站点地址', 'error');
+            return false;
+        } else if (siteAddressInfos.length == 2) {
+            var siteAddress = siteAddressInfos[0];
+            var sitePort = siteAddressInfos[1];
+        } else {
+            var siteAddress = siteAddressInfos[0];
+        }
+        var siteAddressFlag = false;
+        siteAddressFlag = isDomain(siteAddress);
+        if (!siteAddressFlag) {
+            $.toptip('请填写正确的站点地址', 'error');
+            return false;
+        }
+
+        if (siteGroupMaxnum.length < 1) {
+            $.toptip('群组最大的成员数量不能为空', 'error');
+            return false;
+        }
+
+        if (siteImgAddr.length < 1) {
+            $.toptip('图片存储地址不能为空', 'error');
+            return false;
+        }
+        var imageId = $('.imgage_id').attr('image-id');
+        var data = {
+            'site_name': siteName,
+            'site_address': siteAddress,
+            'site_port': sitePort,
+            'group_members_count': siteGroupMaxnum,
+            'pic_path': siteImgAddr,
+            'site_logo': imageId,
+            'register_way': siteRegisterType,
+            'u2_encryption_status': openSecret,
+            'push_client_status': pushClientStatus,
+            'log_level': logLevel,
+            'site_manager': siteManager
+        };
+        var reqUri = $(this).attr('url-data');
+        $.confirm({
+            title: '修改基本设置',
+            text: '确定要修改基本设置？',
+            onOK: function () {
+                reqUrl(reqUri, JSON.stringify(data), "siteBasic");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+
+    });
+
+    function siteBasic(result) {
+        if (result == 'success') {
+            $.toast("修改成功");
+        } else {
+            $.toast("修改失败", "forbidden");
+        }
+    }
+
+    $(document).on("click", '.uploaderInput', function () {
+        reqImageUpload("jsimageUpload");
+    });
+
+    function jsimageUpload(result, imageId, imageLocalPath) {
+        var type = getOsType();
+        if (result == 1) {
+            if (type == 'Android') {
+                var img = '<li class="weui-uploader__file imgage_id" image-id="' + imageId + '"><img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
+            } else {
+                var img = '<li class="weui-uploader__file imgage_id" image-id="' + imageId + '"><img src="' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
+            }
+            $('#uploaderFiles').html(img);
+            $('.pic_num').html('1/1');
+        } else {
+            $.toast('图片上传失败', 'forbidden');
+        }
+    }
+
+    $(document).on("click", '.register_way', function () {
+        $.actions({
+            title: "",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "匿名身份",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".register_way—txt").html("匿名身份");
+                    $(".register_way").attr("data", "0");
+                }
+            },
+                {
+                    text: "实名认证",
+                    className: "color-warning weui-dialog__btn",
+                    onClick: function () {
+                        $(".register_way—txt").html("实名认证");
+                        $(".register_way").attr("data", "1");
+                    }
+                },
+                {
+                    text: "邀请码",
+                    className: 'color-danger weui-dialog__btn',
+                    onClick: function () {
+                        $(".register_way—txt").html("邀请码");
+                        $(".register_way").attr("data", "2");
+                    }
+                }
+            ]
+        });
+    });
+
+    $(document).on("click", '.log_level', function () {
+        $.actions({
+            title: "",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "Debug级别",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".log_level—txt").html("Debug级别");
+                    $(".log_level").attr("data", "DEBUG");
+                }
+            },
+                {
+                    text: "Info级别",
+                    className: "color-warning weui-dialog__btn",
+                    onClick: function () {
+                        $(".log_level—txt").html("Info级别");
+                        $(".log_level").attr("data", "INFO");
+                    }
+                },
+                {
+                    text: "Error级别",
+                    className: 'color-danger weui-dialog__btn',
+                    onClick: function () {
+                        $(".log_level—txt").html("Error级别");
+                        $(".log_level").attr("data", "ERROR");
+                    }
+                }
+            ]
+        });
+    });
+
+
+    $(document).on("click", '.site_push', function () {
+        $.actions({
+            title: "",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "站点关闭push",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".site_push—txt").html("站点关闭push");
+                    $(".site_push").attr("data", "0");
+                }
+            },
+
+                {
+                    text: "push显示文本内容",
+                    className: 'color-danger weui-dialog__btn',
+                    onClick: function () {
+                        $(".site_push—txt").html("push显示文本内容");
+                        $(".site_push").attr("data", "2");
+                    }
+                },
+                {
+                    text: "push不显示文本内容",
+                    className: "color-warning weui-dialog__btn",
+                    onClick: function () {
+                        $(".site_push—txt").html("push不显示文本内容");
+                        $(".site_push").attr("data", "1");
+                    }
+                }
+            ]
+        });
+    });
+
+    $(window).load(function () {
+        var imageid = $('.site_logo').attr('site-logo');
+        reqImageDownload(imageid, "jsimageDownload");
+    });
+
+    function jsimageDownload(result, imageid, imageLocalPath) {
+        var type = getOsType();
+        if (type == 'Android') {
+            var html = '<img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" />';
+        } else {
+            var html = '<img src="' + imageLocalPath + '" style="height:75px; width:75px;" />';
+        }
+        $('#site_logo').html(html);
+    }
+</script>
+</body>
+
+</html>

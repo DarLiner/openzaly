@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>扩展管理</title>
+    </title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
+    <link rel="stylesheet" href-data="Public/css/style.css" />
+    <style type="text/css">
+    <?php echo $css_code;
+    ?>
+    </style>
+</head>
+
+<body ontouchstart="">
+    <div class="bd margin_top_30px">
+        <div class="page__bd">
+            <div class="weui-cells__title"></div>
+            <div class="weui-cells">
+                <a class="weui-cell weui-cell_access manage-plugin-add-html" url-data="/managePlugin/addPluginHtml" href="javascript:;">
+                    <div class="weui-cell__bd">
+                        <p>添加扩展</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+                <a class="weui-cell weui-cell_access manage-plugin-html" url-data="/managePlugin/pluginList" href="javascript:;">
+                    <div class="weui-cell__bd">
+                        <p>扩展列表</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+    <script type="text/javascript">
+    function getOsType() {
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+            return 'Android';
+        } else if (u.indexOf('iPhone') > -1) {
+            return 'IOS';
+        } else {
+            return 'PC';
+        }
+    }
+
+    function reqUrl(reqUri, params, callbackName) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.requestPost(reqUri, params, callbackName);
+        } else if (type == 'IOS') {
+            ios_requestPost(reqUri, params, callbackName);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqHtml(reqUri, params) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.requestPage(reqUri, params)
+        } else if (type == 'IOS') {
+            ios_requestPage(reqUri, params);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageUpload(callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageUpload(callback);
+        } else if (type == 'IOS') {
+            ios_imageUpload(callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageDownload(imageid, callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageDownload(imageid, callback);
+        } else if (type == 'IOS') {
+            ios_imageDownload(imageid, callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function toast(msg) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.showToast(msg);
+        } else if (type == 'IOS') {
+            $.toast(msg);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+    $(document).on("click", ".manage-plugin-html", function() {
+        var reqUri = $(this).attr('url-data');
+        reqHtml(reqUri, "");
+    });
+
+    $(document).on("click", ".manage-plugin-add-html", function() {
+        var reqUri = $(this).attr('url-data');
+        reqHtml(reqUri, "");
+    });
+    </script>
+</body>
+
+</html>

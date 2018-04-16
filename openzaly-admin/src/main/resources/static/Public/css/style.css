@@ -1,0 +1,91 @@
+body, html {
+  height: 100%;
+    background-color: #f4f4f4;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.basic-title {
+  text-align: center;
+  font-weight: 400;
+  color: #1E88E5;
+  margin: 0 15%;
+}
+
+.basic-sub-title {
+  text-align: center;
+  color: #1E88E5;
+}
+
+.basic-header {
+  padding: 35px 0;
+}css
+
+.basic-content-padded {
+  padding: 15px;
+}
+ .margin_top_30px {
+     margin-top: 30px;
+ }
+
+.basic-second-title {
+  text-align: center;
+  color: #1E88E5;
+  font-weight: 400;
+  margin: 0 15%;
+}
+.basic-weui-grid {
+    position: relative;
+    float: left;
+    padding: 5px;
+    width: 60px;
+    height: 60px;
+}
+.basic-color {
+  background-color: #1E88E5;
+     color: #FFFFFF;
+}
+.basic-weui-btn_primary {
+    background-color: #1E88E5;
+}
+
+.basic-weui-btn {
+  background-color: #1E88E5;
+    color: #FFFFFF;
+}
+.basic-weui-btn:hover {
+   background-color: #1E88E5;
+     color: #FFFFFF;
+   }
+
+.basic-weui-btn:active {
+   background-color: #1E88E5!important;
+     color: #FFFFFF;
+   }
+
+.basic-weui-btn_mini {
+      display: inline-block;
+    padding: 0 1.32em;
+    line-height: 2.3;
+}
+
+.weui-dialog__btn {
+    color: #1E88E5;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+}
+
+.basic-color_bg {
+    background-color: #f4f4f4;
+}
+.weui-loadmore_line .weui-loadmore__tips {
+    background-color: #f4f4f4;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+}
