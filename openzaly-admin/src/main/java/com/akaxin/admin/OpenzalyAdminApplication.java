@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OpenzalyAdminApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OpenzalyAdminApplication.class, args);
+    		SpringApplication.run(OpenzalyAdminApplication.class, args);
     }
 }
