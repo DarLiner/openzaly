@@ -40,7 +40,7 @@ import com.akaxin.site.business.impl.site.SiteConfig;
 
 @Controller
 @RequestMapping("manage")
-public class BasicManageController {
+public class BasicManageController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
 	@Autowired
@@ -155,14 +155,14 @@ public class BasicManageController {
 				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
 				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, dataMap.get("site_manager"));
 				basicManageService.updateSiteConfig(siteUserId, configMap);
-				return "success";
+				return SUCCESS;
 			} else {
-				return "no-permission";
+				return NO_PERMISSION;
 			}
 		} catch (Exception e) {
 			logger.error("update site config error", e);
 		}
-		return "error";
+		return ERROR;
 	}
 
 }

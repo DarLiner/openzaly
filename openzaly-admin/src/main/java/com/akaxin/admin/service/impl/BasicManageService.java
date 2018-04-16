@@ -23,8 +23,10 @@ public class BasicManageService implements IBasicService {
 	@Override
 	public boolean updateSiteConfig(String siteUserId, Map<Integer, String> config) {
 		boolean isAdmin = SiteConfig.isSiteSuperAdmin(siteUserId);
-		logger.info("siteUserId={} isAdmin={} update configMap={}", siteUserId, isAdmin, config);
-		return SiteConfigDao.getInstance().updateSiteConfig(config, isAdmin);
+		boolean result = SiteConfigDao.getInstance().updateSiteConfig(config, isAdmin);
+		SiteConfig.updateConfig();
+		logger.info("siteUserId={} isAdmin={} update configMap={} result={}", siteUserId, isAdmin, config, result);
+		return result;
 	}
 
 }
