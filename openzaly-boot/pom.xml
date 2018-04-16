@@ -71,11 +71,18 @@
 
 	<dependencies>
 
+
 		<dependency>
-			<groupId>com.akaxin</groupId>
+			<groupId>com.akaxin.site</groupId>
+			<artifactId>openzaly-connector</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.akaxin.site</groupId>
 			<artifactId>openzaly-admin</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
 	</dependencies>
 
 </project>

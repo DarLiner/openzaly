@@ -34,8 +34,6 @@ public class ManageController {
         String http_address = "";
         for (Integer integer : integers) {
             String res = map.get(integer);
-            //设置默认的属性
-
             switch (integer) {
                 case SITE_NAME_VALUE:
                     model.put("site_name", res);
