@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,6 +35,8 @@ import com.akaxin.admin.service.IBasicService;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
+import com.google.common.io.CharStreams;
+import com.google.protobuf.ByteString;
 
 @Controller
 @RequestMapping("manage")
@@ -116,10 +119,15 @@ public class BasicManageController {
 	}
 
 	// 更新站点配置信息
-	@RequestMapping("/updateConfig")
+	@RequestMapping(method = RequestMethod.POST, value = "/updateConfig")
 	@ResponseBody
 	public String updateBasicConfig(HttpServletRequest request) {
 		try {
+			String bodyString = CharStreams.toString(request.getReader());
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage
+					.parseFrom(ByteString.copyFromUtf8(bodyString));
+
+			pluginPackage.getPluginHeaderMap();
 			String siteUserId = request.getHeader(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE + "");
 			logger.info("siteUserId={} update config={}", siteUserId, request.getParameterMap());
 
