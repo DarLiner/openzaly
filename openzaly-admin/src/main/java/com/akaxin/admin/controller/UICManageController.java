@@ -60,7 +60,7 @@ public class UICManageController extends AbstractController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(method = RequestMethod.POST, value = "/getUicList")
+	@RequestMapping(method = RequestMethod.POST, value = "/uicList")
 	@ResponseBody
 	public Map<String, Object> getUICList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		Map<String, Object> results = new HashMap<String, Object>();
@@ -90,7 +90,7 @@ public class UICManageController extends AbstractController {
 						data.add(GsonUtils.toJson(uicMap));
 					}
 				}
-				results.put("uicData", data);
+				results.put("uicData", GsonUtils.toJson(data));
 			}
 		} catch (Exception e) {
 			logger.error("get used uic list error", e);
