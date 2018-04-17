@@ -18,7 +18,7 @@
         <p>未使用列表</p>
     </div>
     <div class="weui-cell__ft">
-        <a href="javascript:;" class=" weui-btn basic-weui-btn generate-code  weui-btn_mini  basic-color  "
+        <a href="javascript:;"
            url-data="/uic/addUic" style="text-align: left;">生成新的邀请码</a>
     </div>
 </div>
@@ -36,8 +36,6 @@
 <script type="text/javascript">
     //初始化事件
     $(function () {
-        var page = 0
-        var loading = false;
         unusedlist();
     });
 
@@ -120,11 +118,11 @@
         }
     }
 
-
+    var page = 0;
+    var loading = false;
 
     function unusedlist() {
-        // alert(loading);
-        alert("----------")
+        // alert("----------")
         if (loading) {
             $('.loadmore_site_invitecode').addClass('weui-loadmore_line');
             $('.loadmore_site_invitecode span').html('暂无数据');
@@ -147,12 +145,13 @@
         loading = true;
 
     }
-    var page = 1;
-    var loading = false;
+
+
     $(document.body).infinite().on("infinite", unusedlist());
 
     function addInviteCodeToList(results) {
-        alert(results);
+        var res = eval("(" + results + ")");
+        // alert(res);
         // var JsonRes = JSON.parse(results);
         // alert(JsonRes[0]);
         // alert(results[0]);
@@ -161,15 +160,17 @@
         var data = res.uicData;
         var html = '';
         // alert(data);
-        $.each(data, function (uic, siteUserName) {
-            var html = '<div class="weui-cell"> <div class="weui-cell__bd"> <p>' + uic + '</p> </div> </div>';
+        $.each(data, function (index, uic) {
+            var html = '<div class="weui-cell"> <div class="weui-cell__bd"> <p>' + uic.uic + '</p> </div> </div>';
             $('#invitecode-lists').append(html);
         });
         loading = res.loading;
         if (loading == true) {
-            $("span#weui-loadmore__tips").text("到底啦");
+            alert("123");
+            $(".weui-loadmore__tips").html("到底啦");
         } else {
-            $("span#weui-loadmore__tips").text("加载更多");
+            alert("456")
+            $(".weui-loadmore__tips").html("加载更多");
         }
     }
 </script>

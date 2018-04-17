@@ -27,81 +27,86 @@ import com.akaxin.site.storage.bean.UicBean;
 @Controller
 @RequestMapping("uic")
 public class UICManageController extends AbstractController {
-	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
-	private static final int UIC_PAGE_SIZE = 20;
+    private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
+    private static final int UIC_PAGE_SIZE = 20;
 
-	@Autowired
-	private IUICService uicServer;
+    @Autowired
+    private IUICService uicServer;
 
-	@RequestMapping("/index")
-	public ModelAndView toUICIndex() {
-		ModelAndView modelAndView = new ModelAndView("uic/index");
-		return modelAndView;
-	}
+    @RequestMapping("/index")
+    public ModelAndView toUICIndex() {
+        ModelAndView modelAndView = new ModelAndView("uic/index");
+        return modelAndView;
+    }
 
-	@RequestMapping("/unused")
-	public String toUnUsed() {
-		return "uic/unused_list";
-	}
+    @RequestMapping("/unused")
+    public String toUnUsed() {
+        return "uic/unused_list";
+    }
 
-	@RequestMapping(method = RequestMethod.POST, value = "/addUic")
-	@ResponseBody
-	public String addNewUIC(HttpServletRequest request, @RequestBody byte[] bodyParam) {
-		try {
-			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-			boolean isManager = SiteConfig.isSiteManager(siteUserId);
+    @RequestMapping("/used")
+    public String toused() {
+        return "uic/used_list";
+    }
 
-			if (isManager) {
-				return uicServer.addUIC(100) ? SUCCESS : ERROR;
-			} else {
-				return NO_PERMISSION;
-			}
-		} catch (Exception e) {
-			logger.error("add new uic error", e);
-		}
-		return ERROR;
-	}
+    @RequestMapping(method = RequestMethod.POST, value = "/addUic")
+    @ResponseBody
+    public String addNewUIC(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
-	@SuppressWarnings("unchecked")
-	@RequestMapping(method = RequestMethod.POST, value = "/uicList")
-	@ResponseBody
-	public Map<String, Object> getUICList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
-		Map<String, Object> results = new HashMap<String, Object>();
-		boolean nodata = true;
-		try {
-			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-			boolean isManager = SiteConfig.isSiteManager(siteUserId);
-			if (isManager) {
-				Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
+            if (isManager) {
+                return uicServer.addUIC(100) ? SUCCESS : ERROR;
+            } else {
+                return NO_PERMISSION;
+            }
+        } catch (Exception e) {
+            logger.error("add new uic error", e);
+        }
+        return ERROR;
+    }
 
-				int pageNum = Integer.valueOf(uicReqMap.get("page"));
-				int status = Integer.valueOf(uicReqMap.get("code_status"));
-				logger.info("-----UIC LIST------pageNum={},status={}", pageNum, status);
+    @SuppressWarnings("unchecked")
+    @RequestMapping(method = RequestMethod.POST, value = "/uicList")
+    @ResponseBody
+    public Map<String, Object> getUICList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+        Map<String, Object> results = new HashMap<String, Object>();
+        boolean nodata = true;
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            boolean isManager = SiteConfig.isSiteManager(siteUserId);
+            if (isManager) {
+                Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 
-				List<UicBean> uicList = uicServer.getUsedUicList(pageNum, UIC_PAGE_SIZE, status);
-				List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-				if (uicList != null && uicList.size() > 0) {
-					if (UIC_PAGE_SIZE == uicList.size()) {
-						nodata = false;
-					}
-					for (UicBean bean : uicList) {
-						Map<String, String> uicMap = new HashMap<String, String>();
-						uicMap.put("uic", bean.getUic());
-						uicMap.put("siteUserName", bean.getUserName());
-						data.add(uicMap);
-					}
-				}
-				results.put("uicData", data);
-			}
-		} catch (Exception e) {
-			logger.error("get used uic list error", e);
-		}
-		results.put("loading", nodata);
-		return results;
-	}
+                int pageNum = Integer.valueOf(uicReqMap.get("page"));
+                int status = Integer.valueOf(uicReqMap.get("code_status"));
+                logger.info("-----UIC LIST------pageNum={},status={}", pageNum, status);
+
+                List<UicBean> uicList = uicServer.getUsedUicList(pageNum, UIC_PAGE_SIZE, status);
+                List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+                if (uicList != null && uicList.size() > 0) {
+                    if (UIC_PAGE_SIZE == uicList.size()) {
+                        nodata = false;
+                    }
+                    for (UicBean bean : uicList) {
+                        Map<String, String> uicMap = new HashMap<String, String>();
+                        uicMap.put("uic", bean.getUic());
+                        uicMap.put("siteUserName", bean.getUserName());
+                        data.add(uicMap);
+                    }
+                }
+                results.put("uicData", data);
+            }
+        } catch (Exception e) {
+            logger.error("get used uic list error", e);
+        }
+        results.put("loading", nodata);
+        return results;
+    }
 
 }

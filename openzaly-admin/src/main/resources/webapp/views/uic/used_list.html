@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -10,37 +10,30 @@
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
     <link rel="stylesheet" href="/Public/css/style.css"/>
-    <style type="text/css">
 
-    </style>
 </head>
 
 <body ontouchstart="">
 <div class="weui-cells__title weui-cell">
     已使用列表
 </div>
-<div class="weui-cells" id="invitecode-lists" th:if="${results}!=null">
-    <div class="weui-cell" th:each="uic,uicStat : ${results}">
-        <div class="weui-cell__bd">
-            <p th:text="${uic.code}"></p>
-        </div>
-        <div class="weui-cell__ft" th:text="${uic.name}"></div>
-    </div>
+<div class="weui-cells" id="invitecode-lists">
+
 </div>
 <div class="weui-loadmore weui-loadmore_line loadmore_site_invitecode">
-    <span class="weui-loadmore__tips" th:if=loading>加载更多</span>
+    <span class="weui-loadmore__tips"></span>
 </div>
-<div class="weui-loadmore weui-loadmore_line loadmore_site_invitecode">
-    <span class="weui-loadmore__tips" th:if=loading>到底啦</span>
-</div>
-<div class="weui-loadmore weui-loadmore_line">
-    <span class="weui-loadmore__tips" th:if="${results}==null">暂无数据</span>
-</div>
-<input type='hidden' id='init_url' url-data="/manageInviteCode/pullInviteCode" data-type="used"/>
+<input type='hidden' id='init_url' url-data="/uic/uicList" data-type="used"/>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
+
+    //初始化事件
+    $(function () {
+        unusedlist();
+    });
+
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
@@ -87,7 +80,8 @@
 
     var page = 0;
     var loading = false;
-    $(document.body).infinite().on("infinite", function () {
+
+    function usedlist() {
         if (loading) {
             $('.loadmore_site_invitecode').addClass('weui-loadmore_line');
             $('.loadmore_site_invitecode span').html('暂无数据');
@@ -97,24 +91,42 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var codeStatus = $('#init_url').attr('data-type');
+        if (codeStatus == "unused") {
+            codeStatus = 0;
+        } else {
+            codeStatus = 1;
+        }
         var params = {
-            "page": page,
-            "code_status": codeStatus
+            "page": page.toString(),
+            "code_status": codeStatus.toString()
         };
         reqUrl(reqUri, JSON.stringify(params), 'addInviteCodeToList');
         loading = true;
-    });
+
+    }
+
+    $(document.body).infinite().on("infinite", usedlist());
 
     function addInviteCodeToList(results) {
         console.log('回调-addInviteCodeToList');
-        results = JSON.parse(results);
-        var data = results.results;
+        alert(results);
+        var res = eval("(" + results + ")");
+        alert(res);
+        var data = res.uicData;
         var html = '';
-        $.each(data, function (index, code) {
-            var html = '<div class="weui-cell"> <div class="weui-cell__bd"> <p>' + code.code + '</p> </div> <div class="weui-cell__ft">' + code.use_site_user_name + '</div> </div>';
+        $.each(data, function (index, uic) {
+            var html = '<div class="weui-cell"> <div class="weui-cell__bd"> <p>' + uic.uic + '</p> </div> <div class="weui-cell__ft">' + uic.siteUserName + '</div> </div>';
             $('#invitecode-lists').append(html);
         });
-        loading = results.loading;
+        loading = res.loading;
+
+        if (loading == true) {
+            alert("123");
+            $(".weui-loadmore__tips").html("到底啦");
+        } else {
+            alert("456")
+            $(".weui-loadmore__tips").html("加载更多");
+        }
     }
 </script>
 </body>
