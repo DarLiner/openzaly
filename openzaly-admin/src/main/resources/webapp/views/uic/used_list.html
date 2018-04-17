@@ -29,9 +29,9 @@
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
 
-    //初始化事件
-    $(function () {
-        unusedlist();
+   //初始化事件
+   $(function () {
+       usedlist();
     });
 
     function getOsType() {
@@ -105,13 +105,13 @@
 
     }
 
-    $(document.body).infinite().on("infinite", usedlist());
+    $(document.body).infinite().on("infinite", function () {
+        usedlist();
+    });
 
     function addInviteCodeToList(results) {
         console.log('回调-addInviteCodeToList');
-        alert(results);
         var res = eval("(" + results + ")");
-        alert(res);
         var data = res.uicData;
         var html = '';
         $.each(data, function (index, uic) {
@@ -121,10 +121,8 @@
         loading = res.loading;
 
         if (loading == true) {
-            alert("123");
             $(".weui-loadmore__tips").html("到底啦");
         } else {
-            alert("456")
             $(".weui-loadmore__tips").html("加载更多");
         }
     }
