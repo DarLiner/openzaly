@@ -1,21 +1,171 @@
 package com.akaxin.admin.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.akaxin.admin.service.IPluginService;
+import com.akaxin.common.utils.StringHelper;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.storage.bean.PluginBean;
 
 //插件扩展管理
 @Controller
-@RequestMapping("managePlugin")
-public class PluginManageController {
+@RequestMapping("plugin")
+public class PluginManageController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
-	@RequestMapping("/index")
-	public ModelAndView toManagePluginIndex() {
-		ModelAndView modelAndView = new ModelAndView("platform/plugin/index");
+	@Autowired
+	private IPluginService pluginService;
+
+	@RequestMapping("/indexPage")
+	public ModelAndView toPluginIndex() {
+		ModelAndView modelAndView = new ModelAndView("plugin/index");
 		return modelAndView;
+	}
+
+	@RequestMapping("/addPage")
+	public ModelAndView toPluginAdd() {
+		ModelAndView modelAndView = new ModelAndView("plugin/add");
+		return modelAndView;
+	}
+
+	@RequestMapping("/listPage")
+	public ModelAndView toPluginList() {
+		ModelAndView modelAndView = new ModelAndView("plugin/list");
+		return modelAndView;
+	}
+
+	// 增加新扩展
+	@RequestMapping(method = RequestMethod.POST, value = "/addPlugin")
+	@ResponseBody
+	public String addPlugin(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			if (isManager(siteUserId)) {
+				Map<String, String> pluginData = getRequestDataMap(pluginPackage);
+				logger.info("siteUserId={} add new plugin={}", siteUserId, pluginData);
+
+				PluginBean bean = new PluginBean();
+				bean.setName(pluginData.get("name"));
+				bean.setIcon(pluginData.get("plugin_icon"));
+				bean.setUrlPage(pluginData.get("url_page"));
+				bean.setApiUrl(pluginData.get("api_url"));
+				bean.setAllowedIp(pluginData.get("allow_ip"));
+				bean.setPosition(Integer.valueOf(pluginData.get("position")));
+				bean.setSort(Integer.valueOf(pluginData.get("order")));
+				bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
+				bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
+				bean.setAddTime(System.currentTimeMillis());
+				bean.setAuthKey(StringHelper.generateRandomString(16));// 随机生成
+
+				logger.info("siteUserId={} add new plugin bean={}", siteUserId, bean);
+				if (pluginService.addNewPlugin(bean)) {
+					return SUCCESS;
+				}
+
+			} else {
+				return NO_PERMISSION;
+			}
+		} catch (Exception e) {
+			logger.error("add new plugin controller error", e);
+		}
+		return ERROR;
+	}
+
+	// 获取扩展列表
+	@RequestMapping(method = RequestMethod.POST, value = "/pluginList")
+	@ResponseBody
+	public Map<String, Object> getPluginList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		boolean success = false;//
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+
+			if (isManager(siteUserId)) {
+				Map<String, String> dataMap = getRequestDataMap(pluginPackage);
+				int pageNum = Integer.valueOf(dataMap.get("page"));
+				logger.info("get plugin list ");
+				List<PluginBean> pluginList = pluginService.getPluginList(pageNum, PAGE_SIZE);
+
+			}
+
+		} catch (Exception e) {
+			logger.error("get plugin list error", e);
+		}
+		result.put("loading", success);
+		return result;
+	}
+
+	// 编辑扩展
+	@RequestMapping(method = RequestMethod.POST, value = "/editPlugin")
+	@ResponseBody
+	public String editPlugin(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			if (isManager(siteUserId)) {
+				Map<String, String> pluginData = getRequestDataMap(pluginPackage);
+				logger.info("siteUserId={} update plugin={}", siteUserId, pluginData);
+
+				PluginBean bean = new PluginBean();
+				bean.setId(Integer.valueOf(pluginData.get("plugin_id")));
+				bean.setName(pluginData.get("name"));
+				bean.setIcon(pluginData.get("plugin_icon"));
+				bean.setUrlPage(pluginData.get("url_page"));
+				bean.setApiUrl(pluginData.get("api_url"));
+				bean.setPosition(Integer.valueOf(pluginData.get("position")));
+				bean.setSort(Integer.valueOf(pluginData.get("order")));
+				bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
+				bean.setAllowedIp(pluginData.get("allow_ip"));
+				logger.info("siteUserId={} update plugin bean={}", siteUserId, bean);
+
+				if (pluginService.updatePlugin(bean)) {
+					return SUCCESS;
+				}
+
+			}
+		} catch (Exception e) {
+			logger.error("edit plugin error", e);
+		}
+		return ERROR;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/delPlugin")
+	@ResponseBody
+	public String deletePlugin(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			if (isManager(siteUserId)) {
+				Map<String, String> dataMap = getRequestDataMap(pluginPackage);
+				int pluginId = Integer.valueOf(dataMap.get("plugin_id"));
+
+				if (pluginService.deletePlugin(pluginId)) {
+					return SUCCESS;
+				}
+			} else {
+				return NO_PERMISSION;
+			}
+		} catch (Exception e) {
+			logger.error("edit plugin error", e);
+		}
+		return ERROR;
 	}
 
 }

@@ -63,7 +63,7 @@ public class BasicManageController extends AbstractController {
 		model.put("group_members_count", "100");
 		model.put("u2_encryption_status", "1");
 		model.put("push_client_status", "0");
-		model.put("log_level", "DEBUG");
+		model.put("log_level", "INFO");
 
 		Map<Integer, String> map = basicManageService.getSiteConfig();
 		Set<Integer> integers = map.keySet();
@@ -154,8 +154,9 @@ public class BasicManageController extends AbstractController {
 				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
 				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
 				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, dataMap.get("site_manager"));
-				basicManageService.updateSiteConfig(siteUserId, configMap);
-				return SUCCESS;
+				if(basicManageService.updateSiteConfig(siteUserId, configMap)) {
+					return SUCCESS;
+				}
 			} else {
 				return NO_PERMISSION;
 			}
