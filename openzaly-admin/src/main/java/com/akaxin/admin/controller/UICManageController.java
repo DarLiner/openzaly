@@ -39,6 +39,10 @@ public class UICManageController extends AbstractController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/unused")
+	public String toUnUsed() {
+		return "uic/unused_list";
+	}
 	@RequestMapping(method = RequestMethod.POST, value = "/addUic")
 	@ResponseBody
 	public String addNewUIC(HttpServletRequest request, @RequestBody byte[] bodyParam) {

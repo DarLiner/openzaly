@@ -150,13 +150,13 @@
             <p>日志级别</p>
         </div>
         <div th:switch="${log_level}">
-            <div class="weui-cell__ft log_level—txt" th:case="DEBUG">
+            <div class="weui-cell__ft log_level—txt" data="DEBUG" th:case="DEBUG">
                 Debug级别
             </div>
-            <div class="weui-cell__ft log_level—txt" th:case="INFO">
+            <div class="weui-cell__ft log_level—txt" data="INFO" th:case="INFO">
                 Info级别
             </div>
-            <div class="weui-cell__ft log_level—txt" th:case="ERROR">
+            <div class="weui-cell__ft log_level—txt" data="ERROR" th:case="ERROR">
                 Error级别
             </div>
         </div>
@@ -353,8 +353,10 @@
     function siteBasic(result) {
         if (result == 'success') {
             $.toast("修改成功");
+        } else if (result == 'no-permission') {
+            $.toast("没有权限,请稍后再试","forbidden");
         } else {
-            $.toast("修改失败", "forbidden");
+            $.toast("修改失败,请稍后再试", "forbidden");
         }
     }
 
@@ -419,7 +421,7 @@
             },
             actions: [{
                 text: "Debug级别",
-                className: "color-primary weui-dialog__btn ",
+                className: "color-primary weui-dialog__btn",
                 onClick: function () {
                     $(".log_level—txt").html("Debug级别");
                     $(".log_level").attr("data", "DEBUG");

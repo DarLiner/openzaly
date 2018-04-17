@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -19,35 +19,23 @@
 <div class="weui-cells__title weui-cell">
     已使用列表
 </div>
-<?php if($results) {?>
-<div class="weui-cells" id="invitecode-lists">
-    <?php foreach($results as $key => $val) {?>
-    <div class="weui-cell">
+<div class="weui-cells" id="invitecode-lists" th:if="${results}!=null">
+    <div class="weui-cell" th:each="uic,uicStat : ${results}">
         <div class="weui-cell__bd">
-            <p>
-                <?php echo $val['code']; ?>
-            </p>
+            <p th:text="${uic.code}"></p>
         </div>
-        <div class="weui-cell__ft">
-            <?php echo $val['use_site_user_name']; ?>
-        </div>
+        <div class="weui-cell__ft" th:text="${uic.name}"></div>
     </div>
-    <?php } ?>
 </div>
-<?php if(!$loading) {?>
 <div class="weui-loadmore weui-loadmore_line loadmore_site_invitecode">
-    <span class="weui-loadmore__tips">加载更多</span>
+    <span class="weui-loadmore__tips" th:if=loading>加载更多</span>
 </div>
-<?php } else { ?>
 <div class="weui-loadmore weui-loadmore_line loadmore_site_invitecode">
-    <span class="weui-loadmore__tips">到底啦</span>
+    <span class="weui-loadmore__tips" th:if=loading>到底啦</span>
 </div>
-<?php } ?>
-<?php } else { ?>
 <div class="weui-loadmore weui-loadmore_line">
-    <span class="weui-loadmore__tips">暂无数据</span>
+    <span class="weui-loadmore__tips" th:if="${results}==null">暂无数据</span>
 </div>
-<?php } ?>
 <input type='hidden' id='init_url' url-data="/manageInviteCode/pullInviteCode" data-type="used"/>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
@@ -97,7 +85,7 @@
         }
     }
 
-    var page = 1;
+    var page = 0;
     var loading = false;
     $(document.body).infinite().on("infinite", function () {
         if (loading) {
