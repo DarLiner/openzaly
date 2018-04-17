@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class PluginManageController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
 	@Autowired
+	@Qualifier("pluginManageService")
 	private IPluginService pluginService;
 
 	@RequestMapping("/indexPage")
@@ -109,7 +111,8 @@ public class PluginManageController extends AbstractController {
 			if (isManager(siteUserId)) {
 				Map<String, String> dataMap = getRequestDataMap(pluginPackage);
 				int pageNum = Integer.valueOf(dataMap.get("page"));
-				logger.info("get plugin list ");
+				logger.info("siteUserId={} get plugin list pageNum={} pageSize={}", siteUserId, pageNum, PAGE_SIZE);
+
 				List<PluginBean> pluginList = pluginService.getPluginList(pageNum, PAGE_SIZE);
 				List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 				if (pluginList != null) {
@@ -132,7 +135,7 @@ public class PluginManageController extends AbstractController {
 					}
 				}
 
-				result.put("pluginData", pluginList);
+				result.put("pluginData", data);
 			}
 
 		} catch (Exception e) {

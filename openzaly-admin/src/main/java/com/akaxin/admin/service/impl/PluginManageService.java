@@ -14,7 +14,7 @@ import com.akaxin.site.storage.bean.PluginBean;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-04-17 11:57:26
  */
-@Service
+@Service("pluginManageService")
 public class PluginManageService implements IPluginService {
 
 	@Override
