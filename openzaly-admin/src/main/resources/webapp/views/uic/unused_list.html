@@ -122,7 +122,6 @@
     var loading = false;
 
     function unusedlist() {
-        // alert("----------")
         if (loading) {
             $('.loadmore_site_invitecode').addClass('weui-loadmore_line');
             $('.loadmore_site_invitecode span').html('暂无数据');
@@ -147,29 +146,22 @@
     }
 
 
-    $(document.body).infinite().on("infinite", unusedlist());
+    $(document.body).infinite().on("infinite", function () {
+        unusedlist();
+    });
 
     function addInviteCodeToList(results) {
         var res = eval("(" + results + ")");
-        // alert(res);
-        // var JsonRes = JSON.parse(results);
-        // alert(JsonRes[0]);
-        // alert(results[0]);
-        // alert(results.uicData);
-        // alert(results.loading);
         var data = res.uicData;
         var html = '';
-        // alert(data);
         $.each(data, function (index, uic) {
             var html = '<div class="weui-cell"> <div class="weui-cell__bd"> <p>' + uic.uic + '</p> </div> </div>';
             $('#invitecode-lists').append(html);
         });
         loading = res.loading;
         if (loading == true) {
-            alert("123");
             $(".weui-loadmore__tips").html("到底啦");
         } else {
-            alert("456")
             $(".weui-loadmore__tips").html("加载更多");
         }
     }
