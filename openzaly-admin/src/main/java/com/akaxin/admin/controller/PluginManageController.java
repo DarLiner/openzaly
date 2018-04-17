@@ -146,7 +146,7 @@ public class PluginManageController extends AbstractController {
 	}
 
 	// 编辑扩展
-	@RequestMapping(method = RequestMethod.POST, value = "/editPlugin")
+	@RequestMapping(method = RequestMethod.POST, value = "/updatePlugin")
 	@ResponseBody
 	public String editPlugin(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		try {
