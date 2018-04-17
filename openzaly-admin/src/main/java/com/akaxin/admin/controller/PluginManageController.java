@@ -1,5 +1,6 @@
 package com.akaxin.admin.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,11 +89,19 @@ public class PluginManageController extends AbstractController {
 	}
 
 	// 获取扩展列表
+	@RequestMapping(method = RequestMethod.POST, value = "/getPlugin")
+	@ResponseBody
+	public Map<String, Object> getPlugin(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+
+		return null;
+	}
+
+	// 获取扩展列表
 	@RequestMapping(method = RequestMethod.POST, value = "/pluginList")
 	@ResponseBody
 	public Map<String, Object> getPluginList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		boolean success = false;//
+		boolean nodata = true;// 是还有更多数据
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			String siteUserId = getRequestSiteUserId(pluginPackage);
@@ -102,13 +111,34 @@ public class PluginManageController extends AbstractController {
 				int pageNum = Integer.valueOf(dataMap.get("page"));
 				logger.info("get plugin list ");
 				List<PluginBean> pluginList = pluginService.getPluginList(pageNum, PAGE_SIZE);
+				List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+				if (pluginList != null) {
+					if (PAGE_SIZE == pluginList.size()) {
+						nodata = false;
+					}
+					for (PluginBean bean : pluginList) {
+						Map<String, Object> pluginMap = new HashMap<String, Object>();
+						pluginMap.put("plugin_id", bean.getId());
+						pluginMap.put("name", bean.getName());
+						pluginMap.put("plugin_icon", bean.getIcon());
+						pluginMap.put("url_page", bean.getUrlPage());
+						pluginMap.put("api_url", bean.getApiUrl());
+						pluginMap.put("position", bean.getPosition());
+						pluginMap.put("order", bean.getSort());
+						pluginMap.put("per_status", bean.getPermissionStatus());
+						pluginMap.put("allow_ip", bean.getAllowedIp());
+						// add to list
+						data.add(pluginMap);
+					}
+				}
 
+				result.put("pluginData", pluginList);
 			}
 
 		} catch (Exception e) {
 			logger.error("get plugin list error", e);
 		}
-		result.put("loading", success);
+		result.put("loading", nodata);
 		return result;
 	}
 

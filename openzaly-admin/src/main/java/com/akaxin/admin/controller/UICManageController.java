@@ -43,6 +43,7 @@ public class UICManageController extends AbstractController {
 	public String toUnUsed() {
 		return "uic/unused_list";
 	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/addUic")
 	@ResponseBody
 	public String addNewUIC(HttpServletRequest request, @RequestBody byte[] bodyParam) {
@@ -68,7 +69,7 @@ public class UICManageController extends AbstractController {
 	@ResponseBody
 	public Map<String, Object> getUICList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		Map<String, Object> results = new HashMap<String, Object>();
-		boolean success = false;
+		boolean nodata = true;
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
@@ -85,7 +86,7 @@ public class UICManageController extends AbstractController {
 				List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 				if (uicList != null && uicList.size() > 0) {
 					if (UIC_PAGE_SIZE == uicList.size()) {
-						success = true;
+						nodata = false;
 					}
 					for (UicBean bean : uicList) {
 						Map<String, String> uicMap = new HashMap<String, String>();
@@ -99,7 +100,7 @@ public class UICManageController extends AbstractController {
 		} catch (Exception e) {
 			logger.error("get used uic list error", e);
 		}
-		results.put("loading", success);
+		results.put("loading", nodata);
 		return results;
 	}
 
