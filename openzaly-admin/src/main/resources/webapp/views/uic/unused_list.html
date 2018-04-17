@@ -142,11 +142,11 @@
         };
         reqUrl(reqUri, JSON.stringify(params), 'addInviteCodeToList');
         loading = true;
-
     }
 
 
     $(document.body).infinite().on("infinite", function () {
+        
         unusedlist();
     });
 

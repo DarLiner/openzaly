@@ -18,43 +18,24 @@
 <div class="weui-cells__title weui-cell">
     扩展列表
 </div>
-<?php if(isset($results) && count($results)) { ?>
-<div class="weui-cells plugin-lists">
-    <?php foreach($results as $plugin) { ?>
-    <a class="weui-cell weui-cell_access update-plugin" url-data="/managePlugin/pluginInfo"
-       plugin-id="<?php echo $plugin['id'];?>" id="<?php echo $plugin['id'];?>" href="javascript:;">
+<div class="weui-cells plugin-lists"></div>
 
-        <div class="weui-cell__hd <?php echo $plugin['plugin_icon'];?>" name="plugin_icon"
-             plugin-icon="<?php echo $plugin['plugin_icon'];?>"></div>
-        <div class="weui-cell__bd">
-            <p>
-                <?php echo $plugin['name']?>
-            </p>
-        </div>
-        <div class="weui-cell__ft"></div>
-    </a>
-    <?php } ?>
-</div>
-<?php if(!$loading) {?>
+
 <div class="weui-loadmore weui-loadmore_line loadmore_plugin_list">
-    <span class="weui-loadmore__tips">加载更多</span>
+    <span class="weui-loadmore__tips"></span>
 </div>
-<?php } else { ?>
-<div class="weui-loadmore weui-loadmore_line loadmore_plugin_list">
-    <span class="weui-loadmore__tips">到底啦</span>
-</div>
-<?php } ?>
-<?php } else {?>
-<div class="weui-loadmore weui-loadmore_line">
-    <span class="weui-loadmore__tips">暂无数据</span>
-</div>
-<?php } ?>
-<input type='hidden' id='init_url' url-data="/managePlugin/pullPluginList"/>
+
+<input type='hidden' id='init_url' url-data="/plugin/pluginList"/>
 <input type='hidden' id='del_plugin' plugin-id=""/>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
+
+    $(function () {
+        showList();
+    });
+
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -163,9 +144,10 @@
         }
     }
 
-    var page = 1;
+    var page = 0;
     var loading = false;
-    $(document.body).infinite().on("infinite", function () {
+
+    function showList() {
         if (loading) {
             $('.loadmore_plugin_list').addClass('weui-loadmore_line');
             $('.loadmore_plugin_list span').html('暂无数据');
@@ -175,21 +157,30 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var params = {
-            "page": page
+            "page": page.toString()
         };
         reqUrl(reqUri, JSON.stringify(params), 'addpluginToList');
         loading = true;
+    }
+
+    $(document.body).infinite().on("infinite", function () {
+        showList();
     });
 
     function addpluginToList(results) {
-        results = JSON.parse(results);
-        var data = results.results;
+        var JsonData = eval("("+results+")");
+        var data = JsonData.pluginData;
         var html = '';
         $.each(data, function (index, plugin) {
-            var html = '<a class="weui-cell weui-cell_access  update-plugin" url-data="/managePlugin/pluginInfo" plugin-id="' + plugin.id + '"  href="javascript:;" >  <div class="weui-cell__bd"> <p>' + plugin.name + '</p> </div> <div class="weui-cell__ft"></div> </a>';
+            var html = '<a class="weui-cell weui-cell_access  update-plugin" url-data="/plugin/editPage" plugin-id="' + plugin.id + '"  href="javascript:;" >  <div class="weui-cell__bd"> <p>' + plugin.name + '</p> </div> <div class="weui-cell__ft"></div> </a>';
             $('.plugin-lists').append(html);
         });
-        loading = results.loading;
+        loading = JsonData .loading;
+        if (loading == true) {
+            $(".weui-loadmore__tips").html("到底啦");
+        } else {
+            $(".weui-loadmore__tips").html("加载更多");
+        }
     }
 </script>
 </body>

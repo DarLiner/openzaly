@@ -103,7 +103,7 @@
     </div>
     <div class="weui-btn-area">
         <a class="weui-btn basic-weui-btn weui-btn_primary basic-color addPluginButton"
-           url-data="/managePlugin/addPlugin" href="javascript:" id="addPluginButton">确定</a>
+           url-data="/plugin/addPlugin" href="javascript:;" id="addPluginButton">确定</a>
     </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
@@ -148,7 +148,7 @@
         if (type == 'Android') {
             Android.imageUpload(callback);
         } else if (type == 'IOS') {
-            ios_imageUpload(callback);
+            .(callback);
         } else {
             $.toast('暂时不支持该设备');
         }
@@ -309,6 +309,8 @@
             $('input').val('');
             $('#uploaderFiles').html('');
             $.toast('添加成功');
+        } else if (result == 'no-permission') {
+            $.toast('没有权限,稍后再试', 'forbidden');
         } else {
             $.toast('添加失败', 'forbidden');
         }
