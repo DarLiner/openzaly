@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.business.impl.hai;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +30,6 @@ import com.akaxin.proto.plugin.HaiUserListProto;
 import com.akaxin.proto.plugin.HaiUserProfileProto;
 import com.akaxin.proto.plugin.HaiUserRelationListProto;
 import com.akaxin.proto.plugin.HaiUserSealUpProto;
-import com.akaxin.proto.plugin.HaiUserSearchProto;
 import com.akaxin.proto.plugin.HaiUserUpdateProto;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
@@ -47,50 +45,6 @@ import com.akaxin.site.storage.bean.UserProfileBean;
  */
 public class HttpUserService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpUserService.class);
-
-	/**
-	 * 查找用户
-	 * 
-	 * @param command
-	 * @return
-	 */
-	public CommandResponse search(Command command) {
-		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
-		try {
-			HaiUserSearchProto.HaiUserSearchRequest request = HaiUserSearchProto.HaiUserSearchRequest
-					.parseFrom(command.getParams());
-			String siteUserId = request.getSiteUserId();
-			String userName = request.getUserName();
-			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
-			if (StringUtils.isNotBlank(siteUserId)) {
-				userList.add(UserProfileDao.getInstance().getSimpleProfileById(siteUserId));
-			} else if (StringUtils.isNotBlank(userName)) {
-				userList = UserProfileDao.getInstance().getSimpleProfileByName(userName);
-			} else {
-				errorCode = ErrorCode2.ERROR_PARAMETER;
-			}
-
-			if (userList != null && userList.size() > 0) {
-				HaiUserSearchProto.HaiUserSearchResponse.Builder responseBuilder = HaiUserSearchProto.HaiUserSearchResponse
-						.newBuilder();
-				for (SimpleUserBean bean : userList) {
-					UserProto.SimpleUserProfile profile = UserProto.SimpleUserProfile.newBuilder()
-							.setSiteUserId(bean.getUserId()).setUserName(String.valueOf(bean.getUserName()))
-							.setUserPhoto(String.valueOf(bean.getUserPhoto())).build();
-					responseBuilder.addUserProfile(profile);
-				}
-				commandResponse.setParams(responseBuilder.build().toByteArray());
-				errorCode = ErrorCode2.SUCCESS;
-			}
-		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.requestErrorLog(logger, command, e);
-		}
-		return commandResponse.setErrCode2(errorCode);
-	}
 
 	/**
 	 * 查看用户的个人profile
@@ -128,7 +82,7 @@ public class HttpUserService extends AbstractRequest {
 		}
 		return commandResponse.setErrCode2(errorCode);
 	}
-
+	
 	/**
 	 * 更新用户信息
 	 * 
@@ -214,7 +168,7 @@ public class HttpUserService extends AbstractRequest {
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
-			
+
 			List<SimpleUserBean> pageList = UserProfileDao.getInstance().getUserPageList(pageNum, pageSize);
 			if (pageList != null) {
 				HaiUserListProto.HaiUserListResponse.Builder responseBuilder = HaiUserListProto.HaiUserListResponse
@@ -259,7 +213,7 @@ public class HttpUserService extends AbstractRequest {
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
-			
+
 			List<SimpleUserRelationBean> pageList = UserProfileDao.getInstance().getUserRelationPageList(siteUserId,
 					pageNum, pageSize);
 			if (pageList != null) {
