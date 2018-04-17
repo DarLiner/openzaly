@@ -234,9 +234,11 @@ public class ApiPluginService extends AbstractRequest {
 					}
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pluginUrl, httpContent);
-					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
-							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
-					commandResponse.setParams(response.toByteArray());// httpResposne,callback方法的回调方法参数
+					if (httpResponse != null) {
+						ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
+								.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
+						commandResponse.setParams(response.toByteArray());// httpResposne,callback方法的回调方法参数
+					}
 					errCode = ErrorCode2.SUCCESS;
 				}
 			} else {
