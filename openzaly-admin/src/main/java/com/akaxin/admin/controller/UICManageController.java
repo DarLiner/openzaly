@@ -78,7 +78,7 @@ public class UICManageController extends AbstractController {
 				logger.info("-----UIC LIST------pageNum={},status={}", pageNum, status);
 
 				List<UicBean> uicList = uicServer.getUsedUicList(pageNum, UIC_PAGE_SIZE, status);
-				List<String> data = new ArrayList<String>();
+				List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 				if (uicList != null && uicList.size() > 0) {
 					if (UIC_PAGE_SIZE == uicList.size()) {
 						success = true;
@@ -87,10 +87,10 @@ public class UICManageController extends AbstractController {
 						Map<String, String> uicMap = new HashMap<String, String>();
 						uicMap.put("uic", bean.getUic());
 						uicMap.put("siteUserName", bean.getUserName());
-						data.add(GsonUtils.toJson(uicMap));
+						data.add(uicMap);
 					}
 				}
-				results.put("uicData", GsonUtils.toJson(data));
+				results.put("uicData", data);
 			}
 		} catch (Exception e) {
 			logger.error("get used uic list error", e);
