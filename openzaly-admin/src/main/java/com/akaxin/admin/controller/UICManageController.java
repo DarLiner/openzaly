@@ -48,8 +48,8 @@ public class UICManageController extends AbstractController {
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
-			if (isManager && uicServer.addUIC(100)) {
-				return SUCCESS;
+			if (isManager) {
+				return uicServer.addUIC(100) ? SUCCESS : ERROR;
 			} else {
 				return NO_PERMISSION;
 			}
@@ -76,7 +76,7 @@ public class UICManageController extends AbstractController {
 				int pageNum = Integer.valueOf(uicReqMap.get("page"));
 				int status = Integer.valueOf(uicReqMap.get("code_status"));
 				logger.info("-----UIC LIST------pageNum={},status={}", pageNum, status);
-				
+
 				List<UicBean> uicList = uicServer.getUsedUicList(pageNum, UIC_PAGE_SIZE, status);
 				List<String> data = new ArrayList<String>();
 				if (uicList != null && uicList.size() > 0) {
