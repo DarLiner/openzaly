@@ -25,7 +25,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input site-name" name='site_name' type="text" th:value="${site_name}"
-                   placeholder="请输入站点名称" pattern="[^'\x22]+">
+                   placeholder="请输入站点名称" pattern="[^'\x22]+" style="text-align: right;" >
         </div>
     </div>
     <div class="weui-cell">
@@ -35,7 +35,7 @@
         <div class="weui-cell__bd">
             <input class="weui-input site-addr site_address_info" type="text"
                    th:value="${siteAddressAndPort}" placeholder="请输入站点地址" autocapitalize="off"
-                   pattern="[a-zA-Z0-9:：]*">
+                   pattern="[a-zA-Z0-9:：]*" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -45,7 +45,7 @@
         <div class="weui-cell__bd">
             <input class="weui-input site-port" type="text"
                    th:value="${httpAddressAndPort}" placeholder="InnerAPI服务器地址"
-                   disabled>
+                   style="text-align: right;" disabled>
         </div>
     </div>
     <div class="weui-cell">
@@ -54,7 +54,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input site-group-maxnum" type="number" th:value="${group_members_count}"
-                   pattern="[0-9]*" placeholder="请输入群成员总量限制">
+                   pattern="[0-9]*" placeholder="请输入群成员总量限制" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -63,7 +63,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input site-img-addr" type="text" name='pic_path' th:value="${pic_path}"
-                   placeholder="请输入站点根目录" disabled>
+                   placeholder="请输入站点根目录" style="text-align: right;" disabled>
         </div>
     </div>
     <div class="weui-gallery" id="gallery">
@@ -79,12 +79,14 @@
             <div class="weui-uploader">
                 <div class="weui-uploader__hd">
                     <p class="weui-uploader__title">站点Logo上传</p>
-                    <div class="weui-uploader__info pic_num">0/1</div>
+                    <div class="weui-uploader__info pic_num" th:if="${site_logo}==null">0/1</div>
+                    <div class="weui-uploader__info pic_num" th:unless="${site_logo}==null">1/1</div>
                 </div>
                 <div class="weui-uploader__bd">
                     <ul class="weui-uploader__files uploaderFiles" id="uploaderFiles">
-                        <li class="weui-uploader__file site_logo" id="site_logo"
-                            site-logo="${site_logo}" th:if="${site_logo}!=null"></li>
+                        <li class="weui-uploader__file site_logo imgage_id"
+                            th:attr="image-id=${site_logo},site-logo=${site_logo}" id="site_logo"
+                            th:if="${site_logo}!=null"></li>
                     </ul>
                     <div class="weui-uploader__input-box">
                         <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file"
@@ -112,14 +114,14 @@
         <div class="weui-cell__bd">
 
             <input class="weui-input subgenus_admin" type="text" th:value="${subgenus_admin}"
-                   placeholder="输入子管理员账号" th:if="${manager_type}=='site_manager'" disabled>
+                   placeholder="输入子管理员账号" th:if="${manager_type}=='site_manager'" style="text-align: right;" disabled>
             <input class="weui-input subgenus_admin" type="text" th:value="${subgenus_admin}"
-                   placeholder="输入子管理员账号" th:if="${manager_type}!='site_manager'">
+                   placeholder="输入子管理员账号" th:if="${manager_type}!='site_manager'" style="text-align: right;">
         </div>
     </div>
 
 
-    <a class="weui-cell weui-cell_access register_way" href="javascript:;">
+    <a class="weui-cell weui-cell_access register_way" th:attr="data=${site_register_way}" href="javascript:;">
         <div class="weui-cell__bd">
             <p>站点注册方式</p>
         </div>
@@ -129,7 +131,7 @@
             <div class="weui-cell__ft register_way—txt" th:case="'2'">邀请码</div>
         </div>
     </a>
-    <a class="weui-cell weui-cell_access site_push" href="javascript:;">
+    <a class="weui-cell weui-cell_access site_push" th:attr="data=${push_client_status}" href="javascript:;">
         <div class="weui-cell__bd">
             <p>站点push</p>
         </div>
@@ -145,18 +147,18 @@
             </div>
         </div>
     </a>
-    <a class="weui-cell weui-cell_access log_level" href="javascript:;">
+    <a class="weui-cell weui-cell_access log_level" th:attr="data=${log_level}" href="javascript:;">
         <div class="weui-cell__bd">
             <p>日志级别</p>
         </div>
         <div th:switch="${log_level}">
-            <div class="weui-cell__ft log_level—txt" data="DEBUG" th:case="DEBUG">
+            <div class="weui-cell__ft log_level—txt" th:case="DEBUG">
                 Debug级别
             </div>
-            <div class="weui-cell__ft log_level—txt" data="INFO" th:case="INFO">
+            <div class="weui-cell__ft log_level—txt" th:case="INFO">
                 Info级别
             </div>
-            <div class="weui-cell__ft log_level—txt" data="ERROR" th:case="ERROR">
+            <div class="weui-cell__ft log_level—txt" th:case="ERROR">
                 Error级别
             </div>
         </div>
@@ -273,7 +275,7 @@
         var siteGroupMaxnum = $('.site-group-maxnum').val();
         var siteImgAddr = $('.site-img-addr').val();
         var siteRegisterType = $(".register_way").attr("data");
-        var pushClientStatus = $("site_push").attr("data");
+        var pushClientStatus = $(".site_push").attr("data");
         var logLevel = $(".log_level").attr("data");
         var siteAddressInfo = $('.site_address_info').val();
         var openSecret = $('.open_secret').prop('checked');
@@ -354,7 +356,7 @@
         if (result == 'success') {
             $.toast("修改成功");
         } else if (result == 'no-permission') {
-            $.toast("没有权限,请稍后再试","forbidden");
+            $.toast("没有权限,请稍后再试", "forbidden");
         } else {
             $.toast("修改失败,请稍后再试", "forbidden");
         }
