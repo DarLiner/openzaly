@@ -9,8 +9,29 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href="/Public/css/style.css"/>
+    <style>
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
 
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
+    </style>
 </head>
 
 <body ontouchstart="">
@@ -29,9 +50,9 @@
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
 
-   //初始化事件
-   $(function () {
-       usedlist();
+    //初始化事件
+    $(function () {
+        usedlist();
     });
 
     function getOsType() {

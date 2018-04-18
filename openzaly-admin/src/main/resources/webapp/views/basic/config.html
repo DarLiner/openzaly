@@ -9,8 +9,47 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href="/Public/css/style.css"/>
     <style type="text/css">
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .basic-color {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn:hover {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn:active {
+            background-color: #1E88E5 !important;
+            color: #FFFFFF;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
 
     </style>
 </head>
@@ -25,7 +64,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input site-name" name='site_name' type="text" th:value="${site_name}"
-                   placeholder="请输入站点名称" pattern="[^'\x22]+" style="text-align: right;" >
+                   placeholder="请输入站点名称" pattern="[^'\x22]+" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">

@@ -9,8 +9,28 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 
@@ -168,14 +188,14 @@
     });
 
     function addpluginToList(results) {
-        var JsonData = eval("("+results+")");
+        var JsonData = eval("(" + results + ")");
         var data = JsonData.pluginData;
         var html = '';
         $.each(data, function (index, plugin) {
             var html = '<a class="weui-cell weui-cell_access  update-plugin" url-data="/plugin/editPage" plugin-id="' + plugin.id + '"  href="javascript:;" >  <div class="weui-cell__bd"> <p>' + plugin.name + '</p> </div> <div class="weui-cell__ft"></div> </a>';
             $('.plugin-lists').append(html);
         });
-        loading = JsonData .loading;
+        loading = JsonData.loading;
         if (loading == true) {
             $(".weui-loadmore__tips").html("到底啦");
         } else {

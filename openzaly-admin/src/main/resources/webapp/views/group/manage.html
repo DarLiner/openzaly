@@ -10,8 +10,31 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href="/Public/css/style.css"/>
     <style type="text/css">
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .margin_top_30px {
+            margin-top: 30px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
 
     </style>
 </head>
@@ -45,12 +68,12 @@
                 <div class="weui-cell__ft">
                 </div>
             </a>
-            
-            	<div class="weui-cell weui-cell_access"></div> 
-            	
+
+            <div class="weui-cell weui-cell_access"></div>
+
             <div style="margin-top:40px">
-            		<a href="javascript:;" url-data="/group/dissmissGroup" class="weui-btn weui-btn_warn disband-group"
-               		th:attr="group-id=${group_id}">解散群</a>
+                <a href="javascript:;" url-data="/group/dissmissGroup" class="weui-btn weui-btn_warn disband-group"
+                   th:attr="group-id=${group_id}">解散群</a>
             </div>
         </div>
     </div>

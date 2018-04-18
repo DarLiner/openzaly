@@ -7,10 +7,51 @@
     <title>添加扩展</title>
     </title>
     <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
-    <link rel="stylesheet" href="/Public/css/style.css" />
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <style>
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
 
+        .basic-color {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn:hover {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn:active {
+            background-color: #1E88E5 !important;
+            color: #FFFFFF;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
+    </style>
 </head>
 
 <body ontouchstart="">
@@ -39,7 +80,8 @@
             <label class="weui-label">api_url</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input plugin_api_url" type="text" pattern="[a-z\/0-9]*" placeholder="例如http(s)://127.0.0.1">
+            <input class="weui-input plugin_api_url" type="text" pattern="[a-z\/0-9]*"
+                   placeholder="例如http(s)://127.0.0.1">
         </div>
     </div>
     <div class="weui-cell">
@@ -53,7 +95,8 @@
                     <ul class="weui-uploader__files" id="uploaderFiles">
                     </ul>
                     <div class="weui-uploader__input-box">
-                        <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file" accept="image/*" multiple="">
+                        <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file"
+                               accept="image/*" multiple="">
                     </div>
                 </div>
             </div>
@@ -98,7 +141,8 @@
         </a>
     </div>
     <div class="weui-btn-area">
-        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color addPluginButton" url-data="/plugin/addPlugin" href="javascript:" id="addPluginButton">确定</a>
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color addPluginButton" url-data="/plugin/addPlugin"
+           href="javascript:" id="addPluginButton">确定</a>
     </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
@@ -195,16 +239,16 @@
         return false;
     }
 
-    $(document).on("click", '.position', function() {
+    $(document).on("click", '.position', function () {
         $.actions({
             title: "",
-            onClose: function() {
+            onClose: function () {
                 console.log("close");
             },
             actions: [{
                 text: "首页位置",
                 className: "color-primary weui-dialog__btn ",
-                onClick: function() {
+                onClick: function () {
                     $(".position-txt").html("首页位置");
                     $(".position").attr("data", "0");
                 }
@@ -212,7 +256,7 @@
                 {
                     text: "消息帧扩展",
                     className: "color-warning weui-dialog__btn",
-                    onClick: function() {
+                    onClick: function () {
                         $(".position-txt").html("消息帧扩展");
                         $(".position").attr("data", "1");
                     }
@@ -221,16 +265,16 @@
         });
     });
 
-    $(document).on("click", '.per_status', function() {
+    $(document).on("click", '.per_status', function () {
         $.actions({
             title: "",
-            onClose: function() {
+            onClose: function () {
                 console.log("close");
             },
             actions: [{
                 text: "禁用",
                 className: "color-primary weui-dialog__btn ",
-                onClick: function() {
+                onClick: function () {
                     $(".per_status-txt").html("禁用");
                     $(".per_status").attr("data", "0");
                 }
@@ -238,7 +282,7 @@
                 {
                     text: "启用",
                     className: "color-warning weui-dialog__btn",
-                    onClick: function() {
+                    onClick: function () {
                         $(".per_status-txt").html("启用");
                         $(".per_status").attr("data", "1");
                     }
@@ -248,7 +292,7 @@
     });
 
 
-    $(document).on("click", ".addPluginButton", function() {
+    $(document).on("click", ".addPluginButton", function () {
         var reqUri = $(this).attr('url-data');
         var apiUrl = $('.plugin_api_url').val();
         var urlPage = $('.plugin_url_page').val();
@@ -269,7 +313,7 @@
             return false;
         }
 
-        if (!perStatus ||  perStatus.length < 1) {
+        if (!perStatus || perStatus.length < 1) {
             $.toptip('请选择插件状态', 'error');
             return false;
         }
@@ -281,8 +325,8 @@
             'plugin_icon': pluginIcon,
             'position': position,
             'per_status': perStatus,
-            'order' : order,
-            'allow_ip' : allowIp
+            'order': order,
+            'allow_ip': allowIp
         };
         reqUrl(reqUri, JSON.stringify(params), 'addPlugin');
         $('.addPluginButton').removeClass('weui-btn_primary');
@@ -309,7 +353,7 @@
         }
     }
 
-    $(document).on("click", '.uploaderInput', function() {
+    $(document).on("click", '.uploaderInput', function () {
         reqImageUpload("jsimageUpload");
     });
 

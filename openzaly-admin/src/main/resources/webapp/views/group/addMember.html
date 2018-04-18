@@ -6,8 +6,33 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href-data="/Public/css/style.css"/>
     <style type="text/css">
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .basic-color {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 
@@ -20,7 +45,7 @@
     <div class="weui-cell__ft">
         <a class="weui-btn weui-btn-basic weui-btn_mini weui-btn_primary add-user-to-group basic-color"
            style="background-color: #1E88E5;" th:attr="group-id=${siteGroupId}" url-data="/group/addGroupMember"
-        href="javascript:">添加入群</a>
+           href="javascript:">添加入群</a>
     </div>
 </div>
 
@@ -169,11 +194,13 @@
         reqUrl(reqUri, JSON.stringify(params), 'addUserToList');
         loading = true;
     }
+
     $(document.body).infinite().on("infinite", function () {
         nonList();
     });
+
     function addUserToList(results) {
-        results = eval("("+results+")");
+        results = eval("(" + results + ")");
         console.log(results);
         var data = results.nonGroupMemberData;
         var html = '';

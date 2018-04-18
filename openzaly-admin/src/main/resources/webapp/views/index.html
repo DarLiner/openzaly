@@ -8,8 +8,31 @@
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <link rel="stylesheet" href="/Public/css/style.css"/>
     <style type="text/css">
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .margin_top_30px {
+            margin-top: 30px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
 
     </style>
 </head>
@@ -79,8 +102,8 @@
         </div>
         <div class="weui-cell__ft"></div>
     </a>
-    
-     <a class="weui-cell weui-cell_access url-data" url-data="/monitor/index" href="javascript:;"> 
+
+    <a class="weui-cell weui-cell_access url-data" url-data="/monitor/index" href="javascript:;">
         <div class="weui-cell__hd ">
             <img style="width: 30px;height: 30px;"
                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAFN++nkAAAAAXNSR0IArs4c6QAACANJREFUaAXlGglsVEX0/b/bbbvtFi3IZVARuYLFFrkMRBANqJByNyGCUFQg8Yga0UQhIQYTFTEGTThiKIhCBDkkEEJApAlyFBBiVRBoFAIqDSj03m53v+/N7vz9f//+c68Kk25n/sw753jz5s0IgGloRd1vkgR9qKxMx+cWCIJeIwd0c8yHu7l4HctP/hVkuZvX9i10wcZfWvmnnItyKVKY0DtLXTVkbZ1EP56+/tXPioGgxOoFalSjqL8E+jQC0gUQBGGjIXlZvXj6y6pRZ8wc4AHKVz7pZdLJjfT12v5mVsn/MbKHZ/vAjWCrfvTDgkHZvA0MBVKRlVEiBV09YwHjfRuyjYegrNOINQO7Qy9VlftUTRpk0mP0vW6Y1i8Lct0CrH7KC7FInII8QryCpsrBi238E+bvaZLLsYXEdKbZE0vR6jcbqqEV9dNxqm+2goQIDcUDfYVrBgsBx2ILLpii6W0r3AlGCsI2x8hEQDVUPQpE6JzHuoHaNIkbGN6gQt46NQ/tWj1v0+SlfbJg57mAXG8o9tE56ukoY0UKcZH3zsiHTZPyYMxXDQzsWMyc5kRUYvPKcZvCSPRN81pPlbicORHK9RCpTZ4kR9DOuGJIrT7lh/klUZsTwlVztTEEE7c0Em4UmX3Z/BfDyx52YsiCAMvs8QtDs82QikskSdxdUR/e3JxQsoFDwlaVF7yJu7B1O2CDvimoaNX4mFKyCZDQINvkpQKPuxw5hN4Ww9vN8vd+aIFvFVZHCW/ImAA/qfLH9Z+obVaRBzZUa30raiOhjbwjR11N5mJXWT4Ud3FBh+ywkZ4z0AMje5jqQTKxZAmSSPft6IKz14PwypBsxnDC5rB1JLu8uLIZrtSHoAQFqUX7dO6fUIS8fmaJMXUZMaW04rif5fzf8HX1MBu1Xf9TK+z7PepJ8Ha93JTx3Ic8UNY/xv1Fajno41AiofxtEkzG7YsnPrZkofWSbOqVAAdn5qN7qb/BKmGtlPfUBIBmuDLFZawESFWZ9IruoaniEoeuSD5YnPrUVglQIw/k0PV1k8kVSylHZHi8vOAB4iEznndCyjpd3bAOJKkUJ2N+MgXArfAcslqE1mwLp8sY4wH1QzyDLuSVqczHl/tcSwQhJKSli2M0YR6I0SE2Bj5pn3iKKXO0SSQugbQ0I4wpppERxtRjGWNsuDvFhjfsjO21Jgku3tTfl3UZj+3phqWjc+3w0sAanYB0GfOt1AhZwylSMRH35ndG5Og1s3rHY7zscf3ekO2wAWtHjInwqHvcUNQ5GuLL91hhF5XEEePPx3vZ+fnjJ6JaH3jG3r5imTGFDOiQThG3AnRpG1olaEX/j/Qs64+xu7+DMKhrtAeiusUv6U4uJXg/dG2nbg0fqclRH7E+HLN4dV8TPI/H7xeKPewMT4INM4hnKGla0pi7toRIszwQWZ7n0X8mpksPhR05q0yJjiXGBKiXdp0PwE782U0JM343oq2SMbcByrrYsu4YByPY26flRf2jCHaWSwD8Y6kFnfnY5M0yX1oav/qzcV42O8nv1fPp9+NRpeZGEN0zgHk4ufTg2iJzgaJQ9bgKlEmj8eHLbexQZnT8eBSNB/0oceJKospyCKVrDKiZUrtGYyVSKssJTy6nwt1ejHHeNmRGY0HYKeIirXE6Tk7xiovy54j8EOWUiF08CimyGwKOOKSi7gLGFXrx71TkdKtQNbtgO9HW2DZ2lgphVDbFQqRCMRVNOoOLsJAryttkhdN5UuXM05XzSDXxEygOcKq6/sz/fkTNeg9HvKTI19/leuSNDajsKDP4W6C98GptoJdIEZ5bQBlrKqCuIvoj9o4d1ki3SyjSNTM7cQa747ZTWOPIW+n8XneK7K0FnY8zkehM/uLeZjhzzf79qyOF779DZMEAUpaumWobJcC9LqWJjmedvALQAwgKs/QuFNOnsFKzLWcCujeOSjhl+W6fCHSovd6MWthIkzBq9rZJ1MyMXNrX8IN3uWAbnvCXY3wq9gGFmbDJaE+rwsO6u2HtBC/sxgBNT1wWC4drY5xd8L3O+4/lQlaKJHO0hs162odr7DkMedHa5g8Ux9znZop8cKQFtp4NwKHL4e/q2iDsvhCOUBHemqe90A13S1+2F17e2wRGURAzOeK1J60faURoxCpn5cOz+FqArq475AhAd+gUVKZRW1wZVpYEOfBHG3z5cyssHpkDZPU9GPj8otTL1nXp5kbo11GEjxAv2bYwaSNMAc1lR1vwF+3XlSf9sAp/rw/LhoXfNUPlJfXd/ad4zz+gkwtWjPUyI+bHXWYBvg6kMPCUbxrZtCeLHBsUi3KwX0raCOuxJju8/JhfoyzBU9tb3zez0aVo4NxdYWWp7aZfgtNXg0lVlugmbYSJmJN0o0ViipIz0RQn0uiEphFOwgrTjQS9ck0k0R0cJTM6Hh6ZToCZJYXJUciNQJJoXRVnjpcGZwP9rCQyVBf+DcqGiGh1zBVhKj4Ntpu6oNdFxo53NQXnL+HFpZlVtxSbpjfKJTbuj+wKnwx48tqmb2tkd19G9CwpTARolGnrCE8+I5LpbwvhDnGlIQTByHWHkQSWpjQRoEPCrZBSvi21t066/RQOP6lqb+OQGnlIVxxhYVFqyLdHqsIito1l4qlauruD3y+xNUz3L/RQj64k0i1IqvmRTqQbv2PijoqKb+QZ5iSsxJ80GDff7rj/tuv4NSrSgG7Xn7hET6DcO/BudAddU6oUw4//AKrhnyR0RnvIAAAAAElFTkSuQmCC"
