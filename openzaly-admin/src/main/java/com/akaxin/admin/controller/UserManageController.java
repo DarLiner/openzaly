@@ -37,9 +37,8 @@ public class UserManageController extends AbstractController {
 
 	// index.html 分页获取用户列表
 	@RequestMapping("/index")
-	public ModelAndView toUserIndex() {
-		ModelAndView modelAndView = new ModelAndView("user/index");
-		return modelAndView;
+	public String toUserIndex() {
+		return "/user/index";
 	}
 
 	// 用户个人资料展示界面，此界面编辑用户资料，并执行更新
@@ -53,7 +52,7 @@ public class UserManageController extends AbstractController {
 
 			if (isManager(currentUserId)) {
 				Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-				String siteUserId = reqMap.get("siteUserId");
+				String siteUserId = reqMap.get("site_user_id");
 
 				UserProfileBean bean = userService.getUserProfile(siteUserId);
 				modelAndView.addObject("siteUserId", bean.getSiteUserId());
@@ -150,13 +149,13 @@ public class UserManageController extends AbstractController {
 
 			if (isManager(siteUserId)) {
 				Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-				String reqStatus = reqMap.get("user_status");
+				String reqStatus = reqMap.get("type");
 				int status = UserStatus.NORMAL_VALUE;
 				if ("1".equals(reqStatus)) {
 					status = UserStatus.SEALUP_VALUE;
 				}
 
-				if (userService.sealUpUser(siteUserId, status)) {
+				if (userService.sealUpUser(reqMap.get("site_user_id"), status)) {
 					return SUCCESS;
 				}
 			} else {

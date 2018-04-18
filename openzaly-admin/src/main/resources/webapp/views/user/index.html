@@ -15,42 +15,23 @@
 <div class="weui-cells__title weui-cell ">
     站点成员列表
 </div>
-<?php if(isset($data) && count($data)>1) {?>
 <div class="weui-cells demos-content-padded" id='user-lists'>
-    <?php foreach($data as $key => $user) {?>
-    <a class="weui-cell weui-cell_access update-site-user" url-data="/manageUser/getSiteUserInfo"
-       id="<?php echo $user['site_user_id'];?>" href="javascript:;">
-        <div class="weui-cell__bd site_user_name">
-            <p>
-                <?php echo $user['site_user_name'];?>
-            </p>
-        </div>
-        <div class="weui-cell__ft">
-        </div>
-    </a>
-    <?php } ?>
+
 </div>
-<input type='hidden' id='init_url' url-data='/manageUser/pullSiteUsers'>
+<input type='hidden' id='init_url' url-data='/user/userList'>
 <input type='hidden' id='sealUpUserId' data=""/>
 <input type='hidden' id='unfreezeUserId' data=""/>
-<?php if(!$loading) {?>
 <div class="weui-loadmore weui-loadmore_line loadmore_site_user ">
-    <span class="weui-loadmore__tips basic-color_bg">加载更多</span>
+    <span class="weui-loadmore__tips basic-color_bg"></span>
 </div>
-<?php } else { ?>
-<div class="weui-loadmore weui-loadmore_line loadmore_site_user">
-    <span class="weui-loadmore__tips basic-color_bg">到底啦</span>
-</div>
-<?php } ?>
-<?php } else { ?>
-<div class="weui-loadmore weui-loadmore_line ">
-    <span class="weui-loadmore__tips ">暂无数据</span>
-</div>
-<?php } ?>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
+    $(function () {
+        userList();
+    });
+
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
@@ -126,9 +107,11 @@
         reqHtml(reqUri, JSON.stringify(userInfo));
     });
 
-    var page = 1;
+    var page = 0;
     var loading = false;
-    $(document.body).infinite().on("infinite", function () {
+
+
+    function userList() {
         if (loading) {
             $('.loadmore_site_user').addClass('weui-loadmore_line');
             $('.loadmore_site_user span').html('暂无数据');
@@ -138,21 +121,30 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var params = {
-            "page": page,
+            "page": page.toString(),
         };
         reqUrl(reqUri, JSON.stringify(params), 'addUserToList');
         loading = true;
+    }
+
+    $(document.body).infinite().on("infinite", function () {
+        userList()
     });
 
     function addUserToList(results) {
-        results = JSON.parse(results);
-        var data = results.data;
+        results = eval("("+results+")");
+        var data = results.userData;
         var html = '';
         $.each(data, function (index, user) {
-            var html = '<a class="weui-cell weui-cell_access update-site-user" url-data="/manageUser/getSiteUserInfo" id="' + user.site_user_id + '" href="javascript:;"> <div class="weui-cell__hd" name="user_image" id="' + user.site_user_photo + '" > </div> <div class="weui-cell__bd site_user_name" > <p>' + user.site_user_name + '</p> </div> <div class="weui-cell__ft"></div> </a>';
+            var html = '<a class="weui-cell weui-cell_access update-site-user" url-data="/user/profile" id="' + user.siteUserId + '" href="javascript:;"> <div class="weui-cell__hd" name="user_image" id="' + user.userPhoto + '" > </div> <div class="weui-cell__bd site_user_name" > <p>' + user.userName + '</p> </div> <div class="weui-cell__ft"></div> </a>';
             $('#user-lists').append(html);
         });
         loading = results.loading;
+        if (loading == true) {
+            $(".weui-loadmore__tips").html("到底啦");
+        } else {
+            $(".weui-loadmore__tips").html("加载更多");
+        }
     }
 </script>
 </body>
