@@ -86,6 +86,7 @@ public class GroupManageController extends AbstractController {
 
 			if (isManager(siteUserId)) {
 				Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+				logger.info("=========page={}", reqMap);
 				int pageNum = Integer.valueOf(reqMap.get("page"));
 				List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 				List<SimpleGroupBean> groupList = groupService.getGroupList(pageNum, PAGE_SIZE);
