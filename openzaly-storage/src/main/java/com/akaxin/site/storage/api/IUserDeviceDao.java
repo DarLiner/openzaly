@@ -25,5 +25,5 @@ public interface IUserDeviceDao {
 
 	public String getUserToken(String siteUserId) throws SQLException;
 
-	public int limirDeviceNum(String siteUserId) throws SQLException;
+	public int limitDeviceNum(String siteUserId, int limit) throws SQLException;
 }
