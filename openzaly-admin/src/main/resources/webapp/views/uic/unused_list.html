@@ -18,7 +18,7 @@
         <p>未使用列表</p>
     </div>
     <div class="weui-cell__ft">
-        <a href="javascript:;"
+        <a href="javascript:;" class="  basic-weui-btn generate-code  weui-btn_mini  basic-color  "
            url-data="/uic/addUic" style="text-align: left;">生成新的邀请码</a>
     </div>
 </div>
@@ -111,11 +111,17 @@
         if (result == 'success') {
             $.toast("生成成功");
             // refreshCurrentPage();
-            location.reload();
+            var params = {
+                'code_status': 'unused',
+            };
+            reqHtml("/uic/unused", JSON.stringify(params));
         } else if (result == 'NO_PERMISSION') {
             $.toast("没有权限,请稍后再试", "forbidden");
+        } else {
+
             $.toast("生成失败", "forbidden");
         }
+
     }
 
     var page = 0;
@@ -146,7 +152,7 @@
 
 
     $(document.body).infinite().on("infinite", function () {
-        
+
         unusedlist();
     });
 
