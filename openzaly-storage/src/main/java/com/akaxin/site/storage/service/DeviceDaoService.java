@@ -28,58 +28,57 @@ import com.akaxin.site.storage.sqlite.SQLiteUserDeviceDao;
  */
 public class DeviceDaoService implements IUserDeviceDao {
 
-    @Override
-    public boolean saveUserDevice(UserDeviceBean bean) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().save(bean);
-    }
+	@Override
+	public boolean saveUserDevice(UserDeviceBean bean) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().save(bean);
+	}
 
-    @Override
-    public boolean updateUserDevice(UserDeviceBean bean) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().update(bean);
-    }
+	@Override
+	public boolean updateUserDevice(UserDeviceBean bean) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().update(bean);
+	}
 
-    @Override
-    public boolean updateActiveTime(String siteUserId, String deviceId) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().updateActiveTime(siteUserId, deviceId);
-    }
+	@Override
+	public boolean updateActiveTime(String siteUserId, String deviceId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().updateActiveTime(siteUserId, deviceId);
+	}
 
-    @Override
-    public UserDeviceBean getDeviceDetails(String siteUserId, String deviceId) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().queryDeviceDetails(siteUserId, deviceId);
-    }
+	@Override
+	public UserDeviceBean getDeviceDetails(String siteUserId, String deviceId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryDeviceDetails(siteUserId, deviceId);
+	}
 
-    @Override
-    public List<UserDeviceBean> getUserDeviceList(String siteUserId) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().queryDeviceList(siteUserId);
-    }
+	@Override
+	public List<UserDeviceBean> getUserDeviceList(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryDeviceList(siteUserId);
+	}
 
-    @Override
-    public List<UserDeviceBean> getActiveDeviceList(String siteUserId) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().queryActiveDeviceList(siteUserId);
-    }
+	@Override
+	public List<UserDeviceBean> getActiveDeviceList(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryActiveDeviceList(siteUserId);
+	}
 
-    /**
-     * 获取最近的设备
-     */
-    @Override
-    public UserDeviceBean getLatestDevice(String siteUserId) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().queryLatestDevice(siteUserId);
-    }
+	/**
+	 * 获取最近的设备
+	 */
+	@Override
+	public UserDeviceBean getLatestDevice(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryLatestDevice(siteUserId);
+	}
 
-    @Override
-    public String getDeviceId(String userId, String devicePuk) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().queryDeviceIdByDevicePuk(userId, devicePuk);
-    }
+	@Override
+	public String getDeviceId(String userId, String devicePuk) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryDeviceIdByDevicePuk(userId, devicePuk);
+	}
 
-    @Override
-    public String getUserToken(String siteUserId) throws SQLException {
-        return SQLiteUserDeviceDao.getInstance().queryUserToken(siteUserId);
-    }
+	@Override
+	public String getUserToken(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryUserToken(siteUserId);
+	}
 
-    @Override
-    public int limirDeviceNum(String siteUserId) throws SQLException {
-
-        return SQLiteUserDeviceDao.getInstance().limitDeviceNum(siteUserId);
-    }
+	@Override
+	public int limitDeviceNum(String siteUserId, int limit) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().limitDeviceNum(siteUserId, limit);
+	}
 
 }

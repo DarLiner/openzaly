@@ -255,14 +255,54 @@ public class SQLiteUserDeviceDao {
 		return userToken;
 	}
 
-	public int limitDeviceNum(String siteUserId) throws SQLException {
+	/**
+	 * 删除指定数量以外的其他设备
+	 * 
+	 * @param siteUserId
+	 * @return
+	 * @throws SQLException
+	 */
+	public int limitDeviceNum(String siteUserId, int limit) throws SQLException {
+		return Math.max(deleteDeviceAsLimit(siteUserId, limit), deleteSessionAsLimit(siteUserId, limit));
+	}
+
+	private int deleteDeviceAsLimit(String siteUserId, int limit) {
 		long startTime = System.currentTimeMillis();
-		String sql = "DELETE FROM " + USER_DEVICE_TABLE + " WHERE device_id IN (SELECT device_id FROM " + USER_DEVICE_TABLE + " WHERE site_user_id =?  ORDER BY active_time DESC LIMIT 4,-1)";
-        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-        preparedStatement.setString(1,siteUserId);
-        int i = preparedStatement.executeUpdate();
-        LogUtils.dbDebugLog(logger,startTime,i,sql,siteUserId);
-        return i;
+		String sql = "DELETE FROM " + USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT device_id FROM " + USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?)";
+		int num = 0;
+		try {
+			PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, siteUserId);
+			preparedStatement.setString(2, siteUserId);
+			preparedStatement.setInt(3, limit);
+			num = preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			logger.error("delete device as limit error", e);
+		}
+		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
+		return num;
+	}
+
+	private int deleteSessionAsLimit(String siteUserId, int limit) {
+		long startTime = System.currentTimeMillis();
+		// 删除site_user_device中设备
+		String sql = "DELETE FROM " + USER_SESSION_TABLE
+				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT device_id FROM " + USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?)";
+		int num = 0;
+		try {
+			PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, siteUserId);
+			preparedStatement.setString(2, siteUserId);
+			preparedStatement.setInt(3, limit);
+			num = preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			logger.error("delete session device as limit", e);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
+		return num;
 	}
 }
-
