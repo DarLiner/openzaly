@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>
-        <?php if(isset($group_name)) { echo $group_name;} else { echo "群管理";}?>
+        群管理
     </title>
     </title>
     <!-- 引入 WeUI -->
@@ -22,32 +22,32 @@
     <div class="page__bd">
         <div class="weui-cells__title"></div>
         <div class="weui-cells">
-            <a class="weui-cell weui-cell_access update-group-info-html" group-id="<?php echo $group_id?>"
-               url-data="/manageGroup/groupInfo" href="javascript:;">
+            <a class="weui-cell weui-cell_access update-group-info-html" th:attr="group-id=${group_id}"
+               url-data="/group/profile" href="javascript:;">
                 <div class="weui-cell__bd">
                     <p>修改群信息</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
             </a>
-            <a class="weui-cell weui-cell_access group-add-member" group-id="<?php echo $group_id?>"
-               url-data="/manageGroup/siteUser" href="javascript:;">
+            <a class="weui-cell weui-cell_access group-add-member" th:attr="group-id=${group_id}"
+               url-data="/group/siteUser" href="javascript:;">
                 <div class="weui-cell__bd">
                     <p>添加群成员</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
             </a>
-            <a class="weui-cell weui-cell_access manage-group-member-html" url-data="/manageGroup/groupMembers"
-               group-id="<?php echo $group_id?>" href="javascript:;">
+            <a class="weui-cell weui-cell_access manage-group-member-html" url-data="/group/toMemberList"
+               th:attr="group-id=${group_id}" href="javascript:;">
                 <div class="weui-cell__bd">
                     <p>群成员管理</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
             </a>
-            <a href="javascript:;" url-data="/manageGroup/disbandGroup" class="weui-btn weui-btn_warn disband-group"
-               group-id="<?php echo $group_id?>">解散群</a>
+            <a href="javascript:;" url-data="/group/dissmissGroup" class="weui-btn weui-btn_warn disband-group"
+               th:attr="group-id=${group_id}">解散群</a>
         </div>
     </div>
 </div>

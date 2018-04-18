@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
             <label class="weui-label">群名称</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input group_name" type="text" pattern="[^'\x22]+" value="<?php echo $group_name;?>"
+            <input class="weui-input group_name" type="text" pattern="[^'\x22]+" th:value="${groupName}"
                    placeholder="请输入群名称">
         </div>
     </div>
@@ -30,18 +30,13 @@
             <div class="weui-uploader">
                 <div class="weui-uploader__hd">
                     <p class="weui-uploader__title">图片上传</p>
-                    <?php if(isset($group_icon) && $group_icon) {?>
-                    <div class="weui-uploader__info">1/1</div>
-                    <?php } else {?>
-                    <div class="weui-uploader__info">0/1</div>
-                    <?php }?>
+                    <div class="weui-uploader__info" th:if="${groupPhoto}!=null">1/1</div>
+                    <div class="weui-uploader__info" th:unless="${groupPhoto}!=null">0/1</div>
                 </div>
                 <div class="weui-uploader__bd">
                     <ul class="weui-uploader__files" id="uploaderFiles">
-                        <?php if(isset($group_icon) && $group_icon) {?>
                         <li class="weui-uploader__file group_icon" id="group_icon"
-                            group-icon="<?php echo $group_icon;?>"></li>
-                        <?php }?>
+                            th:attr="group-icon=${groupPhoto}"></li>
                     </ul>
                     <div class="weui-uploader__input-box">
                         <input id="uploaderInput" class="weui-uploader__input uploaderInput" type="file"
@@ -53,7 +48,7 @@
     </div>
     <div class="weui-btn-area">
         <a class="weui-btn basic-weui-btn weui-btn_primary basic-color setGroupInfoButton" href="javascript:"
-           group-id="<?php echo $group_id;?>" url-data="/manageGroup/setGroupInfo" id="setGroupInfoButton">确定</a>
+           th:attr="group-id=${siteGroupId}" url-data="/group/updateProfile" id="setGroupInfoButton">确定</a>
     </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
@@ -139,10 +134,10 @@
             text: '确定修改群信息？',
             onOK: function () {
                 var params = {
-                    "group_id": groupId,
-                    "group_name": groupName,
-                    "group_notice": groupNotice,
-                    "group_icon": groupIcon
+                    "siteGroupId": groupId,
+                    "groupName": groupName,
+                    "groupNotice": groupNotice,
+                    "groupPhoto": groupIcon
                 };
                 reqUrl(reqUri, JSON.stringify(params), "setGroupInfo");
                 $.closeModal();

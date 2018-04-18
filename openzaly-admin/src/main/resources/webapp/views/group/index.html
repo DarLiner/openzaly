@@ -14,40 +14,14 @@
 </head>
 
 <body ontouchstart="">
-<?php if($results) { ?>
 <div class="weui-cells__title weui-cell ">
     群列表
 </div>
 <div class="weui-cells" id="group-lists">
-    <?php foreach($results as $key => $group) {?>
-    <a class="weui-cell weui-cell_access group-info" group-id="<?php echo $group['group_id'];?>"
-       group-name="<?php echo $group['group_name'];?>" href="javascript:;" url-data="/group/manage">
-        <div class="weui-cell__bd group_name">
-            <p>
-                <?php echo $group['group_name'];?>
-            </p>
-        </div>
-        <div class="weui-cell__ft">
-        </div>
-    </a>
-    <?php } ?>
 </div>
-<?php if(!$loading) {?>
 <div class="weui-loadmore weui-loadmore_line loadmore_group">
-    <span class="weui-loadmore__tips">加载更多</span>
+    <span class="weui-loadmore__tips"></span>
 </div>
-<?php } else { ?>
-<div class="weui-loadmore weui-loadmore_line loadmore_group">
-    <span class="weui-loadmore__tips">到底啦</span>
-</div>
-<?php } ?>
-<?php } else {?>
-<div class="weui-loadmore weui-loadmore_line">
-    <span class="weui-loadmore__tips">暂无数据</span>
-</div>
-</div>
-<?php } ?>
-
 <input type='hidden' id='init_url' url-data="/group/list"/>
 
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
@@ -55,16 +29,16 @@
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <!-- <script type="text/javascript" src="<?php echo $host_name;?>/public/js/manage-group-list.js<?php echo $static_version?>"> </script> -->
 <script type="text/javascript">
-	
-	//页面加载，执行
-	$(function () {
-		loadGroupList();
-	});
-	
-	
-	//定义选择器，滚动使用
+
+    //页面加载，执行
+    $(function () {
+        loadGroupList();
+    });
+
+
+    //定义选择器，滚动使用
     $(document.body).infinite().on("infinite", function () {
-    		loadGroupList()
+        loadGroupList()
     });
 
 
@@ -146,15 +120,15 @@
         };
         reqHtml(reqUri, JSON.stringify(params));
     });
-    
-    
+
+
     //定义全局变量
     var page = 0;//
     var loading = false;
-    
+
     //加载群聊列表
-    function loadGroupList(){
-    		if (loading) {
+    function loadGroupList() {
+        if (loading) {
             $('.loadmore_group').addClass('weui-loadmore_line');
             $('.loadmore_group span').html('暂无数据');
             $('.loadmore_group i').remove();
@@ -163,23 +137,27 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var params = {
-            "page": page
+            "page": page.toString()
         };
         reqUrl(reqUri, JSON.stringify(params), 'addGroupToList');
         loading = true;
     }
 
-    function addGroupListToHtml(results) {
-        results = JSON.parse(results);
-        var data = results.results;
+    function addGroupToList(results) {
+        results = eval("(" + results + ")");
+        var data = results.groupData;
         var html = '';
         $.each(data, function (index, group) {
-            var html = '<a class="weui-cell weui-cell_access group-info" group-id="' + group.group_id + '"  href="javascript:;" group-name="' + group.group_name + '" url-data="/manageGroup/groupAdmin"> <div class="weui-cell__bd"> <p>' + group.group_name + '</p> </div> <div class="weui-cell__ft"> </div> </a>';
+            var html = '<a class="weui-cell weui-cell_access group-info" group-id="' + group.siteGroupId + '"  href="javascript:;" group-name="' + group.groupName + '" url-data="/group/manage"> <div class="weui-cell__bd"> <p>' + group.groupName + '</p> </div> <div class="weui-cell__ft"> </div> </a>';
             $('#group-lists').append(html);
         });
         loading = results.loading;
+        if (loading == true) {
+            $(".weui-loadmore__tips").html("到底啦");
+        } else {
+            $(".weui-loadmore__tips").html("加载更多");
+        }
     }
 </script>
 </body>
-
 </html>
