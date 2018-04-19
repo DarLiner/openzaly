@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
-    <title>监控数据</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>数据报表</title>
+    </title>
+    <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
     <style type="text/css">
@@ -13,14 +16,14 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        .margin_top_30px {
+            margin-top: 30px;
+        }
+
         footer {
             text-align: center;
             font-size: 14px;
             padding: 20px;
-        }
-
-        .basic-color_bg {
-            background-color: #f4f4f4;
         }
 
         .weui-loadmore_line .weui-loadmore__tips {
@@ -35,42 +38,70 @@
     </style>
 </head>
 
-<body ontouchstart>
-<div class="weui-cells__title weui-cell ">
-    监控数据
-</div>
-<?php if(isset($data) && count($data)>1) {?>
-<div class="weui-cells demos-content-padded" id='user-lists'>
-    <?php foreach($data as $key => $user) {?>
-    <a class="weui-cell weui-cell_access update-site-user" url-data="/manageUser/getSiteUserInfo"
-       id="<?php echo $user['site_user_id'];?>" href="javascript:;">
-        <div class="weui-cell__bd site_user_name">
-            <p>
-                <?php echo $user['site_user_name'];?>
-            </p>
+<body ontouchstart="">
+<div class="bd margin_top_30px">
+    <div class="page__bd">
+        <div class="weui-cells__title"></div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access invite-code-unused" url-data="/uic/unused"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>当日注册用户数</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access invite-code-used" url-data="/uic/used"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>当日消息总量</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access invite-code-used" url-data="/uic/used"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>当日个人消息总量</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access invite-code-used" url-data="/uic/used"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>当日群消息总量</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access invite-code-used" url-data="/uic/used"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>全部用户数</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access invite-code-used" url-data="/uic/used"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>全部群组数</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access invite-code-used" url-data="/uic/used"
+               href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>全部好友对数</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
         </div>
-        <div class="weui-cell__ft">
-        </div>
-    </a>
-    <?php } ?>
+    </div>
 </div>
-<input type='hidden' id='init_url' url-data='/manageUser/pullSiteUsers'>
-<input type='hidden' id='sealUpUserId' data=""/>
-<input type='hidden' id='unfreezeUserId' data=""/>
-<?php if(!$loading) {?>
-<div class="weui-loadmore weui-loadmore_line loadmore_site_user ">
-    <span class="weui-loadmore__tips basic-color_bg">加载更多</span>
-</div>
-<?php } else { ?>
-<div class="weui-loadmore weui-loadmore_line loadmore_site_user">
-    <span class="weui-loadmore__tips basic-color_bg">到底啦</span>
-</div>
-<?php } ?>
-<?php } else { ?>
-<div class="weui-loadmore weui-loadmore_line ">
-    <span class="weui-loadmore__tips ">暂无数据</span>
-</div>
-<?php } ?>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
@@ -108,28 +139,6 @@
         }
     }
 
-    function reqImageUpload(callback) {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.imageUpload(callback);
-        } else if (type == 'IOS') {
-            ios_imageUpload(callback);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
-
-    function reqImageDownload(imageid, callback) {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.imageDownload(imageid, callback);
-        } else if (type == 'IOS') {
-            ios_imageDownload(imageid, callback);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
-
     function toast(msg) {
         var type = getOsType();
         if (type == 'Android') {
@@ -141,43 +150,29 @@
         }
     }
 
-    $(document).on('click', ".update-site-user", function () {
-        var siteUserId = $(this).attr('id');
-        var reqUri = $(this).attr('url-data');
-        var userInfo = {
-            'site_user_id': siteUserId,
-        };
-        reqHtml(reqUri, JSON.stringify(userInfo));
-    });
-
-    var page = 1;
-    var loading = false;
-    $(document.body).infinite().on("infinite", function () {
-        if (loading) {
-            $('.loadmore_site_user').addClass('weui-loadmore_line');
-            $('.loadmore_site_user span').html('暂无数据');
-            $('.loadmore_site_user i').remove();
-            return
-        }
-        page = page + 1;
-        var reqUri = $('#init_url').attr('url-data');
+    $(document).on("click", ".invite-code-used", function () {
+        var url = $(this).attr('url-data');
         var params = {
-            "page": page,
+            'code_status': 'used',
         };
-        reqUrl(reqUri, JSON.stringify(params), 'addUserToList');
-        loading = true;
+        reqHtml(url, JSON.stringify(params));
     });
 
-    function addUserToList(results) {
-        results = JSON.parse(results);
-        var data = results.data;
-        var html = '';
-        $.each(data, function (index, user) {
-            var html = '<a class="weui-cell weui-cell_access update-site-user" url-data="/manageUser/getSiteUserInfo" id="' + user.site_user_id + '" href="javascript:;"> <div class="weui-cell__hd" name="user_image" id="' + user.site_user_photo + '" > </div> <div class="weui-cell__bd site_user_name" > <p>' + user.site_user_name + '</p> </div> <div class="weui-cell__ft"></div> </a>';
-            $('#user-lists').append(html);
-        });
-        loading = results.loading;
-    }
+    $(document).on("click", ".invite-code-unused", function () {
+        var url = $(this).attr('url-data');
+        var params = {
+            'code_status': 'unused',
+        };
+        reqHtml(url, JSON.stringify(params));
+    });
+
+    $(document).on("click", ".invite-code-inval", function () {
+        var url = $(this).attr('url-data');
+        var params = {
+            'code_status': 'invalidation',
+        };
+        reqHtml(url, JSON.stringify(params));
+    });
 </script>
 </body>
 
