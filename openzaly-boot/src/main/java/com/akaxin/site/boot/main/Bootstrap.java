@@ -15,7 +15,7 @@
  */
 package com.akaxin.site.boot.main;
 
-import com.akaxin.admin.OpenzalyAdminApplication;
+import com.akaxin.admin.site.OpenzalyAdminApplication;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;

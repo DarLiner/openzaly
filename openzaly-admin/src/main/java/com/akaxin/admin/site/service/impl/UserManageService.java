@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
 */
-package com.akaxin.admin.service.impl;
+package com.akaxin.admin.site.service.impl;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.akaxin.admin.service.IUserService;
+import com.akaxin.admin.site.service.IUserService;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;

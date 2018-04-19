@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
 */
-package com.akaxin.admin.controller;
+package com.akaxin.admin.site.controller;
 
 import static com.akaxin.proto.core.ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE;
 import static com.akaxin.proto.core.ConfigProto.ConfigKey.LOG_LEVEL_VALUE;
@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.admin.service.IBasicService;
+import com.akaxin.admin.site.service.IBasicService;
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;

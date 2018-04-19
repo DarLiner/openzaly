@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
 */
-package com.akaxin.admin.controller;
+package com.akaxin.admin.site.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.admin.service.IUserService;
+import com.akaxin.admin.site.service.IUserService;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UserProto.UserStatus;

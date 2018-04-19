@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
 */
-package com.akaxin.admin.service.impl;
+package com.akaxin.admin.site.service.impl;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.akaxin.admin.service.IBasicService;
+import com.akaxin.admin.site.service.IBasicService;
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.impl.site.SiteConfig;
 
