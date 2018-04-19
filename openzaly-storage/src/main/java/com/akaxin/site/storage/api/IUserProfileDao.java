@@ -40,4 +40,6 @@ public interface IUserProfileDao {
 
 	public boolean updateMute(String userId, boolean mute) throws SQLException;
 
+	public int queryNumRegisterPerDay(long now) throws SQLException;
+
 }
