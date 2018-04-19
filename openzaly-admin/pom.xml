@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.akaxin.site</groupId>
-			<artifactId>openzaly-connector</artifactId>
+			<artifactId>openzaly-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
@@ -55,6 +55,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- 指定该Main Class为全局的唯一入口 -->
+					<mainClass>com.akaxin.admin.OpenzalyAdminApplication</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
