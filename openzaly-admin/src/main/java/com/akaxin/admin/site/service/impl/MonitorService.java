@@ -10,32 +10,37 @@ public class MonitorService implements IMonitorService {
     private MonitorDao monitorDao = MonitorDao.getInstance();
 
     @Override
-    public int queryNumRegisterPerDay(long now) {
-        return monitorDao.queryNumRegisterPerDay(now);
+    public int queryNumRegisterPerDay(long now, int day) {
+        return monitorDao.queryNumRegisterPerDay(now, day);
     }
 
     @Override
-    public int queryNumMessagePerDay(long now) {
-        return monitorDao.queryNumMessagePerDay(now);
+    public int queryNumMessagePerDay(long now, int day) {
+        return monitorDao.queryNumMessagePerDay(now, day);
     }
 
     @Override
-    public int queryGroupMessagePerDay(long now) {
-        return monitorDao.queryGroupMessagePerDay(now);
+    public int queryGroupMessagePerDay(long now, int day) {
+        return monitorDao.queryGroupMessagePerDay(now, day);
     }
 
     @Override
-    public int queryU2MessagePerDay(long now) {
-        return monitorDao.queryU2MessagePerDay(now);
+    public int queryU2MessagePerDay(long now, int day) {
+        return monitorDao.queryU2MessagePerDay(now, day);
     }
 
     @Override
-    public int getSiteUserNum() {
-        return monitorDao.getSiteUserNum();
+    public int getSiteUserNum(long now,int day) {
+        return monitorDao.getSiteUserNum(now,day);
     }
 
     @Override
-    public int getGroupNum() {
-        return monitorDao.getGroupNum();
+    public int getGroupNum(long now,int day) {
+        return monitorDao.getGroupNum(now,day);
+    }
+
+    @Override
+    public int friendNum(long now,int day) {
+        return monitorDao.friendNum(now,day);
     }
 }

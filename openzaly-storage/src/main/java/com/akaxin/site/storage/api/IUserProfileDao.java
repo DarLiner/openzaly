@@ -42,5 +42,5 @@ public interface IUserProfileDao {
 
     public int queryNumRegisterPerDay(long now, int day) throws SQLException;
 
-    int getUserNum() throws SQLException;
+    int getUserNum(long now, int day) throws SQLException;
 }

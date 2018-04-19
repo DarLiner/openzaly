@@ -113,8 +113,8 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int getUserNum() throws SQLException{
-		return SQLiteUserProfileDao.getInstance().getUserNum();
+	public int getUserNum(long now,int day) throws SQLException{
+		return SQLiteUserProfileDao.getInstance().getUserNum(now,day);
 	}
 
 }

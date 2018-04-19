@@ -20,7 +20,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import com.akaxin.common.utils.TimeFormats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -258,10 +260,16 @@ public class SQLiteGroupProfileDao {
         return siteUserId;
     }
 
-    public int getGroupNum() throws SQLException {
+    public int getGroupNum(long now,int day) throws SQLException {
         long startTime = System.currentTimeMillis();
-        String sql = "SELECT COUNT(*) FROM " + GROUP_PROFILE_TABLE;
+        long endTimeOfDay = TimeFormats.getEndTimeOfDay(now);
+        if (day != 0) {
+            endTimeOfDay = endTimeOfDay - TimeUnit.DAYS.toMillis(day);
+        }
+
+        String sql = "SELECT COUNT(*) FROM " + GROUP_PROFILE_TABLE +" WHERE create_time < ? ";
         PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setLong(1,endTimeOfDay);
         ResultSet resultSet = preparedStatement.executeQuery();
         int groupNum = resultSet.getInt(1);
         LogUtils.dbDebugLog(logger, startTime, groupNum, sql);

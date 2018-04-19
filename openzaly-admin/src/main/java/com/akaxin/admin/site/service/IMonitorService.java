@@ -1,15 +1,17 @@
 package com.akaxin.admin.site.service;
 
 public interface IMonitorService {
-    int queryNumRegisterPerDay(long now);
+    int queryNumRegisterPerDay(long now, int day);
 
-    int queryNumMessagePerDay(long now);
+    int queryNumMessagePerDay(long now, int day);
 
-    int queryGroupMessagePerDay(long now);
+    int queryGroupMessagePerDay(long now, int day);
 
-    int queryU2MessagePerDay(long now);
+    int queryU2MessagePerDay(long now, int day);
 
-    int getSiteUserNum();
+    int getSiteUserNum(long now,int day);
 
-    int getGroupNum();
+    int getGroupNum(long now,int day);
+
+    int friendNum(long now,int day);
 }

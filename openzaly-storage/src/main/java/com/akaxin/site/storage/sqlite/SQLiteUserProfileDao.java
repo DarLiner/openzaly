@@ -451,11 +451,11 @@ public class SQLiteUserProfileDao {
         long startTime = System.currentTimeMillis();
         long startTimeOfDay = TimeFormats.getStartTimeOfDay(now);
         long endTimeOfDay = TimeFormats.getEndTimeOfDay(now);
-        if (day == 0) {
+        if (day != 0) {
             startTimeOfDay = startTimeOfDay - TimeUnit.DAYS.toMillis(day);
             endTimeOfDay = endTimeOfDay - TimeUnit.DAYS.toMillis(day);
         }
-        String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE + " WHERE register_time IN (?,?)";
+        String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE + " WHERE register_time BETWEEN ? and ? ";
         PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
         preparedStatement.setLong(1, startTimeOfDay);
         preparedStatement.setLong(2, endTimeOfDay);
@@ -465,10 +465,15 @@ public class SQLiteUserProfileDao {
         return count;
     }
 
-    public int getUserNum() throws SQLException {
+    public int getUserNum(long now, int day) throws SQLException {
         long startTime = System.currentTimeMillis();
-        String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE;
+        long endTimeOfDay = TimeFormats.getEndTimeOfDay(now);
+        if (day != 0) {
+            endTimeOfDay = endTimeOfDay - TimeUnit.DAYS.toMillis(day);
+        }
+        String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE +" WHERE register_time < ? ";
         PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setLong(1,endTimeOfDay);
         ResultSet resultSet = preparedStatement.executeQuery();
         int UserNum = resultSet.getInt(1);
         LogUtils.dbDebugLog(logger, startTime, UserNum, sql);

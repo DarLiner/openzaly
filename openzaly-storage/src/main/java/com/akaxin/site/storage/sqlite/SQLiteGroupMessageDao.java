@@ -248,10 +248,10 @@ public class SQLiteGroupMessageDao {
 
     public int queryNumMessagePerDay(long now, int day) throws SQLException {
         long startTime = System.currentTimeMillis();
-        String sql = "SELECT COUNT(*) FROM " + GROUP_MESSAGE_TABLE + " WHERE msg_time IN (?,?) ";
+        String sql = "SELECT COUNT(*) FROM " + GROUP_MESSAGE_TABLE + " WHERE msg_time BETWEEN ? and ? ";
         long startTimeOfDay = TimeFormats.getStartTimeOfDay(now);
         long endTimeOfDay = TimeFormats.getEndTimeOfDay(now);
-        if (day == 0) {
+        if (day != 0) {
             startTimeOfDay = startTimeOfDay - TimeUnit.DAYS.toMillis(day);
             endTimeOfDay = endTimeOfDay - TimeUnit.DAYS.toMillis(day);
         }
