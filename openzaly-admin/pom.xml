@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.akaxin</groupId>
 		<artifactId>openzaly-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 	<groupId>com.akaxin.site</groupId>
 	<artifactId>openzaly-admin</artifactId>
@@ -31,42 +31,29 @@
 		<dependency>
 			<groupId>com.akaxin.site</groupId>
 			<artifactId>openzaly-business</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1-RELEASE</version>
 		</dependency>
 
 
 	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<!-- Import dependency management from Spring Boot -->
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.0.0.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!-- 指定该Main Class为全局的唯一入口 -->
-					<mainClass>com.akaxin.site.admin.OpenzalyAdminApplication</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
+				<!-- <configuration>
+                    指定该Main Class为全局的唯一入口
+                    <mainClass>com.akaxin.admin.OpenzalyAdminApplication</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>repackage</goal>
 						</goals>
 					</execution>
-				</executions>
+				</executions> -->
 			</plugin>
 		</plugins>
 	</build>

@@ -27,6 +27,21 @@ import java.util.Properties;
  */
 public class PropertiesUtils {
 
+	public static Properties getDefaultProperties() {
+		Properties properties = new Properties();
+		properties.put("site.version", "0.3.2");
+		properties.put("site.address", "0.0.0.0");
+		properties.put("site.port", "2021");
+		properties.put("http.address", "127.0.0.1");
+		properties.put("http.port", "8080");
+		properties.put("site.admin.address", "127.0.0.1");
+		properties.put("site.admin.port", "8081");
+		properties.put("site.admin.uic", "000000");
+		properties.put("site.baseDir", "./");
+		properties.put("group.members.count", "100");
+		return properties;
+	}
+
 	public static Properties getProperties(String configPath) throws IOException {
 		InputStream inputStream = ClassLoader.getSystemResourceAsStream(configPath);
 		Properties properties = new Properties();

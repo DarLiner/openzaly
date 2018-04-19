@@ -15,7 +15,6 @@
 */
 package com.akaxin.site.boot.config;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -43,12 +42,7 @@ public class ConfigHelper implements ConfigKey {
 
 	public static Properties getProperties() {
 		if (prop == null) {
-			try {
-				prop = PropertiesUtils.getProperties(CONFIG_PROPERTIES);
-			} catch (IOException e) {
-				logger.error("get config properties error,System.exit", e);
-				System.exit(-1);
-			}
+			prop = PropertiesUtils.getDefaultProperties();
 		}
 		return prop;
 	}
@@ -61,8 +55,8 @@ public class ConfigHelper implements ConfigKey {
 	 */
 	public static String getStringConfig(String configName) {
 		String configValue = System.getProperty(configName);
-		if (StringUtils.isBlank(configValue)) {
-			return getProperties().get(configName).toString();
+		if (StringUtils.isEmpty(configValue)) {
+			return String.valueOf(getProperties().get(configName));
 		}
 		return configValue;
 	}

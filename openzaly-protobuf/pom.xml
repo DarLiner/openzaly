@@ -19,11 +19,11 @@
 	<parent>
 		<groupId>com.akaxin</groupId>
 		<artifactId>openzaly-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 	<groupId>com.akaxin.proto</groupId>
 	<artifactId>openzaly-protobuf</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-RELEASE</version>
 	<packaging>jar</packaging>
 
 	<properties>

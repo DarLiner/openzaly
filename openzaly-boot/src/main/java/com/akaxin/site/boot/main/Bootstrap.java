@@ -39,6 +39,7 @@ import com.akaxin.site.storage.sqlite.manager.PluginArgs;
 import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
 
 import java.util.Base64;
 import java.util.Map;
@@ -53,126 +54,129 @@ import java.util.Map;
  * @since 2018.01.01 11:23:42
  */
 public class Bootstrap {
-    private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
-    private static final String DEBUG_ENV = "DEBUG";
+	private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
+	private static final String DEBUG_ENV = "DEBUG";
 
-    public static void main(String[] args) {
-        logger.info("{} start site server...", AkxProject.PLN);
-        setSystemLogLevel();
-        try {
-            String siteAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
-            int sitePort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
-            String httpAddress = ConfigHelper.getStringConfig(ConfigKey.HTTP_ADDRESS);
-            int httpPort = ConfigHelper.getIntConfig(ConfigKey.HTTP_PORT);
-            String adminAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
-            int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
-            String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
-            String adminUic = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_UIC);
-            Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
+	public static void main(String[] args) {
+		logger.info("{} start site server...", AkxProject.PLN);
+		try {
+			setSystemLogLevel();
 
-            DBConfig config = new DBConfig();
-            config.setDbDir(dbDir);
-            config.setAdminAddress(adminAddress);
-            config.setAdminPort(adminPort);
-            config.setAdminUic(adminUic);
-            config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
-            config.setConfigMap(siteConfigMap);
-            // 设置后台管理默认图片
-            config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
-            // 设置用户广场默认图片
-            config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
+			String siteAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
+			int sitePort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
+			String httpAddress = ConfigHelper.getStringConfig(ConfigKey.HTTP_ADDRESS);
+			int httpPort = ConfigHelper.getIntConfig(ConfigKey.HTTP_PORT);
+			String adminAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
+			int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
+			String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+			String adminUic = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_UIC);
+			Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
 
-            initDataSource(config);
-            addConfigListener();
-            startHttpServer(httpAddress, httpPort);
-            startNettyServer(siteAddress, sitePort);
-            OpenzalyAdminApplication.main(new String[0]);
-        } catch (Exception e) {
-            logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
-            System.exit(-1);// 直接退出程序
-            logger.error("openzaly-boot exit!!!");
-        }
-    }
+			DBConfig config = new DBConfig();
+			config.setDbDir(dbDir);
+			config.setAdminAddress(adminAddress);
+			config.setAdminPort(adminPort);
+			config.setAdminUic(adminUic);
+			config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
+			config.setConfigMap(siteConfigMap);
+			// 设置后台管理默认图片
+			config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
+			// 设置用户广场默认图片
+			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
 
-    private static void setSystemLogLevel() {
-        // 先获取站点的项目环境 site.project.env
-        String projectEvn = ConfigHelper.getStringConfig(ConfigKey.SITE_PROJECT_ENV);
-        Level level = Level.INFO;
-        if (DEBUG_ENV.equalsIgnoreCase(projectEvn)) {
-            level = Level.DEBUG;
-        }
-        // 更新日志级别
-        AkxLog4jManager.setLogLevel(level);
-        logger.info("{} set system log level={}", AkxProject.PLN, level);
-    }
+			initDataSource(config);
+			addConfigListener();
+			startHttpServer(httpAddress, httpPort);
+			startNettyServer(siteAddress, sitePort);
+			// OpenzalyAdminApplication.main(new String[0]);
 
-    /**
-     * 初始化数据源
-     */
-    private static void initDataSource(DBConfig config) {
-        logger.info("{} init datasource config={}", AkxProject.PLN, config.toString());
-        DataSourceManager.init(config);
-    }
+			SpringApplication.run(OpenzalyAdminApplication.class, args);
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
+			System.exit(-1);// 直接退出程序
+			logger.error("openzaly-boot exit!!!");
+		}
+	}
 
-    /**
-     * 启动Http服务，提供与扩展服务之间的hai（http application interface）接口功能
-     *
-     * @throws Exception
-     */
-    private static void startHttpServer(String address, int port) throws Exception {
-        new HttpServer() {
+	private static void setSystemLogLevel() {
+		// 先获取站点的项目环境 site.project.env
+		String projectEvn = ConfigHelper.getStringConfig(ConfigKey.SITE_PROJECT_ENV);
+		Level level = Level.INFO;
+		if (DEBUG_ENV.equalsIgnoreCase(projectEvn)) {
+			level = Level.DEBUG;
+		}
+		// 更新日志级别
+		AkxLog4jManager.setLogLevel(level);
+		logger.info("{} set system log level={}", AkxProject.PLN, level);
+	}
 
-            @Override
-            public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
-                executor.addChain(HttpUriAction.HTTP_ACTION.getUri(), new HttpRequestHandler());
-            }
+	/**
+	 * 初始化数据源
+	 */
+	private static void initDataSource(DBConfig config) {
+		logger.info("{} init datasource config={}", AkxProject.PLN, config.toString());
+		DataSourceManager.init(config);
+	}
 
-        }.start(address, port);
-        logger.info("{} start http server {}:{} ok.", AkxProject.PLN, address, port);
-    }
+	/**
+	 * 启动Http服务，提供与扩展服务之间的hai（http application interface）接口功能
+	 *
+	 * @throws Exception
+	 */
+	private static void startHttpServer(String address, int port) throws Exception {
+		new HttpServer() {
 
-    /**
-     * 启动Netty服务器，提供用户与站点服务之间的长链接功能
-     *
-     * @param address
-     * @param port
-     * @throws Exception
-     */
-    private static void startNettyServer(String address, int port) throws Exception {
-        new NettyServer() {
+			@Override
+			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
+				executor.addChain(HttpUriAction.HTTP_ACTION.getUri(), new HttpRequestHandler());
+			}
 
-            @Override
-            public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
-                executor.addChain(RequestAction.IM_SITE.getName(), new ImSiteAuthHandler());
-                executor.addChain(RequestAction.IM.getName(), new ImMessageHandler());
-                executor.addChain(RequestAction.API.getName(), new ApiRequestHandler());
-            }
+		}.start(address, port);
+		logger.info("{} start http server {}:{} ok.", AkxProject.PLN, address, port);
+	}
 
-        }.start(address, port);
-        logger.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
-    }
+	/**
+	 * 启动Netty服务器，提供用户与站点服务之间的长链接功能
+	 *
+	 * @param address
+	 * @param port
+	 * @throws Exception
+	 */
+	private static void startNettyServer(String address, int port) throws Exception {
+		new NettyServer() {
 
-    /**
-     * <pre>
-     * 启动两个监听线程，定时更新缓存中的站点信息
-     * 		1.为什用两个？防止后期api请求/im请求，针对站点配置信息处理逻辑不同，早起直接使用两个线程
-     * </pre>
-     */
-    private static void addConfigListener() {
-        ConfigListener.startListenning();
-        logger.info("{} add config listener to site-config", AkxProject.PLN);
-    }
+			@Override
+			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
+				executor.addChain(RequestAction.IM_SITE.getName(), new ImSiteAuthHandler());
+				executor.addChain(RequestAction.IM.getName(), new ImMessageHandler());
+				executor.addChain(RequestAction.API.getName(), new ApiRequestHandler());
+			}
 
-    private static String getDefaultIcon(String base64Str) {
-        try {
-            byte[] iconBytes = Base64.getDecoder().decode(base64Str);
-            String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(""),
-                    FileType.SITE_PLUGIN_VALUE);
-            return fileId;
-        } catch (Exception e) {
-            logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
-        }
-        return "";
-    }
+		}.start(address, port);
+		logger.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
+	}
+
+	/**
+	 * <pre>
+	 * 启动两个监听线程，定时更新缓存中的站点信息
+	 * 		1.为什用两个？防止后期api请求/im请求，针对站点配置信息处理逻辑不同，早起直接使用两个线程
+	 * </pre>
+	 */
+	private static void addConfigListener() {
+		ConfigListener.startListenning();
+		logger.info("{} add config listener to site-config", AkxProject.PLN);
+	}
+
+	private static String getDefaultIcon(String base64Str) {
+		try {
+			byte[] iconBytes = Base64.getDecoder().decode(base64Str);
+			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(""),
+					FileType.SITE_PLUGIN_VALUE);
+			return fileId;
+		} catch (Exception e) {
+			logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
+		}
+		return "";
+	}
 
 }
