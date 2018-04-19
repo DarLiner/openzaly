@@ -107,4 +107,9 @@ public class UserProfileDaoService implements IUserProfileDao {
 		return SQLiteUserProfileDao.getInstance().updateMute(siteUserId, mute);
 	}
 
+	@Override
+	public int queryNumRegisterPerDay(long now) throws SQLException{
+		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now);
+	}
+
 }
