@@ -108,8 +108,13 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int queryNumRegisterPerDay(long now) throws SQLException{
-		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now);
+	public int queryNumRegisterPerDay(long now,int day) throws SQLException{
+		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now,day);
+	}
+
+	@Override
+	public int getUserNum() throws SQLException{
+		return SQLiteUserProfileDao.getInstance().getUserNum();
 	}
 
 }

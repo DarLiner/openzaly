@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.akaxin.common.utils.TimeFormats;
 import org.apache.commons.lang3.StringUtils;
@@ -446,16 +447,32 @@ public class SQLiteUserProfileDao {
         return result > 0;
     }
 
-    public int queryNumRegisterPerDay(long now) throws SQLException {
+    public int queryNumRegisterPerDay(long now, int day) throws SQLException {
         long startTime = System.currentTimeMillis();
         long startTimeOfDay = TimeFormats.getStartTimeOfDay(now);
+        long endTimeOfDay = TimeFormats.getEndTimeOfDay(now);
+        if (day == 0) {
+            startTimeOfDay = startTimeOfDay - TimeUnit.DAYS.toMillis(day);
+            endTimeOfDay = endTimeOfDay - TimeUnit.DAYS.toMillis(day);
+        }
         String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE + " WHERE register_time IN (?,?)";
         PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
         preparedStatement.setLong(1, startTimeOfDay);
-        preparedStatement.setLong(2, now);
+        preparedStatement.setLong(2, endTimeOfDay);
         ResultSet resultSet = preparedStatement.executeQuery();
         int count = resultSet.getInt(1);
         LogUtils.dbDebugLog(logger, startTime, count, sql);
         return count;
+    }
+
+    public int getUserNum() throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE;
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int UserNum = resultSet.getInt(1);
+        LogUtils.dbDebugLog(logger, startTime, UserNum, sql);
+        return UserNum;
+
     }
 }

@@ -19,6 +19,7 @@ import java.sql.SQLException;
 
 import com.akaxin.site.storage.api.IUserGroupDao;
 import com.akaxin.site.storage.bean.UserGroupBean;
+import com.akaxin.site.storage.sqlite.SQLiteGroupMessageDao;
 import com.akaxin.site.storage.sqlite.SQLiteUserGroupDao;
 
 /**
@@ -47,4 +48,12 @@ public class UserGroupDaoService implements IUserGroupDao {
 	public boolean updateMute(String siteUserId, String siteGroupId, boolean mute) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().updateMute(siteUserId, siteGroupId, mute);
 	}
+
+
+	@Override
+	public int queryGroupMessagePerDay(long now,int day) throws SQLException {
+		int groupCount = SQLiteGroupMessageDao.getInstance().queryNumMessagePerDay(now,day);
+		return groupCount;
+	}
+
 }

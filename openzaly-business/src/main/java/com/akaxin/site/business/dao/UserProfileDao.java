@@ -166,14 +166,4 @@ public class UserProfileDao {
         }
         return false;
     }
-
-    //新增监控查询状态
-    public int queryNumRegisterPerDay(long now) {
-        try {
-            return userProfileDao.queryNumRegisterPerDay(now);
-        } catch (SQLException e) {
-            logger.error("query Num of Register Per Day error.", e);
-        }
-        return -1;
-    }
 }

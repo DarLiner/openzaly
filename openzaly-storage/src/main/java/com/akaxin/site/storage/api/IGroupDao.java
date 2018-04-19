@@ -51,4 +51,5 @@ public interface IGroupDao {
 
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException;
 
+    int getGroupNum() throws SQLException;
 }
