@@ -56,8 +56,8 @@
 <body ontouchstart="">
 <div class="weui-cells__title weui-cell" style="margin: auto;">
     <div class="weui-cell__hd"><img src=""></div>
-    <div class="weui-cell__bd">
-        <select id="dayNum">
+    <div class="weui-cell__bd" align="center">
+        <select id="dayNum" onchange="change(this.options[this.options.selectedIndex].value)">
             <option value="6" th:text="${data_6}"></option>
             <option value="5" th:text="${data_5}"></option>
             <option value="4" th:text="${data_4}"></option>
@@ -66,48 +66,29 @@
             <option value="1">昨天数据</option>
             <option value="0" selected>当天数据</option>
         </select>
+        <div id="dayNum1"></div>
     </div>
-    <div class="weui-cell__ft">
-        <a href="javascript:;" class="weui-btn basic-weui-btn generate-code  weui-btn_mini  basic-color"
-           url-data="/monitor/index" style="text-align: left;">查询</a>
-    </div>
+    <!--<div class="weui-cell__ft">-->
+    <!--<a href="javascript:;" class="weui-btn basic-weui-btn OtherDay  weui-btn_mini  basic-color"-->
+    <!--url-data="/monitor/reDisplay" style="text-align: left;">查询</a>-->
+    <!--</div>-->
 </div>
-<div class="weui-loadmore weui-loadmore_line loadmore_site_invitecode">
-    <span class="weui-loadmore__tips"></span>
-</div>
-<div class="weui-cells" id="invitecode-lists">
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日注册数量: '+${registerNum}"></p></div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日消息总量(个人+群组): '+${messageNum}"></p></div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日群组消息总量: '+${groupMsgNum}"></p></div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日个人消息总量: '+${u2MsgNum}"></p></div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日已有用户数量: '+${userNum}"></p></div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日已有群组数量: '+${groupNum}"></p></div>
-    </div>
-    <div class="weui-cell">
-        <div class="weui-cell__bd"><p th:text="'当日好友量(互为好友): '+${friendNum}"></p></div>
-    </div>
+<div class="weui-cells" id="monitor-lists">
 </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
-    //初始化事件
+
     $(function () {
-        unusedlist();
+        sendReq(0);
     });
 
+
+    function change(val) {
+        sendReq(val);
+    }
     function getOsType() {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
@@ -152,23 +133,41 @@
         }
     }
 
-    function refreshCurrentPage() {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.refreshCurrentPage();
-        }
-    }
+    $(document).on("click", ".OtherDay", function () {
+        sendReq();
+    });
 
-    $(document).on("click", ".generate-code", function () {
-        var url = $(this).attr('url-data');
-        var dayNum = $("#dayNum").val();
+    function sendReq(dayNum) {
+        var url = '/monitor/reDisplay';
         var params = {
             "dayNum": dayNum.toString(),
         };
-        reqHtml(url, JSON.stringify(params));
-    });
+        reqUrl(url, JSON.stringify(params), 'reDisplay');
+    }
 
+    function reDisplay(results) {
+        $("#monitor-lists").html("");
+        var res = eval("(" + results + ")");
+        var htmlTip1 = '<div class="weui-loadmore weui-loadmore_line"><span class="weui-loadmore__tips">当日数据</span></div>'
+        var html1 = '<div class="weui-cell"><div class="weui-cell__bd"><p>当日注册用户数:</p></div><div class="weui-cell__ft">' + res.registerNum + '</div></div>'
+        var html2 = '<div class="weui-cell"><div class="weui-cell__bd"><p>当日消息总量(个人+群组):</p></div><div class="weui-cell__ft">' + res.messageNum + '</div></div>'
+        var html3 = '<div class="weui-cell"><div class="weui-cell__bd"><p>当日群组消息总量:</p></div><div class="weui-cell__ft">' + res.groupMsgNum + '</div></div>'
+        var html4 = '<div class="weui-cell"><div class="weui-cell__bd"><p>当日个人消息总量:</p></div><div class="weui-cell__ft">' + res.u2MsgNum + '</div></div>'
+        var htmlTip2 = '<div class="weui-loadmore weui-loadmore_line"><span class="weui-loadmore__tips">全部数据</span></div>'
+        var html5 = '<div class="weui-cell"><div class="weui-cell__bd"><p>全部用户数量:</p></div><div class="weui-cell__ft">' + res.userNum + '</div></div>'
+        var html6 = '<div class="weui-cell"><div class="weui-cell__bd"><p>全部群组数量:</p></div><div class="weui-cell__ft">' + res.groupNum + '</div></div>'
+        var html7 = '<div class="weui-cell"><div class="weui-cell__bd"><p>全部好友对数(互为好友):</p></div><div class="weui-cell__ft">' + res.friendNum + '</div></div>'
 
+        $("#monitor-lists").append(htmlTip1);
+        $("#monitor-lists").append(html1);
+        $("#monitor-lists").append(html2);
+        $("#monitor-lists").append(html3);
+        $("#monitor-lists").append(html4);
+        $("#monitor-lists").append(htmlTip2);
+        $("#monitor-lists").append(html5);
+        $("#monitor-lists").append(html6);
+        $("#monitor-lists").append(html7);
+    }
 </script>
 </body>
 

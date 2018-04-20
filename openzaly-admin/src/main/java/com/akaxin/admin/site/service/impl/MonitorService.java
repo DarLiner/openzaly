@@ -30,17 +30,17 @@ public class MonitorService implements IMonitorService {
     }
 
     @Override
-    public int getSiteUserNum(long now,int day) {
-        return monitorDao.getSiteUserNum(now,day);
+    public int getSiteUserNum(long now, int day) {
+        return monitorDao.getSiteUserNum(now, day);
     }
 
     @Override
-    public int getGroupNum(long now,int day) {
-        return monitorDao.getGroupNum(now,day);
+    public int getGroupNum(long now, int day) {
+        return monitorDao.getGroupNum(now, day);
     }
 
     @Override
-    public int friendNum(long now,int day) {
-        return monitorDao.friendNum(now,day);
+    public int friendNum(long now, int day) {
+        return monitorDao.friendNum(now, day);
     }
 }

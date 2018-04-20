@@ -30,7 +30,6 @@ import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
 /**
- *
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-31 12:14:45
  */
@@ -187,7 +186,10 @@ public class SQLiteUserFriendDao {
         preparedStatement.setLong(1, endTimeOfDay);
         ResultSet resultSet = preparedStatement.executeQuery();
         int friendNum = resultSet.getInt(1);
+        if (friendNum % 2 != 0) {
+            throw new SQLException();
+        }
         LogUtils.dbDebugLog(logger, startTime, friendNum, sql);
-        return friendNum;
+        return friendNum/2;
     }
 }
