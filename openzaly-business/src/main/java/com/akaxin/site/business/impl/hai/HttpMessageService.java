@@ -21,8 +21,13 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.proto.plugin.HaiMessageProxyProto;
+import com.akaxin.proto.site.ImCtsMessageProto.ImCtsMessageRequest;
 import com.akaxin.site.business.impl.AbstractRequest;
+import com.akaxin.site.message.api.IMessageService;
+import com.akaxin.site.message.service.ImMessageService;
 
 /**
  * 扩展使用的消息服务
@@ -34,6 +39,8 @@ import com.akaxin.site.business.impl.AbstractRequest;
 public class HttpMessageService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpMessageService.class);
 
+	private IMessageService imService = new ImMessageService();
+
 	/**
 	 * 
 	 * @param command
@@ -44,7 +51,18 @@ public class HttpMessageService extends AbstractRequest {
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
+			HaiMessageProxyProto.HaiMessageProxyRequest request = HaiMessageProxyProto.HaiMessageProxyRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			ImCtsMessageRequest proxyMessage = request.getProxyMsg();
 
+			Command proxyCommand = new Command();
+			proxyCommand.setSiteUserId(siteUserId);
+			proxyCommand.setAction(RequestAction.IM_CTS_MESSAGE.getName());
+			proxyCommand.setParams(proxyMessage.toByteArray());
+			boolean result = imService.execute(command);
+
+			LogUtils.requestInfoLog(logger, proxyCommand, "result={} request={}", result, request.toBuilder());
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
