@@ -33,10 +33,9 @@ public class Command {
 	private String siteUserId;
 	private String deviceId;
 	private String globalUserId;
-	private String rety; // request type
+	private String rety; // request type，im/api/hai
 	private String service;
 	private String method;
-	private String uri;
 	private Map<Integer, String> header;
 	private byte[] params;
 	private CommandResponse response; // response
@@ -105,11 +104,18 @@ public class Command {
 	}
 
 	public String getUri() {
-		return uri;
+		return "/" + this.rety + "/" + this.service + "/" + this.method;
 	}
 
 	public void setUri(String uri) {
-		this.uri = uri;
+		String[] splitStr = uri.split("/");
+		int index = 0;
+		if (4 == splitStr.length) {
+			index++;
+		}
+		this.rety = splitStr[index];
+		this.service = splitStr[index + 1];
+		this.method = splitStr[index + 2];
 	}
 
 	public Map<Integer, String> getHeader() {
@@ -224,7 +230,7 @@ public class Command {
 
 	public String toString() {
 		return "siteUserId=" + this.siteUserId + ",deviceId=" + this.deviceId + ",rety=" + this.rety + ",service="
-				+ this.service + ",method=" + this.method + ",uri=" + this.uri + " header={}" + this.header;
+				+ this.service + ",method=" + this.method + " header={}" + this.header;
 	}
 
 }

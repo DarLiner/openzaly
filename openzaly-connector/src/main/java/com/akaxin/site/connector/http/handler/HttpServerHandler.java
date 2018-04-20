@@ -178,7 +178,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					logger.debug("{} client={} http server handler command={}", AkxProject.PLN, clientIp,
 							command.toString());
 
-					CommandResponse response = this.executor.execute(HttpUriAction.HTTP_ACTION.getUri(), command);
+					CommandResponse response = this.executor.execute(HttpUriAction.HTTP_ACTION.getRety(), command);
 					LogUtils.requestResultLog(logger, command, response);
 				} else {
 					// 超时10s，认为此请求失效，直接断开连接

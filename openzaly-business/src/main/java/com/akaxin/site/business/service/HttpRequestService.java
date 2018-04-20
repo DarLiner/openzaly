@@ -25,7 +25,9 @@ import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.site.business.api.IRequest;
 import com.akaxin.site.business.impl.hai.HttpFriendService;
 import com.akaxin.site.business.impl.hai.HttpGroupService;
+import com.akaxin.site.business.impl.hai.HttpMessageService;
 import com.akaxin.site.business.impl.hai.HttpPluginService;
+import com.akaxin.site.business.impl.hai.HttpPushService;
 import com.akaxin.site.business.impl.hai.HttpSiteConfigService;
 import com.akaxin.site.business.impl.hai.HttpUICService;
 import com.akaxin.site.business.impl.hai.HttpUserService;
@@ -42,60 +44,32 @@ public class HttpRequestService implements IRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpRequestService.class);
 
 	public CommandResponse process(Command command) {
-		HttpUriAction huaEnum = HttpUriAction.getUriActionEnum(command.getUri());
-		command.setMethod(huaEnum.getMethod());
+		HttpUriAction huaEnum = HttpUriAction.getUriActionEnum(command.getRety(), command.getService());
 		CommandResponse response = null;
 		try {
 			switch (huaEnum) {
-			case HAI_USER_UPDATE:
-			case HAI_USER_SEALUP:
-				if (!checkPermissions(command.getSiteUserId())) {
-					break;
-				}
-			case HAI_USER_LIST:
-			case HAI_USER_SEARCH:
-			case HAI_USER_PROFILE:
-			case HAI_USER_RELATIONLIST:
-				return new HttpUserService().execute(command);
-			case HAI_GROUP_LIST:
-			case HAI_GROUP_PROFILE:
-			case HAI_GROUP_MEMBERS:
-			case HAI_GROUP_ADDMEMBER:
-			case HAI_GROUP_DELETE:
-			case HAI_GROUP_REMOVEMEMBER:
-			case HAI_GROUP_SETADMIN:
-			case HAI_GROUP_UPDATEPROFILE:
-			case HAI_GROUP_NONMEMBERS:
-				if (checkPermissions(command.getSiteUserId())) {
-					response = new HttpGroupService().execute(command);
-				}
+			case HAI_SITE_SERVICE:
+				response = new HttpSiteConfigService().execute(command);
 				break;
-			case HAI_FRIEND_APPLY:
+			case HAI_USER_SERVICE:
+				response = new HttpUserService().execute(command);
+				break;
+			case HAI_GROUP_SERVICE:
+				response = new HttpGroupService().execute(command);
+				break;
+			case HAI_FRIEND_SERVICE:
 				response = new HttpFriendService().execute(command);
 				break;
-			case HAI_SITE_GETCONFIG:
-			case HAI_SITE_UPDATECONFIG:
-				if (checkPermissions(command.getSiteUserId())) {
-					response = new HttpSiteConfigService().execute(command);
-				}
+			case HAI_MESSAGE_SERVICE:
+				response = new HttpMessageService().execute(command);
 				break;
-			case HAI_PLUGIN_ADD:
-			case HAI_PLUGIN_DELETE:
-			case HAI_PLUGIN_DISABLE:
-			case HAI_PLUGIN_LIST:
-			case HAI_PLUGIN_PROFILE:
-			case HAI_PLUGIN_UPDATE:
-			case HAI_PLUGIN_UPDATESTATUS:
-				if (checkPermissions(command.getSiteUserId())) {
-					response = new HttpPluginService().execute(command);
-				}
+			case HAI_PUSH_SERVICE:
+				response = new HttpPushService().execute(command);
+			case HAI_PLUGIN_SERVICE:
+				response = new HttpPluginService().execute(command);
 				break;
-			case HAI_UIC_CREATE:
-			case HAI_UIC_INFO:
-			case HAI_UIC_LIST:
-				if (checkPermissions(command.getSiteUserId())) {
-					response = new HttpUICService().execute(command);
-				}
+			case HAI_UIC_SERVICE:
+				response = new HttpUICService().execute(command);
 				break;
 			default:
 				logger.error("error http request command={}", command.toString());

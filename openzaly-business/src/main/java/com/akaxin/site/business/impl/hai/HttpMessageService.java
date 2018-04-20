@@ -22,9 +22,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.logs.LogUtils;
-import com.akaxin.proto.plugin.HaiFriendApplyProto;
 import com.akaxin.site.business.impl.AbstractRequest;
-import com.akaxin.site.business.impl.notice.User2Notice;
 
 /**
  * 扩展使用的消息服务
@@ -32,11 +30,17 @@ import com.akaxin.site.business.impl.notice.User2Notice;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-04-14 12:03:49
  */
+// @Service("message")
 public class HttpMessageService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpMessageService.class);
 
-	// 二人文本消息
-	public CommandResponse u2Text(Command command) {
+	/**
+	 * 
+	 * @param command
+	 * @return
+	 */
+	// @method("proxy")
+	public CommandResponse proxy(Command command) {
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {

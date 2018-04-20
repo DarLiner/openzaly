@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.business.impl.hai;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +24,21 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
+import com.akaxin.common.exceptions.ZalyException;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.proto.core.UserProto;
+import com.akaxin.proto.plugin.HaiFriendAddProto;
 import com.akaxin.proto.plugin.HaiFriendApplyProto;
+import com.akaxin.proto.plugin.HaiFriendPhoneProto;
+import com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest;
+import com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsResponse;
 import com.akaxin.site.business.dao.UserFriendDao;
+import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 
 /**
  * 扩展：用户通讯录，添加用户为好友
@@ -78,5 +90,129 @@ public class HttpFriendService extends AbstractRequest {
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * 执行添加好友功能
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse add(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+
+		try {
+			HaiFriendAddProto.HaiFriendAddRequest request = HaiFriendAddProto.HaiFriendAddRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (UserFriendDao.getInstance().agreeApply(siteUserId, siteFriendId, true)) {
+				errCode = ErrorCode2.SUCCESS;
+			}
+		} catch (Exception e) {
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse.setErrCode(errCode);
+	}
+
+	/**
+	 * 获取用户手机号码
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse phone(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			HaiFriendPhoneProto.HaiFriendPhoneRequest request = HaiFriendPhoneProto.HaiFriendPhoneRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteUserId();
+
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
+			String phoneId = userBean.getPhoneId();
+
+			if (StringUtils.isNotEmpty(phoneId)) {
+				HaiFriendPhoneProto.HaiFriendPhoneResponse response = HaiFriendPhoneProto.HaiFriendPhoneResponse
+						.newBuilder().setPhoneId(phoneId).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			}
+
+		} catch (Exception e) {
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse.setErrCode(errCode);
+	}
+
+	/**
+	 * 批量获取用户关系列表
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse relations(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+
+		try {
+			HaiFriendRelationsRequest request = HaiFriendRelationsRequest.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			List<String> userIdList = request.getUserIdList();
+
+			if (StringUtils.isNotEmpty(siteUserId) || userIdList == null) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			HaiFriendRelationsResponse.Builder resBuilder = HaiFriendRelationsResponse.newBuilder();
+			for (String siteFriendId : userIdList) {
+				SimpleUserBean userBean = UserProfileDao.getInstance().getSimpleProfileById(siteFriendId);
+				if (userBean != null && StringUtils.isNotEmpty(userBean.getUserId())) {
+					UserProto.SimpleUserProfile.Builder userProfileBuilder = UserProto.SimpleUserProfile.newBuilder();
+					userProfileBuilder.setSiteUserId(userBean.getUserId());
+					userProfileBuilder.setUserName(userBean.getUserName());
+					userProfileBuilder.setUserPhoto(userBean.getUserPhoto());
+					UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
+							siteFriendId);
+					UserProto.UserRelationProfile relationProfile = UserProto.UserRelationProfile.newBuilder()
+							.setProfile(userProfileBuilder.build()).setRelation(userRelation).build();
+					resBuilder.addUserProfile(relationProfile);
+				}
+			}
+			commandResponse.setParams(resBuilder.build().toByteArray());
+			errCode = ErrorCode2.SUCCESS;
+		} catch (Exception e) {
+			if (e instanceof ZalyException) {
+				errCode = ((ZalyException) e).getErrCode();
+			} else {
+				errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			}
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse;
 	}
 }
