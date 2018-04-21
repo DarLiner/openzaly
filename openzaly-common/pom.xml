@@ -24,7 +24,7 @@
 	<groupId>com.akaxin.common</groupId>
 	<artifactId>openzaly-common</artifactId>
 	<version>0.0.1-RELEASE</version>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>commons-codec</groupId>
