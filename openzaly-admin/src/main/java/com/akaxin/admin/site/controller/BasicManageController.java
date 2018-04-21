@@ -69,7 +69,7 @@ public class BasicManageController extends AbstractController {
 	// 获取站点配置信息
 	@RequestMapping("/basicConfig")
 	public ModelAndView toBasic() {
-		ModelAndView modelAndView = new ModelAndView("/basic/config");
+		ModelAndView modelAndView = new ModelAndView("basic/config");
 		Map<String, Object> model = modelAndView.getModel();
 		// 设置默认属性
 		model.put("site_register_way", "0");
