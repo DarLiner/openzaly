@@ -139,8 +139,8 @@
         <div class="weui-cell__bd">
             <p>扩展状态</p>
         </div>
-        <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 0">禁用</div>
-        <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 1">启用</div>
+        <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 0">仅管理员</div>
+        <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 1">全员展示</div>
     </a>
 </div>
 <div class="weui-btn-area">
@@ -424,18 +424,18 @@
                 console.log("close");
             },
             actions: [{
-                text: "禁用",
+                text: "仅管理员",
                 className: "color-primary weui-dialog__btn ",
                 onClick: function () {
-                    $(".per_status-txt").html("禁用");
+                    $(".per_status-txt").html("仅管理员");
                     $(".per_status").attr("data", "0");
                 }
             },
                 {
-                    text: "启用",
+                    text: "全员展示",
                     className: "color-warning weui-dialog__btn",
                     onClick: function () {
-                        $(".per_status-txt").html("启用");
+                        $(".per_status-txt").html("全员展示");
                         $(".per_status").attr("data", "1");
                     }
                 }

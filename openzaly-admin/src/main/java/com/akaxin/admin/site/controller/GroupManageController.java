@@ -54,7 +54,7 @@ public class GroupManageController extends AbstractController {
 	@Resource(name = "groupManageService")
 	private IGroupService groupService;
 
-	// index.html 为群列表页
+	// admin.html 为群列表页
 	@RequestMapping("/index")
 	public String toGroupIndex() {
 		return "group/index";
