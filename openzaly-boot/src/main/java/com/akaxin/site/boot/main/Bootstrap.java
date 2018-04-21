@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 
-import com.akaxin.admin.site.OpenzalyAdminApplication;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
@@ -95,7 +94,7 @@ public class Bootstrap {
 			startNettyServer(siteAddress, sitePort);
 			// OpenzalyAdminApplication.main(new String[0]);
 
-			SpringApplication.run(OpenzalyAdminApplication.class, args);
+			SpringApplication.run(Bootstrap.class, args);
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			System.exit(-1);// 直接退出程序
