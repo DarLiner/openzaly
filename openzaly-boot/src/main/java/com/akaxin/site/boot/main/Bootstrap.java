@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.akaxin.admin.site.OpenzalyAdminApplication;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
@@ -58,7 +59,6 @@ import com.akaxin.site.storage.sqlite.manager.PluginArgs;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018.01.01 11:23:42
  */
-@SpringBootApplication
 public class Bootstrap {
 	private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 	private static final String DEBUG_ENV = "DEBUG";
@@ -94,8 +94,9 @@ public class Bootstrap {
 			addConfigListener();
 			startHttpServer(httpAddress, httpPort);
 			startNettyServer(siteAddress, sitePort);
-			//start spring
-			SpringApplication.run(Bootstrap.class, args);
+
+			 // start spring
+			OpenzalyAdminApplication.main(args);
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			System.exit(-1);// 直接退出程序

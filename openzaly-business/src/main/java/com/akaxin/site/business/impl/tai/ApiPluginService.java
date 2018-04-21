@@ -155,6 +155,7 @@ public class ApiPluginService extends AbstractRequest {
 						httpContent = enPostContent;
 					}
 
+					System.out.println("pageUrl=" + pageUrl);
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, httpContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
 							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
