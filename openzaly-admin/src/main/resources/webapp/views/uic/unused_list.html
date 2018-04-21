@@ -154,9 +154,10 @@
             $.toast("生成成功");
             // refreshCurrentPage();
             var params = {
-                'code_status': 'unused',
+                "page": "1",
+                "code_status": "0"
             };
-            reqHtml("/uic/unused", JSON.stringify(params));
+            reqUrl("/uic/uicList", JSON.stringify(params), "redisplay");
         } else if (result == 'NO_PERMISSION') {
             $.toast("没有权限,请稍后再试", "forbidden");
         } else {
@@ -199,6 +200,23 @@
     });
 
     function addInviteCodeToList(results) {
+        var res = eval("(" + results + ")");
+        var data = res.uicData;
+        var html = '';
+        $.each(data, function (index, uic) {
+            var html = '<div class="weui-cell"> <div class="weui-cell__bd"> <p>' + uic.uic + '</p> </div> </div>';
+            $('#invitecode-lists').append(html);
+        });
+        loading = res.loading;
+        if (loading == true) {
+            $(".weui-loadmore__tips").html("到底啦");
+        } else {
+            $(".weui-loadmore__tips").html("加载更多");
+        }
+    }
+
+    function redisplay(results) {
+        $('#invitecode-lists').html("");
         var res = eval("(" + results + ")");
         var data = res.uicData;
         var html = '';
