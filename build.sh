@@ -24,4 +24,4 @@
 
 cd `dirname $0`
 mvn -T 2C clean package
-cp openzaly-boot/target/openzaly-boot-*-SNAPSHOT.jar openzaly-jar-with-dependencies.jar
+cp openzaly-boot/target/openzaly-boot-*-SNAPSHOT.jar openzaly-boot-jar-with-dependencies.jar
