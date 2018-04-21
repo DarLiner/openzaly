@@ -57,7 +57,7 @@ public class GroupManageController extends AbstractController {
 	// index.html 为群列表页
 	@RequestMapping("/index")
 	public String toGroupIndex() {
-		return "/group/index";
+		return "group/index";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,7 +69,7 @@ public class GroupManageController extends AbstractController {
 	@RequestMapping("manage")
 
 	public ModelAndView toManage(@RequestBody byte[] bodyParams) {
-		ModelAndView modelAndView = new ModelAndView("/group/manage");
+		ModelAndView modelAndView = new ModelAndView("group/manage");
 		Map<String, Object> model = modelAndView.getModel();
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		try {
@@ -89,7 +89,7 @@ public class GroupManageController extends AbstractController {
 	// 跳转到添加群成员界面
 	@RequestMapping("/siteUser")
 	public ModelAndView toAddMember(@RequestBody byte[] bodyParams) {
-		ModelAndView modelAndView = new ModelAndView("/group/addMember");
+		ModelAndView modelAndView = new ModelAndView("group/addMember");
 		Map<String, Object> model = modelAndView.getModel();
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
@@ -104,7 +104,7 @@ public class GroupManageController extends AbstractController {
 
 	@RequestMapping("toMemberList")
 	public ModelAndView toMemberList(@RequestBody byte[] bodyParams) {
-		ModelAndView modelAndView = new ModelAndView("/group/memberList");
+		ModelAndView modelAndView = new ModelAndView("group/memberList");
 		Map<String, Object> model = modelAndView.getModel();
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
@@ -126,7 +126,7 @@ public class GroupManageController extends AbstractController {
 	// 跳转群组资料（群信息页面，修改群信息页面）
 	@RequestMapping("/profile")
 	public ModelAndView toGroupProfile(HttpServletRequest request, @RequestBody byte[] bodyParams) {
-		ModelAndView modelAndView = new ModelAndView("/group/profile");
+		ModelAndView modelAndView = new ModelAndView("group/profile");
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
 			String siteUserId = getRequestSiteUserId(pluginPackage);

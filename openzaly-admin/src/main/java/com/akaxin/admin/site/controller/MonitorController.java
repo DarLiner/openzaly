@@ -24,7 +24,7 @@ public class MonitorController {
 
     @RequestMapping("/index")
     public ModelAndView toMonitor(@RequestBody byte[] bodyParam) {
-        ModelAndView modelAndView = new ModelAndView("/monitor/index");
+        ModelAndView modelAndView = new ModelAndView("monitor/index");
         Map<String, Object> model = modelAndView.getModel();
 
         //转换可选时间

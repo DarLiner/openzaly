@@ -53,7 +53,7 @@ public class UserManageController extends AbstractController {
 	// index.html 分页获取用户列表
 	@RequestMapping("/index")
 	public String toUserIndex() {
-		return "/user/index";
+		return "user/index";
 	}
 
 	// 用户个人资料展示界面，此界面编辑用户资料，并执行更新
