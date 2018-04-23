@@ -1022,14 +1022,14 @@ public final class ApiFriendSettingProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\035site/api_friend_setting.proto\022\004site\032\017c" +
-      "ore/user.proto\"1\n\027ApiFriendSettingReques" +
-      "t\022\026\n\016site_friend_id\030\001 \001(\t\"0\n\030ApiFriendSe" +
-      "ttingResponse\022\024\n\014message_mute\030\001 \001(\0102c\n\027A" +
-      "piFriendSettingService\022H\n\007setting\022\035.site" +
-      ".ApiFriendSettingRequest\032\036.site.ApiFrien" +
-      "dSettingResponseB.\n\025com.akaxin.proto.sit" +
-      "eB\025ApiFriendSettingProtob\006proto3"
+      "\n\035site/api_friend_setting.proto\022\004site\"1\n" +
+      "\027ApiFriendSettingRequest\022\026\n\016site_friend_" +
+      "id\030\001 \001(\t\"0\n\030ApiFriendSettingResponse\022\024\n\014" +
+      "message_mute\030\001 \001(\0102c\n\027ApiFriendSettingSe" +
+      "rvice\022H\n\007setting\022\035.site.ApiFriendSetting" +
+      "Request\032\036.site.ApiFriendSettingResponseB" +
+      ".\n\025com.akaxin.proto.siteB\025ApiFriendSetti" +
+      "ngProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1042,7 +1042,6 @@ public final class ApiFriendSettingProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.UserProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiFriendSettingRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1056,7 +1055,6 @@ public final class ApiFriendSettingProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiFriendSettingResponse_descriptor,
         new java.lang.String[] { "MessageMute", });
-    com.akaxin.proto.core.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

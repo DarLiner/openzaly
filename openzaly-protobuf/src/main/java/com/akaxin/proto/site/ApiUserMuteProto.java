@@ -828,13 +828,12 @@ public final class ApiUserMuteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030site/api_user_mute.proto\022\004site\032\017core/u" +
-      "ser.proto\"\024\n\022ApiUserMuteRequest\"#\n\023ApiUs" +
-      "erMuteResponse\022\014\n\004mute\030\001 \001(\0102Q\n\022ApiUserM" +
-      "uteService\022;\n\004mute\022\030.site.ApiUserMuteReq" +
-      "uest\032\031.site.ApiUserMuteResponseB)\n\025com.a" +
-      "kaxin.proto.siteB\020ApiUserMuteProtob\006prot" +
-      "o3"
+      "\n\030site/api_user_mute.proto\022\004site\"\024\n\022ApiU" +
+      "serMuteRequest\"#\n\023ApiUserMuteResponse\022\014\n" +
+      "\004mute\030\001 \001(\0102Q\n\022ApiUserMuteService\022;\n\004mut" +
+      "e\022\030.site.ApiUserMuteRequest\032\031.site.ApiUs" +
+      "erMuteResponseB)\n\025com.akaxin.proto.siteB" +
+      "\020ApiUserMuteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -847,7 +846,6 @@ public final class ApiUserMuteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.UserProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiUserMuteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -861,7 +859,6 @@ public final class ApiUserMuteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiUserMuteResponse_descriptor,
         new java.lang.String[] { "Mute", });
-    com.akaxin.proto.core.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

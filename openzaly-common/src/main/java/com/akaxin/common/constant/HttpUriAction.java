@@ -24,11 +24,11 @@ public enum HttpUriAction {
 
 	HAI_SITE_SERVICE("hai", "site"), // 站点配置服务
 
-	HAI_USER_SERVICE("hai", "list"), // 用户服务
+	HAI_USER_SERVICE("hai", "user"), // 用户服务
 
-	HAI_GROUP_SERVICE("hai", "list"), // 群组服务
+	HAI_GROUP_SERVICE("hai", "group"), // 群组服务
 
-	HAI_FRIEND_SERVICE("hai", "apply"), // 好友服务
+	HAI_FRIEND_SERVICE("hai", "friend"), // 好友服务
 
 	HAI_MESSAGE_SERVICE("hai", "message"), // 好友服务
 

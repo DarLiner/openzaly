@@ -47,8 +47,8 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.SECRET_IMAGE_VALUE:
 				case CoreProto.MsgType.VOICE_VALUE:
 				case CoreProto.MsgType.SECRET_VOICE_VALUE:
-				case CoreProto.MsgType.MAP_VALUE:
-				case CoreProto.MsgType.SECRET_MAP_VALUE:
+				case CoreProto.MsgType.U2_MAP_VALUE:
+				case CoreProto.MsgType.U2_SECRET_MAP_VALUE:
 				case CoreProto.MsgType.U2_NOTICE_VALUE:
 					MessageExecutor.getExecutor().execute("im.cts.message.u2", command);
 					return true;

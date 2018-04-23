@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.utils.StringHelper;
 
 import io.netty.channel.ChannelHandlerContext;
 
@@ -229,8 +230,8 @@ public class Command {
 	}
 
 	public String toString() {
-		return "siteUserId=" + this.siteUserId + ",deviceId=" + this.deviceId + ",rety=" + this.rety + ",service="
-				+ this.service + ",method=" + this.method + " header={}" + this.header;
+		return StringHelper.format("cmd: siteUserId={} deviceId={} rety={} service={} method={} header={}",
+				this.siteUserId, this.deviceId, this.rety, this.service, this.method, this.header);
 	}
 
 }

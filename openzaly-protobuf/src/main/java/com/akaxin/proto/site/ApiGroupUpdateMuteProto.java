@@ -1021,15 +1021,14 @@ public final class ApiGroupUpdateMuteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\037site/api_group_updateMute.proto\022\004site\032" +
-      "\020core/group.proto\"@\n\031ApiGroupUpdateMuteR" +
-      "equest\022\025\n\rsite_group_id\030\001 \001(\t\022\014\n\004mute\030\002 " +
-      "\001(\010\"\034\n\032ApiGroupUpdateMuteResponse2l\n\031Api" +
-      "GroupUpdateMuteService\022O\n\nupdateMute\022\037.s" +
-      "ite.ApiGroupUpdateMuteRequest\032 .site.Api" +
-      "GroupUpdateMuteResponseB0\n\025com.akaxin.pr" +
-      "oto.siteB\027ApiGroupUpdateMuteProtob\006proto" +
-      "3"
+      "\n\037site/api_group_updateMute.proto\022\004site\"" +
+      "@\n\031ApiGroupUpdateMuteRequest\022\025\n\rsite_gro" +
+      "up_id\030\001 \001(\t\022\014\n\004mute\030\002 \001(\010\"\034\n\032ApiGroupUpd" +
+      "ateMuteResponse2l\n\031ApiGroupUpdateMuteSer" +
+      "vice\022O\n\nupdateMute\022\037.site.ApiGroupUpdate" +
+      "MuteRequest\032 .site.ApiGroupUpdateMuteRes" +
+      "ponseB0\n\025com.akaxin.proto.siteB\027ApiGroup" +
+      "UpdateMuteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1042,7 +1041,6 @@ public final class ApiGroupUpdateMuteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.GroupProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiGroupUpdateMuteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1056,7 +1054,6 @@ public final class ApiGroupUpdateMuteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiGroupUpdateMuteResponse_descriptor,
         new java.lang.String[] { });
-    com.akaxin.proto.core.GroupProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
