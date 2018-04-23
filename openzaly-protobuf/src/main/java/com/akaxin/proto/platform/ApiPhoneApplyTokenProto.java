@@ -20,7 +20,7 @@ public final class ApiPhoneApplyTokenProto {
 
     /**
      * <pre>
-     *用户id
+     *用户id，需要使用Global User ID
      * </pre>
      *
      * <code>optional string user_id = 1;</code>
@@ -28,7 +28,7 @@ public final class ApiPhoneApplyTokenProto {
     java.lang.String getUserId();
     /**
      * <pre>
-     *用户id
+     *用户id，需要使用Global User ID
      * </pre>
      *
      * <code>optional string user_id = 1;</code>
@@ -109,7 +109,7 @@ public final class ApiPhoneApplyTokenProto {
     private volatile java.lang.Object userId_;
     /**
      * <pre>
-     *用户id
+     *用户id，需要使用Global User ID
      * </pre>
      *
      * <code>optional string user_id = 1;</code>
@@ -128,7 +128,7 @@ public final class ApiPhoneApplyTokenProto {
     }
     /**
      * <pre>
-     *用户id
+     *用户id，需要使用Global User ID
      * </pre>
      *
      * <code>optional string user_id = 1;</code>
@@ -419,7 +419,7 @@ public final class ApiPhoneApplyTokenProto {
       private java.lang.Object userId_ = "";
       /**
        * <pre>
-       *用户id
+       *用户id，需要使用Global User ID
        * </pre>
        *
        * <code>optional string user_id = 1;</code>
@@ -438,7 +438,7 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *用户id
+       *用户id，需要使用Global User ID
        * </pre>
        *
        * <code>optional string user_id = 1;</code>
@@ -458,7 +458,7 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *用户id
+       *用户id，需要使用Global User ID
        * </pre>
        *
        * <code>optional string user_id = 1;</code>
@@ -475,7 +475,7 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *用户id
+       *用户id，需要使用Global User ID
        * </pre>
        *
        * <code>optional string user_id = 1;</code>
@@ -488,7 +488,7 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *用户id
+       *用户id，需要使用Global User ID
        * </pre>
        *
        * <code>optional string user_id = 1;</code>

@@ -175,8 +175,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					command.setClientIp(clientIp);
 					command.setStartTime(System.currentTimeMillis());
 
-					logger.debug("{} client={} http server handler command={}", AkxProject.PLN, clientIp,
-							command.toString());
+					logger.info("{} client={} uri={} http server handler command={}", AkxProject.PLN, clientIp,
+							request.uri(), command.toString());
 
 					CommandResponse response = this.executor.execute(HttpUriAction.HTTP_ACTION.getRety(), command);
 					LogUtils.requestResultLog(logger, command, response);

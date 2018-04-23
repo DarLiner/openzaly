@@ -1022,13 +1022,13 @@ public final class ApiFriendMuteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\032site/api_friend_mute.proto\022\004site\032\017core" +
-      "/user.proto\".\n\024ApiFriendMuteRequest\022\026\n\016s" +
-      "ite_friend_id\030\001 \001(\t\"%\n\025ApiFriendMuteResp" +
-      "onse\022\014\n\004mute\030\001 \001(\0102W\n\024ApiFriendMuteServi" +
-      "ce\022?\n\004mute\022\032.site.ApiFriendMuteRequest\032\033" +
-      ".site.ApiFriendMuteResponseB+\n\025com.akaxi" +
-      "n.proto.siteB\022ApiFriendMuteProtob\006proto3"
+      "\n\032site/api_friend_mute.proto\022\004site\".\n\024Ap" +
+      "iFriendMuteRequest\022\026\n\016site_friend_id\030\001 \001" +
+      "(\t\"%\n\025ApiFriendMuteResponse\022\014\n\004mute\030\001 \001(" +
+      "\0102W\n\024ApiFriendMuteService\022?\n\004mute\022\032.site" +
+      ".ApiFriendMuteRequest\032\033.site.ApiFriendMu" +
+      "teResponseB+\n\025com.akaxin.proto.siteB\022Api" +
+      "FriendMuteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1041,7 +1041,6 @@ public final class ApiFriendMuteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.UserProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiFriendMuteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1055,7 +1054,6 @@ public final class ApiFriendMuteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiFriendMuteResponse_descriptor,
         new java.lang.String[] { "Mute", });
-    com.akaxin.proto.core.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

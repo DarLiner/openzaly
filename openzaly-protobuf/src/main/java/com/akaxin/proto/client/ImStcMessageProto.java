@@ -918,31 +918,6 @@ public final class ImStcMessageProto {
 
     /**
      * <pre>
-     *消息同步结束标志
-     * </pre>
-     *
-     * <code>optional .core.MsgFinish finish = 4;</code>
-     */
-    boolean hasFinish();
-    /**
-     * <pre>
-     *消息同步结束标志
-     * </pre>
-     *
-     * <code>optional .core.MsgFinish finish = 4;</code>
-     */
-    com.akaxin.proto.core.CoreProto.MsgFinish getFinish();
-    /**
-     * <pre>
-     *消息同步结束标志
-     * </pre>
-     *
-     * <code>optional .core.MsgFinish finish = 4;</code>
-     */
-    com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder getFinishOrBuilder();
-
-    /**
-     * <pre>
      *二人文本消息
      * </pre>
      *
@@ -1243,53 +1218,53 @@ public final class ImStcMessageProto {
 
     /**
      * <pre>
-     *普通地图消息
+     *v0.4.3 版本未使用
      * </pre>
      *
-     * <code>optional .core.MsgMap map = 17;</code>
+     * <code>optional .core.U2Map u2Map = 17;</code>
      */
-    boolean hasMap();
+    boolean hasU2Map();
     /**
      * <pre>
-     *普通地图消息
+     *v0.4.3 版本未使用
      * </pre>
      *
-     * <code>optional .core.MsgMap map = 17;</code>
+     * <code>optional .core.U2Map u2Map = 17;</code>
      */
-    com.akaxin.proto.core.CoreProto.MsgMap getMap();
+    com.akaxin.proto.core.CoreProto.U2Map getU2Map();
     /**
      * <pre>
-     *普通地图消息
+     *v0.4.3 版本未使用
      * </pre>
      *
-     * <code>optional .core.MsgMap map = 17;</code>
+     * <code>optional .core.U2Map u2Map = 17;</code>
      */
-    com.akaxin.proto.core.CoreProto.MsgMapOrBuilder getMapOrBuilder();
+    com.akaxin.proto.core.CoreProto.U2MapOrBuilder getU2MapOrBuilder();
 
     /**
      * <pre>
      *加密地图消息
      * </pre>
      *
-     * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+     * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
      */
-    boolean hasSecretMap();
+    boolean hasU2SecretMap();
     /**
      * <pre>
      *加密地图消息
      * </pre>
      *
-     * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+     * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
      */
-    com.akaxin.proto.core.CoreProto.MsgSecretMap getSecretMap();
+    com.akaxin.proto.core.CoreProto.U2SecretMap getU2SecretMap();
     /**
      * <pre>
      *加密地图消息
      * </pre>
      *
-     * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+     * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
      */
-    com.akaxin.proto.core.CoreProto.MsgSecretMapOrBuilder getSecretMapOrBuilder();
+    com.akaxin.proto.core.CoreProto.U2SecretMapOrBuilder getU2SecretMapOrBuilder();
 
     /**
      * <pre>
@@ -1390,6 +1365,156 @@ public final class ImStcMessageProto {
      * <code>optional .core.GroupMsgNotice groupMsgNotice = 22;</code>
      */
     com.akaxin.proto.core.CoreProto.GroupMsgNoticeOrBuilder getGroupMsgNoticeOrBuilder();
+
+    /**
+     * <pre>
+     *二人召回消息
+     * </pre>
+     *
+     * <code>optional .core.U2Recall u2Recall = 23;</code>
+     */
+    boolean hasU2Recall();
+    /**
+     * <pre>
+     *二人召回消息
+     * </pre>
+     *
+     * <code>optional .core.U2Recall u2Recall = 23;</code>
+     */
+    com.akaxin.proto.core.CoreProto.U2Recall getU2Recall();
+    /**
+     * <pre>
+     *二人召回消息
+     * </pre>
+     *
+     * <code>optional .core.U2Recall u2Recall = 23;</code>
+     */
+    com.akaxin.proto.core.CoreProto.U2RecallOrBuilder getU2RecallOrBuilder();
+
+    /**
+     * <pre>
+     *群组召回消息
+     * </pre>
+     *
+     * <code>optional .core.GroupRecall groupRecall = 24;</code>
+     */
+    boolean hasGroupRecall();
+    /**
+     * <pre>
+     *群组召回消息
+     * </pre>
+     *
+     * <code>optional .core.GroupRecall groupRecall = 24;</code>
+     */
+    com.akaxin.proto.core.CoreProto.GroupRecall getGroupRecall();
+    /**
+     * <pre>
+     *群组召回消息
+     * </pre>
+     *
+     * <code>optional .core.GroupRecall groupRecall = 24;</code>
+     */
+    com.akaxin.proto.core.CoreProto.GroupRecallOrBuilder getGroupRecallOrBuilder();
+
+    /**
+     * <pre>
+     *为人Web消息
+     * </pre>
+     *
+     * <code>optional .core.U2Web u2Web = 25;</code>
+     */
+    boolean hasU2Web();
+    /**
+     * <pre>
+     *为人Web消息
+     * </pre>
+     *
+     * <code>optional .core.U2Web u2Web = 25;</code>
+     */
+    com.akaxin.proto.core.CoreProto.U2Web getU2Web();
+    /**
+     * <pre>
+     *为人Web消息
+     * </pre>
+     *
+     * <code>optional .core.U2Web u2Web = 25;</code>
+     */
+    com.akaxin.proto.core.CoreProto.U2WebOrBuilder getU2WebOrBuilder();
+
+    /**
+     * <pre>
+     *群组web消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWeb groupWeb = 26;</code>
+     */
+    boolean hasGroupWeb();
+    /**
+     * <pre>
+     *群组web消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWeb groupWeb = 26;</code>
+     */
+    com.akaxin.proto.core.CoreProto.GroupWeb getGroupWeb();
+    /**
+     * <pre>
+     *群组web消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWeb groupWeb = 26;</code>
+     */
+    com.akaxin.proto.core.CoreProto.GroupWebOrBuilder getGroupWebOrBuilder();
+
+    /**
+     * <pre>
+     *二人web通知消息
+     * </pre>
+     *
+     * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+     */
+    boolean hasU2WebNotice();
+    /**
+     * <pre>
+     *二人web通知消息
+     * </pre>
+     *
+     * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+     */
+    com.akaxin.proto.core.CoreProto.U2WebNotice getU2WebNotice();
+    /**
+     * <pre>
+     *二人web通知消息
+     * </pre>
+     *
+     * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+     */
+    com.akaxin.proto.core.CoreProto.U2WebNoticeOrBuilder getU2WebNoticeOrBuilder();
+
+    /**
+     * <pre>
+     *群组web通知消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+     */
+    boolean hasGroupWebNotice();
+    /**
+     * <pre>
+     *群组web通知消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+     */
+    com.akaxin.proto.core.CoreProto.GroupWebNotice getGroupWebNotice();
+    /**
+     * <pre>
+     *群组web通知消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+     */
+    com.akaxin.proto.core.CoreProto.GroupWebNoticeOrBuilder getGroupWebNoticeOrBuilder();
   }
   /**
    * Protobuf type {@code client.MsgWithPointer}
@@ -1452,19 +1577,6 @@ public final class ImStcMessageProto {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(status_);
                 status_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 34: {
-              com.akaxin.proto.core.CoreProto.MsgFinish.Builder subBuilder = null;
-              if (finish_ != null) {
-                subBuilder = finish_.toBuilder();
-              }
-              finish_ = input.readMessage(com.akaxin.proto.core.CoreProto.MsgFinish.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(finish_);
-                finish_ = subBuilder.buildPartial();
               }
 
               break;
@@ -1626,27 +1738,27 @@ public final class ImStcMessageProto {
               break;
             }
             case 138: {
-              com.akaxin.proto.core.CoreProto.MsgMap.Builder subBuilder = null;
-              if (map_ != null) {
-                subBuilder = map_.toBuilder();
+              com.akaxin.proto.core.CoreProto.U2Map.Builder subBuilder = null;
+              if (u2Map_ != null) {
+                subBuilder = u2Map_.toBuilder();
               }
-              map_ = input.readMessage(com.akaxin.proto.core.CoreProto.MsgMap.parser(), extensionRegistry);
+              u2Map_ = input.readMessage(com.akaxin.proto.core.CoreProto.U2Map.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(map_);
-                map_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(u2Map_);
+                u2Map_ = subBuilder.buildPartial();
               }
 
               break;
             }
             case 146: {
-              com.akaxin.proto.core.CoreProto.MsgSecretMap.Builder subBuilder = null;
-              if (secretMap_ != null) {
-                subBuilder = secretMap_.toBuilder();
+              com.akaxin.proto.core.CoreProto.U2SecretMap.Builder subBuilder = null;
+              if (u2SecretMap_ != null) {
+                subBuilder = u2SecretMap_.toBuilder();
               }
-              secretMap_ = input.readMessage(com.akaxin.proto.core.CoreProto.MsgSecretMap.parser(), extensionRegistry);
+              u2SecretMap_ = input.readMessage(com.akaxin.proto.core.CoreProto.U2SecretMap.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(secretMap_);
-                secretMap_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(u2SecretMap_);
+                u2SecretMap_ = subBuilder.buildPartial();
               }
 
               break;
@@ -1699,6 +1811,84 @@ public final class ImStcMessageProto {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(groupMsgNotice_);
                 groupMsgNotice_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 186: {
+              com.akaxin.proto.core.CoreProto.U2Recall.Builder subBuilder = null;
+              if (u2Recall_ != null) {
+                subBuilder = u2Recall_.toBuilder();
+              }
+              u2Recall_ = input.readMessage(com.akaxin.proto.core.CoreProto.U2Recall.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(u2Recall_);
+                u2Recall_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 194: {
+              com.akaxin.proto.core.CoreProto.GroupRecall.Builder subBuilder = null;
+              if (groupRecall_ != null) {
+                subBuilder = groupRecall_.toBuilder();
+              }
+              groupRecall_ = input.readMessage(com.akaxin.proto.core.CoreProto.GroupRecall.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(groupRecall_);
+                groupRecall_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 202: {
+              com.akaxin.proto.core.CoreProto.U2Web.Builder subBuilder = null;
+              if (u2Web_ != null) {
+                subBuilder = u2Web_.toBuilder();
+              }
+              u2Web_ = input.readMessage(com.akaxin.proto.core.CoreProto.U2Web.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(u2Web_);
+                u2Web_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 210: {
+              com.akaxin.proto.core.CoreProto.GroupWeb.Builder subBuilder = null;
+              if (groupWeb_ != null) {
+                subBuilder = groupWeb_.toBuilder();
+              }
+              groupWeb_ = input.readMessage(com.akaxin.proto.core.CoreProto.GroupWeb.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(groupWeb_);
+                groupWeb_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 218: {
+              com.akaxin.proto.core.CoreProto.U2WebNotice.Builder subBuilder = null;
+              if (u2WebNotice_ != null) {
+                subBuilder = u2WebNotice_.toBuilder();
+              }
+              u2WebNotice_ = input.readMessage(com.akaxin.proto.core.CoreProto.U2WebNotice.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(u2WebNotice_);
+                u2WebNotice_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 226: {
+              com.akaxin.proto.core.CoreProto.GroupWebNotice.Builder subBuilder = null;
+              if (groupWebNotice_ != null) {
+                subBuilder = groupWebNotice_.toBuilder();
+              }
+              groupWebNotice_ = input.readMessage(com.akaxin.proto.core.CoreProto.GroupWebNotice.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(groupWebNotice_);
+                groupWebNotice_ = subBuilder.buildPartial();
               }
 
               break;
@@ -1794,39 +1984,6 @@ public final class ImStcMessageProto {
      */
     public com.akaxin.proto.core.CoreProto.MsgStatusOrBuilder getStatusOrBuilder() {
       return getStatus();
-    }
-
-    public static final int FINISH_FIELD_NUMBER = 4;
-    private com.akaxin.proto.core.CoreProto.MsgFinish finish_;
-    /**
-     * <pre>
-     *消息同步结束标志
-     * </pre>
-     *
-     * <code>optional .core.MsgFinish finish = 4;</code>
-     */
-    public boolean hasFinish() {
-      return finish_ != null;
-    }
-    /**
-     * <pre>
-     *消息同步结束标志
-     * </pre>
-     *
-     * <code>optional .core.MsgFinish finish = 4;</code>
-     */
-    public com.akaxin.proto.core.CoreProto.MsgFinish getFinish() {
-      return finish_ == null ? com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance() : finish_;
-    }
-    /**
-     * <pre>
-     *消息同步结束标志
-     * </pre>
-     *
-     * <code>optional .core.MsgFinish finish = 4;</code>
-     */
-    public com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder getFinishOrBuilder() {
-      return getFinish();
     }
 
     public static final int TEXT_FIELD_NUMBER = 5;
@@ -2225,70 +2382,70 @@ public final class ImStcMessageProto {
       return getGroupSecretVoice();
     }
 
-    public static final int MAP_FIELD_NUMBER = 17;
-    private com.akaxin.proto.core.CoreProto.MsgMap map_;
+    public static final int U2MAP_FIELD_NUMBER = 17;
+    private com.akaxin.proto.core.CoreProto.U2Map u2Map_;
     /**
      * <pre>
-     *普通地图消息
+     *v0.4.3 版本未使用
      * </pre>
      *
-     * <code>optional .core.MsgMap map = 17;</code>
+     * <code>optional .core.U2Map u2Map = 17;</code>
      */
-    public boolean hasMap() {
-      return map_ != null;
+    public boolean hasU2Map() {
+      return u2Map_ != null;
     }
     /**
      * <pre>
-     *普通地图消息
+     *v0.4.3 版本未使用
      * </pre>
      *
-     * <code>optional .core.MsgMap map = 17;</code>
+     * <code>optional .core.U2Map u2Map = 17;</code>
      */
-    public com.akaxin.proto.core.CoreProto.MsgMap getMap() {
-      return map_ == null ? com.akaxin.proto.core.CoreProto.MsgMap.getDefaultInstance() : map_;
+    public com.akaxin.proto.core.CoreProto.U2Map getU2Map() {
+      return u2Map_ == null ? com.akaxin.proto.core.CoreProto.U2Map.getDefaultInstance() : u2Map_;
     }
     /**
      * <pre>
-     *普通地图消息
+     *v0.4.3 版本未使用
      * </pre>
      *
-     * <code>optional .core.MsgMap map = 17;</code>
+     * <code>optional .core.U2Map u2Map = 17;</code>
      */
-    public com.akaxin.proto.core.CoreProto.MsgMapOrBuilder getMapOrBuilder() {
-      return getMap();
+    public com.akaxin.proto.core.CoreProto.U2MapOrBuilder getU2MapOrBuilder() {
+      return getU2Map();
     }
 
-    public static final int SECRETMAP_FIELD_NUMBER = 18;
-    private com.akaxin.proto.core.CoreProto.MsgSecretMap secretMap_;
+    public static final int U2SECRETMAP_FIELD_NUMBER = 18;
+    private com.akaxin.proto.core.CoreProto.U2SecretMap u2SecretMap_;
     /**
      * <pre>
      *加密地图消息
      * </pre>
      *
-     * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+     * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
      */
-    public boolean hasSecretMap() {
-      return secretMap_ != null;
+    public boolean hasU2SecretMap() {
+      return u2SecretMap_ != null;
     }
     /**
      * <pre>
      *加密地图消息
      * </pre>
      *
-     * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+     * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
      */
-    public com.akaxin.proto.core.CoreProto.MsgSecretMap getSecretMap() {
-      return secretMap_ == null ? com.akaxin.proto.core.CoreProto.MsgSecretMap.getDefaultInstance() : secretMap_;
+    public com.akaxin.proto.core.CoreProto.U2SecretMap getU2SecretMap() {
+      return u2SecretMap_ == null ? com.akaxin.proto.core.CoreProto.U2SecretMap.getDefaultInstance() : u2SecretMap_;
     }
     /**
      * <pre>
      *加密地图消息
      * </pre>
      *
-     * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+     * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
      */
-    public com.akaxin.proto.core.CoreProto.MsgSecretMapOrBuilder getSecretMapOrBuilder() {
-      return getSecretMap();
+    public com.akaxin.proto.core.CoreProto.U2SecretMapOrBuilder getU2SecretMapOrBuilder() {
+      return getU2SecretMap();
     }
 
     public static final int GROUPMAP_FIELD_NUMBER = 19;
@@ -2423,6 +2580,204 @@ public final class ImStcMessageProto {
       return getGroupMsgNotice();
     }
 
+    public static final int U2RECALL_FIELD_NUMBER = 23;
+    private com.akaxin.proto.core.CoreProto.U2Recall u2Recall_;
+    /**
+     * <pre>
+     *二人召回消息
+     * </pre>
+     *
+     * <code>optional .core.U2Recall u2Recall = 23;</code>
+     */
+    public boolean hasU2Recall() {
+      return u2Recall_ != null;
+    }
+    /**
+     * <pre>
+     *二人召回消息
+     * </pre>
+     *
+     * <code>optional .core.U2Recall u2Recall = 23;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.U2Recall getU2Recall() {
+      return u2Recall_ == null ? com.akaxin.proto.core.CoreProto.U2Recall.getDefaultInstance() : u2Recall_;
+    }
+    /**
+     * <pre>
+     *二人召回消息
+     * </pre>
+     *
+     * <code>optional .core.U2Recall u2Recall = 23;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.U2RecallOrBuilder getU2RecallOrBuilder() {
+      return getU2Recall();
+    }
+
+    public static final int GROUPRECALL_FIELD_NUMBER = 24;
+    private com.akaxin.proto.core.CoreProto.GroupRecall groupRecall_;
+    /**
+     * <pre>
+     *群组召回消息
+     * </pre>
+     *
+     * <code>optional .core.GroupRecall groupRecall = 24;</code>
+     */
+    public boolean hasGroupRecall() {
+      return groupRecall_ != null;
+    }
+    /**
+     * <pre>
+     *群组召回消息
+     * </pre>
+     *
+     * <code>optional .core.GroupRecall groupRecall = 24;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.GroupRecall getGroupRecall() {
+      return groupRecall_ == null ? com.akaxin.proto.core.CoreProto.GroupRecall.getDefaultInstance() : groupRecall_;
+    }
+    /**
+     * <pre>
+     *群组召回消息
+     * </pre>
+     *
+     * <code>optional .core.GroupRecall groupRecall = 24;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.GroupRecallOrBuilder getGroupRecallOrBuilder() {
+      return getGroupRecall();
+    }
+
+    public static final int U2WEB_FIELD_NUMBER = 25;
+    private com.akaxin.proto.core.CoreProto.U2Web u2Web_;
+    /**
+     * <pre>
+     *为人Web消息
+     * </pre>
+     *
+     * <code>optional .core.U2Web u2Web = 25;</code>
+     */
+    public boolean hasU2Web() {
+      return u2Web_ != null;
+    }
+    /**
+     * <pre>
+     *为人Web消息
+     * </pre>
+     *
+     * <code>optional .core.U2Web u2Web = 25;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.U2Web getU2Web() {
+      return u2Web_ == null ? com.akaxin.proto.core.CoreProto.U2Web.getDefaultInstance() : u2Web_;
+    }
+    /**
+     * <pre>
+     *为人Web消息
+     * </pre>
+     *
+     * <code>optional .core.U2Web u2Web = 25;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.U2WebOrBuilder getU2WebOrBuilder() {
+      return getU2Web();
+    }
+
+    public static final int GROUPWEB_FIELD_NUMBER = 26;
+    private com.akaxin.proto.core.CoreProto.GroupWeb groupWeb_;
+    /**
+     * <pre>
+     *群组web消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWeb groupWeb = 26;</code>
+     */
+    public boolean hasGroupWeb() {
+      return groupWeb_ != null;
+    }
+    /**
+     * <pre>
+     *群组web消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWeb groupWeb = 26;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.GroupWeb getGroupWeb() {
+      return groupWeb_ == null ? com.akaxin.proto.core.CoreProto.GroupWeb.getDefaultInstance() : groupWeb_;
+    }
+    /**
+     * <pre>
+     *群组web消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWeb groupWeb = 26;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.GroupWebOrBuilder getGroupWebOrBuilder() {
+      return getGroupWeb();
+    }
+
+    public static final int U2WEBNOTICE_FIELD_NUMBER = 27;
+    private com.akaxin.proto.core.CoreProto.U2WebNotice u2WebNotice_;
+    /**
+     * <pre>
+     *二人web通知消息
+     * </pre>
+     *
+     * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+     */
+    public boolean hasU2WebNotice() {
+      return u2WebNotice_ != null;
+    }
+    /**
+     * <pre>
+     *二人web通知消息
+     * </pre>
+     *
+     * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.U2WebNotice getU2WebNotice() {
+      return u2WebNotice_ == null ? com.akaxin.proto.core.CoreProto.U2WebNotice.getDefaultInstance() : u2WebNotice_;
+    }
+    /**
+     * <pre>
+     *二人web通知消息
+     * </pre>
+     *
+     * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.U2WebNoticeOrBuilder getU2WebNoticeOrBuilder() {
+      return getU2WebNotice();
+    }
+
+    public static final int GROUPWEBNOTICE_FIELD_NUMBER = 28;
+    private com.akaxin.proto.core.CoreProto.GroupWebNotice groupWebNotice_;
+    /**
+     * <pre>
+     *群组web通知消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+     */
+    public boolean hasGroupWebNotice() {
+      return groupWebNotice_ != null;
+    }
+    /**
+     * <pre>
+     *群组web通知消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.GroupWebNotice getGroupWebNotice() {
+      return groupWebNotice_ == null ? com.akaxin.proto.core.CoreProto.GroupWebNotice.getDefaultInstance() : groupWebNotice_;
+    }
+    /**
+     * <pre>
+     *群组web通知消息
+     * </pre>
+     *
+     * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.GroupWebNoticeOrBuilder getGroupWebNoticeOrBuilder() {
+      return getGroupWebNotice();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -2443,9 +2798,6 @@ public final class ImStcMessageProto {
       }
       if (status_ != null) {
         output.writeMessage(3, getStatus());
-      }
-      if (finish_ != null) {
-        output.writeMessage(4, getFinish());
       }
       if (text_ != null) {
         output.writeMessage(5, getText());
@@ -2483,11 +2835,11 @@ public final class ImStcMessageProto {
       if (groupSecretVoice_ != null) {
         output.writeMessage(16, getGroupSecretVoice());
       }
-      if (map_ != null) {
-        output.writeMessage(17, getMap());
+      if (u2Map_ != null) {
+        output.writeMessage(17, getU2Map());
       }
-      if (secretMap_ != null) {
-        output.writeMessage(18, getSecretMap());
+      if (u2SecretMap_ != null) {
+        output.writeMessage(18, getU2SecretMap());
       }
       if (groupMap_ != null) {
         output.writeMessage(19, getGroupMap());
@@ -2500,6 +2852,24 @@ public final class ImStcMessageProto {
       }
       if (groupMsgNotice_ != null) {
         output.writeMessage(22, getGroupMsgNotice());
+      }
+      if (u2Recall_ != null) {
+        output.writeMessage(23, getU2Recall());
+      }
+      if (groupRecall_ != null) {
+        output.writeMessage(24, getGroupRecall());
+      }
+      if (u2Web_ != null) {
+        output.writeMessage(25, getU2Web());
+      }
+      if (groupWeb_ != null) {
+        output.writeMessage(26, getGroupWeb());
+      }
+      if (u2WebNotice_ != null) {
+        output.writeMessage(27, getU2WebNotice());
+      }
+      if (groupWebNotice_ != null) {
+        output.writeMessage(28, getGroupWebNotice());
       }
     }
 
@@ -2519,10 +2889,6 @@ public final class ImStcMessageProto {
       if (status_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getStatus());
-      }
-      if (finish_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getFinish());
       }
       if (text_ != null) {
         size += com.google.protobuf.CodedOutputStream
@@ -2572,13 +2938,13 @@ public final class ImStcMessageProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(16, getGroupSecretVoice());
       }
-      if (map_ != null) {
+      if (u2Map_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(17, getMap());
+          .computeMessageSize(17, getU2Map());
       }
-      if (secretMap_ != null) {
+      if (u2SecretMap_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(18, getSecretMap());
+          .computeMessageSize(18, getU2SecretMap());
       }
       if (groupMap_ != null) {
         size += com.google.protobuf.CodedOutputStream
@@ -2595,6 +2961,30 @@ public final class ImStcMessageProto {
       if (groupMsgNotice_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(22, getGroupMsgNotice());
+      }
+      if (u2Recall_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(23, getU2Recall());
+      }
+      if (groupRecall_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(24, getGroupRecall());
+      }
+      if (u2Web_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(25, getU2Web());
+      }
+      if (groupWeb_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(26, getGroupWeb());
+      }
+      if (u2WebNotice_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(27, getU2WebNotice());
+      }
+      if (groupWebNotice_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(28, getGroupWebNotice());
       }
       memoizedSize = size;
       return size;
@@ -2619,11 +3009,6 @@ public final class ImStcMessageProto {
       if (hasStatus()) {
         result = result && getStatus()
             .equals(other.getStatus());
-      }
-      result = result && (hasFinish() == other.hasFinish());
-      if (hasFinish()) {
-        result = result && getFinish()
-            .equals(other.getFinish());
       }
       result = result && (hasText() == other.hasText());
       if (hasText()) {
@@ -2685,15 +3070,15 @@ public final class ImStcMessageProto {
         result = result && getGroupSecretVoice()
             .equals(other.getGroupSecretVoice());
       }
-      result = result && (hasMap() == other.hasMap());
-      if (hasMap()) {
-        result = result && getMap()
-            .equals(other.getMap());
+      result = result && (hasU2Map() == other.hasU2Map());
+      if (hasU2Map()) {
+        result = result && getU2Map()
+            .equals(other.getU2Map());
       }
-      result = result && (hasSecretMap() == other.hasSecretMap());
-      if (hasSecretMap()) {
-        result = result && getSecretMap()
-            .equals(other.getSecretMap());
+      result = result && (hasU2SecretMap() == other.hasU2SecretMap());
+      if (hasU2SecretMap()) {
+        result = result && getU2SecretMap()
+            .equals(other.getU2SecretMap());
       }
       result = result && (hasGroupMap() == other.hasGroupMap());
       if (hasGroupMap()) {
@@ -2715,6 +3100,36 @@ public final class ImStcMessageProto {
         result = result && getGroupMsgNotice()
             .equals(other.getGroupMsgNotice());
       }
+      result = result && (hasU2Recall() == other.hasU2Recall());
+      if (hasU2Recall()) {
+        result = result && getU2Recall()
+            .equals(other.getU2Recall());
+      }
+      result = result && (hasGroupRecall() == other.hasGroupRecall());
+      if (hasGroupRecall()) {
+        result = result && getGroupRecall()
+            .equals(other.getGroupRecall());
+      }
+      result = result && (hasU2Web() == other.hasU2Web());
+      if (hasU2Web()) {
+        result = result && getU2Web()
+            .equals(other.getU2Web());
+      }
+      result = result && (hasGroupWeb() == other.hasGroupWeb());
+      if (hasGroupWeb()) {
+        result = result && getGroupWeb()
+            .equals(other.getGroupWeb());
+      }
+      result = result && (hasU2WebNotice() == other.hasU2WebNotice());
+      if (hasU2WebNotice()) {
+        result = result && getU2WebNotice()
+            .equals(other.getU2WebNotice());
+      }
+      result = result && (hasGroupWebNotice() == other.hasGroupWebNotice());
+      if (hasGroupWebNotice()) {
+        result = result && getGroupWebNotice()
+            .equals(other.getGroupWebNotice());
+      }
       return result;
     }
 
@@ -2733,10 +3148,6 @@ public final class ImStcMessageProto {
       if (hasStatus()) {
         hash = (37 * hash) + STATUS_FIELD_NUMBER;
         hash = (53 * hash) + getStatus().hashCode();
-      }
-      if (hasFinish()) {
-        hash = (37 * hash) + FINISH_FIELD_NUMBER;
-        hash = (53 * hash) + getFinish().hashCode();
       }
       if (hasText()) {
         hash = (37 * hash) + TEXT_FIELD_NUMBER;
@@ -2786,13 +3197,13 @@ public final class ImStcMessageProto {
         hash = (37 * hash) + GROUPSECRETVOICE_FIELD_NUMBER;
         hash = (53 * hash) + getGroupSecretVoice().hashCode();
       }
-      if (hasMap()) {
-        hash = (37 * hash) + MAP_FIELD_NUMBER;
-        hash = (53 * hash) + getMap().hashCode();
+      if (hasU2Map()) {
+        hash = (37 * hash) + U2MAP_FIELD_NUMBER;
+        hash = (53 * hash) + getU2Map().hashCode();
       }
-      if (hasSecretMap()) {
-        hash = (37 * hash) + SECRETMAP_FIELD_NUMBER;
-        hash = (53 * hash) + getSecretMap().hashCode();
+      if (hasU2SecretMap()) {
+        hash = (37 * hash) + U2SECRETMAP_FIELD_NUMBER;
+        hash = (53 * hash) + getU2SecretMap().hashCode();
       }
       if (hasGroupMap()) {
         hash = (37 * hash) + GROUPMAP_FIELD_NUMBER;
@@ -2809,6 +3220,30 @@ public final class ImStcMessageProto {
       if (hasGroupMsgNotice()) {
         hash = (37 * hash) + GROUPMSGNOTICE_FIELD_NUMBER;
         hash = (53 * hash) + getGroupMsgNotice().hashCode();
+      }
+      if (hasU2Recall()) {
+        hash = (37 * hash) + U2RECALL_FIELD_NUMBER;
+        hash = (53 * hash) + getU2Recall().hashCode();
+      }
+      if (hasGroupRecall()) {
+        hash = (37 * hash) + GROUPRECALL_FIELD_NUMBER;
+        hash = (53 * hash) + getGroupRecall().hashCode();
+      }
+      if (hasU2Web()) {
+        hash = (37 * hash) + U2WEB_FIELD_NUMBER;
+        hash = (53 * hash) + getU2Web().hashCode();
+      }
+      if (hasGroupWeb()) {
+        hash = (37 * hash) + GROUPWEB_FIELD_NUMBER;
+        hash = (53 * hash) + getGroupWeb().hashCode();
+      }
+      if (hasU2WebNotice()) {
+        hash = (37 * hash) + U2WEBNOTICE_FIELD_NUMBER;
+        hash = (53 * hash) + getU2WebNotice().hashCode();
+      }
+      if (hasGroupWebNotice()) {
+        hash = (37 * hash) + GROUPWEBNOTICE_FIELD_NUMBER;
+        hash = (53 * hash) + getGroupWebNotice().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -2938,12 +3373,6 @@ public final class ImStcMessageProto {
           status_ = null;
           statusBuilder_ = null;
         }
-        if (finishBuilder_ == null) {
-          finish_ = null;
-        } else {
-          finish_ = null;
-          finishBuilder_ = null;
-        }
         if (textBuilder_ == null) {
           text_ = null;
         } else {
@@ -3016,17 +3445,17 @@ public final class ImStcMessageProto {
           groupSecretVoice_ = null;
           groupSecretVoiceBuilder_ = null;
         }
-        if (mapBuilder_ == null) {
-          map_ = null;
+        if (u2MapBuilder_ == null) {
+          u2Map_ = null;
         } else {
-          map_ = null;
-          mapBuilder_ = null;
+          u2Map_ = null;
+          u2MapBuilder_ = null;
         }
-        if (secretMapBuilder_ == null) {
-          secretMap_ = null;
+        if (u2SecretMapBuilder_ == null) {
+          u2SecretMap_ = null;
         } else {
-          secretMap_ = null;
-          secretMapBuilder_ = null;
+          u2SecretMap_ = null;
+          u2SecretMapBuilder_ = null;
         }
         if (groupMapBuilder_ == null) {
           groupMap_ = null;
@@ -3051,6 +3480,42 @@ public final class ImStcMessageProto {
         } else {
           groupMsgNotice_ = null;
           groupMsgNoticeBuilder_ = null;
+        }
+        if (u2RecallBuilder_ == null) {
+          u2Recall_ = null;
+        } else {
+          u2Recall_ = null;
+          u2RecallBuilder_ = null;
+        }
+        if (groupRecallBuilder_ == null) {
+          groupRecall_ = null;
+        } else {
+          groupRecall_ = null;
+          groupRecallBuilder_ = null;
+        }
+        if (u2WebBuilder_ == null) {
+          u2Web_ = null;
+        } else {
+          u2Web_ = null;
+          u2WebBuilder_ = null;
+        }
+        if (groupWebBuilder_ == null) {
+          groupWeb_ = null;
+        } else {
+          groupWeb_ = null;
+          groupWebBuilder_ = null;
+        }
+        if (u2WebNoticeBuilder_ == null) {
+          u2WebNotice_ = null;
+        } else {
+          u2WebNotice_ = null;
+          u2WebNoticeBuilder_ = null;
+        }
+        if (groupWebNoticeBuilder_ == null) {
+          groupWebNotice_ = null;
+        } else {
+          groupWebNotice_ = null;
+          groupWebNoticeBuilder_ = null;
         }
         return this;
       }
@@ -3080,11 +3545,6 @@ public final class ImStcMessageProto {
           result.status_ = status_;
         } else {
           result.status_ = statusBuilder_.build();
-        }
-        if (finishBuilder_ == null) {
-          result.finish_ = finish_;
-        } else {
-          result.finish_ = finishBuilder_.build();
         }
         if (textBuilder_ == null) {
           result.text_ = text_;
@@ -3146,15 +3606,15 @@ public final class ImStcMessageProto {
         } else {
           result.groupSecretVoice_ = groupSecretVoiceBuilder_.build();
         }
-        if (mapBuilder_ == null) {
-          result.map_ = map_;
+        if (u2MapBuilder_ == null) {
+          result.u2Map_ = u2Map_;
         } else {
-          result.map_ = mapBuilder_.build();
+          result.u2Map_ = u2MapBuilder_.build();
         }
-        if (secretMapBuilder_ == null) {
-          result.secretMap_ = secretMap_;
+        if (u2SecretMapBuilder_ == null) {
+          result.u2SecretMap_ = u2SecretMap_;
         } else {
-          result.secretMap_ = secretMapBuilder_.build();
+          result.u2SecretMap_ = u2SecretMapBuilder_.build();
         }
         if (groupMapBuilder_ == null) {
           result.groupMap_ = groupMap_;
@@ -3175,6 +3635,36 @@ public final class ImStcMessageProto {
           result.groupMsgNotice_ = groupMsgNotice_;
         } else {
           result.groupMsgNotice_ = groupMsgNoticeBuilder_.build();
+        }
+        if (u2RecallBuilder_ == null) {
+          result.u2Recall_ = u2Recall_;
+        } else {
+          result.u2Recall_ = u2RecallBuilder_.build();
+        }
+        if (groupRecallBuilder_ == null) {
+          result.groupRecall_ = groupRecall_;
+        } else {
+          result.groupRecall_ = groupRecallBuilder_.build();
+        }
+        if (u2WebBuilder_ == null) {
+          result.u2Web_ = u2Web_;
+        } else {
+          result.u2Web_ = u2WebBuilder_.build();
+        }
+        if (groupWebBuilder_ == null) {
+          result.groupWeb_ = groupWeb_;
+        } else {
+          result.groupWeb_ = groupWebBuilder_.build();
+        }
+        if (u2WebNoticeBuilder_ == null) {
+          result.u2WebNotice_ = u2WebNotice_;
+        } else {
+          result.u2WebNotice_ = u2WebNoticeBuilder_.build();
+        }
+        if (groupWebNoticeBuilder_ == null) {
+          result.groupWebNotice_ = groupWebNotice_;
+        } else {
+          result.groupWebNotice_ = groupWebNoticeBuilder_.build();
         }
         onBuilt();
         return result;
@@ -3226,9 +3716,6 @@ public final class ImStcMessageProto {
         if (other.hasStatus()) {
           mergeStatus(other.getStatus());
         }
-        if (other.hasFinish()) {
-          mergeFinish(other.getFinish());
-        }
         if (other.hasText()) {
           mergeText(other.getText());
         }
@@ -3265,11 +3752,11 @@ public final class ImStcMessageProto {
         if (other.hasGroupSecretVoice()) {
           mergeGroupSecretVoice(other.getGroupSecretVoice());
         }
-        if (other.hasMap()) {
-          mergeMap(other.getMap());
+        if (other.hasU2Map()) {
+          mergeU2Map(other.getU2Map());
         }
-        if (other.hasSecretMap()) {
-          mergeSecretMap(other.getSecretMap());
+        if (other.hasU2SecretMap()) {
+          mergeU2SecretMap(other.getU2SecretMap());
         }
         if (other.hasGroupMap()) {
           mergeGroupMap(other.getGroupMap());
@@ -3282,6 +3769,24 @@ public final class ImStcMessageProto {
         }
         if (other.hasGroupMsgNotice()) {
           mergeGroupMsgNotice(other.getGroupMsgNotice());
+        }
+        if (other.hasU2Recall()) {
+          mergeU2Recall(other.getU2Recall());
+        }
+        if (other.hasGroupRecall()) {
+          mergeGroupRecall(other.getGroupRecall());
+        }
+        if (other.hasU2Web()) {
+          mergeU2Web(other.getU2Web());
+        }
+        if (other.hasGroupWeb()) {
+          mergeGroupWeb(other.getGroupWeb());
+        }
+        if (other.hasU2WebNotice()) {
+          mergeU2WebNotice(other.getU2WebNotice());
+        }
+        if (other.hasGroupWebNotice()) {
+          mergeGroupWebNotice(other.getGroupWebNotice());
         }
         onChanged();
         return this;
@@ -3562,159 +4067,6 @@ public final class ImStcMessageProto {
           status_ = null;
         }
         return statusBuilder_;
-      }
-
-      private com.akaxin.proto.core.CoreProto.MsgFinish finish_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.MsgFinish, com.akaxin.proto.core.CoreProto.MsgFinish.Builder, com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder> finishBuilder_;
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public boolean hasFinish() {
-        return finishBuilder_ != null || finish_ != null;
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.MsgFinish getFinish() {
-        if (finishBuilder_ == null) {
-          return finish_ == null ? com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance() : finish_;
-        } else {
-          return finishBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public Builder setFinish(com.akaxin.proto.core.CoreProto.MsgFinish value) {
-        if (finishBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          finish_ = value;
-          onChanged();
-        } else {
-          finishBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public Builder setFinish(
-          com.akaxin.proto.core.CoreProto.MsgFinish.Builder builderForValue) {
-        if (finishBuilder_ == null) {
-          finish_ = builderForValue.build();
-          onChanged();
-        } else {
-          finishBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public Builder mergeFinish(com.akaxin.proto.core.CoreProto.MsgFinish value) {
-        if (finishBuilder_ == null) {
-          if (finish_ != null) {
-            finish_ =
-              com.akaxin.proto.core.CoreProto.MsgFinish.newBuilder(finish_).mergeFrom(value).buildPartial();
-          } else {
-            finish_ = value;
-          }
-          onChanged();
-        } else {
-          finishBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public Builder clearFinish() {
-        if (finishBuilder_ == null) {
-          finish_ = null;
-          onChanged();
-        } else {
-          finish_ = null;
-          finishBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.MsgFinish.Builder getFinishBuilder() {
-        
-        onChanged();
-        return getFinishFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder getFinishOrBuilder() {
-        if (finishBuilder_ != null) {
-          return finishBuilder_.getMessageOrBuilder();
-        } else {
-          return finish_ == null ?
-              com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance() : finish_;
-        }
-      }
-      /**
-       * <pre>
-       *消息同步结束标志
-       * </pre>
-       *
-       * <code>optional .core.MsgFinish finish = 4;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.MsgFinish, com.akaxin.proto.core.CoreProto.MsgFinish.Builder, com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder> 
-          getFinishFieldBuilder() {
-        if (finishBuilder_ == null) {
-          finishBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.CoreProto.MsgFinish, com.akaxin.proto.core.CoreProto.MsgFinish.Builder, com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder>(
-                  getFinish(),
-                  getParentForChildren(),
-                  isClean());
-          finish_ = null;
-        }
-        return finishBuilder_;
       }
 
       private com.akaxin.proto.core.CoreProto.MsgText text_ = null;
@@ -5553,184 +5905,184 @@ public final class ImStcMessageProto {
         return groupSecretVoiceBuilder_;
       }
 
-      private com.akaxin.proto.core.CoreProto.MsgMap map_ = null;
+      private com.akaxin.proto.core.CoreProto.U2Map u2Map_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.MsgMap, com.akaxin.proto.core.CoreProto.MsgMap.Builder, com.akaxin.proto.core.CoreProto.MsgMapOrBuilder> mapBuilder_;
+          com.akaxin.proto.core.CoreProto.U2Map, com.akaxin.proto.core.CoreProto.U2Map.Builder, com.akaxin.proto.core.CoreProto.U2MapOrBuilder> u2MapBuilder_;
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public boolean hasMap() {
-        return mapBuilder_ != null || map_ != null;
+      public boolean hasU2Map() {
+        return u2MapBuilder_ != null || u2Map_ != null;
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgMap getMap() {
-        if (mapBuilder_ == null) {
-          return map_ == null ? com.akaxin.proto.core.CoreProto.MsgMap.getDefaultInstance() : map_;
+      public com.akaxin.proto.core.CoreProto.U2Map getU2Map() {
+        if (u2MapBuilder_ == null) {
+          return u2Map_ == null ? com.akaxin.proto.core.CoreProto.U2Map.getDefaultInstance() : u2Map_;
         } else {
-          return mapBuilder_.getMessage();
+          return u2MapBuilder_.getMessage();
         }
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public Builder setMap(com.akaxin.proto.core.CoreProto.MsgMap value) {
-        if (mapBuilder_ == null) {
+      public Builder setU2Map(com.akaxin.proto.core.CoreProto.U2Map value) {
+        if (u2MapBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          map_ = value;
+          u2Map_ = value;
           onChanged();
         } else {
-          mapBuilder_.setMessage(value);
+          u2MapBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public Builder setMap(
-          com.akaxin.proto.core.CoreProto.MsgMap.Builder builderForValue) {
-        if (mapBuilder_ == null) {
-          map_ = builderForValue.build();
+      public Builder setU2Map(
+          com.akaxin.proto.core.CoreProto.U2Map.Builder builderForValue) {
+        if (u2MapBuilder_ == null) {
+          u2Map_ = builderForValue.build();
           onChanged();
         } else {
-          mapBuilder_.setMessage(builderForValue.build());
+          u2MapBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public Builder mergeMap(com.akaxin.proto.core.CoreProto.MsgMap value) {
-        if (mapBuilder_ == null) {
-          if (map_ != null) {
-            map_ =
-              com.akaxin.proto.core.CoreProto.MsgMap.newBuilder(map_).mergeFrom(value).buildPartial();
+      public Builder mergeU2Map(com.akaxin.proto.core.CoreProto.U2Map value) {
+        if (u2MapBuilder_ == null) {
+          if (u2Map_ != null) {
+            u2Map_ =
+              com.akaxin.proto.core.CoreProto.U2Map.newBuilder(u2Map_).mergeFrom(value).buildPartial();
           } else {
-            map_ = value;
+            u2Map_ = value;
           }
           onChanged();
         } else {
-          mapBuilder_.mergeFrom(value);
+          u2MapBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public Builder clearMap() {
-        if (mapBuilder_ == null) {
-          map_ = null;
+      public Builder clearU2Map() {
+        if (u2MapBuilder_ == null) {
+          u2Map_ = null;
           onChanged();
         } else {
-          map_ = null;
-          mapBuilder_ = null;
+          u2Map_ = null;
+          u2MapBuilder_ = null;
         }
 
         return this;
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgMap.Builder getMapBuilder() {
+      public com.akaxin.proto.core.CoreProto.U2Map.Builder getU2MapBuilder() {
         
         onChanged();
-        return getMapFieldBuilder().getBuilder();
+        return getU2MapFieldBuilder().getBuilder();
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgMapOrBuilder getMapOrBuilder() {
-        if (mapBuilder_ != null) {
-          return mapBuilder_.getMessageOrBuilder();
+      public com.akaxin.proto.core.CoreProto.U2MapOrBuilder getU2MapOrBuilder() {
+        if (u2MapBuilder_ != null) {
+          return u2MapBuilder_.getMessageOrBuilder();
         } else {
-          return map_ == null ?
-              com.akaxin.proto.core.CoreProto.MsgMap.getDefaultInstance() : map_;
+          return u2Map_ == null ?
+              com.akaxin.proto.core.CoreProto.U2Map.getDefaultInstance() : u2Map_;
         }
       }
       /**
        * <pre>
-       *普通地图消息
+       *v0.4.3 版本未使用
        * </pre>
        *
-       * <code>optional .core.MsgMap map = 17;</code>
+       * <code>optional .core.U2Map u2Map = 17;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.MsgMap, com.akaxin.proto.core.CoreProto.MsgMap.Builder, com.akaxin.proto.core.CoreProto.MsgMapOrBuilder> 
-          getMapFieldBuilder() {
-        if (mapBuilder_ == null) {
-          mapBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.CoreProto.MsgMap, com.akaxin.proto.core.CoreProto.MsgMap.Builder, com.akaxin.proto.core.CoreProto.MsgMapOrBuilder>(
-                  getMap(),
+          com.akaxin.proto.core.CoreProto.U2Map, com.akaxin.proto.core.CoreProto.U2Map.Builder, com.akaxin.proto.core.CoreProto.U2MapOrBuilder> 
+          getU2MapFieldBuilder() {
+        if (u2MapBuilder_ == null) {
+          u2MapBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.U2Map, com.akaxin.proto.core.CoreProto.U2Map.Builder, com.akaxin.proto.core.CoreProto.U2MapOrBuilder>(
+                  getU2Map(),
                   getParentForChildren(),
                   isClean());
-          map_ = null;
+          u2Map_ = null;
         }
-        return mapBuilder_;
+        return u2MapBuilder_;
       }
 
-      private com.akaxin.proto.core.CoreProto.MsgSecretMap secretMap_ = null;
+      private com.akaxin.proto.core.CoreProto.U2SecretMap u2SecretMap_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.MsgSecretMap, com.akaxin.proto.core.CoreProto.MsgSecretMap.Builder, com.akaxin.proto.core.CoreProto.MsgSecretMapOrBuilder> secretMapBuilder_;
+          com.akaxin.proto.core.CoreProto.U2SecretMap, com.akaxin.proto.core.CoreProto.U2SecretMap.Builder, com.akaxin.proto.core.CoreProto.U2SecretMapOrBuilder> u2SecretMapBuilder_;
       /**
        * <pre>
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public boolean hasSecretMap() {
-        return secretMapBuilder_ != null || secretMap_ != null;
+      public boolean hasU2SecretMap() {
+        return u2SecretMapBuilder_ != null || u2SecretMap_ != null;
       }
       /**
        * <pre>
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgSecretMap getSecretMap() {
-        if (secretMapBuilder_ == null) {
-          return secretMap_ == null ? com.akaxin.proto.core.CoreProto.MsgSecretMap.getDefaultInstance() : secretMap_;
+      public com.akaxin.proto.core.CoreProto.U2SecretMap getU2SecretMap() {
+        if (u2SecretMapBuilder_ == null) {
+          return u2SecretMap_ == null ? com.akaxin.proto.core.CoreProto.U2SecretMap.getDefaultInstance() : u2SecretMap_;
         } else {
-          return secretMapBuilder_.getMessage();
+          return u2SecretMapBuilder_.getMessage();
         }
       }
       /**
@@ -5738,17 +6090,17 @@ public final class ImStcMessageProto {
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public Builder setSecretMap(com.akaxin.proto.core.CoreProto.MsgSecretMap value) {
-        if (secretMapBuilder_ == null) {
+      public Builder setU2SecretMap(com.akaxin.proto.core.CoreProto.U2SecretMap value) {
+        if (u2SecretMapBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          secretMap_ = value;
+          u2SecretMap_ = value;
           onChanged();
         } else {
-          secretMapBuilder_.setMessage(value);
+          u2SecretMapBuilder_.setMessage(value);
         }
 
         return this;
@@ -5758,15 +6110,15 @@ public final class ImStcMessageProto {
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public Builder setSecretMap(
-          com.akaxin.proto.core.CoreProto.MsgSecretMap.Builder builderForValue) {
-        if (secretMapBuilder_ == null) {
-          secretMap_ = builderForValue.build();
+      public Builder setU2SecretMap(
+          com.akaxin.proto.core.CoreProto.U2SecretMap.Builder builderForValue) {
+        if (u2SecretMapBuilder_ == null) {
+          u2SecretMap_ = builderForValue.build();
           onChanged();
         } else {
-          secretMapBuilder_.setMessage(builderForValue.build());
+          u2SecretMapBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
@@ -5776,19 +6128,19 @@ public final class ImStcMessageProto {
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public Builder mergeSecretMap(com.akaxin.proto.core.CoreProto.MsgSecretMap value) {
-        if (secretMapBuilder_ == null) {
-          if (secretMap_ != null) {
-            secretMap_ =
-              com.akaxin.proto.core.CoreProto.MsgSecretMap.newBuilder(secretMap_).mergeFrom(value).buildPartial();
+      public Builder mergeU2SecretMap(com.akaxin.proto.core.CoreProto.U2SecretMap value) {
+        if (u2SecretMapBuilder_ == null) {
+          if (u2SecretMap_ != null) {
+            u2SecretMap_ =
+              com.akaxin.proto.core.CoreProto.U2SecretMap.newBuilder(u2SecretMap_).mergeFrom(value).buildPartial();
           } else {
-            secretMap_ = value;
+            u2SecretMap_ = value;
           }
           onChanged();
         } else {
-          secretMapBuilder_.mergeFrom(value);
+          u2SecretMapBuilder_.mergeFrom(value);
         }
 
         return this;
@@ -5798,15 +6150,15 @@ public final class ImStcMessageProto {
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public Builder clearSecretMap() {
-        if (secretMapBuilder_ == null) {
-          secretMap_ = null;
+      public Builder clearU2SecretMap() {
+        if (u2SecretMapBuilder_ == null) {
+          u2SecretMap_ = null;
           onChanged();
         } else {
-          secretMap_ = null;
-          secretMapBuilder_ = null;
+          u2SecretMap_ = null;
+          u2SecretMapBuilder_ = null;
         }
 
         return this;
@@ -5816,26 +6168,26 @@ public final class ImStcMessageProto {
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgSecretMap.Builder getSecretMapBuilder() {
+      public com.akaxin.proto.core.CoreProto.U2SecretMap.Builder getU2SecretMapBuilder() {
         
         onChanged();
-        return getSecretMapFieldBuilder().getBuilder();
+        return getU2SecretMapFieldBuilder().getBuilder();
       }
       /**
        * <pre>
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
-      public com.akaxin.proto.core.CoreProto.MsgSecretMapOrBuilder getSecretMapOrBuilder() {
-        if (secretMapBuilder_ != null) {
-          return secretMapBuilder_.getMessageOrBuilder();
+      public com.akaxin.proto.core.CoreProto.U2SecretMapOrBuilder getU2SecretMapOrBuilder() {
+        if (u2SecretMapBuilder_ != null) {
+          return u2SecretMapBuilder_.getMessageOrBuilder();
         } else {
-          return secretMap_ == null ?
-              com.akaxin.proto.core.CoreProto.MsgSecretMap.getDefaultInstance() : secretMap_;
+          return u2SecretMap_ == null ?
+              com.akaxin.proto.core.CoreProto.U2SecretMap.getDefaultInstance() : u2SecretMap_;
         }
       }
       /**
@@ -5843,20 +6195,20 @@ public final class ImStcMessageProto {
        *加密地图消息
        * </pre>
        *
-       * <code>optional .core.MsgSecretMap secretMap = 18;</code>
+       * <code>optional .core.U2SecretMap u2SecretMap = 18;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.MsgSecretMap, com.akaxin.proto.core.CoreProto.MsgSecretMap.Builder, com.akaxin.proto.core.CoreProto.MsgSecretMapOrBuilder> 
-          getSecretMapFieldBuilder() {
-        if (secretMapBuilder_ == null) {
-          secretMapBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.CoreProto.MsgSecretMap, com.akaxin.proto.core.CoreProto.MsgSecretMap.Builder, com.akaxin.proto.core.CoreProto.MsgSecretMapOrBuilder>(
-                  getSecretMap(),
+          com.akaxin.proto.core.CoreProto.U2SecretMap, com.akaxin.proto.core.CoreProto.U2SecretMap.Builder, com.akaxin.proto.core.CoreProto.U2SecretMapOrBuilder> 
+          getU2SecretMapFieldBuilder() {
+        if (u2SecretMapBuilder_ == null) {
+          u2SecretMapBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.U2SecretMap, com.akaxin.proto.core.CoreProto.U2SecretMap.Builder, com.akaxin.proto.core.CoreProto.U2SecretMapOrBuilder>(
+                  getU2SecretMap(),
                   getParentForChildren(),
                   isClean());
-          secretMap_ = null;
+          u2SecretMap_ = null;
         }
-        return secretMapBuilder_;
+        return u2SecretMapBuilder_;
       }
 
       private com.akaxin.proto.core.CoreProto.GroupMap groupMap_ = null;
@@ -6470,6 +6822,924 @@ public final class ImStcMessageProto {
         }
         return groupMsgNoticeBuilder_;
       }
+
+      private com.akaxin.proto.core.CoreProto.U2Recall u2Recall_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.U2Recall, com.akaxin.proto.core.CoreProto.U2Recall.Builder, com.akaxin.proto.core.CoreProto.U2RecallOrBuilder> u2RecallBuilder_;
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public boolean hasU2Recall() {
+        return u2RecallBuilder_ != null || u2Recall_ != null;
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2Recall getU2Recall() {
+        if (u2RecallBuilder_ == null) {
+          return u2Recall_ == null ? com.akaxin.proto.core.CoreProto.U2Recall.getDefaultInstance() : u2Recall_;
+        } else {
+          return u2RecallBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public Builder setU2Recall(com.akaxin.proto.core.CoreProto.U2Recall value) {
+        if (u2RecallBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          u2Recall_ = value;
+          onChanged();
+        } else {
+          u2RecallBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public Builder setU2Recall(
+          com.akaxin.proto.core.CoreProto.U2Recall.Builder builderForValue) {
+        if (u2RecallBuilder_ == null) {
+          u2Recall_ = builderForValue.build();
+          onChanged();
+        } else {
+          u2RecallBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public Builder mergeU2Recall(com.akaxin.proto.core.CoreProto.U2Recall value) {
+        if (u2RecallBuilder_ == null) {
+          if (u2Recall_ != null) {
+            u2Recall_ =
+              com.akaxin.proto.core.CoreProto.U2Recall.newBuilder(u2Recall_).mergeFrom(value).buildPartial();
+          } else {
+            u2Recall_ = value;
+          }
+          onChanged();
+        } else {
+          u2RecallBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public Builder clearU2Recall() {
+        if (u2RecallBuilder_ == null) {
+          u2Recall_ = null;
+          onChanged();
+        } else {
+          u2Recall_ = null;
+          u2RecallBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2Recall.Builder getU2RecallBuilder() {
+        
+        onChanged();
+        return getU2RecallFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2RecallOrBuilder getU2RecallOrBuilder() {
+        if (u2RecallBuilder_ != null) {
+          return u2RecallBuilder_.getMessageOrBuilder();
+        } else {
+          return u2Recall_ == null ?
+              com.akaxin.proto.core.CoreProto.U2Recall.getDefaultInstance() : u2Recall_;
+        }
+      }
+      /**
+       * <pre>
+       *二人召回消息
+       * </pre>
+       *
+       * <code>optional .core.U2Recall u2Recall = 23;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.U2Recall, com.akaxin.proto.core.CoreProto.U2Recall.Builder, com.akaxin.proto.core.CoreProto.U2RecallOrBuilder> 
+          getU2RecallFieldBuilder() {
+        if (u2RecallBuilder_ == null) {
+          u2RecallBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.U2Recall, com.akaxin.proto.core.CoreProto.U2Recall.Builder, com.akaxin.proto.core.CoreProto.U2RecallOrBuilder>(
+                  getU2Recall(),
+                  getParentForChildren(),
+                  isClean());
+          u2Recall_ = null;
+        }
+        return u2RecallBuilder_;
+      }
+
+      private com.akaxin.proto.core.CoreProto.GroupRecall groupRecall_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.GroupRecall, com.akaxin.proto.core.CoreProto.GroupRecall.Builder, com.akaxin.proto.core.CoreProto.GroupRecallOrBuilder> groupRecallBuilder_;
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public boolean hasGroupRecall() {
+        return groupRecallBuilder_ != null || groupRecall_ != null;
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupRecall getGroupRecall() {
+        if (groupRecallBuilder_ == null) {
+          return groupRecall_ == null ? com.akaxin.proto.core.CoreProto.GroupRecall.getDefaultInstance() : groupRecall_;
+        } else {
+          return groupRecallBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public Builder setGroupRecall(com.akaxin.proto.core.CoreProto.GroupRecall value) {
+        if (groupRecallBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          groupRecall_ = value;
+          onChanged();
+        } else {
+          groupRecallBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public Builder setGroupRecall(
+          com.akaxin.proto.core.CoreProto.GroupRecall.Builder builderForValue) {
+        if (groupRecallBuilder_ == null) {
+          groupRecall_ = builderForValue.build();
+          onChanged();
+        } else {
+          groupRecallBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public Builder mergeGroupRecall(com.akaxin.proto.core.CoreProto.GroupRecall value) {
+        if (groupRecallBuilder_ == null) {
+          if (groupRecall_ != null) {
+            groupRecall_ =
+              com.akaxin.proto.core.CoreProto.GroupRecall.newBuilder(groupRecall_).mergeFrom(value).buildPartial();
+          } else {
+            groupRecall_ = value;
+          }
+          onChanged();
+        } else {
+          groupRecallBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public Builder clearGroupRecall() {
+        if (groupRecallBuilder_ == null) {
+          groupRecall_ = null;
+          onChanged();
+        } else {
+          groupRecall_ = null;
+          groupRecallBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupRecall.Builder getGroupRecallBuilder() {
+        
+        onChanged();
+        return getGroupRecallFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupRecallOrBuilder getGroupRecallOrBuilder() {
+        if (groupRecallBuilder_ != null) {
+          return groupRecallBuilder_.getMessageOrBuilder();
+        } else {
+          return groupRecall_ == null ?
+              com.akaxin.proto.core.CoreProto.GroupRecall.getDefaultInstance() : groupRecall_;
+        }
+      }
+      /**
+       * <pre>
+       *群组召回消息
+       * </pre>
+       *
+       * <code>optional .core.GroupRecall groupRecall = 24;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.GroupRecall, com.akaxin.proto.core.CoreProto.GroupRecall.Builder, com.akaxin.proto.core.CoreProto.GroupRecallOrBuilder> 
+          getGroupRecallFieldBuilder() {
+        if (groupRecallBuilder_ == null) {
+          groupRecallBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.GroupRecall, com.akaxin.proto.core.CoreProto.GroupRecall.Builder, com.akaxin.proto.core.CoreProto.GroupRecallOrBuilder>(
+                  getGroupRecall(),
+                  getParentForChildren(),
+                  isClean());
+          groupRecall_ = null;
+        }
+        return groupRecallBuilder_;
+      }
+
+      private com.akaxin.proto.core.CoreProto.U2Web u2Web_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.U2Web, com.akaxin.proto.core.CoreProto.U2Web.Builder, com.akaxin.proto.core.CoreProto.U2WebOrBuilder> u2WebBuilder_;
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public boolean hasU2Web() {
+        return u2WebBuilder_ != null || u2Web_ != null;
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2Web getU2Web() {
+        if (u2WebBuilder_ == null) {
+          return u2Web_ == null ? com.akaxin.proto.core.CoreProto.U2Web.getDefaultInstance() : u2Web_;
+        } else {
+          return u2WebBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public Builder setU2Web(com.akaxin.proto.core.CoreProto.U2Web value) {
+        if (u2WebBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          u2Web_ = value;
+          onChanged();
+        } else {
+          u2WebBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public Builder setU2Web(
+          com.akaxin.proto.core.CoreProto.U2Web.Builder builderForValue) {
+        if (u2WebBuilder_ == null) {
+          u2Web_ = builderForValue.build();
+          onChanged();
+        } else {
+          u2WebBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public Builder mergeU2Web(com.akaxin.proto.core.CoreProto.U2Web value) {
+        if (u2WebBuilder_ == null) {
+          if (u2Web_ != null) {
+            u2Web_ =
+              com.akaxin.proto.core.CoreProto.U2Web.newBuilder(u2Web_).mergeFrom(value).buildPartial();
+          } else {
+            u2Web_ = value;
+          }
+          onChanged();
+        } else {
+          u2WebBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public Builder clearU2Web() {
+        if (u2WebBuilder_ == null) {
+          u2Web_ = null;
+          onChanged();
+        } else {
+          u2Web_ = null;
+          u2WebBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2Web.Builder getU2WebBuilder() {
+        
+        onChanged();
+        return getU2WebFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2WebOrBuilder getU2WebOrBuilder() {
+        if (u2WebBuilder_ != null) {
+          return u2WebBuilder_.getMessageOrBuilder();
+        } else {
+          return u2Web_ == null ?
+              com.akaxin.proto.core.CoreProto.U2Web.getDefaultInstance() : u2Web_;
+        }
+      }
+      /**
+       * <pre>
+       *为人Web消息
+       * </pre>
+       *
+       * <code>optional .core.U2Web u2Web = 25;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.U2Web, com.akaxin.proto.core.CoreProto.U2Web.Builder, com.akaxin.proto.core.CoreProto.U2WebOrBuilder> 
+          getU2WebFieldBuilder() {
+        if (u2WebBuilder_ == null) {
+          u2WebBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.U2Web, com.akaxin.proto.core.CoreProto.U2Web.Builder, com.akaxin.proto.core.CoreProto.U2WebOrBuilder>(
+                  getU2Web(),
+                  getParentForChildren(),
+                  isClean());
+          u2Web_ = null;
+        }
+        return u2WebBuilder_;
+      }
+
+      private com.akaxin.proto.core.CoreProto.GroupWeb groupWeb_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.GroupWeb, com.akaxin.proto.core.CoreProto.GroupWeb.Builder, com.akaxin.proto.core.CoreProto.GroupWebOrBuilder> groupWebBuilder_;
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public boolean hasGroupWeb() {
+        return groupWebBuilder_ != null || groupWeb_ != null;
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupWeb getGroupWeb() {
+        if (groupWebBuilder_ == null) {
+          return groupWeb_ == null ? com.akaxin.proto.core.CoreProto.GroupWeb.getDefaultInstance() : groupWeb_;
+        } else {
+          return groupWebBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public Builder setGroupWeb(com.akaxin.proto.core.CoreProto.GroupWeb value) {
+        if (groupWebBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          groupWeb_ = value;
+          onChanged();
+        } else {
+          groupWebBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public Builder setGroupWeb(
+          com.akaxin.proto.core.CoreProto.GroupWeb.Builder builderForValue) {
+        if (groupWebBuilder_ == null) {
+          groupWeb_ = builderForValue.build();
+          onChanged();
+        } else {
+          groupWebBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public Builder mergeGroupWeb(com.akaxin.proto.core.CoreProto.GroupWeb value) {
+        if (groupWebBuilder_ == null) {
+          if (groupWeb_ != null) {
+            groupWeb_ =
+              com.akaxin.proto.core.CoreProto.GroupWeb.newBuilder(groupWeb_).mergeFrom(value).buildPartial();
+          } else {
+            groupWeb_ = value;
+          }
+          onChanged();
+        } else {
+          groupWebBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public Builder clearGroupWeb() {
+        if (groupWebBuilder_ == null) {
+          groupWeb_ = null;
+          onChanged();
+        } else {
+          groupWeb_ = null;
+          groupWebBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupWeb.Builder getGroupWebBuilder() {
+        
+        onChanged();
+        return getGroupWebFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupWebOrBuilder getGroupWebOrBuilder() {
+        if (groupWebBuilder_ != null) {
+          return groupWebBuilder_.getMessageOrBuilder();
+        } else {
+          return groupWeb_ == null ?
+              com.akaxin.proto.core.CoreProto.GroupWeb.getDefaultInstance() : groupWeb_;
+        }
+      }
+      /**
+       * <pre>
+       *群组web消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWeb groupWeb = 26;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.GroupWeb, com.akaxin.proto.core.CoreProto.GroupWeb.Builder, com.akaxin.proto.core.CoreProto.GroupWebOrBuilder> 
+          getGroupWebFieldBuilder() {
+        if (groupWebBuilder_ == null) {
+          groupWebBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.GroupWeb, com.akaxin.proto.core.CoreProto.GroupWeb.Builder, com.akaxin.proto.core.CoreProto.GroupWebOrBuilder>(
+                  getGroupWeb(),
+                  getParentForChildren(),
+                  isClean());
+          groupWeb_ = null;
+        }
+        return groupWebBuilder_;
+      }
+
+      private com.akaxin.proto.core.CoreProto.U2WebNotice u2WebNotice_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.U2WebNotice, com.akaxin.proto.core.CoreProto.U2WebNotice.Builder, com.akaxin.proto.core.CoreProto.U2WebNoticeOrBuilder> u2WebNoticeBuilder_;
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public boolean hasU2WebNotice() {
+        return u2WebNoticeBuilder_ != null || u2WebNotice_ != null;
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2WebNotice getU2WebNotice() {
+        if (u2WebNoticeBuilder_ == null) {
+          return u2WebNotice_ == null ? com.akaxin.proto.core.CoreProto.U2WebNotice.getDefaultInstance() : u2WebNotice_;
+        } else {
+          return u2WebNoticeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public Builder setU2WebNotice(com.akaxin.proto.core.CoreProto.U2WebNotice value) {
+        if (u2WebNoticeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          u2WebNotice_ = value;
+          onChanged();
+        } else {
+          u2WebNoticeBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public Builder setU2WebNotice(
+          com.akaxin.proto.core.CoreProto.U2WebNotice.Builder builderForValue) {
+        if (u2WebNoticeBuilder_ == null) {
+          u2WebNotice_ = builderForValue.build();
+          onChanged();
+        } else {
+          u2WebNoticeBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public Builder mergeU2WebNotice(com.akaxin.proto.core.CoreProto.U2WebNotice value) {
+        if (u2WebNoticeBuilder_ == null) {
+          if (u2WebNotice_ != null) {
+            u2WebNotice_ =
+              com.akaxin.proto.core.CoreProto.U2WebNotice.newBuilder(u2WebNotice_).mergeFrom(value).buildPartial();
+          } else {
+            u2WebNotice_ = value;
+          }
+          onChanged();
+        } else {
+          u2WebNoticeBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public Builder clearU2WebNotice() {
+        if (u2WebNoticeBuilder_ == null) {
+          u2WebNotice_ = null;
+          onChanged();
+        } else {
+          u2WebNotice_ = null;
+          u2WebNoticeBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2WebNotice.Builder getU2WebNoticeBuilder() {
+        
+        onChanged();
+        return getU2WebNoticeFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.U2WebNoticeOrBuilder getU2WebNoticeOrBuilder() {
+        if (u2WebNoticeBuilder_ != null) {
+          return u2WebNoticeBuilder_.getMessageOrBuilder();
+        } else {
+          return u2WebNotice_ == null ?
+              com.akaxin.proto.core.CoreProto.U2WebNotice.getDefaultInstance() : u2WebNotice_;
+        }
+      }
+      /**
+       * <pre>
+       *二人web通知消息
+       * </pre>
+       *
+       * <code>optional .core.U2WebNotice u2WebNotice = 27;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.U2WebNotice, com.akaxin.proto.core.CoreProto.U2WebNotice.Builder, com.akaxin.proto.core.CoreProto.U2WebNoticeOrBuilder> 
+          getU2WebNoticeFieldBuilder() {
+        if (u2WebNoticeBuilder_ == null) {
+          u2WebNoticeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.U2WebNotice, com.akaxin.proto.core.CoreProto.U2WebNotice.Builder, com.akaxin.proto.core.CoreProto.U2WebNoticeOrBuilder>(
+                  getU2WebNotice(),
+                  getParentForChildren(),
+                  isClean());
+          u2WebNotice_ = null;
+        }
+        return u2WebNoticeBuilder_;
+      }
+
+      private com.akaxin.proto.core.CoreProto.GroupWebNotice groupWebNotice_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.GroupWebNotice, com.akaxin.proto.core.CoreProto.GroupWebNotice.Builder, com.akaxin.proto.core.CoreProto.GroupWebNoticeOrBuilder> groupWebNoticeBuilder_;
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public boolean hasGroupWebNotice() {
+        return groupWebNoticeBuilder_ != null || groupWebNotice_ != null;
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupWebNotice getGroupWebNotice() {
+        if (groupWebNoticeBuilder_ == null) {
+          return groupWebNotice_ == null ? com.akaxin.proto.core.CoreProto.GroupWebNotice.getDefaultInstance() : groupWebNotice_;
+        } else {
+          return groupWebNoticeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public Builder setGroupWebNotice(com.akaxin.proto.core.CoreProto.GroupWebNotice value) {
+        if (groupWebNoticeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          groupWebNotice_ = value;
+          onChanged();
+        } else {
+          groupWebNoticeBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public Builder setGroupWebNotice(
+          com.akaxin.proto.core.CoreProto.GroupWebNotice.Builder builderForValue) {
+        if (groupWebNoticeBuilder_ == null) {
+          groupWebNotice_ = builderForValue.build();
+          onChanged();
+        } else {
+          groupWebNoticeBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public Builder mergeGroupWebNotice(com.akaxin.proto.core.CoreProto.GroupWebNotice value) {
+        if (groupWebNoticeBuilder_ == null) {
+          if (groupWebNotice_ != null) {
+            groupWebNotice_ =
+              com.akaxin.proto.core.CoreProto.GroupWebNotice.newBuilder(groupWebNotice_).mergeFrom(value).buildPartial();
+          } else {
+            groupWebNotice_ = value;
+          }
+          onChanged();
+        } else {
+          groupWebNoticeBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public Builder clearGroupWebNotice() {
+        if (groupWebNoticeBuilder_ == null) {
+          groupWebNotice_ = null;
+          onChanged();
+        } else {
+          groupWebNotice_ = null;
+          groupWebNoticeBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupWebNotice.Builder getGroupWebNoticeBuilder() {
+        
+        onChanged();
+        return getGroupWebNoticeFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.GroupWebNoticeOrBuilder getGroupWebNoticeOrBuilder() {
+        if (groupWebNoticeBuilder_ != null) {
+          return groupWebNoticeBuilder_.getMessageOrBuilder();
+        } else {
+          return groupWebNotice_ == null ?
+              com.akaxin.proto.core.CoreProto.GroupWebNotice.getDefaultInstance() : groupWebNotice_;
+        }
+      }
+      /**
+       * <pre>
+       *群组web通知消息
+       * </pre>
+       *
+       * <code>optional .core.GroupWebNotice groupWebNotice = 28;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.GroupWebNotice, com.akaxin.proto.core.CoreProto.GroupWebNotice.Builder, com.akaxin.proto.core.CoreProto.GroupWebNoticeOrBuilder> 
+          getGroupWebNoticeFieldBuilder() {
+        if (groupWebNoticeBuilder_ == null) {
+          groupWebNoticeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.GroupWebNotice, com.akaxin.proto.core.CoreProto.GroupWebNotice.Builder, com.akaxin.proto.core.CoreProto.GroupWebNoticeOrBuilder>(
+                  getGroupWebNotice(),
+                  getParentForChildren(),
+                  isClean());
+          groupWebNotice_ = null;
+        }
+        return groupWebNoticeBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -6910,33 +8180,37 @@ public final class ImStcMessageProto {
     java.lang.String[] descriptorData = {
       "\n\033client/im_stc_message.proto\022\006client\032\017c" +
       "ore/core.proto\";\n\023ImStcMessageRequest\022$\n" +
-      "\004list\030\001 \003(\0132\026.client.MsgWithPointer\"\306\006\n\016" +
+      "\004list\030\001 \003(\0132\026.client.MsgWithPointer\"\205\010\n\016" +
       "MsgWithPointer\022\017\n\007pointer\030\001 \001(\003\022\033\n\004type\030" +
       "\002 \001(\0162\r.core.MsgType\022\037\n\006status\030\003 \001(\0132\017.c" +
-      "ore.MsgStatus\022\037\n\006finish\030\004 \001(\0132\017.core.Msg" +
-      "Finish\022\033\n\004text\030\005 \001(\0132\r.core.MsgText\022\'\n\ns" +
-      "ecretText\030\006 \001(\0132\023.core.MsgSecretText\022\"\n\t" +
-      "groupText\030\007 \001(\0132\017.core.GroupText\022.\n\017grou" +
-      "pSecretText\030\010 \001(\0132\025.core.GroupSecretText",
-      "\022\035\n\005image\030\t \001(\0132\016.core.MsgImage\022)\n\013secre" +
-      "tImage\030\n \001(\0132\024.core.MsgSecretImage\022$\n\ngr" +
-      "oupImage\030\013 \001(\0132\020.core.GroupImage\0220\n\020grou" +
-      "pSecretImage\030\014 \001(\0132\026.core.GroupSecretIma" +
-      "ge\022\035\n\005voice\030\r \001(\0132\016.core.MsgVoice\022)\n\013sec" +
-      "retVoice\030\016 \001(\0132\024.core.MsgSecretVoice\022$\n\n" +
-      "groupVoice\030\017 \001(\0132\020.core.GroupVoice\0220\n\020gr" +
-      "oupSecretVoice\030\020 \001(\0132\026.core.GroupSecretV" +
-      "oice\022\031\n\003map\030\021 \001(\0132\014.core.MsgMap\022%\n\tsecre" +
-      "tMap\030\022 \001(\0132\022.core.MsgSecretMap\022 \n\010groupM",
-      "ap\030\023 \001(\0132\016.core.GroupMap\022,\n\016groupSecretM" +
-      "ap\030\024 \001(\0132\024.core.GroupSecretMap\022&\n\013u2MsgN" +
-      "otice\030\025 \001(\0132\021.core.U2MsgNotice\022,\n\016groupM" +
-      "sgNotice\030\026 \001(\0132\024.core.GroupMsgNotice\"\026\n\024" +
-      "ImStcMessageResponse2[\n\023ImStcMessageServ" +
-      "ice\022D\n\007message\022\033.client.ImStcMessageRequ" +
-      "est\032\034.client.ImStcMessageResponseB,\n\027com" +
-      ".akaxin.proto.clientB\021ImStcMessageProtob" +
-      "\006proto3"
+      "ore.MsgStatus\022\033\n\004text\030\005 \001(\0132\r.core.MsgTe" +
+      "xt\022\'\n\nsecretText\030\006 \001(\0132\023.core.MsgSecretT" +
+      "ext\022\"\n\tgroupText\030\007 \001(\0132\017.core.GroupText\022" +
+      ".\n\017groupSecretText\030\010 \001(\0132\025.core.GroupSec" +
+      "retText\022\035\n\005image\030\t \001(\0132\016.core.MsgImage\022)",
+      "\n\013secretImage\030\n \001(\0132\024.core.MsgSecretImag" +
+      "e\022$\n\ngroupImage\030\013 \001(\0132\020.core.GroupImage\022" +
+      "0\n\020groupSecretImage\030\014 \001(\0132\026.core.GroupSe" +
+      "cretImage\022\035\n\005voice\030\r \001(\0132\016.core.MsgVoice" +
+      "\022)\n\013secretVoice\030\016 \001(\0132\024.core.MsgSecretVo" +
+      "ice\022$\n\ngroupVoice\030\017 \001(\0132\020.core.GroupVoic" +
+      "e\0220\n\020groupSecretVoice\030\020 \001(\0132\026.core.Group" +
+      "SecretVoice\022\032\n\005u2Map\030\021 \001(\0132\013.core.U2Map\022" +
+      "&\n\013u2SecretMap\030\022 \001(\0132\021.core.U2SecretMap\022" +
+      " \n\010groupMap\030\023 \001(\0132\016.core.GroupMap\022,\n\016gro",
+      "upSecretMap\030\024 \001(\0132\024.core.GroupSecretMap\022" +
+      "&\n\013u2MsgNotice\030\025 \001(\0132\021.core.U2MsgNotice\022" +
+      ",\n\016groupMsgNotice\030\026 \001(\0132\024.core.GroupMsgN" +
+      "otice\022 \n\010u2Recall\030\027 \001(\0132\016.core.U2Recall\022" +
+      "&\n\013groupRecall\030\030 \001(\0132\021.core.GroupRecall\022" +
+      "\032\n\005u2Web\030\031 \001(\0132\013.core.U2Web\022 \n\010groupWeb\030" +
+      "\032 \001(\0132\016.core.GroupWeb\022&\n\013u2WebNotice\030\033 \001" +
+      "(\0132\021.core.U2WebNotice\022,\n\016groupWebNotice\030" +
+      "\034 \001(\0132\024.core.GroupWebNotice\"\026\n\024ImStcMess" +
+      "ageResponse2[\n\023ImStcMessageService\022D\n\007me",
+      "ssage\022\033.client.ImStcMessageRequest\032\034.cli" +
+      "ent.ImStcMessageResponseB,\n\027com.akaxin.p" +
+      "roto.clientB\021ImStcMessageProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6962,7 +8236,7 @@ public final class ImStcMessageProto {
     internal_static_client_MsgWithPointer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_client_MsgWithPointer_descriptor,
-        new java.lang.String[] { "Pointer", "Type", "Status", "Finish", "Text", "SecretText", "GroupText", "GroupSecretText", "Image", "SecretImage", "GroupImage", "GroupSecretImage", "Voice", "SecretVoice", "GroupVoice", "GroupSecretVoice", "Map", "SecretMap", "GroupMap", "GroupSecretMap", "U2MsgNotice", "GroupMsgNotice", });
+        new java.lang.String[] { "Pointer", "Type", "Status", "Text", "SecretText", "GroupText", "GroupSecretText", "Image", "SecretImage", "GroupImage", "GroupSecretImage", "Voice", "SecretVoice", "GroupVoice", "GroupSecretVoice", "U2Map", "U2SecretMap", "GroupMap", "GroupSecretMap", "U2MsgNotice", "GroupMsgNotice", "U2Recall", "GroupRecall", "U2Web", "GroupWeb", "U2WebNotice", "GroupWebNotice", });
     internal_static_client_ImStcMessageResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_client_ImStcMessageResponse_fieldAccessorTable = new

@@ -1022,14 +1022,13 @@ public final class ApiFriendUpdateMuteProto {
   static {
     java.lang.String[] descriptorData = {
       "\n site/api_friend_updateMute.proto\022\004site" +
-      "\032\017core/user.proto\"B\n\032ApiFriendUpdateMute" +
-      "Request\022\026\n\016site_friend_id\030\001 \001(\t\022\014\n\004mute\030" +
-      "\002 \001(\010\"\035\n\033ApiFriendUpdateMuteResponse2o\n\032" +
-      "ApiFriendUpdateMuteService\022Q\n\nupdateMute" +
-      "\022 .site.ApiFriendUpdateMuteRequest\032!.sit" +
-      "e.ApiFriendUpdateMuteResponseB1\n\025com.aka" +
-      "xin.proto.siteB\030ApiFriendUpdateMuteProto" +
-      "b\006proto3"
+      "\"B\n\032ApiFriendUpdateMuteRequest\022\026\n\016site_f" +
+      "riend_id\030\001 \001(\t\022\014\n\004mute\030\002 \001(\010\"\035\n\033ApiFrien" +
+      "dUpdateMuteResponse2o\n\032ApiFriendUpdateMu" +
+      "teService\022Q\n\nupdateMute\022 .site.ApiFriend" +
+      "UpdateMuteRequest\032!.site.ApiFriendUpdate" +
+      "MuteResponseB1\n\025com.akaxin.proto.siteB\030A" +
+      "piFriendUpdateMuteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1042,7 +1041,6 @@ public final class ApiFriendUpdateMuteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.UserProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiFriendUpdateMuteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1056,7 +1054,6 @@ public final class ApiFriendUpdateMuteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiFriendUpdateMuteResponse_descriptor,
         new java.lang.String[] { });
-    com.akaxin.proto.core.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

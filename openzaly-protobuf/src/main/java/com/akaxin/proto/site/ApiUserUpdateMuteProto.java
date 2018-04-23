@@ -828,14 +828,13 @@ public final class ApiUserUpdateMuteProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\036site/api_user_updateMute.proto\022\004site\032\017" +
-      "core/user.proto\"(\n\030ApiUserUpdateMuteRequ" +
-      "est\022\014\n\004mute\030\001 \001(\010\"\033\n\031ApiUserUpdateMuteRe" +
-      "sponse2i\n\030ApiUserUpdateMuteService\022M\n\nup" +
-      "dateMute\022\036.site.ApiUserUpdateMuteRequest" +
-      "\032\037.site.ApiUserUpdateMuteResponseB/\n\025com" +
-      ".akaxin.proto.siteB\026ApiUserUpdateMutePro" +
-      "tob\006proto3"
+      "\n\036site/api_user_updateMute.proto\022\004site\"(" +
+      "\n\030ApiUserUpdateMuteRequest\022\014\n\004mute\030\001 \001(\010" +
+      "\"\033\n\031ApiUserUpdateMuteResponse2i\n\030ApiUser" +
+      "UpdateMuteService\022M\n\nupdateMute\022\036.site.A" +
+      "piUserUpdateMuteRequest\032\037.site.ApiUserUp" +
+      "dateMuteResponseB/\n\025com.akaxin.proto.sit" +
+      "eB\026ApiUserUpdateMuteProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -848,7 +847,6 @@ public final class ApiUserUpdateMuteProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.UserProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiUserUpdateMuteRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -862,7 +860,6 @@ public final class ApiUserUpdateMuteProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiUserUpdateMuteResponse_descriptor,
         new java.lang.String[] { });
-    com.akaxin.proto.core.UserProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

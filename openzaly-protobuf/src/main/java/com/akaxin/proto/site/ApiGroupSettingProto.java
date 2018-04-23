@@ -1022,14 +1022,14 @@ public final class ApiGroupSettingProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\034site/api_group_setting.proto\022\004site\032\017co" +
-      "re/user.proto\032\020core/group.proto\"*\n\026ApiGr" +
-      "oupSettingRequest\022\020\n\010group_id\030\001 \001(\t\"/\n\027A" +
-      "piGroupSettingResponse\022\024\n\014message_mute\030\001" +
-      " \001(\0102`\n\026ApiGroupSettingService\022F\n\007settin" +
-      "g\022\034.site.ApiGroupSettingRequest\032\035.site.A" +
-      "piGroupSettingResponseB-\n\025com.akaxin.pro" +
-      "to.siteB\024ApiGroupSettingProtob\006proto3"
+      "\n\034site/api_group_setting.proto\022\004site\"*\n\026" +
+      "ApiGroupSettingRequest\022\020\n\010group_id\030\001 \001(\t" +
+      "\"/\n\027ApiGroupSettingResponse\022\024\n\014message_m" +
+      "ute\030\001 \001(\0102`\n\026ApiGroupSettingService\022F\n\007s" +
+      "etting\022\034.site.ApiGroupSettingRequest\032\035.s" +
+      "ite.ApiGroupSettingResponseB-\n\025com.akaxi" +
+      "n.proto.siteB\024ApiGroupSettingProtob\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1042,8 +1042,6 @@ public final class ApiGroupSettingProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.akaxin.proto.core.UserProto.getDescriptor(),
-          com.akaxin.proto.core.GroupProto.getDescriptor(),
         }, assigner);
     internal_static_site_ApiGroupSettingRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1057,8 +1055,6 @@ public final class ApiGroupSettingProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiGroupSettingResponse_descriptor,
         new java.lang.String[] { "MessageMute", });
-    com.akaxin.proto.core.UserProto.getDescriptor();
-    com.akaxin.proto.core.GroupProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
