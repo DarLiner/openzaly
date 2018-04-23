@@ -60,6 +60,7 @@ public class HttpSiteConfigService extends AbstractRequest {
 					.build();
 			HaiSiteGetConfigProto.HaiSiteGetConfigResponse response = HaiSiteGetConfigProto.HaiSiteGetConfigResponse
 					.newBuilder().setSiteConfig(config).build();
+			logger.info("get config service  response={}",response.toString());
 			commandResponse.setParams(response.toByteArray());
 			errorCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
