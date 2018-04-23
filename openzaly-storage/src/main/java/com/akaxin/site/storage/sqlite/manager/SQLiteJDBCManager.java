@@ -26,7 +26,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UicProto;
@@ -243,7 +242,7 @@ public class SQLiteJDBCManager {
 					pst.setInt(11, PluginProto.PermissionStatus.DISABLED_VALUE); // permission_status
 					pst.setLong(12, System.currentTimeMillis()); // add_time
 				} else {
-					pst.setString(6, StringHelper.generateRandomString(16));// authkey
+					pst.setString(6, "");// authkey
 					pst.setString(7, "127.0.0.1");// allowed_ip
 					pst.setInt(8, PluginProto.PluginPosition.MSG_PAGE_VALUE);// position
 					pst.setInt(9, 1);// sort
