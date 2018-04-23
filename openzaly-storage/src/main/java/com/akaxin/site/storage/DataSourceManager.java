@@ -28,7 +28,6 @@ import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
  * @since 2018-01-31 12:15:15
  */
 public class DataSourceManager {
-	private static Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
 
 	private DataSourceManager() {
 

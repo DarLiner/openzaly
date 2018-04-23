@@ -196,7 +196,8 @@ public class SQLiteJDBCManager {
 		String updateSql = "UPDATE site_plugin_manager SET "//
 				+ "name=?,"//
 				+ "url_page=?,"//
-				+ "api_url=?"//
+				+ "api_url=?,"//
+				+ "auth_key=?"//
 				+ " WHERE id=?;";//
 		String insertSql = "INSERT INTO site_plugin_manager("//
 				+ "id,"//
@@ -216,7 +217,8 @@ public class SQLiteJDBCManager {
 			pst.setString(1, siteName);
 			pst.setString(2, urlPage);
 			pst.setString(3, apiUrl);
-			pst.setInt(4, id);
+			pst.setString(4, "");
+			pst.setInt(5, id);
 
 			result = (pst.executeUpdate() > 0);
 			logger.info("update site plugin result={} SQL={} name={} url_page={} url_api={}", result, updateSql,
