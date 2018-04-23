@@ -212,7 +212,7 @@ public class HttpFriendService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-
-		return commandResponse;
+		
+		return commandResponse.setErrCode(errCode);
 	}
 }
