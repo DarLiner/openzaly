@@ -1,15 +1,14 @@
 package com.akaxin.admin.site.controller;
 
 import com.akaxin.admin.site.service.IUserService;
+import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
-import com.akaxin.proto.core.UserProto;
-import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.storage.bean.GroupMemberBean;
+import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UicBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,26 +34,12 @@ public class SiteMemberController extends AbstractController {
     private IUserService userService;
 
     @RequestMapping("/index")
-    public ModelAndView toIndex(@RequestBody byte[] bodyParam) {
-        ModelAndView modelAndView = new ModelAndView("siteMember/siteMember");
-        Map<String, Object> model = modelAndView.getModel();
-        PluginProto.ProxyPluginPackage pluginPackage = null;
-        try {
-            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-            model.put("site_user_id", siteUserId);
-            UserProfileBean userProfile = userService.getUserProfile(siteUserId);
-            String userName = userProfile.getUserName();
-            model.put("site_user_name", userName);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-            return new ModelAndView("siteMember/error");
-        }
-        return modelAndView;
+    public String toIndex() {
+        return "siteMember/siteMember";
+
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/pullMemberList")
+    @RequestMapping(method = RequestMethod.POST, value = "/pullMemberList")
     @ResponseBody
     public Map<String, Object> getMemberList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
         Map<String, Object> results = new HashMap<String, Object>();
@@ -88,6 +73,40 @@ public class SiteMemberController extends AbstractController {
         }
         results.put("loading", nodata);
         return results;
+    }
+
+    @RequestMapping("/applyAddFriend")
+    @ResponseBody
+    public String addFriend(@RequestBody byte[] bodyParam) {
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
+            String to_user_id = ReqMap.get("site_user_id");
+            String apply_reason = ReqMap.get("apply_reason");
+            if (StringUtils.isBlank(siteUserId)) {
+                return "添加失败";
+            } else if (siteUserId.equals(to_user_id)) {
+                return "添加失败";
+            } else {
+                int applyTimes = UserFriendDao.getInstance().getApplyCount(to_user_id, siteUserId);
+                if (applyTimes >= 5) {
+                    return "添加失败,次数过多";
+                } else {
+                    if (UserFriendDao.getInstance().saveFriendApply(siteUserId, to_user_id, apply_reason)) {
+                        return "success";
+                    }
+                }
+            }
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("Friend apply error.", e);
+            return "添加失败";
+
+        }
+        return "添加失败";
+
     }
 
 }
