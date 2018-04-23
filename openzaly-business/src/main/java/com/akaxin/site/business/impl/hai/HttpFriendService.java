@@ -183,7 +183,7 @@ public class HttpFriendService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			List<String> userIdList = request.getUserIdList();
 
-			if (StringUtils.isNotEmpty(siteUserId) || userIdList == null) {
+			if (StringUtils.isEmpty(siteUserId) || userIdList == null) {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -212,7 +212,7 @@ public class HttpFriendService extends AbstractRequest {
 			}
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		
+
 		return commandResponse.setErrCode(errCode);
 	}
 }
