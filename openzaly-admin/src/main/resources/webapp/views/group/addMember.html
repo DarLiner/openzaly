@@ -165,7 +165,7 @@
             siteUserIds = JSON.parse(siteUserIds);
             $.each(siteUserIds, function (index, siteUserId) {
                 console.log(index);
-                $('.' + siteUserId).remove();
+                $("[for=" + siteUserId + "]").remove();
             });
             $.toast('添加成功');
         } else {

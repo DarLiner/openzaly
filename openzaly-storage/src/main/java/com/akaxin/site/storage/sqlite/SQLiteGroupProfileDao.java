@@ -267,7 +267,7 @@ public class SQLiteGroupProfileDao {
             endTimeOfDay = endTimeOfDay - TimeUnit.DAYS.toMillis(day);
         }
 
-        String sql = "SELECT COUNT(*) FROM " + GROUP_PROFILE_TABLE +" WHERE create_time < ? ";
+        String sql = "SELECT COUNT(*) FROM " + GROUP_PROFILE_TABLE +" WHERE create_time < ? and group_status = 1 ";
         PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
         preparedStatement.setLong(1,endTimeOfDay);
         ResultSet resultSet = preparedStatement.executeQuery();

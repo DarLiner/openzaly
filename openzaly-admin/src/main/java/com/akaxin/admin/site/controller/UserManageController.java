@@ -50,7 +50,7 @@ public class UserManageController extends AbstractController {
 	@Resource(name = "userManageService")
 	private IUserService userService;
 
-	// index.html 分页获取用户列表
+	// admin.html 分页获取用户列表
 	@RequestMapping("/index")
 	public String toUserIndex() {
 		return "user/index";
