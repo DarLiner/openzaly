@@ -204,12 +204,11 @@ public class HttpFriendService extends AbstractRequest {
 			}
 			commandResponse.setParams(resBuilder.build().toByteArray());
 			errCode = ErrorCode2.SUCCESS;
+		} catch (ZalyException e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		} catch (Exception e) {
-			if (e instanceof ZalyException) {
-				errCode = ((ZalyException) e).getErrCode();
-			} else {
-				errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			}
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 
