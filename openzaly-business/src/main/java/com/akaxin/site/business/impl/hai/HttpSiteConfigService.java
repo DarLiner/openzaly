@@ -53,13 +53,15 @@ public class HttpSiteConfigService extends AbstractRequest {
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errorCode = ErrorCode2.ERROR;
 		try {
-			LogUtils.requestDebugLog(logger, command, "");
-
 			Map<Integer, String> configMap = SiteConfig.getConfigMap();
+			LogUtils.requestDebugLog(logger, command, "");
+			logger.info("get config map = {}", configMap);
+
 			ConfigProto.SiteBackConfig config = ConfigProto.SiteBackConfig.newBuilder().putAllSiteConfig(configMap)
 					.build();
 			HaiSiteGetConfigProto.HaiSiteGetConfigResponse response = HaiSiteGetConfigProto.HaiSiteGetConfigResponse
 					.newBuilder().setSiteConfig(config).build();
+			logger.info("get config service  response={}", response.toString());
 			commandResponse.setParams(response.toByteArray());
 			errorCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
