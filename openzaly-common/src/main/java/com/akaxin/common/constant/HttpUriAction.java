@@ -28,7 +28,7 @@ public enum HttpUriAction {
 
 	HAI_GROUP_SERVICE("hai", "list"), // 群组服务
 
-	HAI_FRIEND_SERVICE("hai", "apply"), // 好友服务
+	HAI_FRIEND_SERVICE("hai", "friend"), // 好友服务
 
 	HAI_MESSAGE_SERVICE("hai", "message"), // 好友服务
 
