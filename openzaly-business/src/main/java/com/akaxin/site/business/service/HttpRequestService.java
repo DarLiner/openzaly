@@ -65,6 +65,7 @@ public class HttpRequestService implements IRequest {
 				break;
 			case HAI_PUSH_SERVICE:
 				response = new HttpPushService().execute(command);
+				break;
 			case HAI_PLUGIN_SERVICE:
 				response = new HttpPluginService().execute(command);
 				break;

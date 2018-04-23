@@ -918,6 +918,31 @@ public final class ImStcMessageProto {
 
     /**
      * <pre>
+     *此字段已经废除
+     * </pre>
+     *
+     * <code>optional .core.MsgFinish finish = 4;</code>
+     */
+    boolean hasFinish();
+    /**
+     * <pre>
+     *此字段已经废除
+     * </pre>
+     *
+     * <code>optional .core.MsgFinish finish = 4;</code>
+     */
+    com.akaxin.proto.core.CoreProto.MsgFinish getFinish();
+    /**
+     * <pre>
+     *此字段已经废除
+     * </pre>
+     *
+     * <code>optional .core.MsgFinish finish = 4;</code>
+     */
+    com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder getFinishOrBuilder();
+
+    /**
+     * <pre>
      *二人文本消息
      * </pre>
      *
@@ -1581,6 +1606,19 @@ public final class ImStcMessageProto {
 
               break;
             }
+            case 34: {
+              com.akaxin.proto.core.CoreProto.MsgFinish.Builder subBuilder = null;
+              if (finish_ != null) {
+                subBuilder = finish_.toBuilder();
+              }
+              finish_ = input.readMessage(com.akaxin.proto.core.CoreProto.MsgFinish.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(finish_);
+                finish_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
             case 42: {
               com.akaxin.proto.core.CoreProto.MsgText.Builder subBuilder = null;
               if (text_ != null) {
@@ -1984,6 +2022,39 @@ public final class ImStcMessageProto {
      */
     public com.akaxin.proto.core.CoreProto.MsgStatusOrBuilder getStatusOrBuilder() {
       return getStatus();
+    }
+
+    public static final int FINISH_FIELD_NUMBER = 4;
+    private com.akaxin.proto.core.CoreProto.MsgFinish finish_;
+    /**
+     * <pre>
+     *此字段已经废除
+     * </pre>
+     *
+     * <code>optional .core.MsgFinish finish = 4;</code>
+     */
+    public boolean hasFinish() {
+      return finish_ != null;
+    }
+    /**
+     * <pre>
+     *此字段已经废除
+     * </pre>
+     *
+     * <code>optional .core.MsgFinish finish = 4;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.MsgFinish getFinish() {
+      return finish_ == null ? com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance() : finish_;
+    }
+    /**
+     * <pre>
+     *此字段已经废除
+     * </pre>
+     *
+     * <code>optional .core.MsgFinish finish = 4;</code>
+     */
+    public com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder getFinishOrBuilder() {
+      return getFinish();
     }
 
     public static final int TEXT_FIELD_NUMBER = 5;
@@ -2799,6 +2870,9 @@ public final class ImStcMessageProto {
       if (status_ != null) {
         output.writeMessage(3, getStatus());
       }
+      if (finish_ != null) {
+        output.writeMessage(4, getFinish());
+      }
       if (text_ != null) {
         output.writeMessage(5, getText());
       }
@@ -2889,6 +2963,10 @@ public final class ImStcMessageProto {
       if (status_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getStatus());
+      }
+      if (finish_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getFinish());
       }
       if (text_ != null) {
         size += com.google.protobuf.CodedOutputStream
@@ -3009,6 +3087,11 @@ public final class ImStcMessageProto {
       if (hasStatus()) {
         result = result && getStatus()
             .equals(other.getStatus());
+      }
+      result = result && (hasFinish() == other.hasFinish());
+      if (hasFinish()) {
+        result = result && getFinish()
+            .equals(other.getFinish());
       }
       result = result && (hasText() == other.hasText());
       if (hasText()) {
@@ -3148,6 +3231,10 @@ public final class ImStcMessageProto {
       if (hasStatus()) {
         hash = (37 * hash) + STATUS_FIELD_NUMBER;
         hash = (53 * hash) + getStatus().hashCode();
+      }
+      if (hasFinish()) {
+        hash = (37 * hash) + FINISH_FIELD_NUMBER;
+        hash = (53 * hash) + getFinish().hashCode();
       }
       if (hasText()) {
         hash = (37 * hash) + TEXT_FIELD_NUMBER;
@@ -3373,6 +3460,12 @@ public final class ImStcMessageProto {
           status_ = null;
           statusBuilder_ = null;
         }
+        if (finishBuilder_ == null) {
+          finish_ = null;
+        } else {
+          finish_ = null;
+          finishBuilder_ = null;
+        }
         if (textBuilder_ == null) {
           text_ = null;
         } else {
@@ -3546,6 +3639,11 @@ public final class ImStcMessageProto {
         } else {
           result.status_ = statusBuilder_.build();
         }
+        if (finishBuilder_ == null) {
+          result.finish_ = finish_;
+        } else {
+          result.finish_ = finishBuilder_.build();
+        }
         if (textBuilder_ == null) {
           result.text_ = text_;
         } else {
@@ -3715,6 +3813,9 @@ public final class ImStcMessageProto {
         }
         if (other.hasStatus()) {
           mergeStatus(other.getStatus());
+        }
+        if (other.hasFinish()) {
+          mergeFinish(other.getFinish());
         }
         if (other.hasText()) {
           mergeText(other.getText());
@@ -4067,6 +4168,159 @@ public final class ImStcMessageProto {
           status_ = null;
         }
         return statusBuilder_;
+      }
+
+      private com.akaxin.proto.core.CoreProto.MsgFinish finish_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.MsgFinish, com.akaxin.proto.core.CoreProto.MsgFinish.Builder, com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder> finishBuilder_;
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public boolean hasFinish() {
+        return finishBuilder_ != null || finish_ != null;
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.MsgFinish getFinish() {
+        if (finishBuilder_ == null) {
+          return finish_ == null ? com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance() : finish_;
+        } else {
+          return finishBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public Builder setFinish(com.akaxin.proto.core.CoreProto.MsgFinish value) {
+        if (finishBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          finish_ = value;
+          onChanged();
+        } else {
+          finishBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public Builder setFinish(
+          com.akaxin.proto.core.CoreProto.MsgFinish.Builder builderForValue) {
+        if (finishBuilder_ == null) {
+          finish_ = builderForValue.build();
+          onChanged();
+        } else {
+          finishBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public Builder mergeFinish(com.akaxin.proto.core.CoreProto.MsgFinish value) {
+        if (finishBuilder_ == null) {
+          if (finish_ != null) {
+            finish_ =
+              com.akaxin.proto.core.CoreProto.MsgFinish.newBuilder(finish_).mergeFrom(value).buildPartial();
+          } else {
+            finish_ = value;
+          }
+          onChanged();
+        } else {
+          finishBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public Builder clearFinish() {
+        if (finishBuilder_ == null) {
+          finish_ = null;
+          onChanged();
+        } else {
+          finish_ = null;
+          finishBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.MsgFinish.Builder getFinishBuilder() {
+        
+        onChanged();
+        return getFinishFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      public com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder getFinishOrBuilder() {
+        if (finishBuilder_ != null) {
+          return finishBuilder_.getMessageOrBuilder();
+        } else {
+          return finish_ == null ?
+              com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance() : finish_;
+        }
+      }
+      /**
+       * <pre>
+       *此字段已经废除
+       * </pre>
+       *
+       * <code>optional .core.MsgFinish finish = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.CoreProto.MsgFinish, com.akaxin.proto.core.CoreProto.MsgFinish.Builder, com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder> 
+          getFinishFieldBuilder() {
+        if (finishBuilder_ == null) {
+          finishBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.CoreProto.MsgFinish, com.akaxin.proto.core.CoreProto.MsgFinish.Builder, com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder>(
+                  getFinish(),
+                  getParentForChildren(),
+                  isClean());
+          finish_ = null;
+        }
+        return finishBuilder_;
       }
 
       private com.akaxin.proto.core.CoreProto.MsgText text_ = null;
@@ -8180,37 +8434,38 @@ public final class ImStcMessageProto {
     java.lang.String[] descriptorData = {
       "\n\033client/im_stc_message.proto\022\006client\032\017c" +
       "ore/core.proto\";\n\023ImStcMessageRequest\022$\n" +
-      "\004list\030\001 \003(\0132\026.client.MsgWithPointer\"\205\010\n\016" +
+      "\004list\030\001 \003(\0132\026.client.MsgWithPointer\"\246\010\n\016" +
       "MsgWithPointer\022\017\n\007pointer\030\001 \001(\003\022\033\n\004type\030" +
       "\002 \001(\0162\r.core.MsgType\022\037\n\006status\030\003 \001(\0132\017.c" +
-      "ore.MsgStatus\022\033\n\004text\030\005 \001(\0132\r.core.MsgTe" +
-      "xt\022\'\n\nsecretText\030\006 \001(\0132\023.core.MsgSecretT" +
-      "ext\022\"\n\tgroupText\030\007 \001(\0132\017.core.GroupText\022" +
-      ".\n\017groupSecretText\030\010 \001(\0132\025.core.GroupSec" +
-      "retText\022\035\n\005image\030\t \001(\0132\016.core.MsgImage\022)",
-      "\n\013secretImage\030\n \001(\0132\024.core.MsgSecretImag" +
-      "e\022$\n\ngroupImage\030\013 \001(\0132\020.core.GroupImage\022" +
-      "0\n\020groupSecretImage\030\014 \001(\0132\026.core.GroupSe" +
-      "cretImage\022\035\n\005voice\030\r \001(\0132\016.core.MsgVoice" +
-      "\022)\n\013secretVoice\030\016 \001(\0132\024.core.MsgSecretVo" +
-      "ice\022$\n\ngroupVoice\030\017 \001(\0132\020.core.GroupVoic" +
-      "e\0220\n\020groupSecretVoice\030\020 \001(\0132\026.core.Group" +
-      "SecretVoice\022\032\n\005u2Map\030\021 \001(\0132\013.core.U2Map\022" +
-      "&\n\013u2SecretMap\030\022 \001(\0132\021.core.U2SecretMap\022" +
-      " \n\010groupMap\030\023 \001(\0132\016.core.GroupMap\022,\n\016gro",
-      "upSecretMap\030\024 \001(\0132\024.core.GroupSecretMap\022" +
-      "&\n\013u2MsgNotice\030\025 \001(\0132\021.core.U2MsgNotice\022" +
-      ",\n\016groupMsgNotice\030\026 \001(\0132\024.core.GroupMsgN" +
-      "otice\022 \n\010u2Recall\030\027 \001(\0132\016.core.U2Recall\022" +
-      "&\n\013groupRecall\030\030 \001(\0132\021.core.GroupRecall\022" +
-      "\032\n\005u2Web\030\031 \001(\0132\013.core.U2Web\022 \n\010groupWeb\030" +
-      "\032 \001(\0132\016.core.GroupWeb\022&\n\013u2WebNotice\030\033 \001" +
-      "(\0132\021.core.U2WebNotice\022,\n\016groupWebNotice\030" +
-      "\034 \001(\0132\024.core.GroupWebNotice\"\026\n\024ImStcMess" +
-      "ageResponse2[\n\023ImStcMessageService\022D\n\007me",
-      "ssage\022\033.client.ImStcMessageRequest\032\034.cli" +
-      "ent.ImStcMessageResponseB,\n\027com.akaxin.p" +
-      "roto.clientB\021ImStcMessageProtob\006proto3"
+      "ore.MsgStatus\022\037\n\006finish\030\004 \001(\0132\017.core.Msg" +
+      "Finish\022\033\n\004text\030\005 \001(\0132\r.core.MsgText\022\'\n\ns" +
+      "ecretText\030\006 \001(\0132\023.core.MsgSecretText\022\"\n\t" +
+      "groupText\030\007 \001(\0132\017.core.GroupText\022.\n\017grou" +
+      "pSecretText\030\010 \001(\0132\025.core.GroupSecretText",
+      "\022\035\n\005image\030\t \001(\0132\016.core.MsgImage\022)\n\013secre" +
+      "tImage\030\n \001(\0132\024.core.MsgSecretImage\022$\n\ngr" +
+      "oupImage\030\013 \001(\0132\020.core.GroupImage\0220\n\020grou" +
+      "pSecretImage\030\014 \001(\0132\026.core.GroupSecretIma" +
+      "ge\022\035\n\005voice\030\r \001(\0132\016.core.MsgVoice\022)\n\013sec" +
+      "retVoice\030\016 \001(\0132\024.core.MsgSecretVoice\022$\n\n" +
+      "groupVoice\030\017 \001(\0132\020.core.GroupVoice\0220\n\020gr" +
+      "oupSecretVoice\030\020 \001(\0132\026.core.GroupSecretV" +
+      "oice\022\032\n\005u2Map\030\021 \001(\0132\013.core.U2Map\022&\n\013u2Se" +
+      "cretMap\030\022 \001(\0132\021.core.U2SecretMap\022 \n\010grou",
+      "pMap\030\023 \001(\0132\016.core.GroupMap\022,\n\016groupSecre" +
+      "tMap\030\024 \001(\0132\024.core.GroupSecretMap\022&\n\013u2Ms" +
+      "gNotice\030\025 \001(\0132\021.core.U2MsgNotice\022,\n\016grou" +
+      "pMsgNotice\030\026 \001(\0132\024.core.GroupMsgNotice\022 " +
+      "\n\010u2Recall\030\027 \001(\0132\016.core.U2Recall\022&\n\013grou" +
+      "pRecall\030\030 \001(\0132\021.core.GroupRecall\022\032\n\005u2We" +
+      "b\030\031 \001(\0132\013.core.U2Web\022 \n\010groupWeb\030\032 \001(\0132\016" +
+      ".core.GroupWeb\022&\n\013u2WebNotice\030\033 \001(\0132\021.co" +
+      "re.U2WebNotice\022,\n\016groupWebNotice\030\034 \001(\0132\024" +
+      ".core.GroupWebNotice\"\026\n\024ImStcMessageResp",
+      "onse2[\n\023ImStcMessageService\022D\n\007message\022\033" +
+      ".client.ImStcMessageRequest\032\034.client.ImS" +
+      "tcMessageResponseB,\n\027com.akaxin.proto.cl" +
+      "ientB\021ImStcMessageProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8236,7 +8491,7 @@ public final class ImStcMessageProto {
     internal_static_client_MsgWithPointer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_client_MsgWithPointer_descriptor,
-        new java.lang.String[] { "Pointer", "Type", "Status", "Text", "SecretText", "GroupText", "GroupSecretText", "Image", "SecretImage", "GroupImage", "GroupSecretImage", "Voice", "SecretVoice", "GroupVoice", "GroupSecretVoice", "U2Map", "U2SecretMap", "GroupMap", "GroupSecretMap", "U2MsgNotice", "GroupMsgNotice", "U2Recall", "GroupRecall", "U2Web", "GroupWeb", "U2WebNotice", "GroupWebNotice", });
+        new java.lang.String[] { "Pointer", "Type", "Status", "Finish", "Text", "SecretText", "GroupText", "GroupSecretText", "Image", "SecretImage", "GroupImage", "GroupSecretImage", "Voice", "SecretVoice", "GroupVoice", "GroupSecretVoice", "U2Map", "U2SecretMap", "GroupMap", "GroupSecretMap", "U2MsgNotice", "GroupMsgNotice", "U2Recall", "GroupRecall", "U2Web", "GroupWeb", "U2WebNotice", "GroupWebNotice", });
     internal_static_client_ImStcMessageResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_client_ImStcMessageResponse_fieldAccessorTable = new

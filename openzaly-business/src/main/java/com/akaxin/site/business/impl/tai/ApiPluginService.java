@@ -155,15 +155,10 @@ public class ApiPluginService extends AbstractRequest {
 						httpContent = enPostContent;
 					}
 
-					System.out.println("pageUrl=" + pageUrl);
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, httpContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
 							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
-
-					// byte[] httpResponse = ZalyHttpClient.getInstance().get(pageUrl);
-					// ApiPluginPageProto.ApiPluginPageResponse response =
-					// ApiPluginPageProto.ApiPluginPageResponse
-					// .newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
+					
 					commandResponse.setParams(response.toByteArray());
 					errCode = ErrorCode2.SUCCESS;
 				}
