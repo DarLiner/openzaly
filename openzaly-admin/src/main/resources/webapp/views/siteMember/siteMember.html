@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>用户广场</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
+    <style>
+        body, html {
+            height: 100%;
+            background-color: #f4f4f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .basic-title {
+            text-align: center;
+            font-weight: 400;
+            color: #1E88E5;
+            margin: 0 15%;
+        }
+
+        .basic-sub-title {
+            text-align: center;
+            color: #1E88E5;
+        }
+
+        .basic-header {
+            padding: 35px 0;
+        }
+
+        css
+        .basic-content-padded {
+            padding: 15px;
+        }
+
+        .margin_top_30px {
+            margin-top: 30px;
+        }
+
+        .basic-second-title {
+            text-align: center;
+            color: #1E88E5;
+            font-weight: 400;
+            margin: 0 15%;
+        }
+
+        .basic-weui-grid {
+            position: relative;
+            float: left;
+            padding: 5px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .basic-color {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn_primary {
+            background-color: #1E88E5;
+        }
+
+        .basic-weui-btn {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn:hover {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn:active {
+            background-color: #1E88E5 !important;
+            color: #FFFFFF;
+        }
+
+        .basic-weui-btn_mini {
+            display: inline-block;
+            padding: 0 1.32em;
+            line-height: 2.3;
+        }
+
+        .weui-dialog__btn {
+            color: #1E88E5;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .basic-color_bg {
+            background-color: #f4f4f4;
+        }
+
+        .weui-loadmore_line .weui-loadmore__tips {
+            background-color: #f4f4f4;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body ontouchstart=''>
+<div class="weui-cells margin_top_30px" id='member-lists'>
+</div>
+<input type='hidden' id='init_url' url-data="/site_member/pullMemberList"/>
+<input type='hidden' id='site_user_id' th:attr="data=${site_user_id},user-name=${site_user_name}"/>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        loadSiteMember();
+    });
+
+    function getOsType() {
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
+            return 'Android';
+        } else if (u.indexOf('iPhone') > -1) {
+            return 'IOS';
+        } else {
+            return 'PC';
+        }
+    }
+
+    function reqUrl(reqUri, params, callbackName) {
+        var type = getOsType();
+
+        if (type == 'Android') {
+            Android.requestPost(reqUri, params, callbackName);
+        } else if (type == 'IOS') {
+            ios_requestPost(reqUri, params, callbackName);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqHtml(reqUri, params) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.requestPage(reqUri, params)
+        } else if (type == 'IOS') {
+            ios_requestPage(reqUri, params);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageUpload(callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageUpload(callback);
+        } else if (type == 'IOS') {
+            ios_imageUpload(callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function reqImageDownload(imageid, callback) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.imageDownload(imageid, callback);
+        } else if (type == 'IOS') {
+            ios_imageDownload(imageid, callback);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    function toast(msg) {
+        var type = getOsType();
+        if (type == 'Android') {
+            Android.showToast(msg);
+        } else if (type == 'IOS') {
+            $.toast(msg);
+        } else {
+            $.toast('暂时不支持该设备');
+        }
+    }
+
+    $(document).on("click", ".add-member-friend", function () {
+        var siteUserId = $(this).attr('data');
+        var url = $(this).attr('url-data');
+        var siteUserName = $('#site_user_id').attr('user-name');
+        var applyReason = "";
+        if (siteUserName.length > 0) {
+            applyReason = "你好，我是 " + siteUserName;
+        }
+        $.prompt({
+            input: applyReason,
+            text: "",
+            title: "申请添加好友",
+            onOK: function (text) {
+                var userInfo = {
+                    'site_user_id': siteUserId,
+                    "apply_reason": text
+                };
+                reqUrl(url, JSON.stringify(userInfo), "applyAddFriend");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            },
+        });
+    });
+
+    var page = 0;
+    var loading = false;
+    $(document.body).infinite().on("infinite", function () {
+        loadSiteMember();
+    });
+
+    function loadSiteMember() {
+        if (loading) {
+            $('.loadmore_site_member').addClass('weui-loadmore_line');
+            $('.loadmore_site_member span').html('暂无数据');
+            $('.loadmore_site_member i').remove();
+            return false;
+        }
+        page = page + 1;
+        var reqUri = $('#init_url').attr('url-data');
+        var params = {
+            "page": page
+        };
+        reqUrl(reqUri, JSON.stringify(params), 'addMemberToList');
+        loading = true;
+        if (loading == true) {
+            $(".weui-loadmore__tips").html("到底啦");
+        } else {
+            $(".weui-loadmore__tips").html("加载更多");
+        }
+    }
+
+    function addMemberToList(results) {
+        results = eval("("+results+")");
+        var data = results.data;
+        var html = '';
+        var currentSiteUserId = $('#site_user_id').attr('data');
+        $.each(data, function (index, user) {
+            if (currentSiteUserId != user.site_user_id) {
+                if (user.site_user_relation == 1) {
+                    var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><p style="color:#9b9b9b;font-size:14px;">添加成功</p></div>';
+                } else {
+                    var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><a href="javascript:;" name="add-member-friend" data="' + user.site_user_id + '" class="add-member-friend weui-btn  basic-weui-btn weui-btn_mini weui-btn_primary basic-color"  url-data="/siteMember/applyAddFriend">添加好友</a></div>';
+                }
+                $('#member-lists').append(html);
+            }
+        });
+        loading = results.loading;
+    }
+
+    function applyAddFriend(result) {
+        if (result == 'success') {
+            $.toast("发送请求成功");
+        } else {
+            $.toast(result, "forbidden");
+        }
+    }
+</script>
+</body>
+
+</html>
