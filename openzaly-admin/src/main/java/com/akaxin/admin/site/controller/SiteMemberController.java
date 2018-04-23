@@ -1,9 +1,9 @@
 package com.akaxin.admin.site.controller;
 
 import com.akaxin.admin.site.service.IUserService;
-import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
+import com.akaxin.proto.core.UserProto;
 import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
@@ -34,9 +34,22 @@ public class SiteMemberController extends AbstractController {
     private IUserService userService;
 
     @RequestMapping("/index")
-    public String toIndex() {
-        return "siteMember/siteMember";
-
+    public ModelAndView toIndex(@RequestBody byte[] bodyParam) {
+        ModelAndView modelAndView = new ModelAndView("siteMember/siteMember");
+        Map<String, Object> model = modelAndView.getModel();
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            UserProfileBean userProfile = userService.getUserProfile(siteUserId);
+            model.put("site_user_id", siteUserId);
+            model.put("site_user_name", userProfile.getUserName());
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to SiteMember error", e);
+            return new ModelAndView("siteMember/error");
+        }
+        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/pullMemberList")
@@ -53,16 +66,20 @@ public class SiteMemberController extends AbstractController {
 
             int pageNum = Integer.valueOf(ReqMap.get("page"));
             logger.info("-----Member LIST------pageNum={}}", pageNum);
-            List<SimpleUserBean> userList = userService.getUserList(pageNum, 10);
+            List<SimpleUserBean> userList = userService.getUserList(pageNum, 20);
             List<Map<String, String>> data = new ArrayList<Map<String, String>>();
             if (userList != null && userList.size() > 0) {
-                if (10 == userList.size()) {
+                if (20 == userList.size()) {
                     nodata = false;
                 }
                 for (SimpleUserBean bean : userList) {
                     Map<String, String> memberMap = new HashMap<String, String>();
-                    memberMap.put("site_user_id", bean.getUserId());
-                    memberMap.put("site_user_name", bean.getUserName());
+                    if (siteUserId != bean.getUserId()) {
+                        memberMap.put("site_user_id", bean.getUserId());
+                        memberMap.put("site_user_name", bean.getUserName());
+                        UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId, bean.getUserId());
+                        memberMap.put("site_user_relation", String.valueOf(userRelation.getNumber()));
+                    }
                     data.add(memberMap);
                 }
             }
@@ -77,7 +94,7 @@ public class SiteMemberController extends AbstractController {
 
     @RequestMapping("/applyAddFriend")
     @ResponseBody
-    public String addFriend(@RequestBody byte[] bodyParam) {
+    public String[] addFriend(@RequestBody byte[] bodyParam) {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
@@ -87,25 +104,25 @@ public class SiteMemberController extends AbstractController {
             String to_user_id = ReqMap.get("site_user_id");
             String apply_reason = ReqMap.get("apply_reason");
             if (StringUtils.isBlank(siteUserId)) {
-                return "添加失败";
+                return new String[]{"添加失败", "0"};
             } else if (siteUserId.equals(to_user_id)) {
-                return "添加失败";
+
             } else {
                 int applyTimes = UserFriendDao.getInstance().getApplyCount(to_user_id, siteUserId);
                 if (applyTimes >= 5) {
-                    return "添加失败,次数过多";
+                    return new String[]{"失败,次数过多", "0"};
+
                 } else {
                     if (UserFriendDao.getInstance().saveFriendApply(siteUserId, to_user_id, apply_reason)) {
-                        return "success";
+                        return new String[]{"成功", to_user_id};
+
                     }
                 }
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("Friend apply error.", e);
-            return "添加失败";
-
         }
-        return "添加失败";
+        return new String[]{"添加失败", "0"};
 
     }
 
