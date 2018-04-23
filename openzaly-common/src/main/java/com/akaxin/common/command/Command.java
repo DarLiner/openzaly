@@ -53,7 +53,10 @@ public class Command {
 	}
 
 	public String getAction() {
-		return this.rety + "." + this.service + "." + this.method;
+		if ("im".equals(this.rety) || "api".equals(this.rety)) {
+			return this.rety + "." + this.service + "." + this.method;
+		}
+		return null;
 	}
 
 	public String getDeviceId() {
@@ -105,7 +108,10 @@ public class Command {
 	}
 
 	public String getUri() {
-		return "/" + this.rety + "/" + this.service + "/" + this.method;
+		if ("hai".equals(this.rety)) {
+			return "/" + this.rety + "/" + this.service + "/" + this.method;
+		}
+		return null;
 	}
 
 	public void setUri(String uri) {

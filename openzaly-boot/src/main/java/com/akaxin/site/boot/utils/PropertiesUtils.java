@@ -32,7 +32,7 @@ public class PropertiesUtils {
 		properties.put("site.version", "0.3.2");
 		properties.put("site.address", "0.0.0.0");
 		properties.put("site.port", "2021");
-		properties.put("http.address", "127.0.0.1");
+		properties.put("http.address", "0.0.0.0");
 		properties.put("http.port", "8080");
 		properties.put("site.admin.address", "127.0.0.1");
 		properties.put("site.admin.port", "8081");
