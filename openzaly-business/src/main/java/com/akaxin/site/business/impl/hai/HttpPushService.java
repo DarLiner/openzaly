@@ -81,6 +81,7 @@ public class HttpPushService extends AbstractRequest {
 				}
 			}
 
+			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);

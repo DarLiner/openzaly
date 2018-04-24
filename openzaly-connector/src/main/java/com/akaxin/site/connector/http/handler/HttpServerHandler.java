@@ -54,6 +54,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 	private static Logger logger = LoggerFactory.getLogger(HttpServerHandler.class);
 
 	private HttpRequest request;
+	private String httpClientIp;
 	private AbstracteExecutor<Command, CommandResponse> executor;
 
 	public HttpServerHandler(AbstracteExecutor<Command, CommandResponse> executor) {
@@ -86,26 +87,27 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				}
 
 				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
-				String clientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
+				httpClientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
 
 				if (StringUtils.isEmpty(sitePluginId)) {
-					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, clientIp, sitePluginId);
+					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, httpClientIp,
+							sitePluginId);
 					ctx.close();
 					return;
 				}
 
-				if (clientIp == null) {
+				if (StringUtils.isEmpty(httpClientIp)) {
 					InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
-					clientIp = address.getAddress().getHostAddress();
+					httpClientIp = address.getAddress().getHostAddress();
 				}
 
-				if (!checkLegalClientIp(sitePluginId, clientIp)) {
-					logger.error("{} http request illegal IP={}.", AkxProject.PLN, clientIp);
+				if (!checkLegalClientIp(sitePluginId, httpClientIp)) {
+					logger.error("{} http request illegal IP={}.", AkxProject.PLN, httpClientIp);
 					ctx.close();
 					return;
 				}
 
-				logger.debug("{} request uri:{} clientIp={}", AkxProject.PLN, request.uri(), clientIp);
+				logger.debug("{} request uri:{} clientIp={}", AkxProject.PLN, request.uri(), httpClientIp);
 			}
 
 			/**
@@ -124,16 +126,17 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					return;
 				}
 
-				String clientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
+				// String clientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
 				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
 				byte[] contentBytes = new byte[httpByteBuf.readableBytes()];
 				httpByteBuf.readBytes(contentBytes);
 				httpByteBuf.release();
 
-				logger.debug("{} http request IP={} pluginId={}", AkxProject.PLN, clientIp, sitePluginId);
+				logger.debug("{} http request IP={} pluginId={}", AkxProject.PLN, httpClientIp, sitePluginId);
 
 				if (StringUtils.isEmpty(sitePluginId)) {
-					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, clientIp, sitePluginId);
+					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, httpClientIp,
+							sitePluginId);
 					ctx.close();
 					return;
 				}
@@ -160,8 +163,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					}
 				}
 
-				logger.debug("{} client={} http request timeOut={} currTime={} reqTime={}", AkxProject.PLN, clientIp,
-						timeOut, currentTime, requestTime);
+				logger.debug("{} client={} http request timeOut={} currTime={} reqTime={}", AkxProject.PLN,
+						httpClientIp, timeOut, currentTime, requestTime);
 
 				if (!timeOut) {
 					Command command = new Command();
@@ -172,10 +175,10 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					command.setChannelContext(ctx);
 					command.setUri(request.uri());
 					command.setParams(Base64.getDecoder().decode(pluginPackage.getData()));
-					command.setClientIp(clientIp);
+					command.setClientIp(httpClientIp);
 					command.setStartTime(System.currentTimeMillis());
 
-					logger.info("{} client={} uri={} http server handler command={}", AkxProject.PLN, clientIp,
+					logger.info("{} client={} uri={} http server handler command={}", AkxProject.PLN, httpClientIp,
 							request.uri(), command.toString());
 
 					CommandResponse response = this.executor.execute(HttpUriAction.HTTP_ACTION.getRety(), command);
@@ -184,7 +187,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					// 超时10s，认为此请求失效，直接断开连接
 					ctx.close();
 					logger.error("{} client={} http request error.timeOut={} currTime={} reqTime={}", AkxProject.PLN,
-							clientIp, timeOut, currentTime, requestTime);
+							httpClientIp, timeOut, currentTime, requestTime);
 				}
 			}
 		} catch (Exception e) {

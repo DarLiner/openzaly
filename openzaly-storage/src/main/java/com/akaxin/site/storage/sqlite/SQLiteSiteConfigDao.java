@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,11 @@ public class SQLiteSiteConfigDao {
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		ResultSet rs = preStatement.executeQuery();
 		while (rs.next()) {
-			configMap.put(rs.getInt(1), rs.getString(2));
+			int key = rs.getInt(1);
+			String value = rs.getString(2);
+			if (StringUtils.isNotEmpty(value)) {
+				configMap.put(key, value);
+			}
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, configMap, sql);

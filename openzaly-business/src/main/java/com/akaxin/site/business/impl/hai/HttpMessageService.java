@@ -60,7 +60,12 @@ public class HttpMessageService extends AbstractRequest {
 			proxyCommand.setSiteUserId(siteUserId);
 			proxyCommand.setAction(RequestAction.IM_CTS_MESSAGE.getName());
 			proxyCommand.setParams(proxyMessage.toByteArray());
-			boolean result = imService.execute(command);
+			boolean result = imService.execute(proxyCommand);
+			if (result) {
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR2_MESSAGE_SEND_FAIL;
+			}
 
 			LogUtils.requestInfoLog(logger, proxyCommand, "result={} request={}", result, request.toBuilder());
 		} catch (Exception e) {

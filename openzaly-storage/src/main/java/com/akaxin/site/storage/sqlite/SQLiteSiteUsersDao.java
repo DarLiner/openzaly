@@ -49,7 +49,7 @@ public class SQLiteSiteUsersDao {
 	public List<String> querySiteUserId(int pageNum, int pageSize) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<String> siteUserList = new ArrayList<String>();
-		String sql = "SELECT site_user_id FROM " + USER_PROFILE_TABLE + " LIMITE ?,?;";
+		String sql = "SELECT site_user_id FROM " + USER_PROFILE_TABLE + " LIMIT ?,?;";
 
 		int startNum = (pageNum - 1) * pageSize;
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);

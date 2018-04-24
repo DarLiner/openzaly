@@ -61,9 +61,9 @@ public class HttpUserService extends AbstractRequest {
 			String siteUserId = request.getSiteUserId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(siteUserId)) {
+			if (StringUtils.isNotEmpty(siteUserId)) {
 				UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
-				if (bean != null && StringUtils.isNotBlank(bean.getSiteUserId())) {
+				if (bean != null && StringUtils.isNotEmpty(bean.getSiteUserId())) {
 					UserProto.UserProfile profile = UserProto.UserProfile.newBuilder()
 							.setSiteUserId(bean.getSiteUserId()).setUserName(String.valueOf(bean.getUserName()))
 							.setUserPhoto(String.valueOf(bean.getUserPhoto())).setUserStatusValue(bean.getUserStatus())
@@ -72,6 +72,8 @@ public class HttpUserService extends AbstractRequest {
 							.newBuilder().setUserProfile(profile).build();
 					commandResponse.setParams(response.toByteArray());
 					errorCode = ErrorCode2.SUCCESS;
+				} else {
+					errorCode = ErrorCode2.ERROR2_USER_NOUSER;
 				}
 			} else {
 				errorCode = ErrorCode2.ERROR_PARAMETER;
@@ -82,7 +84,7 @@ public class HttpUserService extends AbstractRequest {
 		}
 		return commandResponse.setErrCode2(errorCode);
 	}
-	
+
 	/**
 	 * 更新用户信息
 	 * 

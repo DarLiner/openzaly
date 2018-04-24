@@ -114,7 +114,7 @@ public class Bootstrap {
 		// 更新日志级别
 		AkxLog4jManager.setLogLevel(level);
 		logger.info("{} set system log level={}", AkxProject.PLN, level);
-	}
+	} 
 
 	/**
 	 * 初始化数据源
