@@ -37,6 +37,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,17 +188,41 @@ public class BasicManageController extends AbstractController {
 				Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 				logger.info("siteUserId={} update config={}", siteUserId, dataMap);
 				Map<Integer, String> configMap = new HashMap<Integer, String>();
-				configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, dataMap.get("site_name"));
-				configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, dataMap.get("site_address"));
-				configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, dataMap.get("site_port"));
-				configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, dataMap.get("group_members_count"));
-				configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, dataMap.get("pic_path"));
-				configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
-				configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, dataMap.get("register_way"));
-				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE, dataMap.get("u2_encryption_status"));
-				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
-				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
-				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, dataMap.get("site_manager"));
+				if (StringUtils.isNotEmpty(dataMap.get("site_name"))) {
+					configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, dataMap.get("site_name"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("site_address"))) {
+					configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, dataMap.get("site_address"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("site_port"))) {
+					configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, dataMap.get("site_port"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("group_members_count"))) {
+					configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, dataMap.get("group_members_count"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("pic_path"))) {
+					configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, dataMap.get("pic_path"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("site_logo"))) {
+					configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("register_way"))) {
+					configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, dataMap.get("register_way"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
+					configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
+							dataMap.get("u2_encryption_status"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {
+					configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("log_level"))) {
+					configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
+				}
+				// 普通管理员无权限
+				if (isAdmin(siteUserId) && StringUtils.isNotEmpty(dataMap.get("site_manager"))) {
+					configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, dataMap.get("site_manager"));
+				}
 				if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
 					return SUCCESS;
 				}
