@@ -319,14 +319,6 @@ public final class CoreProto {
     MSG_STATUS(1),
     /**
      * <pre>
-     *暂时取消使用，废除字段
-     * </pre>
-     *
-     * <code>MSG_FINISH = 2;</code>
-     */
-    MSG_FINISH(2),
-    /**
-     * <pre>
      *二人文本消息
      * </pre>
      *
@@ -536,14 +528,6 @@ public final class CoreProto {
      * <code>MSG_STATUS = 1;</code>
      */
     public static final int MSG_STATUS_VALUE = 1;
-    /**
-     * <pre>
-     *暂时取消使用，废除字段
-     * </pre>
-     *
-     * <code>MSG_FINISH = 2;</code>
-     */
-    public static final int MSG_FINISH_VALUE = 2;
     /**
      * <pre>
      *二人文本消息
@@ -758,7 +742,6 @@ public final class CoreProto {
       switch (value) {
         case 0: return NOTICE;
         case 1: return MSG_STATUS;
-        case 2: return MSG_FINISH;
         case 3: return TEXT;
         case 4: return SECRET_TEXT;
         case 5: return GROUP_TEXT;
@@ -4690,379 +4673,6 @@ public final class CoreProto {
     }
 
     public com.akaxin.proto.core.CoreProto.MsgStatus getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface MsgFinishOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:core.MsgFinish)
-      com.google.protobuf.MessageOrBuilder {
-  }
-  /**
-   * <pre>
-   *作废，但是不能删除，protobuf自带需要自增的问题
-   * </pre>
-   *
-   * Protobuf type {@code core.MsgFinish}
-   */
-  public  static final class MsgFinish extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:core.MsgFinish)
-      MsgFinishOrBuilder {
-    // Use MsgFinish.newBuilder() to construct.
-    private MsgFinish(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private MsgFinish() {
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
-    }
-    private MsgFinish(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.akaxin.proto.core.CoreProto.internal_static_core_MsgFinish_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.akaxin.proto.core.CoreProto.internal_static_core_MsgFinish_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.akaxin.proto.core.CoreProto.MsgFinish.class, com.akaxin.proto.core.CoreProto.MsgFinish.Builder.class);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.akaxin.proto.core.CoreProto.MsgFinish)) {
-        return super.equals(obj);
-      }
-      com.akaxin.proto.core.CoreProto.MsgFinish other = (com.akaxin.proto.core.CoreProto.MsgFinish) obj;
-
-      boolean result = true;
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.CoreProto.MsgFinish parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.akaxin.proto.core.CoreProto.MsgFinish prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     *作废，但是不能删除，protobuf自带需要自增的问题
-     * </pre>
-     *
-     * Protobuf type {@code core.MsgFinish}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:core.MsgFinish)
-        com.akaxin.proto.core.CoreProto.MsgFinishOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.akaxin.proto.core.CoreProto.internal_static_core_MsgFinish_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.akaxin.proto.core.CoreProto.internal_static_core_MsgFinish_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.akaxin.proto.core.CoreProto.MsgFinish.class, com.akaxin.proto.core.CoreProto.MsgFinish.Builder.class);
-      }
-
-      // Construct using com.akaxin.proto.core.CoreProto.MsgFinish.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.akaxin.proto.core.CoreProto.internal_static_core_MsgFinish_descriptor;
-      }
-
-      public com.akaxin.proto.core.CoreProto.MsgFinish getDefaultInstanceForType() {
-        return com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance();
-      }
-
-      public com.akaxin.proto.core.CoreProto.MsgFinish build() {
-        com.akaxin.proto.core.CoreProto.MsgFinish result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.akaxin.proto.core.CoreProto.MsgFinish buildPartial() {
-        com.akaxin.proto.core.CoreProto.MsgFinish result = new com.akaxin.proto.core.CoreProto.MsgFinish(this);
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.akaxin.proto.core.CoreProto.MsgFinish) {
-          return mergeFrom((com.akaxin.proto.core.CoreProto.MsgFinish)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.akaxin.proto.core.CoreProto.MsgFinish other) {
-        if (other == com.akaxin.proto.core.CoreProto.MsgFinish.getDefaultInstance()) return this;
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.akaxin.proto.core.CoreProto.MsgFinish parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.akaxin.proto.core.CoreProto.MsgFinish) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:core.MsgFinish)
-    }
-
-    // @@protoc_insertion_point(class_scope:core.MsgFinish)
-    private static final com.akaxin.proto.core.CoreProto.MsgFinish DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.akaxin.proto.core.CoreProto.MsgFinish();
-    }
-
-    public static com.akaxin.proto.core.CoreProto.MsgFinish getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<MsgFinish>
-        PARSER = new com.google.protobuf.AbstractParser<MsgFinish>() {
-      public MsgFinish parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new MsgFinish(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<MsgFinish> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MsgFinish> getParserForType() {
-      return PARSER;
-    }
-
-    public com.akaxin.proto.core.CoreProto.MsgFinish getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -34125,11 +33735,6 @@ public final class CoreProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_core_MsgStatus_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_core_MsgFinish_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_core_MsgFinish_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_core_MsgText_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -34268,106 +33873,106 @@ public final class CoreProto {
       ".TransportPackageData.HeaderEntry\032-\n\013Hea" +
       "derEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\t:\0028\001" +
       "\"H\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(\t\022\022\n\nmsg_sta",
-      "tus\030\002 \001(\005\022\027\n\017msg_server_time\030\003 \001(\003\"\013\n\tMs" +
-      "gFinish\"c\n\007MsgText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014si" +
-      "te_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t" +
-      "\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\221\001\n\rMsgSecr" +
-      "etText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002" +
-      " \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001" +
-      "(\014\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001" +
-      "(\t\022\014\n\004time\030\007 \001(\003\"d\n\tGroupText\022\016\n\006msg_id\030" +
-      "\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_grou" +
-      "p_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\225",
-      "\001\n\017GroupSecretText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014si" +
-      "te_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022" +
-      "\014\n\004text\030\004 \001(\014\022\023\n\013base_ts_key\030\005 \001(\t\022\024\n\014to" +
-      "_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgIma" +
-      "ge\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
-      "\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(" +
-      "\t\022\014\n\004time\030\007 \001(\003\"\225\001\n\016MsgSecretImage\022\016\n\006ms" +
-      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site" +
-      "_friend_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\016\n\006ts_" +
-      "key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004tim",
-      "e\030\007 \001(\003\"h\n\nGroupImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
-      "\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001" +
-      "(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020Gr" +
-      "oupSecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_u" +
-      "ser_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007i" +
-      "mageId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014t" +
-      "o_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVo" +
-      "ice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(" +
-      "\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001" +
-      "(\t\022\014\n\004time\030\007 \001(\003\"\225\001\n\016MsgSecretVoice\022\016\n\006m",
-      "sg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016sit" +
-      "e_friend_id\030\003 \001(\t\022\017\n\007voicdId\030\004 \001(\t\022\016\n\006ts" +
-      "_key\030\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004ti" +
-      "me\030\007 \001(\003\"h\n\nGroupVoice\022\016\n\006msg_id\030\001 \001(\t\022\024" +
-      "\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 " +
-      "\001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020G" +
-      "roupSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_" +
-      "user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007" +
-      "voiceId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014" +
-      "to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2Ma",
-      "p\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
-      "\026\n\016site_friend_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003" +
-      "lat\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\256\001\n\013U2SecretMap\022" +
-      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n" +
-      "\016site_friend_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(" +
-      "\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006" +
-      " \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003" +
-      "\"o\n\010GroupMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_use" +
-      "r_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\013\n\003lng" +
-      "\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016Gr",
-      "oupSecretMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_use" +
-      "r_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\022\n\nbas" +
-      "e64_lng\030\004 \001(\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbas" +
-      "e64_ts_key\030\006 \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014" +
-      "\n\004time\030\010 \001(\003\"g\n\013U2MsgNotice\022\024\n\014site_user" +
-      "_id\030\001 \001(\t\022\026\n\016site_friend_id\030\002 \001(\t\022\014\n\004tex" +
-      "t\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i\n" +
-      "\016GroupMsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\025\n" +
-      "\rsite_group_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004ti" +
-      "me\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n\006",
-      "msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016si" +
-      "te_friend_id\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(" +
-      "\t\022\014\n\004time\030\005 \001(\003\"o\n\013GroupRecall\022\016\n\006msg_id" +
-      "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_gro" +
-      "up_id\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004ti" +
-      "me\030\005 \001(\003\"\204\001\n\005U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014si" +
-      "te_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t" +
-      "\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006hei" +
-      "ght\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\"\206\001\n\010GroupWeb\022\016\n\006" +
-      "msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsi",
-      "te_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005w" +
-      "idth\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014\n\004time\030\007 \001(\003" +
-      "\"k\n\013U2WebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_" +
-      "user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n" +
-      "\010web_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"m\n\016GroupWe" +
-      "bNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030" +
-      "\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\020\n\010web_code" +
-      "\030\004 \001(\t\022\014\n\004time\030\005 \001(\003*\204\003\n\tHeaderKey\022\031\n\025CL" +
-      "IENT_SOCKET_VERSION\020\000\022!\n\035CLIENT_SOCKET_S" +
-      "ITE_SESSION_ID\020\001\022%\n!CLIENT_SOCKET_PLATFO",
-      "RM_SESSION_ID\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_" +
-      "ID\020\003\022\032\n\026CLIENT_SOCKET_LANGUAGE\020\004\022\026\n\022CLIE" +
-      "NT_SOCKET_TYPE\020\005\022\033\n\026CLIENT_REQUEST_REFER" +
-      "ER\020\365\003\022\037\n\032CLIENT_REQUEST_SERVER_HOST\020\366\003\022\037" +
-      "\n\032CLIENT_REQUEST_SERVER_PORT\020\367\003\022\030\n\023SITE_" +
-      "SERVER_VERSION\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007" +
-      "\022\025\n\020SITE_SERVER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT" +
-      "_REFERER\020\271\027*\315\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nM" +
-      "SG_STATUS\020\001\022\016\n\nMSG_FINISH\020\002\022\010\n\004TEXT\020\003\022\017\n" +
-      "\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEXT\020\005\022\025\n\021GROUP_",
-      "SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014SECRET_IMAGE" +
-      "\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROUP_SECRET_IMAG" +
-      "E\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VOICE\020\014\022\017\n\013GROU" +
-      "P_VOICE\020\r\022\026\n\022GROUP_SECRET_VOICE\020\016\022\n\n\006U2_" +
-      "MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n\tGROUP_MAP\020\021\022" +
-      "\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2_NOTICE\020\023\022\020\n\014" +
-      "GROUP_NOTICE\020\024\022\r\n\tU2_RECALL\020\025\022\020\n\014GROUP_R" +
-      "ECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROUP_WEB\020\030\022\021\n\rU2" +
-      "_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_NOTICE\020\032B\"\n\025c" +
-      "om.akaxin.proto.coreB\tCoreProtob\006proto3"
+      "tus\030\002 \001(\005\022\027\n\017msg_server_time\030\003 \001(\003\"c\n\007Ms" +
+      "gText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
+      "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(" +
+      "\014\022\014\n\004time\030\005 \001(\003\"\221\001\n\rMsgSecretText\022\016\n\006msg" +
+      "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_" +
+      "friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\016\n\006ts_key\030" +
+      "\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 " +
+      "\001(\003\"d\n\tGroupText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site" +
+      "_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n" +
+      "\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\225\001\n\017GroupSecre",
+      "tText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
+      "\001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014" +
+      "\022\023\n\013base_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 " +
+      "\001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg_id\030" +
+      "\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_frie" +
+      "nd_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001" +
+      "(\003\"\225\001\n\016MsgSecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
+      "\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 " +
+      "\001(\t\022\017\n\007imageId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016" +
+      "site_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGr",
+      "oupImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id" +
+      "\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId" +
+      "\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretImag" +
+      "e\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
+      "\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022" +
+      "\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006" +
+      " \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVoice\022\016\n\006msg_id" +
+      "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_fri" +
+      "end_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 " +
+      "\001(\003\"\225\001\n\016MsgSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024",
+      "\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003" +
+      " \001(\t\022\017\n\007voicdId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n" +
+      "\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nG" +
+      "roupVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_i" +
+      "d\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceI" +
+      "d\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretVoi" +
+      "ce\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
+      "\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t" +
+      "\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030" +
+      "\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2Map\022\016\n\006msg_id\030\001",
+      " \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_frien" +
+      "d_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014\n\004" +
+      "time\030\006 \001(\003\"\256\001\n\013U2SecretMap\022\016\n\006msg_id\030\001 \001" +
+      "(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_" +
+      "id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t\022\022\n\nbase64_l" +
+      "at\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 \001(\t\022\024\n\014to_de" +
+      "vice_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"o\n\010GroupMap\022" +
+      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n" +
+      "\rsite_group_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat" +
+      "\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016GroupSecretMap\022",
+      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n" +
+      "\rsite_group_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t" +
+      "\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 " +
+      "\001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"" +
+      "g\n\013U2MsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\026\n\016" +
+      "site_friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004ti" +
+      "me\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i\n\016GroupMsgNoti" +
+      "ce\022\024\n\014site_user_id\030\001 \001(\t\022\025\n\rsite_group_i" +
+      "d\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n\006m" +
+      "sg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n\006msg_id\030\001 \001(\t\022",
+      "\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030" +
+      "\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001" +
+      "(\003\"o\n\013GroupRecall\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014sit" +
+      "e_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\025" +
+      "\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"\204\001\n\005" +
+      "U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
+      "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030" +
+      "\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014\n\004" +
+      "time\030\007 \001(\003\"\206\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(\t\022" +
+      "\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003",
+      " \001(\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n" +
+      "\006height\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\"k\n\013U2WebNoti" +
+      "ce\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
+      "\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001" +
+      "(\t\022\014\n\004time\030\005 \001(\003\"m\n\016GroupWebNotice\022\016\n\006ms" +
+      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite" +
+      "_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004tim" +
+      "e\030\005 \001(\003*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SOCKET_V" +
+      "ERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION_I" +
+      "D\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESSION_ID",
+      "\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLIEN" +
+      "T_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCKET_TYP" +
+      "E\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CLIE" +
+      "NT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_REQU" +
+      "EST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERSIO" +
+      "N\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SERV" +
+      "ER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027*\275" +
+      "\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001\022\010" +
+      "\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEXT\020" +
+      "\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014S",
+      "ECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROUP_" +
+      "SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VOIC" +
+      "E\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_VOI" +
+      "CE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n\tG" +
+      "ROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2_N" +
+      "OTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RECALL\020\025" +
+      "\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROUP_" +
+      "WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_NO" +
+      "TICE\020\032B\"\n\025com.akaxin.proto.coreB\tCorePro" +
+      "tob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34417,152 +34022,146 @@ public final class CoreProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgStatus_descriptor,
         new java.lang.String[] { "MsgId", "MsgStatus", "MsgServerTime", });
-    internal_static_core_MsgFinish_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_core_MsgFinish_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_core_MsgFinish_descriptor,
-        new java.lang.String[] { });
     internal_static_core_MsgText_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_core_MsgText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Text", "Time", });
     internal_static_core_MsgSecretText_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_core_MsgSecretText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Text", "TsKey", "SiteDeviceId", "Time", });
     internal_static_core_GroupText_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_core_GroupText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "Time", });
     internal_static_core_GroupSecretText_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_core_GroupSecretText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "BaseTsKey", "ToDeviceId", "Time", });
     internal_static_core_MsgImage_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_core_MsgImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "ImageId", "Time", });
     internal_static_core_MsgSecretImage_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_core_MsgSecretImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "ImageId", "TsKey", "SiteDeviceId", "Time", });
     internal_static_core_GroupImage_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_core_GroupImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "ImageId", "Time", });
     internal_static_core_GroupSecretImage_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_core_GroupSecretImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "ImageId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_MsgVoice_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_core_MsgVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "VoiceId", "Time", });
     internal_static_core_MsgSecretVoice_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_core_MsgSecretVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "VoicdId", "TsKey", "SiteDeviceId", "Time", });
     internal_static_core_GroupVoice_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_core_GroupVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "VoiceId", "Time", });
     internal_static_core_GroupSecretVoice_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_core_GroupSecretVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "VoiceId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_U2Map_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_core_U2Map_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2Map_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Lng", "Lat", "Time", });
     internal_static_core_U2SecretMap_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_core_U2SecretMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2SecretMap_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Base64Lng", "Base64Lat", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupMap_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_core_GroupMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupMap_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Lng", "Lat", "Time", });
     internal_static_core_GroupSecretMap_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_core_GroupSecretMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretMap_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Base64Lng", "Base64Lat", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_U2MsgNotice_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_core_U2MsgNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2MsgNotice_descriptor,
         new java.lang.String[] { "SiteUserId", "SiteFriendId", "Text", "Time", "MsgId", });
     internal_static_core_GroupMsgNotice_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_core_GroupMsgNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupMsgNotice_descriptor,
         new java.lang.String[] { "SiteUserId", "SiteGroupId", "Text", "Time", "MsgId", });
     internal_static_core_U2Recall_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_core_U2Recall_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2Recall_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "RecallMsgId", "Time", });
     internal_static_core_GroupRecall_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_core_GroupRecall_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupRecall_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "RecallMsgId", "Time", });
     internal_static_core_U2Web_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_core_U2Web_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2Web_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Width", "Height", "Time", });
     internal_static_core_GroupWeb_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_core_GroupWeb_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupWeb_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Width", "Height", "Time", });
     internal_static_core_U2WebNotice_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_core_U2WebNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2WebNotice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Time", });
     internal_static_core_GroupWebNotice_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_core_GroupWebNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupWebNotice_descriptor,
