@@ -27,11 +27,13 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImSyncMessageProto;
+import com.akaxin.site.message.bean.WebBean;
 import com.akaxin.site.message.utils.NumUtils;
 import com.akaxin.site.storage.api.IGroupDao;
 import com.akaxin.site.storage.api.IMessageDao;
@@ -42,6 +44,12 @@ import com.google.protobuf.ByteString;
 
 import io.netty.channel.Channel;
 
+/**
+ * 同步群组消息
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-24 20:47:59
+ */
 public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(SyncGroupMessageHandler.class);
 	private static final int SYNC_MAX_MESSAGE_COUNT = 100;
@@ -153,6 +161,28 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 							.setPointer(bean.getId()).setType(MsgType.GROUP_NOTICE).setGroupMsgNotice(groupNotice)
 							.build();
 					requestBuilder.addList(groupMsgNotice);
+					break;
+				case CoreProto.MsgType.GROUP_WEB_VALUE:
+					WebBean webBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
+					CoreProto.GroupWeb groupWeb = CoreProto.GroupWeb.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteGroupId(bean.getSiteGroupId())
+							.setWebCode(webBean.getWebCode()).setHeight(webBean.getHeight())
+							.setWidth(webBean.getWidth()).setTime(bean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer groupWebMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setPointer(bean.getId()).setType(MsgType.GROUP_WEB).setGroupWeb(groupWeb).build();
+					requestBuilder.addList(groupWebMsg);
+					break;
+				case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
+					CoreProto.GroupWebNotice groupWebNotice = CoreProto.GroupWebNotice.newBuilder()
+							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteGroupId(bean.getSiteGroupId()).setWebCode(bean.getContent())
+							.setTime(bean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer groupWebNoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setPointer(bean.getId()).setType(MsgType.GROUP_WEB_NOTICE)
+							.setGroupWebNotice(groupWebNotice).build();
+					requestBuilder.addList(groupWebNoticeMsg);
+					break;
+				default:
 					break;
 				}
 			} catch (Exception e) {

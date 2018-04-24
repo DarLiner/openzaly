@@ -26,6 +26,8 @@ import com.akaxin.site.message.group.handler.GroupMessageImageHandler;
 import com.akaxin.site.message.group.handler.GroupMessageNoticeHandler;
 import com.akaxin.site.message.group.handler.GroupMessageTextHandler;
 import com.akaxin.site.message.group.handler.GroupMessageVoiceHandler;
+import com.akaxin.site.message.group.handler.GroupMessageWebHandler;
+import com.akaxin.site.message.group.handler.GroupMessageWebNoticeHandler;
 import com.akaxin.site.message.group.handler.GroupPsnHandler;
 import com.akaxin.site.message.group.handler.GroupPushHandler;
 import com.akaxin.site.message.notice.handler.NoticeHandler;
@@ -40,6 +42,8 @@ import com.akaxin.site.message.user2.handler.U2MessageTextHandler;
 import com.akaxin.site.message.user2.handler.U2MessageTextSecretHandler;
 import com.akaxin.site.message.user2.handler.U2MessageVoiceHandler;
 import com.akaxin.site.message.user2.handler.U2MessageVoiceSecretHandler;
+import com.akaxin.site.message.user2.handler.U2MessageWebHandler;
+import com.akaxin.site.message.user2.handler.U2MessageWebNoticeHandler;
 import com.akaxin.site.message.user2.handler.UserDetectionHandler;
 import com.akaxin.site.message.user2.handler.UserPsnHandler;
 import com.akaxin.site.message.user2.handler.UserPushHandler;
@@ -62,6 +66,8 @@ public class MessageExecutor {
 		u2MessageChain.addHandler(new U2MessageVoiceHandler());
 		u2MessageChain.addHandler(new U2MessageVoiceSecretHandler());
 		u2MessageChain.addHandler(new U2MessageNoticeHandler());
+		u2MessageChain.addHandler(new U2MessageWebHandler());
+		u2MessageChain.addHandler(new U2MessageWebNoticeHandler());
 		u2MessageChain.addHandler(new UserPsnHandler());
 		u2MessageChain.addHandler(new UserPushHandler());
 
@@ -71,6 +77,8 @@ public class MessageExecutor {
 		groupMessageChain.addHandler(new GroupMessageImageHandler());
 		groupMessageChain.addHandler(new GroupMessageVoiceHandler());
 		groupMessageChain.addHandler(new GroupMessageNoticeHandler());
+		groupMessageChain.addHandler(new GroupMessageWebHandler());
+		groupMessageChain.addHandler(new GroupMessageWebNoticeHandler());
 		groupMessageChain.addHandler(new GroupPsnHandler());
 		groupMessageChain.addHandler(new GroupPushHandler());
 

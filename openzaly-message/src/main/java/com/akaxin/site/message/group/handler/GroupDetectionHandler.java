@@ -19,14 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
-import com.akaxin.common.command.RedisCommand;
-import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
-import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
-import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.dao.ImUserGroupDao;
 import com.akaxin.site.storage.bean.GroupProfileBean;
@@ -84,6 +79,7 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 			}
 			// 群消息设置siteGroupId
 			command.setSiteGroupId(siteGroupId);
+			command.setMsgType(type);
 
 			if (StringUtils.isAnyEmpty(command.getSiteUserId(), command.getSiteGroupId())) {
 				return false;
@@ -105,22 +101,28 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 		return false;
 	}
 
-//	private void response(Command command, String from, String to, String msgId) {
-//		logger.info("Group detection error response to client:{}", "用户不是群成员，不能发送消息");
-//		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(-2).build();
-//
-//		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-//				.setType(MsgType.MSG_STATUS).setStatus(status).build();
-//
-//		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-//				.addList(statusMsg).build();
-//
-//		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
-//				.setData(request.toByteString()).build();
-//
-//		ChannelWriter.writeByDeviceId(command.getDeviceId(), new RedisCommand().add(CommandConst.PROTOCOL_VERSION)
-//				.add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
-//	}
+	// private void response(Command command, String from, String to, String msgId)
+	// {
+	// logger.info("Group detection error response to client:{}", "用户不是群成员，不能发送消息");
+	// CoreProto.MsgStatus status =
+	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(-2).build();
+	//
+	// ImStcMessageProto.MsgWithPointer statusMsg =
+	// ImStcMessageProto.MsgWithPointer.newBuilder()
+	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
+	//
+	// ImStcMessageProto.ImStcMessageRequest request =
+	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
+	// .addList(statusMsg).build();
+	//
+	// CoreProto.TransportPackageData data =
+	// CoreProto.TransportPackageData.newBuilder()
+	// .setData(request.toByteString()).build();
+	//
+	// ChannelWriter.writeByDeviceId(command.getDeviceId(), new
+	// RedisCommand().add(CommandConst.PROTOCOL_VERSION)
+	// .add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+	// }
 
 	private boolean checkGroupStatus(String groupId) {
 		try {

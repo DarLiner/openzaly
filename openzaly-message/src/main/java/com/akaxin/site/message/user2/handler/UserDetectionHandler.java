@@ -91,6 +91,7 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 
 			command.setSiteUserId(siteUserId);
 			command.setSiteFriendId(siteFriendId);
+			command.setMsgType(type);
 
 			if (checkUser(siteUserId, siteFriendId)) {
 				return true;

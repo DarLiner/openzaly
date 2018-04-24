@@ -28,11 +28,13 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImSyncMessageProto;
+import com.akaxin.site.message.bean.WebBean;
 import com.akaxin.site.message.utils.NumUtils;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
@@ -42,7 +44,7 @@ import com.google.protobuf.ByteString;
 import io.netty.channel.Channel;
 
 /**
- * 用户同步个人消息处理类
+ * 同步二人消息
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-02-08 17:08:47
@@ -106,7 +108,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setText(ByteString.copyFromUtf8(bean.getContent())).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer textMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.TEXT).setPointer(bean.getId()).setText(MsgText).build();
-					// logger.info("[Syncing U2] text message OK. bean={}", u2Bean);
 					requestBuilder.addList(textMsg);
 					break;
 				case CoreProto.MsgType.SECRET_TEXT_VALUE:
@@ -118,8 +119,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_TEXT).setPointer(bean.getId()).setSecretText(secretText).build();
-					// logger.info("[Syncing U2] secret text message OK. bean={}",
-					// u2Bean);
 					requestBuilder.addList(secretTextMsg);
 					break;
 				case CoreProto.MsgType.IMAGE_VALUE:
@@ -129,7 +128,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setImageId(bean.getContent()).build();
 					ImStcMessageProto.MsgWithPointer imageMsgWithPointer = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.IMAGE).setPointer(bean.getId()).setImage(msgImage).build();
-					// logger.info("[Syncing U2] image message OK. bean={}", u2Bean);
 					requestBuilder.addList(imageMsgWithPointer);
 					break;
 				case CoreProto.MsgType.SECRET_IMAGE_VALUE:
@@ -140,8 +138,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_IMAGE).setPointer(bean.getId()).setSecretImage(secretImage).build();
-					// logger.info("[Syncing U2] secret image message OK. bean={}",
-					// u2Bean);
 					requestBuilder.addList(secretImageMsg);
 					break;
 				case CoreProto.MsgType.VOICE_VALUE:
@@ -150,7 +146,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setVoiceId(bean.getContent()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer voiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.VOICE).setPointer(bean.getId()).setVoice(voice).build();
-					// logger.info("[Syncing U2] voice message OK. bean={0}", u2Bean);
 					requestBuilder.addList(voiceMsg);
 					break;
 				case CoreProto.MsgType.SECRET_VOICE_VALUE:
@@ -161,8 +156,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_VOICE).setPointer(bean.getId()).setSecretVoice(secretVoice).build();
-					// logger.info("[Syncing U2] secret voice message OK. bean={}",
-					// u2Bean);
 					requestBuilder.addList(secretVoiceMsg);
 					break;
 				case CoreProto.MsgType.U2_NOTICE_VALUE:
@@ -172,6 +165,25 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					ImStcMessageProto.MsgWithPointer u2NoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.U2_NOTICE).setU2MsgNotice(u2Notice).build();
 					requestBuilder.addList(u2NoticeMsg);
+					break;
+				case CoreProto.MsgType.U2_WEB_VALUE:
+					WebBean webBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
+					CoreProto.U2Web u2Web = CoreProto.U2Web.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setHeight(webBean.getHeight()).setWidth(webBean.getWidth())
+							.setWebCode(webBean.getWebCode()).setTime(bean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer u2WebMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setPointer(bean.getId()).setType(MsgType.U2_WEB).setU2Web(u2Web).build();
+					requestBuilder.addList(u2WebMsg);
+					break;
+				case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
+					CoreProto.U2WebNotice u2WebNotice = CoreProto.U2WebNotice.newBuilder().setMsgId(bean.getMsgId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setWebCode(bean.getContent()).setTime(bean.getMsgTime()).build();
+					ImStcMessageProto.MsgWithPointer u2WebNoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
+							.setPointer(bean.getId()).setType(MsgType.U2_WEB_NOTICE).setU2WebNotice(u2WebNotice)
+							.build();
+					requestBuilder.addList(u2WebNoticeMsg);
 					break;
 				default:
 					logger.error("Message type error! when sync to client bean={}", bean);

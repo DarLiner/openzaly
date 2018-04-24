@@ -189,6 +189,15 @@ public class Command {
 		return this.getField(CommandConst.CLIENT_IP, String.class);
 	}
 
+	public Command setMsgType(int msgType) {
+		this.fields.put(CommandConst.MSG_TYPE, msgType);
+		return this;
+	}
+
+	public int getMsgType() {
+		return this.getField(CommandConst.MSG_TYPE, Integer.class);
+	}
+
 	public Command setStartTime(long time) {
 		this.fields.put(CommandConst.START_TIME, time);
 		return this;
