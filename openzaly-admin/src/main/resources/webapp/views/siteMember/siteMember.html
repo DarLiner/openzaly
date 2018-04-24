@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
+    <meta charset="UTF-8">
     <title>用户广场</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
@@ -112,6 +113,8 @@
 <body ontouchstart=''>
 <div class="weui-cells margin_top_30px" id='member-lists'>
 </div>
+
+
 <input type='hidden' id='init_url' url-data="/site_member/pullMemberList"/>
 <input type='hidden' id='site_user_id' th:attr="data=${site_user_id},user-name=${site_user_name}"/>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
@@ -207,7 +210,7 @@
                     "apply_reason": text
                 };
                 reqUrl(url, JSON.stringify(userInfo), "applyAddFriend");
-                $.closeModal();
+
             },
             onCancel: function () {
                 console.log('cancle');
@@ -233,7 +236,7 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var params = {
-            "page": page
+            "page": page.toString()
         };
         reqUrl(reqUri, JSON.stringify(params), 'addMemberToList');
         loading = true;
@@ -245,8 +248,8 @@
     }
 
     function addMemberToList(results) {
-        results = eval("("+results+")");
-        var data = results.data;
+        results = eval("(" + results + ")");
+        var data = results.Data;
         var html = '';
         var currentSiteUserId = $('#site_user_id').attr('data');
         $.each(data, function (index, user) {
@@ -263,10 +266,17 @@
     }
 
     function applyAddFriend(result) {
-        if (result == 'success') {
+        result = eval("(" + result + ")");
+
+        if (result[0] == '成功') {
             $.toast("发送请求成功");
+            var $1 = $('[data=' + result[1] + ']');
+            $1.attr("style", "color:#9b9b9b;font-size:14px;");
+            $1.attr("class", "");
+            $1.html("等待通过");
+
         } else {
-            $.toast(result, "forbidden");
+            $.toast(result[0], "forbidden");
         }
     }
 </script>
