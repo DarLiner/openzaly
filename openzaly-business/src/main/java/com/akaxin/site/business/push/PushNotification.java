@@ -54,7 +54,9 @@ public class PushNotification {
 					String port = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_PORT);
 					notification.setSiteServer(address + ":" + port);
 					notification.setPushFromId(siteUserId);
-					notification.setPushFromName(subTitle);
+					if (StringUtils.isNotEmpty(subTitle)) {
+						notification.setPushFromName(subTitle);
+					}
 					notification.setPushAlert(pushContent);
 					notification.setPushGoto(pushGoto);
 

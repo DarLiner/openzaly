@@ -13,7 +13,7 @@ import com.akaxin.site.storage.bean.SimpleUserBean;
  * @since 2018-04-25 17:41:20
  */
 public class PushText {
-	private static String ADD_FRIEND_TEXT = "{}申请添加你为好友";
+	private static String ADD_FRIEND_TEXT = "{} 申请添加你为好友";
 	private static String DEFAULT_ADD_FRIEND_TEXT = "你收到一条好友申请";
 
 	public static String addFriendText(String siteUserId) {
