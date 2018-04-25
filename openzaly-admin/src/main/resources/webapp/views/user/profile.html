@@ -287,7 +287,7 @@
                 var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
             }
             $('#uploaderFiles').html(img);
-            $('.pic_num').html('1/1');
+            $('.weui-uploader__info').html('1/1');
         } else {
             $.toast('上传图片失败', 'forbidden');
         }
