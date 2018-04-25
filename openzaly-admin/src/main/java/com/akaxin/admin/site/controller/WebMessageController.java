@@ -25,7 +25,7 @@ public class WebMessageController extends AbstractController {
 
 	@RequestMapping("/index")
 	public ModelAndView toIndex() {
-		return new ModelAndView("/webMsg/test");
+		return new ModelAndView("webMsg/test");
 	}
 
 	@RequestMapping("/testU2Web")
