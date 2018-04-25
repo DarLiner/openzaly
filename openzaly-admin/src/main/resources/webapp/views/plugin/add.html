@@ -121,7 +121,7 @@
                 <label class="weui-label">允许访问的IP</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input allow_ip" type="text" pattern="[0-9]*" placeholder="输入允许访问的IP地址, 用逗号隔开">
+                <input class="weui-input allow_ip" type="text" pattern="(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)" placeholder="输入允许访问的IP地址, 用逗号隔开">
             </div>
         </div>
         <a class="weui-cell weui-cell_access position" href="javascript:;">
@@ -366,7 +366,7 @@
                 var img = '<li class="weui-uploader__file plugin_icon" plugin-icon="' + imageId + '"><img src="' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
             }
             $('#uploaderFiles').html(img);
-            $('.pic_num').html('1/1');
+            $('.weui-uploader__info').html('1/1');
         } else {
             $.toast('上传图片失败', 'forbidden');
         }
