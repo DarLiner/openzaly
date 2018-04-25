@@ -20,6 +20,29 @@ import com.google.protobuf.InvalidProtocolBufferException;
 @RequestMapping("webMessage")
 public class WebMessageController extends AbstractController {
 
+	private String WEB_DEMO_CODE = "<!DOCTYPE html>" + "<html lang='en'>" + "" + "<head>" + "    <meta charset='UTF-8'>"
+			+ "    <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=0'>"
+			+ "    <title>测试WEB消息</title>"
+			+ "    <link rel='stylesheet' href='https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css'/>"
+			+ "    <link rel='stylesheet' href='https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css'/>"
+			+ "    <style type='text/css'>" + "        .icon-box {" + "            margin-bottom: 25px;"
+			+ "            display: -webkit-box;" + "            display: -webkit-flex;" + "            display: flex;"
+			+ "            -webkit-box-align: center;" + "            -webkit-align-items: center;"
+			+ "            align-items: center" + "        }" + "" + "        .icon-box i {"
+			+ "            margin-right: 18px" + "        }" + "" + "        .icon-box__ctn {"
+			+ "            -webkit-flex-shrink: 100;" + "            flex-shrink: 100" + "        }" + ""
+			+ "        .icon-box__title {" + "            font-weight: 400" + "        }" + ""
+			+ "        .icon-box__desc {" + "            margin-top: 6px;" + "            font-size: 12px;"
+			+ "            color: #888" + "        }" + "" + "        .icon_sp_area {" + "            margin-top: 10px;"
+			+ "            text-align: left" + "        }" + "" + "        .icon_sp_area i:before {"
+			+ "            margin-bottom: 5px" + "        }" + "    </style>" + "</head>" + ""
+			+ "<body ontouchstart=''>" + "<header class='basic-header'>" + "    <h1 class='basic-title'>站点管理后台</h1>"
+			+ "</header>" + "<div class='basic-content-padded'>" + "    <div class='icon-box'>"
+			+ "        <i class='weui-icon-warn weui-icon_msg'></i>" + "        <div class='icon-box__ctn'>"
+			+ "            <h3 class='icon-box__title'>无操作权限</h3>"
+			+ "            <p class='icon-box__desc'>您不是当前站点的管理员，不能进行该操作！</p>" + "        </div>" + "    </div>"
+			+ "</div>" + "</body>" + "" + "</html>";
+
 	@Resource(name = "messageManageService")
 	private IMessageManageService messageService;
 
@@ -44,7 +67,7 @@ public class WebMessageController extends AbstractController {
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
 		bean.setHeight(200);
 		bean.setWidth(100);
-		bean.setWebCode("<div>测试u2web消息</div>");
+		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteAdmin);
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
@@ -66,7 +89,7 @@ public class WebMessageController extends AbstractController {
 
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
-		bean.setWebCode("<div>测试u2web消息</div>");
+		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteAdmin);
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
@@ -88,7 +111,7 @@ public class WebMessageController extends AbstractController {
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteUserId));
 		bean.setHeight(200);
 		bean.setWidth(100);
-		bean.setWebCode("<div>测试GroupWeb消息</div>");
+		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteUserId);
 		bean.setSiteGroupId("10000");
 		bean.setMsgTime(System.currentTimeMillis());
@@ -108,7 +131,7 @@ public class WebMessageController extends AbstractController {
 
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteUserId));
-		bean.setWebCode("<div>测试GroupWeb消息</div>");
+		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteUserId);
 		bean.setSiteGroupId("10000");
 		bean.setMsgTime(System.currentTimeMillis());
