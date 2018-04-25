@@ -27,6 +27,7 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.business.constant.NoticeText;
+import com.akaxin.site.business.push.PushNotification;
 import com.akaxin.site.message.api.IMessageService;
 import com.akaxin.site.message.service.ImMessageService;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
@@ -52,7 +53,10 @@ public class User2Notice {
 		ImStcNoticeProto.ImStcNoticeRequest noticeRequest = ImStcNoticeProto.ImStcNoticeRequest.newBuilder()
 				.setType(ImStcNoticeProto.NoticeType.APPLY_FRIEND).build();
 		command.setParams(noticeRequest.toByteArray());
+		// 发送im.stc.notice消息
 		boolean result = imService.execute(command);
+		// 同时下发一条PUSH消息
+		PushNotification.sendAddFriend(siteUserId, siteFriendId);
 		logger.debug("siteUserId={} apply friend notice friendId={} result={}", siteUserId, siteFriendId, result);
 	}
 

@@ -22,9 +22,12 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
+import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.dao.ImUserGroupDao;
+import com.akaxin.site.message.dao.ImUserProfileDao;
 import com.akaxin.site.storage.bean.GroupProfileBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 
 /**
  * <pre>
@@ -85,7 +88,7 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 				return false;
 			}
 
-			if (checkGroupStatus(siteGroupId) && isGroupMember(siteUserId, siteGroupId)) {
+			if (check(siteUserId, siteGroupId)) {
 				return true;
 			} else {
 				logger.warn("client={} siteUserId={} is not group={} member", command.getClientIp(), siteUserId,
@@ -101,29 +104,26 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 		return false;
 	}
 
-	// private void response(Command command, String from, String to, String msgId)
-	// {
-	// logger.info("Group detection error response to client:{}", "用户不是群成员，不能发送消息");
-	// CoreProto.MsgStatus status =
-	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(-2).build();
-	//
-	// ImStcMessageProto.MsgWithPointer statusMsg =
-	// ImStcMessageProto.MsgWithPointer.newBuilder()
-	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
-	//
-	// ImStcMessageProto.ImStcMessageRequest request =
-	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
-	// .addList(statusMsg).build();
-	//
-	// CoreProto.TransportPackageData data =
-	// CoreProto.TransportPackageData.newBuilder()
-	// .setData(request.toByteString()).build();
-	//
-	// ChannelWriter.writeByDeviceId(command.getDeviceId(), new
-	// RedisCommand().add(CommandConst.PROTOCOL_VERSION)
-	// .add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
-	// }
+	private boolean check(String siteUserId, String siteGroupId) {
+		return checkUser(siteUserId) && checkGroupStatus(siteGroupId) && isGroupMember(siteUserId, siteGroupId);
+	}
 
+	// 1.检测用户状态是否正常（被封禁用户）
+	private boolean checkUser(String siteUserId) {
+		// 检测发送者的状态
+		SimpleUserBean userBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
+		if (userBean != null) {
+			if (userBean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	// 2.检测群状态，是否为被删除群
 	private boolean checkGroupStatus(String groupId) {
 		try {
 			GroupProfileBean bean = ImUserGroupDao.getInstance().getGroupProfile(groupId);
@@ -138,6 +138,7 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 		return false;
 	}
 
+	// 3.检测是否为群成员，可以发送群消息
 	private boolean isGroupMember(String siteUserId, String groupId) {
 		return ImUserGroupDao.getInstance().isGroupMember(siteUserId, groupId);
 	}

@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.message.user2.handler;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,11 +46,11 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
-
 			String siteUserId = null;
 			String siteFriendId = null;
 			String msgId = null;
 			int type = request.getType().getNumber();
+
 			switch (type) {
 			case CoreProto.MsgType.TEXT_VALUE:
 				siteUserId = request.getText().getSiteUserId();
@@ -89,7 +88,6 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 				break;
 			}
 
-			command.setSiteUserId(siteUserId);
 			command.setSiteFriendId(siteFriendId);
 			command.setMsgType(type);
 
@@ -110,8 +108,9 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 	/**
 	 * <pre>
 	 * 检测消息是否可以发送:
-	 * 		1.消息接受者是否为正常用户
-	 * 		2.二者是否为好友关系
+	 * 		1.消息发送者是否为正常用户
+	 * 		2.消息接受者是否为正常用户
+	 * 		3.二者是否为好友关系
 	 * </pre>
 	 * 
 	 * @param siteUserId
@@ -120,14 +119,27 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 	 */
 	private boolean checkUser(String siteUserId, String siteFriendId) {
 		try {
-			SimpleUserBean bean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFriendId);
-			if (bean != null && StringUtils.isNotEmpty(bean.getUserId())) {
-				if (bean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
+			// 检测发送者的状态
+			SimpleUserBean userBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
+			if (userBean != null) {
+				if (userBean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
 					return false;
 				}
 			} else {
 				return false;
 			}
+
+			// 检测接受者的状态
+			SimpleUserBean friendBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFriendId);
+			if (friendBean != null) {
+				if (friendBean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+
+			// 检测是否为好友关系
 			if (!ImUserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
 				return false;
 			}

@@ -123,6 +123,15 @@ public class SiteConfig {
 		return regway == null ? ConfigProto.RegisterWay.ANONYMOUS : regway;
 	}
 
+	public static String getSiteAddress() {
+		if (getConfigMap() != null) {
+			String siteHost = getConfigMap().get(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE);
+			String sitePort = getConfigMap().get(ConfigProto.ConfigKey.SITE_PORT_VALUE);
+			return siteHost + ":" + sitePort;
+		}
+		return null;
+	}
+
 	/**
 	 * 获取超级管理员
 	 * 
