@@ -51,7 +51,7 @@ public class AkxLog4jManager {
 				Logger logger = logEnum.nextElement();
 				logger.setLevel(level);
 			}
-			logger.info("set LogLevel=" + level);
+			logger.info("set site server log_level=" + level);
 		} catch (Exception e) {
 			logger.error("update log4j level=" + level + " error", e);
 		}
