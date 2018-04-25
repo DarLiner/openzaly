@@ -50,6 +50,8 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.U2_MAP_VALUE:
 				case CoreProto.MsgType.U2_SECRET_MAP_VALUE:
 				case CoreProto.MsgType.U2_NOTICE_VALUE:
+				case CoreProto.MsgType.U2_WEB_VALUE:
+				case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
 					MessageExecutor.getExecutor().execute("im.cts.message.u2", command);
 					return true;
 				case CoreProto.MsgType.GROUP_TEXT_VALUE:
@@ -61,6 +63,8 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.GROUP_MAP_VALUE:
 				case CoreProto.MsgType.GROUP_SECRET_MAP_VALUE:
 				case CoreProto.MsgType.GROUP_NOTICE_VALUE:
+				case CoreProto.MsgType.GROUP_WEB_VALUE:
+				case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
 					MessageExecutor.getExecutor().execute("im.cts.message.group", command);
 					return true;
 				}

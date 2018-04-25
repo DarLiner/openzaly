@@ -21,8 +21,6 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.akaxin.admin.site.OpenzalyAdminApplication;
 import com.akaxin.common.command.Command;
@@ -95,12 +93,12 @@ public class Bootstrap {
 			startHttpServer(httpAddress, httpPort);
 			startNettyServer(siteAddress, sitePort);
 
-			 // start spring
+			// start spring
 			OpenzalyAdminApplication.main(args);
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
-			System.exit(-1);// 直接退出程序
 			logger.error("openzaly-boot exit!!!");
+			System.exit(-1);// 直接退出程序
 		}
 	}
 
@@ -114,7 +112,7 @@ public class Bootstrap {
 		// 更新日志级别
 		AkxLog4jManager.setLogLevel(level);
 		logger.info("{} set system log level={}", AkxProject.PLN, level);
-	} 
+	}
 
 	/**
 	 * 初始化数据源
