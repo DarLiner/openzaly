@@ -49,7 +49,7 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
 			int type = request.getType().getNumber();
-
+			command.setMsgType(type);
 			String siteUserId = null;
 			String siteGroupId = null;
 			String gmsgId = null;
@@ -76,14 +76,25 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 				break;
 			case CoreProto.MsgType.GROUP_NOTICE_VALUE:
 				siteGroupId = request.getGroupMsgNotice().getSiteGroupId();
+				command.setSiteGroupId(siteGroupId);
+				// 系统下发的消息，直接return true；
+				return true;
+			case CoreProto.MsgType.GROUP_WEB_VALUE:
+				siteGroupId = request.getGroupWeb().getSiteGroupId();
+				command.setSiteGroupId(siteGroupId);
+				// 系统下发的消息，直接return true；
+				return true;
+			case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
+				siteGroupId = request.getGroupWebNotice().getSiteGroupId();
+				command.setSiteGroupId(siteGroupId);
+				// 系统下发的消息，直接return true；
 				return true;
 			default:
 				break;
 			}
 			// 群消息设置siteGroupId
 			command.setSiteGroupId(siteGroupId);
-			command.setMsgType(type);
-
+			
 			if (StringUtils.isAnyEmpty(command.getSiteUserId(), command.getSiteGroupId())) {
 				return false;
 			}

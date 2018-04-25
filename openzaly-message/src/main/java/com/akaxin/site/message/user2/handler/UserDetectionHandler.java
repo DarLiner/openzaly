@@ -46,50 +46,51 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
-			String siteUserId = null;
+			String siteUserId = command.getSiteUserId();
 			String siteFriendId = null;
 			String msgId = null;
 			int type = request.getType().getNumber();
+			command.setMsgType(type);
 
 			switch (type) {
 			case CoreProto.MsgType.TEXT_VALUE:
-				siteUserId = request.getText().getSiteUserId();
 				siteFriendId = request.getText().getSiteFriendId();
 				msgId = request.getText().getMsgId();
 				break;
 			case CoreProto.MsgType.SECRET_TEXT_VALUE:
-				siteUserId = request.getSecretText().getSiteUserId();
 				siteFriendId = request.getSecretText().getSiteFriendId();
 				msgId = request.getSecretText().getMsgId();
 				break;
 			case CoreProto.MsgType.IMAGE_VALUE:
-				siteUserId = request.getImage().getSiteUserId();
 				siteFriendId = request.getImage().getSiteFriendId();
 				msgId = request.getImage().getMsgId();
 				break;
 			case CoreProto.MsgType.SECRET_IMAGE_VALUE:
-				siteUserId = request.getSecretImage().getSiteUserId();
 				siteFriendId = request.getSecretImage().getSiteFriendId();
 				msgId = request.getSecretImage().getMsgId();
 				break;
 			case CoreProto.MsgType.VOICE_VALUE:
-				siteUserId = request.getVoice().getSiteUserId();
 				siteFriendId = request.getVoice().getSiteFriendId();
 				msgId = request.getVoice().getMsgId();
 				break;
 			case CoreProto.MsgType.SECRET_VOICE_VALUE:
-				siteUserId = request.getSecretVoice().getSiteUserId();
 				siteFriendId = request.getSecretVoice().getSiteFriendId();
 				msgId = request.getSecretVoice().getMsgId();
 				break;
 			case CoreProto.MsgType.U2_NOTICE_VALUE:
-				break;
+				// 通知消息不需要返回response
+				command.setMsgType(type);
+				return true;
+			case CoreProto.MsgType.U2_WEB_VALUE:
+				return true;
+			case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
+				return true;
 			default:
-				break;
+				logger.error("it's a unsupport type message cmd={} request={}", command.toString(), request.toString());
+				return false;
 			}
 
 			command.setSiteFriendId(siteFriendId);
-			command.setMsgType(type);
 
 			if (checkUser(siteUserId, siteFriendId)) {
 				return true;

@@ -30,7 +30,7 @@ public class WebMessageController extends AbstractController {
 
 	@RequestMapping("/testU2Web")
 	@ResponseBody
-	public void u2WebMessage(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
+	public String u2WebMessage(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
@@ -50,11 +50,12 @@ public class WebMessageController extends AbstractController {
 		bean.setMsgTime(System.currentTimeMillis());
 		messageService.sendU2WebMessage(bean);
 
+		return SUCCESS;
 	}
 
 	@RequestMapping("/testU2WebNotice")
 	@ResponseBody
-	public void u2WebNotice(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
+	public String u2WebNotice(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
@@ -70,6 +71,8 @@ public class WebMessageController extends AbstractController {
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
 		messageService.sendU2WebNoticeMessage(bean);
+
+		return SUCCESS;
 	}
 
 	@RequestMapping("/testGroupWeb")
@@ -94,7 +97,7 @@ public class WebMessageController extends AbstractController {
 
 	@RequestMapping("/testGroupWebNotice")
 	@ResponseBody
-	public void groupWebNotice(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
+	public String groupWebNotice(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
@@ -110,5 +113,7 @@ public class WebMessageController extends AbstractController {
 		bean.setSiteGroupId("10000");
 		bean.setMsgTime(System.currentTimeMillis());
 		messageService.sendGroupWebNoticeMessage(bean);
+
+		return SUCCESS;
 	}
 }
