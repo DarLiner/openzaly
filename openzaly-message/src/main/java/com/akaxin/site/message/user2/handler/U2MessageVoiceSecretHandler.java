@@ -18,32 +18,31 @@ package com.akaxin.site.message.user2.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
-import com.akaxin.common.command.RedisCommand;
-import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
-import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
-import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
-import io.netty.channel.Channel;
-
+/**
+ * 二人加密语音
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 15:11:42
+ */
 public class U2MessageVoiceSecretHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageVoiceSecretHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
 		try {
-			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
-					.parseFrom(command.getParams());
-			int type = request.getType().getNumber();
+			int type = command.getMsgType();
 
 			if (CoreProto.MsgType.SECRET_VOICE_VALUE == type) {
+				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
+						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String msgId = request.getSecretVoice().getMsgId();

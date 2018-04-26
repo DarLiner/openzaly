@@ -26,6 +26,12 @@ import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
+/**
+ * 群通知消息
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 15:13:24
+ */
 public class GroupMessageNoticeHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupMessageNoticeHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
@@ -33,11 +39,11 @@ public class GroupMessageNoticeHandler extends AbstractGroupHandler<Command> {
 	@Override
 	public Boolean handle(Command command) {
 		try {
-			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
-					.parseFrom(command.getParams());
-			int type = request.getType().getNumber();
+			int type = command.getMsgType();
 
 			if (CoreProto.MsgType.GROUP_NOTICE_VALUE == type) {
+				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
+						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String groupId = request.getGroupMsgNotice().getSiteGroupId();
 				String groupNoticeText = request.getGroupMsgNotice().getText().toStringUtf8();

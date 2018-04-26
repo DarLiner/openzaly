@@ -18,32 +18,31 @@ package com.akaxin.site.message.user2.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
-import com.akaxin.common.command.RedisCommand;
-import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.logs.LogUtils;
-import com.akaxin.proto.client.ImStcMessageProto;
 import com.akaxin.proto.core.CoreProto;
-import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
-import io.netty.channel.Channel;
-
+/**
+ * 二人语音消息
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 15:10:20
+ */
 public class U2MessageVoiceHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageVoiceHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
 		try {
-			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
-					.parseFrom(command.getParams());
-			int type = request.getType().getNumber();
+			int type = command.getMsgType();
 
 			if (CoreProto.MsgType.VOICE_VALUE == type) {
+				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
+						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String msgId = request.getVoice().getMsgId();
@@ -59,7 +58,7 @@ public class U2MessageVoiceHandler extends AbstractU2Handler<Command> {
 				u2Bean.setMsgTime(msgTime);
 
 				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
-				
+
 				boolean success = messageDao.saveU2Message(u2Bean);
 				msgStatusResponse(command, msgId, msgTime, success);
 				return success;
@@ -73,24 +72,30 @@ public class U2MessageVoiceHandler extends AbstractU2Handler<Command> {
 		return false;
 	}
 
-//	private void msgResponse(Channel channel, Command command, String from, String to, String msgId, long msgTime) {
-//
-//		logger.info("response to client msgId:{} from:{} to:{}", msgId, from, to);
-//
-//		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
-//				.setMsgStatus(1).build();
-//
-//		ImStcMessageProto.MsgWithPointer statusMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
-//				.setType(MsgType.MSG_STATUS).setStatus(status).build();
-//
-//		ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.newBuilder()
-//				.addList(0, statusMsg).build();
-//
-//		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
-//				.setData(request.toByteString()).build();
-//
-//		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
-//				.add(data.toByteArray()));
-//
-//	}
+	// private void msgResponse(Channel channel, Command command, String from,
+	// String to, String msgId, long msgTime) {
+	//
+	// logger.info("response to client msgId:{} from:{} to:{}", msgId, from, to);
+	//
+	// CoreProto.MsgStatus status =
+	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
+	// .setMsgStatus(1).build();
+	//
+	// ImStcMessageProto.MsgWithPointer statusMsg =
+	// ImStcMessageProto.MsgWithPointer.newBuilder()
+	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
+	//
+	// ImStcMessageProto.ImStcMessageRequest request =
+	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
+	// .addList(0, statusMsg).build();
+	//
+	// CoreProto.TransportPackageData data =
+	// CoreProto.TransportPackageData.newBuilder()
+	// .setData(request.toByteString()).build();
+	//
+	// channel.writeAndFlush(new
+	// RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+	// .add(data.toByteArray()));
+	//
+	// }
 }

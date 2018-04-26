@@ -18,7 +18,6 @@ package com.akaxin.site.message.group.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.CommandConst;
@@ -31,14 +30,18 @@ import com.akaxin.site.storage.service.MessageDaoService;
 
 import io.netty.channel.Channel;
 
+/**
+ * 群加密语音消息（暂不支持）
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 15:15:54
+ */
 public class GroupMessageVoiceSecretHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupMessageVoiceSecretHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	@Override
 	public Boolean handle(Command command) {
-		ChannelSession channelSession = command.getChannelSession();
-
 		try {
 			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 					.parseFrom(command.getParams());
@@ -84,8 +87,8 @@ public class GroupMessageVoiceSecretHandler extends AbstractGroupHandler<Command
 		CoreProto.TransportPackageData data = CoreProto.TransportPackageData.newBuilder()
 				.setData(request.toByteString()).build();
 
-		channel.writeAndFlush(
-				new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT).add(data.toByteArray()));
+		channel.writeAndFlush(new RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
+				.add(data.toByteArray()));
 
 	}
 

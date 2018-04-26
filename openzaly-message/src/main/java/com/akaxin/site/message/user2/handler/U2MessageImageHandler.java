@@ -26,17 +26,23 @@ import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
+/**
+ * 二人图片消息处理
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 14:56:25
+ */
 public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageImageHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
 
 	public Boolean handle(Command command) {
 		try {
-			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
-					.parseFrom(command.getParams());
-			int type = request.getType().getNumber();
-
+			int type = command.getMsgType();
+			// 二人图片消息类型
 			if (CoreProto.MsgType.IMAGE_VALUE == type) {
+				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
+						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String msgId = request.getImage().getMsgId();
@@ -67,29 +73,4 @@ public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 		return false;
 	}
 
-	// private void msgResponse(Channel channel, Command command, String from,
-	// String to, String msgId) {
-	//
-	// logger.info("response to client from:{} to:{} msgId:{}", from, to, msgId);
-	//
-	// CoreProto.MsgStatus status =
-	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(1).build();
-	//
-	// ImStcMessageProto.MsgWithPointer statusMsg =
-	// ImStcMessageProto.MsgWithPointer.newBuilder()
-	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
-	//
-	// ImStcMessageProto.ImStcMessageRequest request =
-	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
-	// .addList(0, statusMsg).build();
-	//
-	// CoreProto.TransportPackageData data =
-	// CoreProto.TransportPackageData.newBuilder()
-	// .setData(request.toByteString()).build();
-	//
-	// channel.writeAndFlush(new
-	// RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
-	// .add(data.toByteArray()));
-	//
-	// }
 }

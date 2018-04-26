@@ -27,6 +27,12 @@ import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
+/**
+ * 二人通知消息
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 15:08:51
+ */
 public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(U2MessageNoticeHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();
@@ -34,11 +40,11 @@ public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
 	@Override
 	public Boolean handle(Command command) {
 		try {
-			ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
-					.parseFrom(command.getParams());
-			int type = request.getType().getNumber();
+			int type = command.getMsgType();
 
 			if (CoreProto.MsgType.U2_NOTICE_VALUE == type) {
+				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
+						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String text = request.getU2MsgNotice().getText().toStringUtf8();

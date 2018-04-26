@@ -29,6 +29,12 @@ import com.akaxin.site.storage.service.MessageDaoService;
 
 import io.netty.channel.Channel;
 
+/**
+ * 群加密文本消息（暂不支持）
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-04-26 15:15:01
+ */
 public class GroupMessageTextSecretHandler extends AbstractGroupHandler<Command> {
 
 	private IMessageDao messageDao = new MessageDaoService();

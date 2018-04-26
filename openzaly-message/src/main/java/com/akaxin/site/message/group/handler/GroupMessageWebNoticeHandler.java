@@ -27,7 +27,7 @@ import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 
 /**
- * 群web通知消息处理
+ * 群web通知消息
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-04-24 20:32:32
