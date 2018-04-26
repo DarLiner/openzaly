@@ -8,6 +8,6 @@ target/
 .DS_Store
 openzalyDB.sqlite3
 stdout.log
-openzaly-jar-with-dependencies.jar
+openzaly-boot-jar-with-dependencies.jar
 site-file/
 site-logs/
