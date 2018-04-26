@@ -157,7 +157,7 @@ public class WebMessageController extends AbstractController {
 		bean.setWidth(100);
 		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteUserId);
-		bean.setSiteGroupId("10000");
+		bean.setSiteGroupId("10001");
 		bean.setMsgTime(System.currentTimeMillis());
 		messageService.sendGroupWebMessage(bean);
 	}
@@ -177,7 +177,7 @@ public class WebMessageController extends AbstractController {
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteUserId));
 		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteUserId);
-		bean.setSiteGroupId("10000");
+		bean.setSiteGroupId("10001");
 		bean.setMsgTime(System.currentTimeMillis());
 		messageService.sendGroupWebNoticeMessage(bean);
 
