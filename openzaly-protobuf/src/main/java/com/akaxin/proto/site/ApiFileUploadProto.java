@@ -42,6 +42,31 @@ public final class ApiFileUploadProto {
      * <code>optional .core.File file = 1;</code>
      */
     com.akaxin.proto.core.FileProto.FileOrBuilder getFileOrBuilder();
+
+    /**
+     * <pre>
+     *文件资源的描述
+     * </pre>
+     *
+     * <code>optional .core.FileDesc fileDesc = 2;</code>
+     */
+    boolean hasFileDesc();
+    /**
+     * <pre>
+     *文件资源的描述
+     * </pre>
+     *
+     * <code>optional .core.FileDesc fileDesc = 2;</code>
+     */
+    com.akaxin.proto.core.FileProto.FileDesc getFileDesc();
+    /**
+     * <pre>
+     *文件资源的描述
+     * </pre>
+     *
+     * <code>optional .core.FileDesc fileDesc = 2;</code>
+     */
+    com.akaxin.proto.core.FileProto.FileDescOrBuilder getFileDescOrBuilder();
   }
   /**
    * Protobuf type {@code site.ApiFileUploadRequest}
@@ -91,6 +116,19 @@ public final class ApiFileUploadProto {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(file_);
                 file_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              com.akaxin.proto.core.FileProto.FileDesc.Builder subBuilder = null;
+              if (fileDesc_ != null) {
+                subBuilder = fileDesc_.toBuilder();
+              }
+              fileDesc_ = input.readMessage(com.akaxin.proto.core.FileProto.FileDesc.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fileDesc_);
+                fileDesc_ = subBuilder.buildPartial();
               }
 
               break;
@@ -151,6 +189,39 @@ public final class ApiFileUploadProto {
       return getFile();
     }
 
+    public static final int FILEDESC_FIELD_NUMBER = 2;
+    private com.akaxin.proto.core.FileProto.FileDesc fileDesc_;
+    /**
+     * <pre>
+     *文件资源的描述
+     * </pre>
+     *
+     * <code>optional .core.FileDesc fileDesc = 2;</code>
+     */
+    public boolean hasFileDesc() {
+      return fileDesc_ != null;
+    }
+    /**
+     * <pre>
+     *文件资源的描述
+     * </pre>
+     *
+     * <code>optional .core.FileDesc fileDesc = 2;</code>
+     */
+    public com.akaxin.proto.core.FileProto.FileDesc getFileDesc() {
+      return fileDesc_ == null ? com.akaxin.proto.core.FileProto.FileDesc.getDefaultInstance() : fileDesc_;
+    }
+    /**
+     * <pre>
+     *文件资源的描述
+     * </pre>
+     *
+     * <code>optional .core.FileDesc fileDesc = 2;</code>
+     */
+    public com.akaxin.proto.core.FileProto.FileDescOrBuilder getFileDescOrBuilder() {
+      return getFileDesc();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -166,6 +237,9 @@ public final class ApiFileUploadProto {
       if (file_ != null) {
         output.writeMessage(1, getFile());
       }
+      if (fileDesc_ != null) {
+        output.writeMessage(2, getFileDesc());
+      }
     }
 
     public int getSerializedSize() {
@@ -176,6 +250,10 @@ public final class ApiFileUploadProto {
       if (file_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getFile());
+      }
+      if (fileDesc_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getFileDesc());
       }
       memoizedSize = size;
       return size;
@@ -198,6 +276,11 @@ public final class ApiFileUploadProto {
         result = result && getFile()
             .equals(other.getFile());
       }
+      result = result && (hasFileDesc() == other.hasFileDesc());
+      if (hasFileDesc()) {
+        result = result && getFileDesc()
+            .equals(other.getFileDesc());
+      }
       return result;
     }
 
@@ -211,6 +294,10 @@ public final class ApiFileUploadProto {
       if (hasFile()) {
         hash = (37 * hash) + FILE_FIELD_NUMBER;
         hash = (53 * hash) + getFile().hashCode();
+      }
+      if (hasFileDesc()) {
+        hash = (37 * hash) + FILEDESC_FIELD_NUMBER;
+        hash = (53 * hash) + getFileDesc().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -336,6 +423,12 @@ public final class ApiFileUploadProto {
           file_ = null;
           fileBuilder_ = null;
         }
+        if (fileDescBuilder_ == null) {
+          fileDesc_ = null;
+        } else {
+          fileDesc_ = null;
+          fileDescBuilder_ = null;
+        }
         return this;
       }
 
@@ -362,6 +455,11 @@ public final class ApiFileUploadProto {
           result.file_ = file_;
         } else {
           result.file_ = fileBuilder_.build();
+        }
+        if (fileDescBuilder_ == null) {
+          result.fileDesc_ = fileDesc_;
+        } else {
+          result.fileDesc_ = fileDescBuilder_.build();
         }
         onBuilt();
         return result;
@@ -406,6 +504,9 @@ public final class ApiFileUploadProto {
         if (other == com.akaxin.proto.site.ApiFileUploadProto.ApiFileUploadRequest.getDefaultInstance()) return this;
         if (other.hasFile()) {
           mergeFile(other.getFile());
+        }
+        if (other.hasFileDesc()) {
+          mergeFileDesc(other.getFileDesc());
         }
         onChanged();
         return this;
@@ -584,6 +685,159 @@ public final class ApiFileUploadProto {
           file_ = null;
         }
         return fileBuilder_;
+      }
+
+      private com.akaxin.proto.core.FileProto.FileDesc fileDesc_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.FileProto.FileDesc, com.akaxin.proto.core.FileProto.FileDesc.Builder, com.akaxin.proto.core.FileProto.FileDescOrBuilder> fileDescBuilder_;
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public boolean hasFileDesc() {
+        return fileDescBuilder_ != null || fileDesc_ != null;
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public com.akaxin.proto.core.FileProto.FileDesc getFileDesc() {
+        if (fileDescBuilder_ == null) {
+          return fileDesc_ == null ? com.akaxin.proto.core.FileProto.FileDesc.getDefaultInstance() : fileDesc_;
+        } else {
+          return fileDescBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public Builder setFileDesc(com.akaxin.proto.core.FileProto.FileDesc value) {
+        if (fileDescBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fileDesc_ = value;
+          onChanged();
+        } else {
+          fileDescBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public Builder setFileDesc(
+          com.akaxin.proto.core.FileProto.FileDesc.Builder builderForValue) {
+        if (fileDescBuilder_ == null) {
+          fileDesc_ = builderForValue.build();
+          onChanged();
+        } else {
+          fileDescBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public Builder mergeFileDesc(com.akaxin.proto.core.FileProto.FileDesc value) {
+        if (fileDescBuilder_ == null) {
+          if (fileDesc_ != null) {
+            fileDesc_ =
+              com.akaxin.proto.core.FileProto.FileDesc.newBuilder(fileDesc_).mergeFrom(value).buildPartial();
+          } else {
+            fileDesc_ = value;
+          }
+          onChanged();
+        } else {
+          fileDescBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public Builder clearFileDesc() {
+        if (fileDescBuilder_ == null) {
+          fileDesc_ = null;
+          onChanged();
+        } else {
+          fileDesc_ = null;
+          fileDescBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public com.akaxin.proto.core.FileProto.FileDesc.Builder getFileDescBuilder() {
+        
+        onChanged();
+        return getFileDescFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      public com.akaxin.proto.core.FileProto.FileDescOrBuilder getFileDescOrBuilder() {
+        if (fileDescBuilder_ != null) {
+          return fileDescBuilder_.getMessageOrBuilder();
+        } else {
+          return fileDesc_ == null ?
+              com.akaxin.proto.core.FileProto.FileDesc.getDefaultInstance() : fileDesc_;
+        }
+      }
+      /**
+       * <pre>
+       *文件资源的描述
+       * </pre>
+       *
+       * <code>optional .core.FileDesc fileDesc = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.akaxin.proto.core.FileProto.FileDesc, com.akaxin.proto.core.FileProto.FileDesc.Builder, com.akaxin.proto.core.FileProto.FileDescOrBuilder> 
+          getFileDescFieldBuilder() {
+        if (fileDescBuilder_ == null) {
+          fileDescBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.akaxin.proto.core.FileProto.FileDesc, com.akaxin.proto.core.FileProto.FileDesc.Builder, com.akaxin.proto.core.FileProto.FileDescOrBuilder>(
+                  getFileDesc(),
+                  getParentForChildren(),
+                  isClean());
+          fileDesc_ = null;
+        }
+        return fileDescBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1193,13 +1447,14 @@ public final class ApiFileUploadProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032site/api_file_upload.proto\022\004site\032\017core" +
-      "/file.proto\"0\n\024ApiFileUploadRequest\022\030\n\004f" +
-      "ile\030\001 \001(\0132\n.core.File\"(\n\025ApiFileUploadRe" +
-      "sponse\022\017\n\007file_id\030\001 \001(\t2Y\n\024ApiFileUpload" +
-      "Service\022A\n\006upload\022\032.site.ApiFileUploadRe" +
-      "quest\032\033.site.ApiFileUploadResponseB+\n\025co" +
-      "m.akaxin.proto.siteB\022ApiFileUploadProtob" +
-      "\006proto3"
+      "/file.proto\"R\n\024ApiFileUploadRequest\022\030\n\004f" +
+      "ile\030\001 \001(\0132\n.core.File\022 \n\010fileDesc\030\002 \001(\0132" +
+      "\016.core.FileDesc\"(\n\025ApiFileUploadResponse" +
+      "\022\017\n\007file_id\030\001 \001(\t2Y\n\024ApiFileUploadServic" +
+      "e\022A\n\006upload\022\032.site.ApiFileUploadRequest\032" +
+      "\033.site.ApiFileUploadResponseB+\n\025com.akax" +
+      "in.proto.siteB\022ApiFileUploadProtob\006proto" +
+      "3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1219,7 +1474,7 @@ public final class ApiFileUploadProto {
     internal_static_site_ApiFileUploadRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiFileUploadRequest_descriptor,
-        new java.lang.String[] { "File", });
+        new java.lang.String[] { "File", "FileDesc", });
     internal_static_site_ApiFileUploadResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_site_ApiFileUploadResponse_fieldAccessorTable = new

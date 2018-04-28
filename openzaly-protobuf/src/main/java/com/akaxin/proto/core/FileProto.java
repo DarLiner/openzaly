@@ -243,7 +243,7 @@ public final class FileProto {
   }
   /**
    * <pre>
-   *最简单的用户信息，用于给别人呈现
+   *上传站点服务端的文件
    * </pre>
    *
    * Protobuf type {@code core.File}
@@ -546,7 +546,7 @@ public final class FileProto {
     }
     /**
      * <pre>
-     *最简单的用户信息，用于给别人呈现
+     *上传站点服务端的文件
      * </pre>
      *
      * Protobuf type {@code core.File}
@@ -882,11 +882,722 @@ public final class FileProto {
 
   }
 
+  public interface FileDescOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:core.FileDesc)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     *语音的长度
+     * </pre>
+     *
+     * <code>optional int32 length = 1;</code>
+     */
+    int getLength();
+
+    /**
+     * <pre>
+     *图片的宽
+     * </pre>
+     *
+     * <code>optional int32 width = 2;</code>
+     */
+    int getWidth();
+
+    /**
+     * <pre>
+     *图片的高
+     * </pre>
+     *
+     * <code>optional int32 height = 3;</code>
+     */
+    int getHeight();
+
+    /**
+     * <pre>
+     *视频的大小，单位kb
+     * </pre>
+     *
+     * <code>optional int32 size = 4;</code>
+     */
+    int getSize();
+  }
+  /**
+   * <pre>
+   * 文件信息的描述
+   * </pre>
+   *
+   * Protobuf type {@code core.FileDesc}
+   */
+  public  static final class FileDesc extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:core.FileDesc)
+      FileDescOrBuilder {
+    // Use FileDesc.newBuilder() to construct.
+    private FileDesc(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FileDesc() {
+      length_ = 0;
+      width_ = 0;
+      height_ = 0;
+      size_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private FileDesc(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              length_ = input.readInt32();
+              break;
+            }
+            case 16: {
+
+              width_ = input.readInt32();
+              break;
+            }
+            case 24: {
+
+              height_ = input.readInt32();
+              break;
+            }
+            case 32: {
+
+              size_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.FileProto.internal_static_core_FileDesc_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.akaxin.proto.core.FileProto.internal_static_core_FileDesc_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.akaxin.proto.core.FileProto.FileDesc.class, com.akaxin.proto.core.FileProto.FileDesc.Builder.class);
+    }
+
+    public static final int LENGTH_FIELD_NUMBER = 1;
+    private int length_;
+    /**
+     * <pre>
+     *语音的长度
+     * </pre>
+     *
+     * <code>optional int32 length = 1;</code>
+     */
+    public int getLength() {
+      return length_;
+    }
+
+    public static final int WIDTH_FIELD_NUMBER = 2;
+    private int width_;
+    /**
+     * <pre>
+     *图片的宽
+     * </pre>
+     *
+     * <code>optional int32 width = 2;</code>
+     */
+    public int getWidth() {
+      return width_;
+    }
+
+    public static final int HEIGHT_FIELD_NUMBER = 3;
+    private int height_;
+    /**
+     * <pre>
+     *图片的高
+     * </pre>
+     *
+     * <code>optional int32 height = 3;</code>
+     */
+    public int getHeight() {
+      return height_;
+    }
+
+    public static final int SIZE_FIELD_NUMBER = 4;
+    private int size_;
+    /**
+     * <pre>
+     *视频的大小，单位kb
+     * </pre>
+     *
+     * <code>optional int32 size = 4;</code>
+     */
+    public int getSize() {
+      return size_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (length_ != 0) {
+        output.writeInt32(1, length_);
+      }
+      if (width_ != 0) {
+        output.writeInt32(2, width_);
+      }
+      if (height_ != 0) {
+        output.writeInt32(3, height_);
+      }
+      if (size_ != 0) {
+        output.writeInt32(4, size_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (length_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, length_);
+      }
+      if (width_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, width_);
+      }
+      if (height_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, height_);
+      }
+      if (size_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, size_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.akaxin.proto.core.FileProto.FileDesc)) {
+        return super.equals(obj);
+      }
+      com.akaxin.proto.core.FileProto.FileDesc other = (com.akaxin.proto.core.FileProto.FileDesc) obj;
+
+      boolean result = true;
+      result = result && (getLength()
+          == other.getLength());
+      result = result && (getWidth()
+          == other.getWidth());
+      result = result && (getHeight()
+          == other.getHeight());
+      result = result && (getSize()
+          == other.getSize());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + LENGTH_FIELD_NUMBER;
+      hash = (53 * hash) + getLength();
+      hash = (37 * hash) + WIDTH_FIELD_NUMBER;
+      hash = (53 * hash) + getWidth();
+      hash = (37 * hash) + HEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + getHeight();
+      hash = (37 * hash) + SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + getSize();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.FileProto.FileDesc parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.akaxin.proto.core.FileProto.FileDesc prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 文件信息的描述
+     * </pre>
+     *
+     * Protobuf type {@code core.FileDesc}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:core.FileDesc)
+        com.akaxin.proto.core.FileProto.FileDescOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.akaxin.proto.core.FileProto.internal_static_core_FileDesc_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.akaxin.proto.core.FileProto.internal_static_core_FileDesc_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.akaxin.proto.core.FileProto.FileDesc.class, com.akaxin.proto.core.FileProto.FileDesc.Builder.class);
+      }
+
+      // Construct using com.akaxin.proto.core.FileProto.FileDesc.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        length_ = 0;
+
+        width_ = 0;
+
+        height_ = 0;
+
+        size_ = 0;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.akaxin.proto.core.FileProto.internal_static_core_FileDesc_descriptor;
+      }
+
+      public com.akaxin.proto.core.FileProto.FileDesc getDefaultInstanceForType() {
+        return com.akaxin.proto.core.FileProto.FileDesc.getDefaultInstance();
+      }
+
+      public com.akaxin.proto.core.FileProto.FileDesc build() {
+        com.akaxin.proto.core.FileProto.FileDesc result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.akaxin.proto.core.FileProto.FileDesc buildPartial() {
+        com.akaxin.proto.core.FileProto.FileDesc result = new com.akaxin.proto.core.FileProto.FileDesc(this);
+        result.length_ = length_;
+        result.width_ = width_;
+        result.height_ = height_;
+        result.size_ = size_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.akaxin.proto.core.FileProto.FileDesc) {
+          return mergeFrom((com.akaxin.proto.core.FileProto.FileDesc)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.akaxin.proto.core.FileProto.FileDesc other) {
+        if (other == com.akaxin.proto.core.FileProto.FileDesc.getDefaultInstance()) return this;
+        if (other.getLength() != 0) {
+          setLength(other.getLength());
+        }
+        if (other.getWidth() != 0) {
+          setWidth(other.getWidth());
+        }
+        if (other.getHeight() != 0) {
+          setHeight(other.getHeight());
+        }
+        if (other.getSize() != 0) {
+          setSize(other.getSize());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.akaxin.proto.core.FileProto.FileDesc parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.akaxin.proto.core.FileProto.FileDesc) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int length_ ;
+      /**
+       * <pre>
+       *语音的长度
+       * </pre>
+       *
+       * <code>optional int32 length = 1;</code>
+       */
+      public int getLength() {
+        return length_;
+      }
+      /**
+       * <pre>
+       *语音的长度
+       * </pre>
+       *
+       * <code>optional int32 length = 1;</code>
+       */
+      public Builder setLength(int value) {
+        
+        length_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *语音的长度
+       * </pre>
+       *
+       * <code>optional int32 length = 1;</code>
+       */
+      public Builder clearLength() {
+        
+        length_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int width_ ;
+      /**
+       * <pre>
+       *图片的宽
+       * </pre>
+       *
+       * <code>optional int32 width = 2;</code>
+       */
+      public int getWidth() {
+        return width_;
+      }
+      /**
+       * <pre>
+       *图片的宽
+       * </pre>
+       *
+       * <code>optional int32 width = 2;</code>
+       */
+      public Builder setWidth(int value) {
+        
+        width_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *图片的宽
+       * </pre>
+       *
+       * <code>optional int32 width = 2;</code>
+       */
+      public Builder clearWidth() {
+        
+        width_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int height_ ;
+      /**
+       * <pre>
+       *图片的高
+       * </pre>
+       *
+       * <code>optional int32 height = 3;</code>
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <pre>
+       *图片的高
+       * </pre>
+       *
+       * <code>optional int32 height = 3;</code>
+       */
+      public Builder setHeight(int value) {
+        
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *图片的高
+       * </pre>
+       *
+       * <code>optional int32 height = 3;</code>
+       */
+      public Builder clearHeight() {
+        
+        height_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int size_ ;
+      /**
+       * <pre>
+       *视频的大小，单位kb
+       * </pre>
+       *
+       * <code>optional int32 size = 4;</code>
+       */
+      public int getSize() {
+        return size_;
+      }
+      /**
+       * <pre>
+       *视频的大小，单位kb
+       * </pre>
+       *
+       * <code>optional int32 size = 4;</code>
+       */
+      public Builder setSize(int value) {
+        
+        size_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *视频的大小，单位kb
+       * </pre>
+       *
+       * <code>optional int32 size = 4;</code>
+       */
+      public Builder clearSize() {
+        
+        size_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:core.FileDesc)
+    }
+
+    // @@protoc_insertion_point(class_scope:core.FileDesc)
+    private static final com.akaxin.proto.core.FileProto.FileDesc DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.akaxin.proto.core.FileProto.FileDesc();
+    }
+
+    public static com.akaxin.proto.core.FileProto.FileDesc getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FileDesc>
+        PARSER = new com.google.protobuf.AbstractParser<FileDesc>() {
+      public FileDesc parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new FileDesc(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FileDesc> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FileDesc> getParserForType() {
+      return PARSER;
+    }
+
+    public com.akaxin.proto.core.FileProto.FileDesc getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_core_File_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_core_File_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_core_FileDesc_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_core_FileDesc_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -898,12 +1609,14 @@ public final class FileProto {
     java.lang.String[] descriptorData = {
       "\n\017core/file.proto\022\004core\"P\n\004File\022\017\n\007file_" +
       "id\030\001 \001(\t\022\024\n\014file_content\030\002 \001(\014\022!\n\tfile_t" +
-      "ype\030\003 \001(\0162\016.core.FileType*\211\001\n\010FileType\022\020" +
-      "\n\014UNKNOWN_FILE\020\000\022\021\n\rUSER_PORTRAIT\020\001\022\021\n\rM" +
-      "ESSAGE_IMAGE\020\002\022\021\n\rMESSAGE_VOICE\020\003\022\022\n\016GRO" +
-      "UP_PORTRAIT\020\004\022\017\n\013SITE_PLUGIN\020\005\022\r\n\tSITE_I" +
-      "CON\020\006B\"\n\025com.akaxin.proto.coreB\tFileProt" +
-      "ob\006proto3"
+      "ype\030\003 \001(\0162\016.core.FileType\"G\n\010FileDesc\022\016\n" +
+      "\006length\030\001 \001(\005\022\r\n\005width\030\002 \001(\005\022\016\n\006height\030\003" +
+      " \001(\005\022\014\n\004size\030\004 \001(\005*\211\001\n\010FileType\022\020\n\014UNKNO" +
+      "WN_FILE\020\000\022\021\n\rUSER_PORTRAIT\020\001\022\021\n\rMESSAGE_" +
+      "IMAGE\020\002\022\021\n\rMESSAGE_VOICE\020\003\022\022\n\016GROUP_PORT" +
+      "RAIT\020\004\022\017\n\013SITE_PLUGIN\020\005\022\r\n\tSITE_ICON\020\006B\"" +
+      "\n\025com.akaxin.proto.coreB\tFileProtob\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -923,6 +1636,12 @@ public final class FileProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_File_descriptor,
         new java.lang.String[] { "FileId", "FileContent", "FileType", });
+    internal_static_core_FileDesc_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_core_FileDesc_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_core_FileDesc_descriptor,
+        new java.lang.String[] { "Length", "Width", "Height", "Size", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

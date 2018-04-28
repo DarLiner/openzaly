@@ -27,6 +27,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.FileProto.FileType;
 
 /**
@@ -37,18 +38,60 @@ import com.akaxin.proto.core.FileProto.FileType;
  */
 public class FileServerUtils {
 	private static final Logger logger = LoggerFactory.getLogger(FileServerUtils.class);
+	private static final String FILE_PREFFIX = "AKX-";
 
-	public static String saveFile(byte[] imageBytes, String defaultDir, int type) {
+	// 获取当前时间 "20180428"
+	private static String getDayTime() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+		int month = cal.get(Calendar.MONTH) + 1;// 获取月份
+		int day = cal.get(Calendar.DATE);// 获取日
+		return year + "" + (month < 10 ? ("0" + month) : month) + "" + day;
+	}
+
+	// 生成存放文件的文件目录
+	private static String createFileDir(String defaultDir, int type) {
+		StringBuilder url = new StringBuilder(defaultDir);
+		String filePath = SiteFileType.getFilePthByType(type);
+		url.append(filePath).append("/");
+		url.append(getDayTime());
+		return url.toString();
+	}
+
+	// 生成文件名,老版本21位，新版本>21位
+	private static String createFileName(FileProto.FileType type, FileProto.FileDesc fileDesc) {
+		String fileName = System.currentTimeMillis() + UUID.randomUUID().toString().substring(0, 8);
+		if (FileProto.FileType.MESSAGE_VOICE == type) {
+			// 语音
+			if (fileDesc != null && fileDesc.getLength() > 0) {
+				fileName = fileName + "_" + fileDesc.getLength();
+			}
+		} else {
+			// 图片
+			if (fileDesc != null && fileDesc.getWidth() > 0 && fileDesc.getHeight() > 0) {
+				fileName = fileName + "_" + fileDesc.getWidth() + "_" + fileDesc.getHeight();
+			}
+		}
+		return fileName;
+	}
+
+	// 保存客户端上传的文件资源（图片，语音，视频等）
+	public static String saveFile(byte[] imageBytes, String defaultDir, FileProto.FileType type,
+			FileProto.FileDesc fileDesc) {
 		String fileUrl = null;
+		String fileName = null;
 		BufferedOutputStream bos = null;
 		try {
 			if (!defaultDir.endsWith("/")) {
 				defaultDir += "/";
 			}
-			String parentDir = createParentDir(defaultDir, type);
-			String fileSuffix = UUID.randomUUID().toString().substring(0, 8);
-			String file = System.currentTimeMillis() + fileSuffix;
-			File storageFile = new File(parentDir, file);
+			// 文件目录
+			String fileDir = createFileDir(defaultDir, type.getNumber());
+			// 文件名称
+			fileName = createFileName(type, fileDesc);
+
+			// 存储的文件资源
+			File storageFile = new File(fileDir, fileName);
 			if (!storageFile.getParentFile().exists()) {
 				storageFile.getParentFile().mkdirs();
 			}
@@ -74,7 +117,13 @@ public class FileServerUtils {
 			}
 		}
 
-		return fileUrl.substring(defaultDir.length(), fileUrl.length()).replaceAll("/", "-");
+		// >21 新改版的fileId格式
+		String fileId = fileUrl.substring(defaultDir.length(), fileUrl.length()).replaceAll("/", "-");
+		if (fileName.length() != 21 || fileName.contains("_")) {
+			return FILE_PREFFIX + fileId;
+		}
+
+		return fileId;
 	}
 
 	public static byte[] fileToBinary(String defaultDir, String fileUrl) {
@@ -127,31 +176,22 @@ public class FileServerUtils {
 		return null;
 	}
 
-	private static String createParentDir(String defaultDir, int type) {
-		StringBuilder url = new StringBuilder(defaultDir);
-		ImageType imageType = ImageType.getImageByType(type);
-		url.append(imageType.getPth()).append("/");
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);// 获取年份
-		int month = cal.get(Calendar.MONTH) + 1;// 获取月份
-		int day = cal.get(Calendar.DATE);// 获取日
-		url.append(year).append("/").append(month).append("/").append(day);
-		return url.toString();
-	}
-
-	enum ImageType {
+	enum SiteFileType {
 		UNKNOW_FILE(FileType.UNKNOWN_FILE_VALUE, "UNKNOW"), // 用户，群头像
 		USER_PORTRAIT(FileType.USER_PORTRAIT_VALUE, "U/PORT"), // 用户头像
+		GROUP_PORTRAIT(FileType.GROUP_PORTRAIT_VALUE, "G/PORT"), // 群组头像
+
+		// 需要增加文件描述
 		MESSAGE_IMAGE(FileType.MESSAGE_IMAGE_VALUE, "MSG/IMG"), // 个人消息，群图片消息
 		MESSAGE_VOICE(FileType.MESSAGE_VOICE_VALUE, "MSG/VOI"), // 个人，群语音消息
-		GROUP_PORTRAIT(FileType.GROUP_PORTRAIT_VALUE, "G/PORT"), // 用户头像
+
 		SITE_PLUGIN(FileType.SITE_PLUGIN_VALUE, "SITE/PLUG"), // 站点扩展图片存放位置
 		SITE_LOGO(FileType.SITE_ICON_VALUE, "SITE/LOGO");// 站点相关图片，如站点logo
 
 		int type;
 		String pth;
 
-		ImageType(int type, String pth) {
+		SiteFileType(int type, String pth) {
 			this.type = type;
 			this.pth = pth;
 		}
@@ -164,24 +204,14 @@ public class FileServerUtils {
 			return this.pth;
 		}
 
-		public static ImageType getImageByType(int type) {
-			for (ImageType image : ImageType.values()) {
-				if (type == image.getType()) {
-					return image;
+		public static String getFilePthByType(int type) {
+			for (SiteFileType file : SiteFileType.values()) {
+				if (type == file.getType()) {
+					return file.getPth();
 				}
 			}
 			return null;
 		}
-
-		public static ImageType getImageByPth(String pth) {
-			for (ImageType image : ImageType.values()) {
-				if (image.getPth().equals(pth)) {
-					return image;
-				}
-			}
-			return null;
-		}
-
 	}
 
 }

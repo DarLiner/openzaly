@@ -47,11 +47,12 @@ public class ApiFileService extends AbstractRequest {
 			ApiFileUploadProto.ApiFileUploadRequest request = ApiFileUploadProto.ApiFileUploadRequest
 					.parseFrom(command.getParams());
 			FileProto.File file = request.getFile();
-			int type = file.getFileTypeValue();
+			FileProto.FileDesc fileDesc = request.getFileDesc();
+			FileProto.FileType fileType = file.getFileType();
 			byte[] content = file.getFileContent().toByteArray();
-			LogUtils.requestDebugLog(logger, command, "type=" + type + ",size=" + content.length);
+			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			String fileId = FileServerUtils.saveFile(content, FilePathUtils.getPicPath(), type);
+			String fileId = FileServerUtils.saveFile(content, FilePathUtils.getPicPath(), fileType, fileDesc);
 			ApiFileUploadProto.ApiFileUploadResponse response = ApiFileUploadProto.ApiFileUploadResponse.newBuilder()
 					.setFileId(fileId).build();
 			commandResponse.setParams(response.toByteArray());
@@ -73,6 +74,11 @@ public class ApiFileService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(fileId) && !"null".equals(fileId)) {
+
+				if (fileId.startsWith("AKX-") || fileId.startsWith("akx-")) {
+					fileId = fileId.substring(4, fileId.length());
+				}
+
 				byte[] imageBytes = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), fileId);
 
 				if (imageBytes != null && imageBytes.length > 0) {
@@ -81,7 +87,7 @@ public class ApiFileService extends AbstractRequest {
 
 					ApiFileDownloadProto.ApiFileDownloadResponse response = ApiFileDownloadProto.ApiFileDownloadResponse
 							.newBuilder().setFile(file).build();
-					
+
 					commandResponse.setParams(response.toByteArray());
 					errCode = ErrorCode2.SUCCESS;
 				} else {

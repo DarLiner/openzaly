@@ -174,8 +174,8 @@ public class Bootstrap {
 	private static String getDefaultIcon(String base64Str) {
 		try {
 			byte[] iconBytes = Base64.getDecoder().decode(base64Str);
-			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(""),
-					FileType.SITE_PLUGIN_VALUE);
+			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(""), FileType.SITE_PLUGIN,
+					null);
 			return fileId;
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
