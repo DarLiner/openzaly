@@ -1,18 +1,18 @@
-/** 
+/**
  * Copyright 2018-2028 Akaxin Group
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
-*/
+ * limitations under the License.
+ */
 package com.akaxin.admin.site.controller;
 
 import java.util.ArrayList;
@@ -87,6 +87,7 @@ public class PluginManageController extends AbstractController {
                 model.put("position", plugin.getPosition());
                 model.put("per_status", plugin.getPermissionStatus());
                 model.put("id", plugin.getId());
+                model.put("auth_key", plugin.getAuthKey());
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -244,4 +245,21 @@ public class PluginManageController extends AbstractController {
         return ERROR;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/reSet")
+    @ResponseBody
+    public String reSetAuthKey(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
+            if (isManager(siteUserId)) {
+                Map<String, String> dataMap = getRequestDataMap(pluginPackage);
+                int pluginId = Integer.valueOf(dataMap.get("plugin_id"));
+                String authKey = pluginService.reSetAuthKey(pluginId);
+                return authKey;
+            }
+        } catch (Exception e) {
+            logger.error("edit plugin error", e);
+        }
+        return "false";
+    }
 }

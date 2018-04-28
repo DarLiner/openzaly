@@ -22,4 +22,5 @@ public interface IPluginDao {
 
 	public List<PluginBean> getAllPluginList(int pageNum, int pageSize) throws SQLException;
 
+    String reSetAuthKey(int pluginId) throws SQLException;
 }

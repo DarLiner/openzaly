@@ -202,9 +202,11 @@
     <!--<div class="weui-cell__ft per_status-txt" th:if="${per_status} == 1">全员展示</div>-->
     <!--</a>-->
     <!--</div>-->
+
     <div class="weui-cells__title weui-cell">
         基本设置
     </div>
+
     <div class="weui-cells">
         <div class="weui-cell">
             <div class="weui-cell__hd">
@@ -242,17 +244,56 @@
             <div class="weui-cell__ft per_status-txt" th:unless="${per_status} == 0">全员使用</div>
         </a>
     </div>
+    <div>
+
+        <div class="weui-cells__title weui-cell">
+            高级设置
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">AuthKey</div>
+                <div class="weui-cell__bd">
+
+                    <!--<input class="weui-input subgenus_admin" type="text" th:value="${auth_key}" style="text-align: right;"-->
+                    <!--disabled>-->
+                    <div class="weui-cell__ft">
+                        <a href="javascript:;"
+                           class="weui-btn basic-weui-btn generate-authKey  weui-btn_mini  basic-color"
+                           url-data="/plugin/reSet" th:attr="plugin-id=${id}" style="text-align: left;">生成新的AuthKey</a>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="weui-cell">
+                <button class="weui-input subgenus_admin authkey" th:text="${auth_key}"
+                        th:attr="data-clipboard-text=${auth_key}"></button>
+            </div>
+        </div>
+    </div>
     <div class="weui-btn-area">
-        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_plugin_info" url-data="/plugin/editPlugin"
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_plugin_info"
+           url-data="/plugin/editPlugin"
            href="javascript:" id="addPluginButton" th:attr="plugin-id=${id}">确定</a>
         <a class="weui-btn  weui-btn_warn delete-plugin" url-data="/plugin/delPlugin" href="javascript:"
            id="addPluginButton" th:attr="plugin-id=${id}">删除扩展</a>
     </div>
+
+
     <input type='hidden' id='host_name'/>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
     <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+    <script type='text/javascript'
+            src="https://cdn.staticfile.org/clipboard.js/1.5.15/clipboard.min.js"></script>
     <script type="text/javascript">
+
+        var clipboard = new Clipboard('.authkey');
+        clipboard.on('success', function () {
+            $.toast('复制成功');
+        });
+        clipboard.on('error', function () {
+            $.toast('复制失败', 'forbidden');
+        });
 
         function getOsType() {
             var u = navigator.userAgent;
@@ -516,6 +557,37 @@
                 ]
             });
         });
+        $(document).on("click", ".generate-authKey", function () {
+            var pluginId = $(this).attr('plugin-id');
+            var reqUri = $(this).attr('url-data');
+            $.confirm({
+                title: '重置AuthKey',
+                text: '确定在重置AuthKey?',
+                onOK: function () {
+                    var params = {
+                        'plugin_id': pluginId,
+                    };
+                    reqUrl(reqUri, JSON.stringify(params), "generateAuthKey");
+                    $.closeModal();
+                },
+                onCancel: function () {
+                    console.log('cancle');
+                    toast('取消操作');
+                    $.closeModal();
+                }
+            });
+        });
+
+        function generateAuthKey(result) {
+            if (result == 'false') {
+                $.toast("重置失败", "forbidden");
+            } else {
+                $.toast("重置成功");
+                $('.authkey').html(result);
+                $('.authkey').attr('data-clipboard-text', result);
+            }
+
+        }
 
         $(document).on("click", '.per_status', function () {
             $.actions({
