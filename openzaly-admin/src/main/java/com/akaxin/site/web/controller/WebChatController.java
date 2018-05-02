@@ -11,10 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 2018-05-02 11:46:51
  */
 @Controller
-@RequestMapping("webChat")
+@RequestMapping("akaxin")
 public class WebChatController {
 
-	@RequestMapping("/main")
+	@RequestMapping("/chat")
 	public ModelAndView toMainIndex() {
 		return new ModelAndView("webChat/akaxin_chat_index");
 	}

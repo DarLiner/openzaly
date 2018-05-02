@@ -22,7 +22,7 @@ import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.admin.site.OpenzalyAdminApplication;
+import com.akaxin.OpenzalyAdminApplication;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
@@ -44,6 +44,7 @@ import com.akaxin.site.connector.handler.ImMessageHandler;
 import com.akaxin.site.connector.handler.ImSiteAuthHandler;
 import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
+import com.akaxin.site.connector.websocket.WebSocketServer;
 import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
@@ -64,6 +65,7 @@ public class Bootstrap {
 	public static void main(String[] args) {
 		logger.info("{} start site server...", AkxProject.PLN);
 		try {
+			// init log level
 			setSystemLogLevel();
 
 			String siteAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
@@ -88,13 +90,17 @@ public class Bootstrap {
 			// 设置用户广场默认图片
 			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
 
+			// add config
 			initDataSource(config);
 			addConfigListener();
-			startHttpServer(httpAddress, httpPort);
-			startNettyServer(siteAddress, sitePort);
+
+			// start server
+			startHttpServer(httpAddress, httpPort);// 0.0.0.0:2021
+			startNettyServer(siteAddress, sitePort);// 0.0.0.0:8080
+			startWebSocketServer("0.0.0.0", 9090);// 0.0.0.0:9090
 
 			// start spring
-			OpenzalyAdminApplication.main(args);
+			initSpringBoot(args);
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			logger.error("openzaly-boot exit!!!");
@@ -158,6 +164,15 @@ public class Bootstrap {
 
 		}.start(address, port);
 		logger.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
+	}
+
+	private static void startWebSocketServer(String address, int port) throws Exception {
+		new WebSocketServer() {
+		}.start(address, port);
+	}
+
+	private static void initSpringBoot(String[] args) {
+		OpenzalyAdminApplication.main(args);
 	}
 
 	/**

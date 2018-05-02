@@ -88,7 +88,7 @@
                       <div class="tab-pane active" id="message">
                         <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
                           <li class="list-group-item"> 
-                            <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="images/avatar_default.jpg" class="img-circle"> </a> 
+                            <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="/webChat/images/avatar_default.jpg" class="img-circle"> </a> 
                             <a href="#" class="clear"> 
                               <small class="pull-right">12:00</small> 
                               <strong class="block">王小腾</strong> 
@@ -213,9 +213,9 @@
                                 <small>把书读完，去喝茶...</small> 
                               </a> 
                             </li>
-                                                        <li class="list-group-item"> 
-                            <a href="#" class="thumb-sm pull-left m-r-sm"> 
-                              <img src="/webChat/images/avatar_2.jpg" class="img-circle"> </a> 
+                            <li class="list-group-item"> 
+                            	  <a href="#" class="thumb-sm pull-left m-r-sm"> 
+                              	<img src="/webChat/images/avatar_2.jpg" class="img-circle"> </a> 
                               <a href="#" class="clear"> 
                                 <small class="pull-right">14:30</small> 
                                 <strong class="block">少大爷</strong> 
@@ -239,9 +239,9 @@
                         <div class="text-center wrapper"> <i class="fa fa-spinner fa fa-spin fa fa-large"></i> </div>
                         <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
                           <li class="list-group-item"> 
-                            <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="images/avatar_default.jpg" class="img-circle"> </a> 
+                            <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="/webChat/images/avatar_default.jpg" class="img-circle"> </a> 
                             <a href="#" class="clear"> 
-                              <small class="pull-right">12:00</small> 
+                              <small class="pull-right">12:00</small>
                               <strong class="block">王小腾</strong> 
                               <small>今天把UI设计完成 </small> 
                             </a> 
@@ -544,11 +544,20 @@
  
 <!-- websocket js client -->
 <script type="text/javascript">
+
+	var wsUri = getRootUri() + "/akaxin/ws";
+	
+	function getRootUri() {
+	    return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+	            (document.location.port == "" ? "9090" : document.location.port);
+	}
+
+	alert("wsUri="+wsUri);
 	
 	var websocket;
 
 	if (window.WebSocket) {
-		websocket = new WebSocket("ws://localhost:8989/ws");  //获得WebSocket对象
+		websocket = new WebSocket(wsUri);  //获得WebSocket对象
 		
 		//打开连接
         websocket.onopen = function(event){

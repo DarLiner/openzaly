@@ -136,6 +136,9 @@ public abstract class NettyServer {
 						closeGracefully();
 					}
 				});
+			} else {
+				// 扔出异常，让trycatch处理
+				throw new Exception();
 			}
 		} catch (Exception e) {
 			closeGracefully();
