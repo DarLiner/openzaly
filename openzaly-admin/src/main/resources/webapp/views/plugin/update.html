@@ -204,14 +204,14 @@
             <div class="weui-cell__ft per_status-txt" th:unless="${per_status} == 0">全员使用</div>
         </a>
     </div>
-    <div>
+    <div th:if="${authKeyState} == 1">
 
-        <div class="weui-cells__title weui-cell">
+        <div class="weui-cells__title weui-cell" th:if="${authKeyState} == 1">
             高级设置
         </div>
         <div class="weui-cells">
             <div class="weui-cell">
-                <div class="weui-cell__hd">AuthKey</div>
+                <div class="weui-cell__hd">扩展秘钥</div>
                 <div class="weui-cell__bd">
 
                     <!--<input class="weui-input subgenus_admin" type="text" th:value="${auth_key}" style="text-align: right;"-->
@@ -219,7 +219,7 @@
                     <div class="weui-cell__ft">
                         <a href="javascript:;"
                            class="weui-btn basic-weui-btn generate-authKey  weui-btn_mini  basic-color"
-                           url-data="/plugin/reSet" th:attr="plugin-id=${id}" style="text-align: left;">生成新的AuthKey</a>
+                           url-data="/plugin/reSet" th:attr="plugin-id=${id}" style="text-align: left;">生成新的秘钥</a>
                     </div>
                 </div>
                 <br>
@@ -575,6 +575,7 @@
             });
         });
     </script>
+</div>
 </body>
 
 </html>

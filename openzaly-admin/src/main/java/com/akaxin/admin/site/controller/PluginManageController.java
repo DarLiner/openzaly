@@ -74,6 +74,7 @@ public class PluginManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (isManager(siteUserId)) {
                 //解析Plugin_id
+                int authKeyState = 1;
                 String data = pluginPackage.getData();
                 String[] split = data.split(":\"");
                 String res = split[1].replaceAll("\"}", "");
@@ -88,6 +89,11 @@ public class PluginManageController extends AbstractController {
                 model.put("per_status", plugin.getPermissionStatus());
                 model.put("id", plugin.getId());
                 model.put("auth_key", plugin.getAuthKey());
+                //如果是默认添加的扩展则不提供修改authkey设置
+                if (plugin.getId() == 1 || plugin.getId() == 2) {
+                    authKeyState = 0;
+                }
+                model.put("authKeyState", authKeyState);
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
