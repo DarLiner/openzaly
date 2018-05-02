@@ -497,7 +497,7 @@
 
                   <div class="doc-buttons pull-right"> 
                     <a href="#" class="text-muted" style="vertical-align: bottom;">按Cmd+Enter换行&nbsp&nbsp</a> 
-                    <a href="#" class="btn btn-s-md bg-white bottom">发送</a> 
+                    <a href="#" class="btn btn-s-md bg-white bottom" id="sendMessage">发送</a> 
                   </div> 
                 </footer>
 
@@ -533,9 +533,6 @@
 <script src="/webChat/js/libs/backbone-min.js" cache="false"></script>
 <script src="/webChat/js/libs/backbone.localStorage-min.js" cache="false"></script> 
 <script src="/webChat/js/libs/moment.min.js" cache="false"></script>
-
-    
-<!-- <script src="js/select2/select2.min.js" cache="false"></script> -->
 <!-- wysiwyg -->
 <script src="/webChat/js/wysiwyg/jquery.hotkeys.js" cache="false"></script>
 <script src="/webChat/js/wysiwyg/bootstrap-wysiwyg.js" cache="false"></script>
@@ -545,16 +542,16 @@
 <!-- websocket js client -->
 <script type="text/javascript">
 
-	var wsUri = getRootUri() + "/akaxin/ws";
-	
-	function getRootUri() {
-	    return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
-	            (document.location.port == "" ? "9090" : document.location.port);
-	}
-
-	alert("wsUri="+wsUri);
-	
+	var wsUri = getWsRootUri() + "/akaxin/ws";
 	var websocket;
+	
+	function getWsRootUri() {
+	    return "ws://" + getHostName() + ":" + 9090;
+	}
+	
+	function getHostName(){
+		return (document.location.hostname == "" ? "localhost" : document.location.hostname);
+	}
 
 	if (window.WebSocket) {
 		websocket = new WebSocket(wsUri);  //获得WebSocket对象
@@ -562,24 +559,68 @@
 		//打开连接
         websocket.onopen = function(event){
             var respMessage = document.getElementById("respMessage");
-            respMessage.value = "建立连接";
+            //respMessage.value = "建立连接";
+            alert("连接："+wsUri);
         }
 		
 		//接受消息
         websocket.onmessage = function(event){ 
             var respMessage = document.getElementById("respMessage");
-            respMessage.value = respMessage.value + "\n" + event.data;
+            //respMessage.value = respMessage.value + "\n" + event.data;
+            alert("接受消息："+wsUri);
         }
         
         //关闭
         websocket.onclose = function(event){
             var respMessage = document.getElementById("respMessage");
-            respMessage.value = respMessage.value + "\n断开连接";
+            //respMessage.value = respMessage.value + "\n断开连接";
+            alert("断开连接："+wsUri);
         }
         
 	} else {
 		alert("浏览器不支持此版本");
 	}
+
+	//点击发送消息
+	$("#sendMessage").click(function(){
+		var text = $("#editor").html();
+		sendMessage(text);
+		$("#editor").html("");
+	});
+	
+	function sendMessage(text){
+		var status = checkWsStatus();
+		alert("status="+status);
+		
+		if(status){
+			websocket.send(text);	
+		}else{
+			alert("连接状态失败");
+		}
+	}
+	
+	function checkWsStatus(){
+		switch (websocket.readyState) {
+		  case WebSocket.CONNECTING:
+		    // do something
+		    break;
+		  case WebSocket.OPEN:
+		    // do something
+		    alert("ws状态："+websocket.readyState);
+		    return true;
+		  case WebSocket.CLOSING:
+		    // do something
+		    break;
+		  case WebSocket.CLOSED:
+		    // do something
+		    break;
+		  default:
+		    // this never happens
+		    break;
+		}
+		return false;
+	}
+	
 </script>
     
 </body>
