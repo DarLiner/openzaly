@@ -14,4 +14,6 @@ public interface IPluginService {
 	PluginBean getPlugin(int pluginId);
 
 	List<PluginBean> getPluginList(int pageNum, int pageSize);
+
+	String reSetAuthKey(int pluginId);
 }
