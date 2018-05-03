@@ -149,9 +149,9 @@ public class SQLiteFriendApplyDao {
 		long startTime = System.currentTimeMillis();
 		List<ApplyUserBean> applyUsers = new ArrayList<ApplyUserBean>();
 
-		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,MAX(a.apply_time) FROM "
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,a.apply_time FROM "
 				+ FRIEND_APPLY_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
-				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=? order by a.apply_time desc ;";
 
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setString(1, siteUserId);
