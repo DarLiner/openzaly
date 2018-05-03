@@ -14,9 +14,16 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("akaxin")
 public class WebChatController {
 
-	@RequestMapping("/chat")
-	public ModelAndView toMainIndex() {
+	// 跳转到扫描二维码界面
+	@RequestMapping("/index")
+	public ModelAndView toChatIndex() {
 		return new ModelAndView("webChat/akaxin_chat_index");
+	}
+
+	// 跳转到聊天主页面
+	@RequestMapping("/chat")
+	public ModelAndView toChatMain() {
+		return new ModelAndView("webChat/akaxin_chat_main");
 	}
 
 }
