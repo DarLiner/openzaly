@@ -769,7 +769,7 @@ public class ApiGroupService extends AbstractRequest {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
 
-			if (!checkGroupStatus(siteUserId)) {
+			if (!checkGroupStatus(groupId)) {
 				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
