@@ -8,7 +8,7 @@
 		<version>0.0.1</version>
 	</parent>
 	<groupId>com.akaxin.site</groupId>
-	<artifactId>openzaly-admin</artifactId>
+	<artifactId>openzaly-web</artifactId>
 	<version>0.0.1-RELEASE</version>
 	<packaging>jar</packaging>
 	<name>openzaly-admin</name>
