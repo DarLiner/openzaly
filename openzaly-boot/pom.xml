@@ -88,7 +88,7 @@
 		<!-- 启动后台管理依赖包 -->
 		<dependency>
 			<groupId>com.akaxin.site</groupId>
-			<artifactId>openzaly-admin</artifactId>
+			<artifactId>openzaly-web</artifactId>
 			<version>0.0.1-RELEASE</version>
 		</dependency>
 
