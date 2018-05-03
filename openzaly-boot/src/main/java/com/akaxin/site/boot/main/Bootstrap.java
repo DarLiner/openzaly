@@ -22,7 +22,6 @@ import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.OpenzalyAdminApplication;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
@@ -48,6 +47,7 @@ import com.akaxin.site.connector.websocket.WebSocketServer;
 import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
+import com.akaxin.site.web.OpenzalyAdminApplication;
 
 /**
  * <pre>
