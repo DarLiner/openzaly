@@ -33,6 +33,8 @@
                     <!-- 指定该Main Class为全局的唯一入口 -->
                     <mainClass>com.akaxin.site.boot.main.Bootstrap</mainClass>
                     <layout>ZIP</layout>
+                    <!-- 热部署生效必须加 -->
+                    <fork>true</fork>
                 </configuration>
 				<executions>
 					<execution>

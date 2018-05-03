@@ -96,8 +96,8 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
-	public int getGroupNum(long now,int day) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().getGroupNum(now,day);
+	public int getGroupNum(long now, int day) throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().getGroupNum(now, day);
 	}
 
 	@Override

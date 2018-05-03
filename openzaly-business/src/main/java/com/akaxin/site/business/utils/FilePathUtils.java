@@ -31,9 +31,10 @@ public class FilePathUtils {
 	private static final String DEFAULT_FILE_PATH = "site-file/";
 	private static String filePath;
 
-	static {
-	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public static String getPicPath() {
 		if (filePath == null) {
 			filePath = SiteConfig.getConfig(ConfigKey.PIC_PATH_VALUE);
@@ -55,6 +56,24 @@ public class FilePathUtils {
 			return filePath + "/" + DEFAULT_FILE_PATH;
 		}
 		return DEFAULT_FILE_PATH;
+	}
+
+	/**
+	 * 通过fileId获取文件路径
+	 * 
+	 * @param fileId
+	 * @return
+	 */
+	public static String getFilePathByFileId(String fileId) {
+		// 获取文件目录
+		String defaultDir = getPicPath();
+		String fileUrl = fileId.replaceAll("-", "/");
+		if (defaultDir.endsWith("/")) {
+			fileUrl = defaultDir + fileUrl;
+		} else {
+			fileUrl = defaultDir + "/" + fileUrl;
+		}
+		return fileUrl;
 	}
 
 }

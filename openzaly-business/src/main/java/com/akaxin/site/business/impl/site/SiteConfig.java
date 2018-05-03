@@ -219,4 +219,16 @@ public class SiteConfig {
 		}
 		return ConfigProto.U2EncryptionStatus.U2_CLOSE;
 	}
+
+	public static String getSiteLogo() {
+		try {
+			Map<Integer, String> map = getConfigMap();
+			if (map != null) {
+				return map.get(ConfigProto.ConfigKey.SITE_LOGO_VALUE);
+			}
+		} catch (Exception e) {
+			logger.error("get site logo error", e);
+		}
+		return null;
+	}
 }
