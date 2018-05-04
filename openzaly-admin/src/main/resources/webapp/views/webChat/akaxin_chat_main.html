@@ -19,8 +19,8 @@
 					data-toggle="class:nav-off-screen" data-target="#nav"> <i
 					class="fa fa-bars"></i>
 				</a> <a href="#" class="navbar-brand avatar b-2x m-r"
-					data-toggle="fullscreen"> <img
-					src="/webChat/images/akaxin_logo.png" class="m-r-sm"> 开源阿卡信
+					data-toggle="fullscreen"> <img src="/file/site-logo"
+					class="m-r-sm"> [[${siteName}]]
 				</a>
 				<!-- <a href="#" class="navbar-brand" data-toggle="fullscreen"><img src="images/akaxin_logo.png" class="m-r-sm">开源阿卡信</a> -->
 			</div>
@@ -30,17 +30,20 @@
 			<ul class="nav navbar-nav navbar-right hidden-xs nav-user">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown"> <span class="thumb-sm avatar pull-left">
-							<img src="/webChat/images/avatar_2.jpg">
-					</span> 安国跃 <b class="caret"></b>
+							<img th:src="'/file/download?fileId='+${userPhoto}"
+							class="img-circle">
+					</span> [[${userName}]] <b class="caret"></b>
 				</a>
 					<ul class="dropdown-menu animated fadeInRight">
 						<span class="arrow top"></span>
-						<li><a href="#">个人</a></li>
+						<!-- <li><a href="#">个人</a></li>
 						<li><a href="#">消息通知<span
 								class="badge bg-danger pull-right">3</span>
 						</a></li>
-						<li class="divider"></li>
-						<li><a href="profile.html" data-toggle="ajaxModal">退出</a></li>
+						<li class="divider"></li> -->
+						<!-- <li><a href="/akaxin/index" data-toggle="ajaxModal">退出</a></li> -->
+						<!-- <li><a href="/akaxin/index" data-toggle="ajaxModal">退出</a></li> -->
+						<li><a href="/akaxin/index" data-toggle="modal">退出</a></li>
 					</ul></li>
 			</ul>
 		</header>
@@ -67,12 +70,13 @@
 
 									<div class="clearfix m-t">
 										<a href="#" class="pull-left thumb avatar b-3x m-r"> <img
-											src="/webChat/images/avatar_2.jpg" class="img-circle">
+											th:src="'/file/download?fileId='+${userPhoto}"
+											class="img-circle">
 										</a>
 										<div class="clear">
-											<div class="m-t text h4">安国跃</div>
+											<div class="m-t text h4">[[${userName}]]</div>
 											<div class="">
-												用户ID：<small class="text-muted">SAM1995</small>
+												用户ID：<small class="text-muted">[[${userId}]]</small>
 											</div>
 										</div>
 									</div>
@@ -98,124 +102,33 @@
 											<div class="tab-content">
 
 												<div class="tab-pane active" id="message">
-													<ul
+													<ul id="chatSessions"
 														class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_default.jpg"
-																class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">12:00</small>
-																<strong class="block">王小腾</strong> <small>今天把UI设计完成
-															</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-														<li class="list-group-item"><a href="#"
-															class="thumb-sm pull-left m-r-sm"> <img
-																src="/webChat/images/avatar_2.jpg" class="img-circle">
-														</a> <a href="#" class="clear"> <small class="pull-right">14:30</small>
-																<strong class="block">少大爷</strong> <small>把书读完，去喝茶...</small>
-														</a></li>
-
-
+														<!-- 聊天会话列表 -->
 													</ul>
 												</div>
 												<div class="tab-pane" id="contacts">
-													<div class="text-center wrapper">
+													<!-- <div class="text-center wrapper">
 														<i class="fa fa-spinner fa fa-spin fa fa-large"></i>
-													</div>
-													<ul id="friends" class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
-														<li class="list-group-item">
-															<a href="#" class="thumb-sm pull-left m-r-sm"> 
-																<img src="/webChat/images/avatar_default.jpg" class="img-circle">
-															</a> 
-															<a href="#" class="clear"><strong class="block">王小腾</strong> 
-															</a>
-														</li>
+													</div> -->
 
+													<div class="">
+														<small class="text-muted">群组</small>
+													</div>
+													<ul id="groups"
+														class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+														<!-- 群组列表展示处 -->
+													</ul>
+
+													<!-- 分割线 -->
+													<div class="line"></div>
+
+													<div class="">
+														<small class="text-muted">好友</small>
+													</div>
+													<ul id="friends"
+														class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+														<!-- 好友列表展示处 -->
 													</ul>
 												</div>
 											</div>
@@ -243,226 +156,52 @@
 
 										<section class="chat-list panel-body scrollable"
 											style="bottom: 50px">
-
+											<!-- 加载动画 -->
 											<div class="text-center wrapper">
 												<i class="fa fa-spinner fa fa-spin fa fa-large"></i>
 											</div>
 
+											<!-- 展示时间 -->
+											<article id="chat-item-time" class="chat-item b-light">
+												<section class="chat-body text-center">
+													<small class="text-muted">12:00</small>
+												</section>
+											</article>
+
+											<!-- 接受对方发送消息 -->
 											<article id="chat-receive" class="chat-item left">
-												<a href="#" class="pull-left thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
+												<a href="#" class="pull-left thumb-sm avatar"> <img
+													src="/webChat/images/avatar_2.jpg" class="img-circle">
+												</a>
 												<section class="chat-body">
 													<div class="panel b-light col-lg-4 m-b-none">
 														<div class="panel-body">
 															<!-- 向左的箭头-->
 															<span class="arrow left"></span>
-															<p class="m-b-none">Hi John, What's up...Hi John,</p>
+															<p class="m-b-none">收到对方一条消息</p>
 														</div>
 													</div>
 												</section>
 											</article>
 
-
 											<!-- 展示时间 -->
-											<article id="chat-item" class="chat-item b-light">
+											<article id="chat-item-time" class="chat-item b-light">
 												<section class="chat-body text-center">
 													<small class="text-muted">12:00</small>
 												</section>
 											</article>
 
 											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_1.jpg" class="img-circle"></a>
+												<a href="#" class="pull-right thumb-sm avatar"> <img
+													src="/webChat/images/avatar_1.jpg" class="img-circle">
+												</a>
 												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
 													<div class="panel bg bg-success col-lg-4 m-b-none"
 														style="float: right;">
 														<div class="panel-body">
 															<!-- 向右的箭头-->
 															<span class="arrow right"></span>
 															<p class="m-b-none">我发送了一条消息</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-											<article id="chat-send" class="chat-item right">
-												<a href="#" class="pull-right thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body pull">
-
-													<div class="panel bg bg-success col-lg-4 m-b-none"
-														style="float: right;">
-														<div class="panel-body">
-															<!-- 向右的箭头-->
-															<span class="arrow right"></span>
-															<p class="m-b-none">Lorem ipsum dolor sit amet, c, h,
-																a, ha, hahaha</p>
-														</div>
-													</div>
-												</section>
-											</article>
-
-											<!-- 展示时间 -->
-											<article id="chat-item" class="chat-item b-light">
-												<section class="chat-body text-center">
-													<small class="text-muted">12:00</small>
-												</section>
-											</article>
-
-											<article id="chat-receive" class="chat-item left">
-												<a href="#" class="pull-left thumb-sm avatar"><img
-													src="/webChat/images/avatar_2.jpg" class="img-circle"></a>
-												<section class="chat-body">
-													<div class="panel b-light col-lg-4 m-b-none">
-														<div class="panel-body">
-															<!-- 向左的箭头-->
-															<span class="arrow left"></span>
-															<p class="m-b-none">Hi John, What's up...Hi John,</p>
 														</div>
 													</div>
 												</section>
@@ -496,13 +235,12 @@
 									<div class="doc-buttons pull-right">
 										<a href="#" class="text-muted" style="vertical-align: bottom;">按Cmd+Enter换行&nbsp&nbsp</a>
 										<a href="#" class="btn btn-s-md bg-white bottom"
-											id="sendMessage">发送</a>
+											id="sendMessage();">发送</a>
 									</div>
 								</footer>
 
 
-								<!-- <footer class="panel-footer">
-                </footer> -->
+								<!-- <footer class="panel-footer"></footer> -->
 							</section>
 
 						</aside>
@@ -515,11 +253,9 @@
 					<!-- <div class="wrapper">Notification</div> -->
 				</aside>
 			</section>
-
-
 		</section>
 
-
+		<!-- 页面底部留空白 -->
 		<footer class="footer bg-white b b-light"> </footer>
 
 	</section>
@@ -538,15 +274,18 @@
 	<script src="/webChat/js/wysiwyg/demo.js" cache="false"></script>
 	<!-- websocket js client -->
 	<script type="text/javascript" th:inline="javascript">
-
-	var wsUri = getWsRootUri() + "/akaxin/ws";
+	
+	/*<![CDATA[*/
+	var sessionId  = /*[[${sessionId}]]*/;
+	var siteUserId = /*[[${userId}]]*/; 
+	/*]]>*/
+	
+	var wsUri = getWsRootUri() + "/akaxin/ws?sessionId="+sessionId;
 	var websocket;
-	var sessionId = "";
 	
 	$(function() {
 		/*<![CDATA[*/
 		var siteName = /*[[${siteName}]]*/;
-		sessionId = /*[[${sessionId}]]*/;
 		/*]]>*/
 	});
 	
@@ -566,7 +305,9 @@
             var respMessage = document.getElementById("respMessage");
             //respMessage.value = "建立连接";
             alert("连接："+wsUri+"成功");
+            getChatList();
             getFriendList();
+            getGroupList();
         }
 		
 		//接受消息
@@ -630,27 +371,26 @@
 		};
 
 		$.post("/akaxin/chatList", data, function(result) {
-			if (result.success) {
-				var sessionId = result.sessionId;
-				window.location.href = "/akaxin/chat?sessionId="
-						+ sessionId;
-			}
+			$.each(result, function (index, chatObj) {
+				var innerHtml = '<li class="list-group-item" id="'+chatObj.id+'" stype="'+chatObj.stype+'">'
+				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+chatObj.photo+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
+				+'<a href="#" class="clear"><strong class="block">'+chatObj.name+'</strong><small>'+chatObj.msg+'</small></a></li>';
+				$("#chatSessions").append(innerHtml);
+            });
 		}, "JSON");
 	}
 	
 	function getFriendList(){
-		alert("获取好友列表");
 		var data = {
 			'sessionId' : sessionId
 		};
-
+		
 		$.post("/akaxin/friendList", data, function(result) {
-			alert(result);
 			$.each(result, function (index, friendObj) {
-				alert(friendObj.siteUserId);
-				alert(friendObj.userPhoto);
-				alert(friendObj.userName);
-//                $("[for=" + siteUserId + "]").remove();
+				var innerHtml = '<li class="list-group-item" id="'+friendObj.siteUserId+'">'
+				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+friendObj.userPhoto+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
+				+'<a href="#" class="clear"><strong class="block">'+friendObj.userName+'</strong><small>&nbsp</small></a></li>';
+				$("#friends").append(innerHtml);
             });
 		}, "JSON");
 	}
@@ -661,8 +401,38 @@
 		};
 
 		$.post("/akaxin/groupList", data, function(result) {
-			alert(result);
+			$.each(result, function (index, groupObj) {
+				var innerHtml = '<li class="list-group-item" id="'+groupObj.siteGroupId+'">'
+				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+groupObj.groupPhoto+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
+				+'<a href="#" class="clear"><strong class="block">'+groupObj.groupName+'</strong><small>&nbsp</small></a></li>';
+				$("#groups").append(innerHtml);
+            });
 		}, "JSON");
+	}
+	
+	
+	function receiveTextMessageHtml(){
+		var textHtml = 
+			'<article id="chat-item-time" class="chat-item b-light">'
+			+'<section class="chat-body text-center">'
+			+'	<small class="text-muted">12:00</small>'
+			+'	</section>'
+			+'</article>'
+			+'<article id="chat-receive" class="chat-item left">'
+			+'	<a href="#" class="pull-left thumb-sm avatar"><img src="/webChat/images/avatar_2.jpg" class="img-circle"></a>'
+			+'	<section class="chat-body">'
+			+'		<div class="panel b-light col-lg-4 m-b-none">'
+			+'			<div class="panel-body">'
+			+'				<span class="arrow left"></span>'
+			+'				<p class="m-b-none">收到对方一条消息</p>'
+			+'			</div>'
+			+'		</div>'
+			+'	</section>'
+			+'</article>';
+	}
+	
+	function sendTextMessageHtml(){
+		
 	}
 	
 </script>

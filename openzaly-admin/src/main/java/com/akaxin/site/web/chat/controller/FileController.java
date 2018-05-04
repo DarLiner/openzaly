@@ -24,20 +24,42 @@ public class FileController {
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
 	// 跳转到聊天主页面
+	@RequestMapping("/upload")
+	public String uploadFile(HttpServletRequest request, HttpServletResponse response) {
+
+		return null;
+	}
+
+	// 跳转到聊天主页面
+	@RequestMapping("/download")
+	public String downloadFile(HttpServletRequest request, HttpServletResponse response, String fileId) {
+		String result = writeFileStream(request, response, fileId);
+		logger.info("dowoload file id={} result={}", fileId, result);
+		return null;
+	}
+
+	// 跳转到聊天主页面
 	@RequestMapping("/site-logo")
 	// @ResponseBody
 	public String getSiteLogo(HttpServletRequest request, HttpServletResponse response) {
 		String logoFileId = SiteConfig.getSiteLogo();
-		System.out.println("fileId=" + logoFileId);
 
-		if (StringUtils.isNotEmpty(logoFileId)) {
-			String fileUrl = FilePathUtils.getFilePathByFileId(logoFileId);
+		String result = writeFileStream(request, response, logoFileId);
+		logger.info("dowoload site logo fileId={} result={}", logoFileId, result);
+
+		return null;
+	}
+
+	private String writeFileStream(HttpServletRequest request, HttpServletResponse response, String fileId) {
+		String result = "error";
+		if (StringUtils.isNotEmpty(fileId)) {
+			String fileUrl = FilePathUtils.getFilePathByFileId(fileId);
 			System.out.println("fileUrl = " + fileUrl);
 			File file = new File(fileUrl);
 
 			if (file.exists()) {
 				response.setContentType("application/force-download");
-				response.addHeader("Content-Disposition", "attachment;fileName=" + logoFileId);
+				response.addHeader("Content-Disposition", "attachment;fileName=" + fileId);
 				// 每次写1M缓存数据大小
 				byte[] bufferContent = new byte[1024];
 				FileInputStream fis = null;
@@ -59,6 +81,7 @@ public class FileController {
 							break;
 						}
 					}
+					result = "success";
 					logger.info("download site logo success!");
 					fis.close();
 					bis.close();
@@ -80,10 +103,9 @@ public class FileController {
 					}
 				}
 			} else {
-				System.out.println("文件不存在");
+				logger.warn("file is not exits");
 			}
 		}
-		return null;
+		return result;
 	}
-
 }

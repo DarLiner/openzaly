@@ -18,6 +18,7 @@ import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.chat.service.WebChatService;
 
 /**
@@ -47,25 +48,46 @@ public class WebChatController {
 	public ModelAndView toChatMain(@RequestParam String sessionId) {
 		ModelAndView modelAndView = new ModelAndView("webChat/akaxin_chat_main");
 		System.out.println("/akaxin/chat sessionid=" + sessionId);
-		modelAndView.addObject("siteName", SiteConfig.getConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE));
-		modelAndView.addObject("sessionId", sessionId);
+		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
+
+		UserProfileBean bean = webChatService.getUserProfile(siteUserId);
+		if (bean != null) {
+			modelAndView.addObject("siteLogoId", SiteConfig.getSiteLogo());
+			modelAndView.addObject("siteName", SiteConfig.getConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE));
+			modelAndView.addObject("sessionId", sessionId);
+			modelAndView.addObject("userId", bean.getSiteUserId());
+			modelAndView.addObject("userName", bean.getUserName());
+			modelAndView.addObject("userPhoto", bean.getUserPhoto());
+		}
+
 		return modelAndView;
 	}
 
 	@RequestMapping(value = "/chatList", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public List<Object> getUserChatList() {
+	public String getChatSessions(@RequestParam String sessionId) {
 		List<Object> resData = new ArrayList<Object>();
 		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
 
-		Map<String, String> map = new HashMap<String, String>();
-		resData.add(map);
-		return resData;
+		List<SimpleUserBean> friendList = webChatService.getUserFriendList(siteUserId);
+		if (friendList != null) {
+			for (SimpleUserBean bean : friendList) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("id", bean.getUserId());
+				map.put("stype", "u2");// u2 or group
+				map.put("name", bean.getUserName());
+				map.put("photo", bean.getUserPhoto());
+				map.put("msg", "目前我们已经解决了大部分问题");
+				resData.add(map);
+			}
+		}
+
+		return GsonUtils.toJson(resData);
 	}
 
 	@RequestMapping(value = "/friendList", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String getFriendList() {
+	public String getFriendList(@RequestParam String sessionId) {
 		List<Object> resData = new ArrayList<Object>();
 		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
 
@@ -82,9 +104,9 @@ public class WebChatController {
 		return GsonUtils.toJson(resData);
 	}
 
-	@RequestMapping(value = "/GroupList", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/groupList", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public List<Object> getGroupList() {
+	public List<Object> getGroupList(@RequestParam String sessionId) {
 		List<Object> resData = new ArrayList<Object>();
 		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
 

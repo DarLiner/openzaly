@@ -6,11 +6,17 @@ import org.springframework.stereotype.Service;
 
 import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserGroupDao;
+import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 
 @Service("webChatService")
 public class WebChatService {
+
+	public UserProfileBean getUserProfile(String siteUserId) {
+		return UserProfileDao.getInstance().getUserProfileById(siteUserId);
+	}
 
 	public List<SimpleUserBean> getChatList(String siteUserId) {
 		// return UserFriendDao.getInstance().getUserFriends(siteUserId);
