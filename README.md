@@ -1,11 +1,11 @@
 
 
-<p align="center">
+<p align="right">
   <a href="https://www.akaxin.com/">
     <img
       alt="Akaxin"
       src="https://avatars3.githubusercontent.com/u/32624098?s=200&v=4"
-      width="128"
+      width="64"
     />
   </a>
 </p>
