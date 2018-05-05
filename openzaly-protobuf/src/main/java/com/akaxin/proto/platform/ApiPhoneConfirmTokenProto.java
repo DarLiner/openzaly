@@ -20,7 +20,7 @@ public final class ApiPhoneConfirmTokenProto {
 
     /**
      * <pre>
-     *平台允许站点获取手机号的准许码
+     *平台允许站点获取手机号的token
      * </pre>
      *
      * <code>optional string phone_token = 1;</code>
@@ -28,7 +28,7 @@ public final class ApiPhoneConfirmTokenProto {
     java.lang.String getPhoneToken();
     /**
      * <pre>
-     *平台允许站点获取手机号的准许码
+     *平台允许站点获取手机号的token
      * </pre>
      *
      * <code>optional string phone_token = 1;</code>
@@ -109,7 +109,7 @@ public final class ApiPhoneConfirmTokenProto {
     private volatile java.lang.Object phoneToken_;
     /**
      * <pre>
-     *平台允许站点获取手机号的准许码
+     *平台允许站点获取手机号的token
      * </pre>
      *
      * <code>optional string phone_token = 1;</code>
@@ -128,7 +128,7 @@ public final class ApiPhoneConfirmTokenProto {
     }
     /**
      * <pre>
-     *平台允许站点获取手机号的准许码
+     *平台允许站点获取手机号的token
      * </pre>
      *
      * <code>optional string phone_token = 1;</code>
@@ -419,7 +419,7 @@ public final class ApiPhoneConfirmTokenProto {
       private java.lang.Object phoneToken_ = "";
       /**
        * <pre>
-       *平台允许站点获取手机号的准许码
+       *平台允许站点获取手机号的token
        * </pre>
        *
        * <code>optional string phone_token = 1;</code>
@@ -438,7 +438,7 @@ public final class ApiPhoneConfirmTokenProto {
       }
       /**
        * <pre>
-       *平台允许站点获取手机号的准许码
+       *平台允许站点获取手机号的token
        * </pre>
        *
        * <code>optional string phone_token = 1;</code>
@@ -458,7 +458,7 @@ public final class ApiPhoneConfirmTokenProto {
       }
       /**
        * <pre>
-       *平台允许站点获取手机号的准许码
+       *平台允许站点获取手机号的token
        * </pre>
        *
        * <code>optional string phone_token = 1;</code>
@@ -475,7 +475,7 @@ public final class ApiPhoneConfirmTokenProto {
       }
       /**
        * <pre>
-       *平台允许站点获取手机号的准许码
+       *平台允许站点获取手机号的token
        * </pre>
        *
        * <code>optional string phone_token = 1;</code>
@@ -488,7 +488,7 @@ public final class ApiPhoneConfirmTokenProto {
       }
       /**
        * <pre>
-       *平台允许站点获取手机号的准许码
+       *平台允许站点获取手机号的token
        * </pre>
        *
        * <code>optional string phone_token = 1;</code>
@@ -577,21 +577,39 @@ public final class ApiPhoneConfirmTokenProto {
 
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 2;</code>
+     * <code>optional string country_code = 2;</code>
      */
-    java.lang.String getGlobalRoaming();
+    java.lang.String getCountryCode();
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 2;</code>
+     * <code>optional string country_code = 2;</code>
      */
     com.google.protobuf.ByteString
-        getGlobalRoamingBytes();
+        getCountryCodeBytes();
+
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    java.lang.String getUserIdPubk();
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdPubkBytes();
   }
   /**
    * Protobuf type {@code platform.ApiPhoneConfirmTokenResponse}
@@ -606,7 +624,8 @@ public final class ApiPhoneConfirmTokenProto {
     }
     private ApiPhoneConfirmTokenResponse() {
       phoneId_ = "";
-      globalRoaming_ = "";
+      countryCode_ = "";
+      userIdPubk_ = "";
     }
 
     @java.lang.Override
@@ -643,7 +662,13 @@ public final class ApiPhoneConfirmTokenProto {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              globalRoaming_ = s;
+              countryCode_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              userIdPubk_ = s;
               break;
             }
           }
@@ -711,42 +736,84 @@ public final class ApiPhoneConfirmTokenProto {
       }
     }
 
-    public static final int GLOBAL_ROAMING_FIELD_NUMBER = 2;
-    private volatile java.lang.Object globalRoaming_;
+    public static final int COUNTRY_CODE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object countryCode_;
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 2;</code>
+     * <code>optional string country_code = 2;</code>
      */
-    public java.lang.String getGlobalRoaming() {
-      java.lang.Object ref = globalRoaming_;
+    public java.lang.String getCountryCode() {
+      java.lang.Object ref = countryCode_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        globalRoaming_ = s;
+        countryCode_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 2;</code>
+     * <code>optional string country_code = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getGlobalRoamingBytes() {
-      java.lang.Object ref = globalRoaming_;
+        getCountryCodeBytes() {
+      java.lang.Object ref = countryCode_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        globalRoaming_ = b;
+        countryCode_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_ID_PUBK_FIELD_NUMBER = 3;
+    private volatile java.lang.Object userIdPubk_;
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    public java.lang.String getUserIdPubk() {
+      java.lang.Object ref = userIdPubk_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userIdPubk_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdPubkBytes() {
+      java.lang.Object ref = userIdPubk_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userIdPubk_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -768,8 +835,11 @@ public final class ApiPhoneConfirmTokenProto {
       if (!getPhoneIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneId_);
       }
-      if (!getGlobalRoamingBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, globalRoaming_);
+      if (!getCountryCodeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, countryCode_);
+      }
+      if (!getUserIdPubkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, userIdPubk_);
       }
     }
 
@@ -781,8 +851,11 @@ public final class ApiPhoneConfirmTokenProto {
       if (!getPhoneIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneId_);
       }
-      if (!getGlobalRoamingBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, globalRoaming_);
+      if (!getCountryCodeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, countryCode_);
+      }
+      if (!getUserIdPubkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, userIdPubk_);
       }
       memoizedSize = size;
       return size;
@@ -802,8 +875,10 @@ public final class ApiPhoneConfirmTokenProto {
       boolean result = true;
       result = result && getPhoneId()
           .equals(other.getPhoneId());
-      result = result && getGlobalRoaming()
-          .equals(other.getGlobalRoaming());
+      result = result && getCountryCode()
+          .equals(other.getCountryCode());
+      result = result && getUserIdPubk()
+          .equals(other.getUserIdPubk());
       return result;
     }
 
@@ -816,8 +891,10 @@ public final class ApiPhoneConfirmTokenProto {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + PHONE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getPhoneId().hashCode();
-      hash = (37 * hash) + GLOBAL_ROAMING_FIELD_NUMBER;
-      hash = (53 * hash) + getGlobalRoaming().hashCode();
+      hash = (37 * hash) + COUNTRY_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getCountryCode().hashCode();
+      hash = (37 * hash) + USER_ID_PUBK_FIELD_NUMBER;
+      hash = (53 * hash) + getUserIdPubk().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -938,7 +1015,9 @@ public final class ApiPhoneConfirmTokenProto {
         super.clear();
         phoneId_ = "";
 
-        globalRoaming_ = "";
+        countryCode_ = "";
+
+        userIdPubk_ = "";
 
         return this;
       }
@@ -963,7 +1042,8 @@ public final class ApiPhoneConfirmTokenProto {
       public com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse buildPartial() {
         com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse result = new com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse(this);
         result.phoneId_ = phoneId_;
-        result.globalRoaming_ = globalRoaming_;
+        result.countryCode_ = countryCode_;
+        result.userIdPubk_ = userIdPubk_;
         onBuilt();
         return result;
       }
@@ -1009,8 +1089,12 @@ public final class ApiPhoneConfirmTokenProto {
           phoneId_ = other.phoneId_;
           onChanged();
         }
-        if (!other.getGlobalRoaming().isEmpty()) {
-          globalRoaming_ = other.globalRoaming_;
+        if (!other.getCountryCode().isEmpty()) {
+          countryCode_ = other.countryCode_;
+          onChanged();
+        }
+        if (!other.getUserIdPubk().isEmpty()) {
+          userIdPubk_ = other.userIdPubk_;
           onChanged();
         }
         onChanged();
@@ -1128,21 +1212,21 @@ public final class ApiPhoneConfirmTokenProto {
         return this;
       }
 
-      private java.lang.Object globalRoaming_ = "";
+      private java.lang.Object countryCode_ = "";
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 2;</code>
+       * <code>optional string country_code = 2;</code>
        */
-      public java.lang.String getGlobalRoaming() {
-        java.lang.Object ref = globalRoaming_;
+      public java.lang.String getCountryCode() {
+        java.lang.Object ref = countryCode_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          globalRoaming_ = s;
+          countryCode_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1150,19 +1234,19 @@ public final class ApiPhoneConfirmTokenProto {
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 2;</code>
+       * <code>optional string country_code = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getGlobalRoamingBytes() {
-        java.lang.Object ref = globalRoaming_;
+          getCountryCodeBytes() {
+        java.lang.Object ref = countryCode_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          globalRoaming_ = b;
+          countryCode_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -1170,49 +1254,138 @@ public final class ApiPhoneConfirmTokenProto {
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 2;</code>
+       * <code>optional string country_code = 2;</code>
        */
-      public Builder setGlobalRoaming(
+      public Builder setCountryCode(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        globalRoaming_ = value;
+        countryCode_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 2;</code>
+       * <code>optional string country_code = 2;</code>
        */
-      public Builder clearGlobalRoaming() {
+      public Builder clearCountryCode() {
         
-        globalRoaming_ = getDefaultInstance().getGlobalRoaming();
+        countryCode_ = getDefaultInstance().getCountryCode();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 2;</code>
+       * <code>optional string country_code = 2;</code>
        */
-      public Builder setGlobalRoamingBytes(
+      public Builder setCountryCodeBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        globalRoaming_ = value;
+        countryCode_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object userIdPubk_ = "";
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public java.lang.String getUserIdPubk() {
+        java.lang.Object ref = userIdPubk_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          userIdPubk_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIdPubkBytes() {
+        java.lang.Object ref = userIdPubk_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userIdPubk_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public Builder setUserIdPubk(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        userIdPubk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public Builder clearUserIdPubk() {
+        
+        userIdPubk_ = getDefaultInstance().getUserIdPubk();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public Builder setUserIdPubkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        userIdPubk_ = value;
         onChanged();
         return this;
       }
@@ -1286,14 +1459,14 @@ public final class ApiPhoneConfirmTokenProto {
     java.lang.String[] descriptorData = {
       "\n%platform/api_phone_confirmToken.proto\022" +
       "\010platform\"2\n\033ApiPhoneConfirmTokenRequest" +
-      "\022\023\n\013phone_token\030\001 \001(\t\"H\n\034ApiPhoneConfirm" +
-      "TokenResponse\022\020\n\010phone_id\030\001 \001(\t\022\026\n\016globa" +
-      "l_roaming\030\002 \001(\t2|\n\033ApiPhoneConfirmTokenS" +
-      "ervice\022]\n\014confirmToken\022%.platform.ApiPho" +
-      "neConfirmTokenRequest\032&.platform.ApiPhon" +
-      "eConfirmTokenResponseB6\n\031com.akaxin.prot" +
-      "o.platformB\031ApiPhoneConfirmTokenProtob\006p" +
-      "roto3"
+      "\022\023\n\013phone_token\030\001 \001(\t\"\\\n\034ApiPhoneConfirm" +
+      "TokenResponse\022\020\n\010phone_id\030\001 \001(\t\022\024\n\014count" +
+      "ry_code\030\002 \001(\t\022\024\n\014user_id_pubk\030\003 \001(\t2|\n\033A" +
+      "piPhoneConfirmTokenService\022]\n\014confirmTok" +
+      "en\022%.platform.ApiPhoneConfirmTokenReques" +
+      "t\032&.platform.ApiPhoneConfirmTokenRespons" +
+      "eB6\n\031com.akaxin.proto.platformB\031ApiPhone" +
+      "ConfirmTokenProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1318,7 +1491,7 @@ public final class ApiPhoneConfirmTokenProto {
     internal_static_platform_ApiPhoneConfirmTokenResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_platform_ApiPhoneConfirmTokenResponse_descriptor,
-        new java.lang.String[] { "PhoneId", "GlobalRoaming", });
+        new java.lang.String[] { "PhoneId", "CountryCode", "UserIdPubk", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

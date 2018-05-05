@@ -15,22 +15,6 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.LOG_LEVEL_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.PIC_PATH_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.PIC_SIZE_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.REGISTER_WAY_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_ADDRESS_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_HTTP_ADDRESS_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_HTTP_PORT_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_INTRODUCTION_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_LOGO_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_MANAGER_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_NAME_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.SITE_PORT_VALUE;
-import static com.akaxin.proto.core.ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.proto.core.ConfigProto.ConfigKey;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.web.admin.service.IBasicService;
@@ -119,49 +104,52 @@ public class BasicManageController extends AbstractController {
 		for (Integer integer : integers) {
 			String res = map.get(integer);
 			switch (integer) {
-			case SITE_NAME_VALUE:
+			case ConfigKey.SITE_NAME_VALUE:
 				model.put("site_name", res);
 				break;
-			case SITE_ADDRESS_VALUE:
+			case ConfigKey.SITE_ADDRESS_VALUE:
 				site_address = res;
 				break;
-			case SITE_PORT_VALUE:
+			case ConfigKey.SITE_PORT_VALUE:
 				site_prot = res;
 				break;
-			case SITE_HTTP_ADDRESS_VALUE:
+			case ConfigKey.SITE_HTTP_ADDRESS_VALUE:
 				http_address = res;
 				break;
-			case SITE_HTTP_PORT_VALUE:
+			case ConfigKey.SITE_HTTP_PORT_VALUE:
 				http_prot = res;
 				break;
-			case SITE_LOGO_VALUE:
+			case ConfigKey.SITE_LOGO_VALUE:
 				model.put("site_logo", res);
 				break;
-			case SITE_INTRODUCTION_VALUE:
+			case ConfigKey.SITE_INTRODUCTION_VALUE:
 				model.put("site_desc", res);
 				break;
-			case REGISTER_WAY_VALUE:
-				model.put("site_register_way", res);
+			case ConfigKey.REALNAME_STATUS_VALUE:
+				model.put("realName_status", res);
 				break;
-			case PIC_SIZE_VALUE:
+			case ConfigKey.INVITE_CODE_STATUS_VALUE:
+				model.put("uic_status", res);
+				break;
+			case ConfigKey.PIC_SIZE_VALUE:
 				model.put("pic_size", res);
 				break;
-			case PIC_PATH_VALUE:
+			case ConfigKey.PIC_PATH_VALUE:
 				model.put("pic_path", res);
 				break;
-			case GROUP_MEMBERS_COUNT_VALUE:
+			case ConfigKey.GROUP_MEMBERS_COUNT_VALUE:
 				model.put("group_members_count", res);
 				break;
-			case U2_ENCRYPTION_STATUS_VALUE:
+			case ConfigKey.U2_ENCRYPTION_STATUS_VALUE:
 				model.put("u2_encryption_status", res);
 				break;
-			case PUSH_CLIENT_STATUS_VALUE:
+			case ConfigKey.PUSH_CLIENT_STATUS_VALUE:
 				model.put("push_client_status", res);
 				break;
-			case LOG_LEVEL_VALUE:
+			case ConfigKey.LOG_LEVEL_VALUE:
 				model.put("log_level", res);
 				break;
-			case SITE_MANAGER_VALUE:
+			case ConfigKey.SITE_MANAGER_VALUE:
 				model.put("subgenus_admin", res);
 				break;
 			}
@@ -206,8 +194,11 @@ public class BasicManageController extends AbstractController {
 				if (StringUtils.isNotEmpty(dataMap.get("site_logo"))) {
 					configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
 				}
-				if (StringUtils.isNotEmpty(dataMap.get("register_way"))) {
-					configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, dataMap.get("register_way"));
+				if (StringUtils.isNotEmpty(dataMap.get("uic_status"))) {
+					configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, dataMap.get("uic_status"));
+				}
+				if (StringUtils.isNotEmpty(dataMap.get("realName_status"))) {
+					configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, dataMap.get("realName_status"));
 				}
 				if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
 					configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,

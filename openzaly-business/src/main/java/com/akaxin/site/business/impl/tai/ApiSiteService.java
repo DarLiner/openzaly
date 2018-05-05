@@ -104,9 +104,13 @@ public class ApiSiteService extends AbstractRequest {
 				if (StringUtils.isNotBlank(configMap.get(ConfigProto.ConfigKey.PIC_SIZE_VALUE))) {
 					configBuilder.setPicSize(configMap.get(ConfigProto.ConfigKey.PIC_SIZE_VALUE));
 				}
-				if (StringUtils.isNumeric(configMap.get(ConfigProto.ConfigKey.REGISTER_WAY_VALUE))) {
-					configBuilder
-							.setRegisterWay(Integer.valueOf(configMap.get(ConfigProto.ConfigKey.REGISTER_WAY_VALUE)));
+				if (StringUtils.isNumeric(configMap.get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE))) {
+					configBuilder.setRealNameConfigValue(
+							Integer.valueOf(configMap.get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE)));
+				}
+				if (StringUtils.isNumeric(configMap.get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE))) {
+					configBuilder.setInviteCodeConfigValue(
+							Integer.valueOf(configMap.get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE)));
 				}
 				ApiSiteConfigProto.ApiSiteConfigResponse response = ApiSiteConfigProto.ApiSiteConfigResponse
 						.newBuilder().setSiteConfig(configBuilder.build()).build();
@@ -134,10 +138,9 @@ public class ApiSiteService extends AbstractRequest {
 			String applyInfo = request.getApplyInfo();
 			String phoneToken = request.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
-			String siteUserId = request.getSiteUserId();// siteUserId保证各站不同
-			if (StringUtils.isBlank(siteUserId)) {
-				siteUserId = UUID.randomUUID().toString();
-			}
+			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
+			String siteLoginName = request.getSiteLoginName();
+
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userName)) {
@@ -145,20 +148,10 @@ public class ApiSiteService extends AbstractRequest {
 				return commandResponse.setErrCode2(errorCode);
 			}
 
-			// 判断站点的注册方式
-			ConfigProto.RegisterWay regWay = SiteConfig.getRegisterWay();
-
-			logger.debug("api.site.register register way={}", regWay);
-
-			switch (regWay) {
-			case USERUIC:
-				logger.debug("注册方式：邀请码注册");
-				if (!UserUic.getInstance().checkUic(userUic, siteUserId)) {
-					errorCode = ErrorCode2.ERROR_REGISTER_UIC;
-					return commandResponse.setErrCode2(errorCode);
-				}
-				break;
-			case REALNAME:
+			// 是否开启实名
+			ConfigProto.RealNameConfig realNameConfig = SiteConfig.getRealNameConfig();
+			switch (realNameConfig) {
+			case REALNAME_YES:
 				logger.debug("注册方式：实名注册");
 				if (StringUtils.isNotBlank(phoneToken)) {
 					phoneId = UserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
@@ -169,10 +162,21 @@ public class ApiSiteService extends AbstractRequest {
 					}
 				}
 				break;
-			case ANONYMOUS:
-				logger.debug("注册方式：匿名注册");
+			default:
 				break;
-			case UNRECOGNIZED:
+			}
+
+			// 是否开启邀请码
+			ConfigProto.InviteCodeConfig uicConfig = SiteConfig.getUICConfig();
+			switch (uicConfig) {
+			case UIC_YES:
+				logger.debug("注册方式：邀请码注册");
+				if (!UserUic.getInstance().checkUic(userUic, siteUserId)) {
+					errorCode = ErrorCode2.ERROR_REGISTER_UIC;
+					return commandResponse.setErrCode2(errorCode);
+				}
+				break;
+			default:
 				break;
 			}
 
@@ -225,6 +229,9 @@ public class ApiSiteService extends AbstractRequest {
 					port = "" + DEFAULT_PORT;
 					SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_PORT_VALUE, port);
 				}
+				// 修改邀请码注册方式
+				SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE,
+						ConfigProto.InviteCodeConfig.UIC_NO_VALUE + "");
 			}
 			SiteConfig.updateConfig();
 		}

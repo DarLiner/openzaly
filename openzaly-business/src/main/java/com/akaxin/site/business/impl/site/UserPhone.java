@@ -54,7 +54,7 @@ public class UserPhone {
 			if (responseBytes != null) {
 				ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse resposne = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse
 						.parseFrom(responseBytes);
-				String phoneCode = resposne.getGlobalRoaming() + resposne.getPhoneId();
+				String phoneCode = resposne.getCountryCode() + ":" + resposne.getPhoneId();
 				logger.debug("get phoncode={} from platform", phoneCode);
 				return phoneCode;
 			}

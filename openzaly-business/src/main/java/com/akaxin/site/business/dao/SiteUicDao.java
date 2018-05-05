@@ -56,9 +56,9 @@ public class SiteUicDao {
 	 * @param num
 	 * @return
 	 */
-	public boolean batchAddUic(UicBean bean, int num) {
+	public boolean batchAddUic(UicBean bean, int num, int length) {
 		try {
-			return uicDao.batchAddUic(bean, num);
+			return uicDao.batchAddUic(bean, num, length);
 		} catch (SQLException e) {
 			logger.error("add uic error.", e);
 		}

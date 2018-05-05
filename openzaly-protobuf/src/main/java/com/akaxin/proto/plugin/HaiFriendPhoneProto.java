@@ -562,18 +562,18 @@ public final class HaiFriendPhoneProto {
      *国际区号+86
      * </pre>
      *
-     * <code>optional string global_roaming = 1;</code>
+     * <code>optional string country_code = 1;</code>
      */
-    java.lang.String getGlobalRoaming();
+    java.lang.String getCountryCode();
     /**
      * <pre>
      *国际区号+86
      * </pre>
      *
-     * <code>optional string global_roaming = 1;</code>
+     * <code>optional string country_code = 1;</code>
      */
     com.google.protobuf.ByteString
-        getGlobalRoamingBytes();
+        getCountryCodeBytes();
 
     /**
      * <pre>
@@ -605,7 +605,7 @@ public final class HaiFriendPhoneProto {
       super(builder);
     }
     private HaiFriendPhoneResponse() {
-      globalRoaming_ = "";
+      countryCode_ = "";
       phoneId_ = "";
     }
 
@@ -637,7 +637,7 @@ public final class HaiFriendPhoneProto {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              globalRoaming_ = s;
+              countryCode_ = s;
               break;
             }
             case 18: {
@@ -669,24 +669,24 @@ public final class HaiFriendPhoneProto {
               com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse.class, com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse.Builder.class);
     }
 
-    public static final int GLOBAL_ROAMING_FIELD_NUMBER = 1;
-    private volatile java.lang.Object globalRoaming_;
+    public static final int COUNTRY_CODE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object countryCode_;
     /**
      * <pre>
      *国际区号+86
      * </pre>
      *
-     * <code>optional string global_roaming = 1;</code>
+     * <code>optional string country_code = 1;</code>
      */
-    public java.lang.String getGlobalRoaming() {
-      java.lang.Object ref = globalRoaming_;
+    public java.lang.String getCountryCode() {
+      java.lang.Object ref = countryCode_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        globalRoaming_ = s;
+        countryCode_ = s;
         return s;
       }
     }
@@ -695,16 +695,16 @@ public final class HaiFriendPhoneProto {
      *国际区号+86
      * </pre>
      *
-     * <code>optional string global_roaming = 1;</code>
+     * <code>optional string country_code = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getGlobalRoamingBytes() {
-      java.lang.Object ref = globalRoaming_;
+        getCountryCodeBytes() {
+      java.lang.Object ref = countryCode_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        globalRoaming_ = b;
+        countryCode_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -765,8 +765,8 @@ public final class HaiFriendPhoneProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getGlobalRoamingBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, globalRoaming_);
+      if (!getCountryCodeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, countryCode_);
       }
       if (!getPhoneIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, phoneId_);
@@ -778,8 +778,8 @@ public final class HaiFriendPhoneProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getGlobalRoamingBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, globalRoaming_);
+      if (!getCountryCodeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, countryCode_);
       }
       if (!getPhoneIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, phoneId_);
@@ -800,8 +800,8 @@ public final class HaiFriendPhoneProto {
       com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse other = (com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse) obj;
 
       boolean result = true;
-      result = result && getGlobalRoaming()
-          .equals(other.getGlobalRoaming());
+      result = result && getCountryCode()
+          .equals(other.getCountryCode());
       result = result && getPhoneId()
           .equals(other.getPhoneId());
       return result;
@@ -814,8 +814,8 @@ public final class HaiFriendPhoneProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + GLOBAL_ROAMING_FIELD_NUMBER;
-      hash = (53 * hash) + getGlobalRoaming().hashCode();
+      hash = (37 * hash) + COUNTRY_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getCountryCode().hashCode();
       hash = (37 * hash) + PHONE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getPhoneId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -936,7 +936,7 @@ public final class HaiFriendPhoneProto {
       }
       public Builder clear() {
         super.clear();
-        globalRoaming_ = "";
+        countryCode_ = "";
 
         phoneId_ = "";
 
@@ -962,7 +962,7 @@ public final class HaiFriendPhoneProto {
 
       public com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse buildPartial() {
         com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse result = new com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse(this);
-        result.globalRoaming_ = globalRoaming_;
+        result.countryCode_ = countryCode_;
         result.phoneId_ = phoneId_;
         onBuilt();
         return result;
@@ -1005,8 +1005,8 @@ public final class HaiFriendPhoneProto {
 
       public Builder mergeFrom(com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse other) {
         if (other == com.akaxin.proto.plugin.HaiFriendPhoneProto.HaiFriendPhoneResponse.getDefaultInstance()) return this;
-        if (!other.getGlobalRoaming().isEmpty()) {
-          globalRoaming_ = other.globalRoaming_;
+        if (!other.getCountryCode().isEmpty()) {
+          countryCode_ = other.countryCode_;
           onChanged();
         }
         if (!other.getPhoneId().isEmpty()) {
@@ -1039,21 +1039,21 @@ public final class HaiFriendPhoneProto {
         return this;
       }
 
-      private java.lang.Object globalRoaming_ = "";
+      private java.lang.Object countryCode_ = "";
       /**
        * <pre>
        *国际区号+86
        * </pre>
        *
-       * <code>optional string global_roaming = 1;</code>
+       * <code>optional string country_code = 1;</code>
        */
-      public java.lang.String getGlobalRoaming() {
-        java.lang.Object ref = globalRoaming_;
+      public java.lang.String getCountryCode() {
+        java.lang.Object ref = countryCode_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          globalRoaming_ = s;
+          countryCode_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1064,16 +1064,16 @@ public final class HaiFriendPhoneProto {
        *国际区号+86
        * </pre>
        *
-       * <code>optional string global_roaming = 1;</code>
+       * <code>optional string country_code = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getGlobalRoamingBytes() {
-        java.lang.Object ref = globalRoaming_;
+          getCountryCodeBytes() {
+        java.lang.Object ref = countryCode_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          globalRoaming_ = b;
+          countryCode_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -1084,15 +1084,15 @@ public final class HaiFriendPhoneProto {
        *国际区号+86
        * </pre>
        *
-       * <code>optional string global_roaming = 1;</code>
+       * <code>optional string country_code = 1;</code>
        */
-      public Builder setGlobalRoaming(
+      public Builder setCountryCode(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        globalRoaming_ = value;
+        countryCode_ = value;
         onChanged();
         return this;
       }
@@ -1101,11 +1101,11 @@ public final class HaiFriendPhoneProto {
        *国际区号+86
        * </pre>
        *
-       * <code>optional string global_roaming = 1;</code>
+       * <code>optional string country_code = 1;</code>
        */
-      public Builder clearGlobalRoaming() {
+      public Builder clearCountryCode() {
         
-        globalRoaming_ = getDefaultInstance().getGlobalRoaming();
+        countryCode_ = getDefaultInstance().getCountryCode();
         onChanged();
         return this;
       }
@@ -1114,16 +1114,16 @@ public final class HaiFriendPhoneProto {
        *国际区号+86
        * </pre>
        *
-       * <code>optional string global_roaming = 1;</code>
+       * <code>optional string country_code = 1;</code>
        */
-      public Builder setGlobalRoamingBytes(
+      public Builder setCountryCodeBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        globalRoaming_ = value;
+        countryCode_ = value;
         onChanged();
         return this;
       }
@@ -1286,12 +1286,12 @@ public final class HaiFriendPhoneProto {
     java.lang.String[] descriptorData = {
       "\n\035plugin/hai_friend_phone.proto\022\006plugin\"" +
       "-\n\025HaiFriendPhoneRequest\022\024\n\014site_user_id" +
-      "\030\001 \001(\t\"B\n\026HaiFriendPhoneResponse\022\026\n\016glob" +
-      "al_roaming\030\001 \001(\t\022\020\n\010phone_id\030\002 \001(\t2_\n\025Ha" +
-      "iFriendPhoneService\022F\n\005phone\022\035.plugin.Ha" +
-      "iFriendPhoneRequest\032\036.plugin.HaiFriendPh" +
-      "oneResponseB.\n\027com.akaxin.proto.pluginB\023" +
-      "HaiFriendPhoneProtob\006proto3"
+      "\030\001 \001(\t\"@\n\026HaiFriendPhoneResponse\022\024\n\014coun" +
+      "try_code\030\001 \001(\t\022\020\n\010phone_id\030\002 \001(\t2_\n\025HaiF" +
+      "riendPhoneService\022F\n\005phone\022\035.plugin.HaiF" +
+      "riendPhoneRequest\032\036.plugin.HaiFriendPhon" +
+      "eResponseB.\n\027com.akaxin.proto.pluginB\023Ha" +
+      "iFriendPhoneProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1316,7 +1316,7 @@ public final class HaiFriendPhoneProto {
     internal_static_plugin_HaiFriendPhoneResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiFriendPhoneResponse_descriptor,
-        new java.lang.String[] { "GlobalRoaming", "PhoneId", });
+        new java.lang.String[] { "CountryCode", "PhoneId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

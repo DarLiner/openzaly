@@ -31,12 +31,12 @@ public class UICManageService implements IUICService {
 	private static final Logger logger = LoggerFactory.getLogger(UICManageService.class);
 
 	@Override
-	public boolean addUIC(int num) {
+	public boolean addUIC(int num, int length) {
 		try {
 			UicBean bean = new UicBean();
 			bean.setStatus(UicStatus.UNUSED_VALUE);
 			bean.setCreateTime(System.currentTimeMillis());
-			if (SiteUicDao.getInstance().batchAddUic(bean, num)) {
+			if (SiteUicDao.getInstance().batchAddUic(bean, num, length)) {
 				return true;
 			}
 		} catch (Exception e) {

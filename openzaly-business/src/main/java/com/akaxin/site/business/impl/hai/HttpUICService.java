@@ -58,13 +58,14 @@ public class HttpUICService extends AbstractRequest {
 			String siteUserId = command.getSiteUserId();
 			int num = request.getUicNumber();
 			int successCount = 0;
+			int uicLength = 16;
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && num > 0) {
 				UicBean bean = new UicBean();
 				bean.setStatus(UicStatus.UNUSED_VALUE);
 				bean.setCreateTime(System.currentTimeMillis());
-				if (SiteUicDao.getInstance().batchAddUic(bean, num)) {
+				if (SiteUicDao.getInstance().batchAddUic(bean, num, uicLength)) {
 					errorCode = ErrorCode2.SUCCESS;
 				}
 			} else {

@@ -47,6 +47,22 @@ public final class PhoneProto {
      * <code>PHONE_REALNAME = 2;</code>
      */
     PHONE_REALNAME(2),
+    /**
+     * <pre>
+     *通过手机号实名注册平台
+     * </pre>
+     *
+     * <code>PHONE_REGISTER = 3;</code>
+     */
+    PHONE_REGISTER(3),
+    /**
+     * <pre>
+     *匿名登陆实名站点，需平台手机注册
+     * </pre>
+     *
+     * <code>PHONE_REGISTER_FOR_SITE = 4;</code>
+     */
+    PHONE_REGISTER_FOR_SITE(4),
     UNRECOGNIZED(-1),
     ;
 
@@ -74,6 +90,22 @@ public final class PhoneProto {
      * <code>PHONE_REALNAME = 2;</code>
      */
     public static final int PHONE_REALNAME_VALUE = 2;
+    /**
+     * <pre>
+     *通过手机号实名注册平台
+     * </pre>
+     *
+     * <code>PHONE_REGISTER = 3;</code>
+     */
+    public static final int PHONE_REGISTER_VALUE = 3;
+    /**
+     * <pre>
+     *匿名登陆实名站点，需平台手机注册
+     * </pre>
+     *
+     * <code>PHONE_REGISTER_FOR_SITE = 4;</code>
+     */
+    public static final int PHONE_REGISTER_FOR_SITE_VALUE = 4;
 
 
     public final int getNumber() {
@@ -97,6 +129,8 @@ public final class PhoneProto {
         case 0: return UNIFIED;
         case 1: return PHONE_LOGIN;
         case 2: return PHONE_REALNAME;
+        case 3: return PHONE_REGISTER;
+        case 4: return PHONE_REGISTER_FOR_SITE;
         default: return null;
       }
     }
@@ -158,10 +192,11 @@ public final class PhoneProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020core/phone.proto\022\004core*:\n\006VCType\022\013\n\007UN" +
+      "\n\020core/phone.proto\022\004core*k\n\006VCType\022\013\n\007UN" +
       "IFIED\020\000\022\017\n\013PHONE_LOGIN\020\001\022\022\n\016PHONE_REALNA" +
-      "ME\020\002B#\n\025com.akaxin.proto.coreB\nPhoneProt" +
-      "ob\006proto3"
+      "ME\020\002\022\022\n\016PHONE_REGISTER\020\003\022\033\n\027PHONE_REGIST" +
+      "ER_FOR_SITE\020\004B#\n\025com.akaxin.proto.coreB\n" +
+      "PhoneProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

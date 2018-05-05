@@ -60,10 +60,10 @@ public class ApiSecretChatService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNoneBlank(siteUserId, siteFriendId) && !siteUserId.equals(siteFriendId)) {
-				ConfigProto.U2EncryptionStatus status = SiteConfig.getU2EncryStatus();
+				ConfigProto.U2EncryptionConfig status = SiteConfig.getU2EncryStatusConfig();
 				logger.debug("siteUserId={} apply encryption chat to siteFriendId={} status={}", siteUserId,
 						siteFriendId, status);
-				if (ConfigProto.U2EncryptionStatus.U2_OPEN == status) {
+				if (ConfigProto.U2EncryptionConfig.U2_OPEN == status) {
 					UserDeviceBean deviceBean = userDeviceDao.getLatestDevice(siteFriendId);
 					logger.debug("get siteUserId:{} deviceInfo:{}", siteFriendId, deviceBean.toString());
 

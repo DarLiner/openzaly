@@ -9,7 +9,7 @@ public interface IUicDao {
 
 	public boolean addUic(UicBean bean) throws SQLException;
 
-	public boolean batchAddUic(UicBean bean, int num) throws SQLException;
+	public boolean batchAddUic(UicBean bean, int num, int length) throws SQLException;
 
 	public boolean updateUic(UicBean bean) throws SQLException;
 

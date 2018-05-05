@@ -35,8 +35,8 @@ public class UicServiceDao implements IUicDao {
 	}
 
 	@Override
-	public boolean batchAddUic(UicBean bean, int num) throws SQLException {
-		return SQLiteUICDao.getInstance().batchAddUIC(bean, num);
+	public boolean batchAddUic(UicBean bean, int num, int length) throws SQLException {
+		return SQLiteUICDao.getInstance().batchAddUIC(bean, num, length);
 	}
 
 	@Override

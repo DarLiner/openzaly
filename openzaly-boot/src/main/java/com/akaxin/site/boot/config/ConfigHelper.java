@@ -81,12 +81,14 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, getStringConfig(GROUP_MEMBERS_COUNT));
 		// 默认二人绝密聊天状态：开启二人绝密聊天功能
 		configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
-				ConfigProto.U2EncryptionStatus.U2_OPEN_VALUE + "");
-		// 默认注册方式：邀请码注册
-		configMap.put(ConfigProto.ConfigKey.REGISTER_WAY_VALUE, ConfigProto.RegisterWay.USERUIC_VALUE + "");
-		// 默认Push状态：隐藏push内容
+				ConfigProto.U2EncryptionConfig.U2_OPEN_VALUE + "");
+		// 默认匿名
+		configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, ConfigProto.RealNameConfig.REALNAME_NO_VALUE + "");
+		// 默认开启邀请码
+		configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, ConfigProto.InviteCodeConfig.UIC_YES_VALUE + "");
+		// 默认Push状态：显示push内容
 		configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE,
-				ConfigProto.PushClientStatus.PUSH_HIDDEN_TEXT_VALUE + "");
+				ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT_VALUE + "");
 		return configMap;
 	}
 }

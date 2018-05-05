@@ -114,9 +114,8 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					byte[] secretTexgt = Base64.getDecoder().decode(bean.getContent());
 					CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder().setMsgId(bean.getMsgId())
 							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
-							.setText(ByteString.copyFrom(secretTexgt))
-							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
-							.setTime(bean.getMsgTime()).build();
+							.setText(ByteString.copyFrom(secretTexgt)).setToDeviceId(String.valueOf(bean.getDeviceId()))
+							.setBase64TsKey(bean.getTsKey()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_TEXT).setPointer(bean.getId()).setSecretText(secretText).build();
 					requestBuilder.addList(secretTextMsg);
@@ -134,7 +133,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					CoreProto.MsgSecretImage secretImage = CoreProto.MsgSecretImage.newBuilder()
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
 							.setSiteFriendId(bean.getSiteUserId()).setImageId(bean.getContent())
-							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setToDeviceId(String.valueOf(bean.getDeviceId())).setBase64TsKey(bean.getTsKey())
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_IMAGE).setPointer(bean.getId()).setSecretImage(secretImage).build();
@@ -151,8 +150,8 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 				case CoreProto.MsgType.SECRET_VOICE_VALUE:
 					CoreProto.MsgSecretVoice secretVoice = CoreProto.MsgSecretVoice.newBuilder()
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
-							.setSiteFriendId(bean.getSiteUserId()).setVoicdId(bean.getContent())
-							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setSiteFriendId(bean.getSiteUserId()).setVoiceId(bean.getContent())
+							.setToDeviceId(String.valueOf(bean.getDeviceId())).setBase64TsKey(bean.getTsKey())
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_VOICE).setPointer(bean.getId()).setSecretVoice(secretVoice).build();

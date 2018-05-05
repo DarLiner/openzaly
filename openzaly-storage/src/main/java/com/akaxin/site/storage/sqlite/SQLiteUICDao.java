@@ -79,26 +79,25 @@ public class SQLiteUICDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean batchAddUIC(UicBean bean, int num) throws SQLException {
+	public boolean batchAddUIC(UicBean bean, int num, int length) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + UIC_TABLE + "(uic,status,create_time) VALUES(?,?,?);";
 		int successCount = 0;
-
+		length = length < 6 ? 6 : length;// 最短6位
 		try {
 			SQLiteJDBCManager.getConnection().setAutoCommit(false);
 			for (int i = 0; i < num; i++) {
-				int uic0 = 0;
 				try {
-					int uic = (int) ((Math.random() * 9 + 1) * 100000);
-					uic0 = uic;
+					// int uic = (int) ((Math.random() * 9 + 1) * 100000);
+					String uicValue = StringHelper.generateRandomNumber(length);
 					PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-					preStatement.setString(1, String.valueOf(uic));
+					preStatement.setString(1, uicValue);
 					preStatement.setInt(2, bean.getStatus());
 					preStatement.setLong(3, System.currentTimeMillis());
 					preStatement.executeUpdate();
 					successCount++;
 				} catch (Exception e) {
-					logger.error(StringHelper.format("add uic={} error bean={}", uic0, bean.toString()), e);
+					logger.error("execute uic sql error ", e);
 				}
 			}
 			SQLiteJDBCManager.getConnection().commit();

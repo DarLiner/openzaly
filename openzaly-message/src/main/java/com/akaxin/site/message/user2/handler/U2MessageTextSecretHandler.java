@@ -20,7 +20,6 @@ import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
@@ -50,8 +49,8 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String msgId = request.getSecretText().getMsgId();
-				String tsKey = request.getSecretText().getTsKey();
-				String tsDeviceId = request.getSecretText().getSiteDeviceId();
+				String tsKey = request.getSecretText().getBase64TsKey();
+				String tsDeviceId = request.getSecretText().getToDeviceId();
 				ByteString byteStr = request.getSecretText().getText();
 				String msgText = Base64.getEncoder().encodeToString(byteStr.toByteArray());
 

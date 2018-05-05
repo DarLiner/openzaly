@@ -117,8 +117,11 @@ public class SQLiteJDBCManager {
 				if (oldMap.get(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE) != null) {
 					configMap.remove(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE);
 				}
-				if (oldMap.get(ConfigProto.ConfigKey.REGISTER_WAY_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.REGISTER_WAY_VALUE);
+				if (oldMap.get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE) != null) {
+					configMap.remove(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE);
+				}
+				if (oldMap.get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE) != null) {
+					configMap.remove(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE);
 				}
 				if (oldMap.get(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE) != null) {
 					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);

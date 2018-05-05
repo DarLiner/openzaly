@@ -5690,31 +5690,31 @@ public final class CoreProto {
 
     /**
      * <pre>
-     *加密key
+     *加密key,base64
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    java.lang.String getTsKey();
+    java.lang.String getBase64TsKey();
     /**
      * <pre>
-     *加密key
+     *加密key,base64
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     com.google.protobuf.ByteString
-        getTsKeyBytes();
+        getBase64TsKeyBytes();
 
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
-    java.lang.String getSiteDeviceId();
+    java.lang.String getToDeviceId();
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
     com.google.protobuf.ByteString
-        getSiteDeviceIdBytes();
+        getToDeviceIdBytes();
 
     /**
      * <pre>
@@ -5745,8 +5745,8 @@ public final class CoreProto {
       siteUserId_ = "";
       siteFriendId_ = "";
       text_ = com.google.protobuf.ByteString.EMPTY;
-      tsKey_ = "";
-      siteDeviceId_ = "";
+      base64TsKey_ = "";
+      toDeviceId_ = "";
       time_ = 0L;
     }
 
@@ -5801,13 +5801,13 @@ public final class CoreProto {
             case 42: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              tsKey_ = s;
+              base64TsKey_ = s;
               break;
             }
             case 50: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              siteDeviceId_ = s;
+              toDeviceId_ = s;
               break;
             }
             case 56: {
@@ -5949,76 +5949,76 @@ public final class CoreProto {
       return text_;
     }
 
-    public static final int TS_KEY_FIELD_NUMBER = 5;
-    private volatile java.lang.Object tsKey_;
+    public static final int BASE64_TS_KEY_FIELD_NUMBER = 5;
+    private volatile java.lang.Object base64TsKey_;
     /**
      * <pre>
-     *加密key
+     *加密key,base64
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    public java.lang.String getTsKey() {
-      java.lang.Object ref = tsKey_;
+    public java.lang.String getBase64TsKey() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        tsKey_ = s;
+        base64TsKey_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *加密key
+     *加密key,base64
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     public com.google.protobuf.ByteString
-        getTsKeyBytes() {
-      java.lang.Object ref = tsKey_;
+        getBase64TsKeyBytes() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        tsKey_ = b;
+        base64TsKey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int SITE_DEVICE_ID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object siteDeviceId_;
+    public static final int TO_DEVICE_ID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object toDeviceId_;
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
-    public java.lang.String getSiteDeviceId() {
-      java.lang.Object ref = siteDeviceId_;
+    public java.lang.String getToDeviceId() {
+      java.lang.Object ref = toDeviceId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        siteDeviceId_ = s;
+        toDeviceId_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
     public com.google.protobuf.ByteString
-        getSiteDeviceIdBytes() {
-      java.lang.Object ref = siteDeviceId_;
+        getToDeviceIdBytes() {
+      java.lang.Object ref = toDeviceId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        siteDeviceId_ = b;
+        toDeviceId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -6062,11 +6062,11 @@ public final class CoreProto {
       if (!text_.isEmpty()) {
         output.writeBytes(4, text_);
       }
-      if (!getTsKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, tsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, base64TsKey_);
       }
-      if (!getSiteDeviceIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, siteDeviceId_);
+      if (!getToDeviceIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, toDeviceId_);
       }
       if (time_ != 0L) {
         output.writeInt64(7, time_);
@@ -6091,11 +6091,11 @@ public final class CoreProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, text_);
       }
-      if (!getTsKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, tsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, base64TsKey_);
       }
-      if (!getSiteDeviceIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, siteDeviceId_);
+      if (!getToDeviceIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, toDeviceId_);
       }
       if (time_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
@@ -6125,10 +6125,10 @@ public final class CoreProto {
           .equals(other.getSiteFriendId());
       result = result && getText()
           .equals(other.getText());
-      result = result && getTsKey()
-          .equals(other.getTsKey());
-      result = result && getSiteDeviceId()
-          .equals(other.getSiteDeviceId());
+      result = result && getBase64TsKey()
+          .equals(other.getBase64TsKey());
+      result = result && getToDeviceId()
+          .equals(other.getToDeviceId());
       result = result && (getTime()
           == other.getTime());
       return result;
@@ -6149,10 +6149,10 @@ public final class CoreProto {
       hash = (53 * hash) + getSiteFriendId().hashCode();
       hash = (37 * hash) + TEXT_FIELD_NUMBER;
       hash = (53 * hash) + getText().hashCode();
-      hash = (37 * hash) + TS_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getTsKey().hashCode();
-      hash = (37 * hash) + SITE_DEVICE_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getSiteDeviceId().hashCode();
+      hash = (37 * hash) + BASE64_TS_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getBase64TsKey().hashCode();
+      hash = (37 * hash) + TO_DEVICE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getToDeviceId().hashCode();
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
@@ -6286,9 +6286,9 @@ public final class CoreProto {
 
         text_ = com.google.protobuf.ByteString.EMPTY;
 
-        tsKey_ = "";
+        base64TsKey_ = "";
 
-        siteDeviceId_ = "";
+        toDeviceId_ = "";
 
         time_ = 0L;
 
@@ -6318,8 +6318,8 @@ public final class CoreProto {
         result.siteUserId_ = siteUserId_;
         result.siteFriendId_ = siteFriendId_;
         result.text_ = text_;
-        result.tsKey_ = tsKey_;
-        result.siteDeviceId_ = siteDeviceId_;
+        result.base64TsKey_ = base64TsKey_;
+        result.toDeviceId_ = toDeviceId_;
         result.time_ = time_;
         onBuilt();
         return result;
@@ -6377,12 +6377,12 @@ public final class CoreProto {
         if (other.getText() != com.google.protobuf.ByteString.EMPTY) {
           setText(other.getText());
         }
-        if (!other.getTsKey().isEmpty()) {
-          tsKey_ = other.tsKey_;
+        if (!other.getBase64TsKey().isEmpty()) {
+          base64TsKey_ = other.base64TsKey_;
           onChanged();
         }
-        if (!other.getSiteDeviceId().isEmpty()) {
-          siteDeviceId_ = other.siteDeviceId_;
+        if (!other.getToDeviceId().isEmpty()) {
+          toDeviceId_ = other.toDeviceId_;
           onChanged();
         }
         if (other.getTime() != 0L) {
@@ -6650,21 +6650,21 @@ public final class CoreProto {
         return this;
       }
 
-      private java.lang.Object tsKey_ = "";
+      private java.lang.Object base64TsKey_ = "";
       /**
        * <pre>
-       *加密key
+       *加密key,base64
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public java.lang.String getTsKey() {
-        java.lang.Object ref = tsKey_;
+      public java.lang.String getBase64TsKey() {
+        java.lang.Object ref = base64TsKey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          tsKey_ = s;
+          base64TsKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6672,19 +6672,19 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key,base64
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
       public com.google.protobuf.ByteString
-          getTsKeyBytes() {
-        java.lang.Object ref = tsKey_;
+          getBase64TsKeyBytes() {
+        java.lang.Object ref = base64TsKey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          tsKey_ = b;
+          base64TsKey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -6692,118 +6692,118 @@ public final class CoreProto {
       }
       /**
        * <pre>
-       *加密key
+       *加密key,base64
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setTsKey(
+      public Builder setBase64TsKey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        tsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *加密key
+       *加密key,base64
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder clearTsKey() {
+      public Builder clearBase64TsKey() {
         
-        tsKey_ = getDefaultInstance().getTsKey();
+        base64TsKey_ = getDefaultInstance().getBase64TsKey();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *加密key
+       *加密key,base64
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setTsKeyBytes(
+      public Builder setBase64TsKeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        tsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
 
-      private java.lang.Object siteDeviceId_ = "";
+      private java.lang.Object toDeviceId_ = "";
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public java.lang.String getSiteDeviceId() {
-        java.lang.Object ref = siteDeviceId_;
+      public java.lang.String getToDeviceId() {
+        java.lang.Object ref = toDeviceId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          siteDeviceId_ = s;
+          toDeviceId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
       public com.google.protobuf.ByteString
-          getSiteDeviceIdBytes() {
-        java.lang.Object ref = siteDeviceId_;
+          getToDeviceIdBytes() {
+        java.lang.Object ref = toDeviceId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          siteDeviceId_ = b;
+          toDeviceId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder setSiteDeviceId(
+      public Builder setToDeviceId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        siteDeviceId_ = value;
+        toDeviceId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder clearSiteDeviceId() {
+      public Builder clearToDeviceId() {
         
-        siteDeviceId_ = getDefaultInstance().getSiteDeviceId();
+        toDeviceId_ = getDefaultInstance().getToDeviceId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder setSiteDeviceIdBytes(
+      public Builder setToDeviceIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        siteDeviceId_ = value;
+        toDeviceId_ = value;
         onChanged();
         return this;
       }
@@ -6949,6 +6949,24 @@ public final class CoreProto {
      * <code>optional int64 time = 5;</code>
      */
     long getTime();
+
+    /**
+     * <pre>
+     *&#64;who 群消息可以&#64;他人
+     * </pre>
+     *
+     * <code>optional string at_site_user_id = 6;</code>
+     */
+    java.lang.String getAtSiteUserId();
+    /**
+     * <pre>
+     *&#64;who 群消息可以&#64;他人
+     * </pre>
+     *
+     * <code>optional string at_site_user_id = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getAtSiteUserIdBytes();
   }
   /**
    * <pre>
@@ -6971,6 +6989,7 @@ public final class CoreProto {
       siteGroupId_ = "";
       text_ = com.google.protobuf.ByteString.EMPTY;
       time_ = 0L;
+      atSiteUserId_ = "";
     }
 
     @java.lang.Override
@@ -7024,6 +7043,12 @@ public final class CoreProto {
             case 40: {
 
               time_ = input.readInt64();
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              atSiteUserId_ = s;
               break;
             }
           }
@@ -7181,6 +7206,48 @@ public final class CoreProto {
       return time_;
     }
 
+    public static final int AT_SITE_USER_ID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object atSiteUserId_;
+    /**
+     * <pre>
+     *&#64;who 群消息可以&#64;他人
+     * </pre>
+     *
+     * <code>optional string at_site_user_id = 6;</code>
+     */
+    public java.lang.String getAtSiteUserId() {
+      java.lang.Object ref = atSiteUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        atSiteUserId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *&#64;who 群消息可以&#64;他人
+     * </pre>
+     *
+     * <code>optional string at_site_user_id = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAtSiteUserIdBytes() {
+      java.lang.Object ref = atSiteUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        atSiteUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -7208,6 +7275,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         output.writeInt64(5, time_);
       }
+      if (!getAtSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, atSiteUserId_);
+      }
     }
 
     public int getSerializedSize() {
@@ -7231,6 +7301,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(5, time_);
+      }
+      if (!getAtSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, atSiteUserId_);
       }
       memoizedSize = size;
       return size;
@@ -7258,6 +7331,8 @@ public final class CoreProto {
           .equals(other.getText());
       result = result && (getTime()
           == other.getTime());
+      result = result && getAtSiteUserId()
+          .equals(other.getAtSiteUserId());
       return result;
     }
 
@@ -7279,6 +7354,8 @@ public final class CoreProto {
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
+      hash = (37 * hash) + AT_SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getAtSiteUserId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7411,6 +7488,8 @@ public final class CoreProto {
 
         time_ = 0L;
 
+        atSiteUserId_ = "";
+
         return this;
       }
 
@@ -7438,6 +7517,7 @@ public final class CoreProto {
         result.siteGroupId_ = siteGroupId_;
         result.text_ = text_;
         result.time_ = time_;
+        result.atSiteUserId_ = atSiteUserId_;
         onBuilt();
         return result;
       }
@@ -7496,6 +7576,10 @@ public final class CoreProto {
         }
         if (other.getTime() != 0L) {
           setTime(other.getTime());
+        }
+        if (!other.getAtSiteUserId().isEmpty()) {
+          atSiteUserId_ = other.atSiteUserId_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -7816,6 +7900,95 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object atSiteUserId_ = "";
+      /**
+       * <pre>
+       *&#64;who 群消息可以&#64;他人
+       * </pre>
+       *
+       * <code>optional string at_site_user_id = 6;</code>
+       */
+      public java.lang.String getAtSiteUserId() {
+        java.lang.Object ref = atSiteUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          atSiteUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *&#64;who 群消息可以&#64;他人
+       * </pre>
+       *
+       * <code>optional string at_site_user_id = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAtSiteUserIdBytes() {
+        java.lang.Object ref = atSiteUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          atSiteUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *&#64;who 群消息可以&#64;他人
+       * </pre>
+       *
+       * <code>optional string at_site_user_id = 6;</code>
+       */
+      public Builder setAtSiteUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        atSiteUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *&#64;who 群消息可以&#64;他人
+       * </pre>
+       *
+       * <code>optional string at_site_user_id = 6;</code>
+       */
+      public Builder clearAtSiteUserId() {
+        
+        atSiteUserId_ = getDefaultInstance().getAtSiteUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *&#64;who 群消息可以&#64;他人
+       * </pre>
+       *
+       * <code>optional string at_site_user_id = 6;</code>
+       */
+      public Builder setAtSiteUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        atSiteUserId_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -7909,18 +8082,18 @@ public final class CoreProto {
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string base_ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    java.lang.String getBaseTsKey();
+    java.lang.String getBase64TsKey();
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string base_ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     com.google.protobuf.ByteString
-        getBaseTsKeyBytes();
+        getBase64TsKeyBytes();
 
     /**
      * <code>optional string to_device_id = 6;</code>
@@ -7961,7 +8134,7 @@ public final class CoreProto {
       siteUserId_ = "";
       siteGroupId_ = "";
       text_ = com.google.protobuf.ByteString.EMPTY;
-      baseTsKey_ = "";
+      base64TsKey_ = "";
       toDeviceId_ = "";
       time_ = 0L;
     }
@@ -8017,7 +8190,7 @@ public final class CoreProto {
             case 42: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              baseTsKey_ = s;
+              base64TsKey_ = s;
               break;
             }
             case 50: {
@@ -8165,24 +8338,24 @@ public final class CoreProto {
       return text_;
     }
 
-    public static final int BASE_TS_KEY_FIELD_NUMBER = 5;
-    private volatile java.lang.Object baseTsKey_;
+    public static final int BASE64_TS_KEY_FIELD_NUMBER = 5;
+    private volatile java.lang.Object base64TsKey_;
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string base_ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    public java.lang.String getBaseTsKey() {
-      java.lang.Object ref = baseTsKey_;
+    public java.lang.String getBase64TsKey() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        baseTsKey_ = s;
+        base64TsKey_ = s;
         return s;
       }
     }
@@ -8191,16 +8364,16 @@ public final class CoreProto {
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string base_ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     public com.google.protobuf.ByteString
-        getBaseTsKeyBytes() {
-      java.lang.Object ref = baseTsKey_;
+        getBase64TsKeyBytes() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        baseTsKey_ = b;
+        base64TsKey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -8278,8 +8451,8 @@ public final class CoreProto {
       if (!text_.isEmpty()) {
         output.writeBytes(4, text_);
       }
-      if (!getBaseTsKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, baseTsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, base64TsKey_);
       }
       if (!getToDeviceIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, toDeviceId_);
@@ -8307,8 +8480,8 @@ public final class CoreProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, text_);
       }
-      if (!getBaseTsKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, baseTsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, base64TsKey_);
       }
       if (!getToDeviceIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, toDeviceId_);
@@ -8341,8 +8514,8 @@ public final class CoreProto {
           .equals(other.getSiteGroupId());
       result = result && getText()
           .equals(other.getText());
-      result = result && getBaseTsKey()
-          .equals(other.getBaseTsKey());
+      result = result && getBase64TsKey()
+          .equals(other.getBase64TsKey());
       result = result && getToDeviceId()
           .equals(other.getToDeviceId());
       result = result && (getTime()
@@ -8365,8 +8538,8 @@ public final class CoreProto {
       hash = (53 * hash) + getSiteGroupId().hashCode();
       hash = (37 * hash) + TEXT_FIELD_NUMBER;
       hash = (53 * hash) + getText().hashCode();
-      hash = (37 * hash) + BASE_TS_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getBaseTsKey().hashCode();
+      hash = (37 * hash) + BASE64_TS_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getBase64TsKey().hashCode();
       hash = (37 * hash) + TO_DEVICE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getToDeviceId().hashCode();
       hash = (37 * hash) + TIME_FIELD_NUMBER;
@@ -8502,7 +8675,7 @@ public final class CoreProto {
 
         text_ = com.google.protobuf.ByteString.EMPTY;
 
-        baseTsKey_ = "";
+        base64TsKey_ = "";
 
         toDeviceId_ = "";
 
@@ -8534,7 +8707,7 @@ public final class CoreProto {
         result.siteUserId_ = siteUserId_;
         result.siteGroupId_ = siteGroupId_;
         result.text_ = text_;
-        result.baseTsKey_ = baseTsKey_;
+        result.base64TsKey_ = base64TsKey_;
         result.toDeviceId_ = toDeviceId_;
         result.time_ = time_;
         onBuilt();
@@ -8593,8 +8766,8 @@ public final class CoreProto {
         if (other.getText() != com.google.protobuf.ByteString.EMPTY) {
           setText(other.getText());
         }
-        if (!other.getBaseTsKey().isEmpty()) {
-          baseTsKey_ = other.baseTsKey_;
+        if (!other.getBase64TsKey().isEmpty()) {
+          base64TsKey_ = other.base64TsKey_;
           onChanged();
         }
         if (!other.getToDeviceId().isEmpty()) {
@@ -8866,21 +9039,21 @@ public final class CoreProto {
         return this;
       }
 
-      private java.lang.Object baseTsKey_ = "";
+      private java.lang.Object base64TsKey_ = "";
       /**
        * <pre>
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string base_ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public java.lang.String getBaseTsKey() {
-        java.lang.Object ref = baseTsKey_;
+      public java.lang.String getBase64TsKey() {
+        java.lang.Object ref = base64TsKey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          baseTsKey_ = s;
+          base64TsKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8891,16 +9064,16 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string base_ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
       public com.google.protobuf.ByteString
-          getBaseTsKeyBytes() {
-        java.lang.Object ref = baseTsKey_;
+          getBase64TsKeyBytes() {
+        java.lang.Object ref = base64TsKey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          baseTsKey_ = b;
+          base64TsKey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -8911,15 +9084,15 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string base_ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setBaseTsKey(
+      public Builder setBase64TsKey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        baseTsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
@@ -8928,11 +9101,11 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string base_ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder clearBaseTsKey() {
+      public Builder clearBase64TsKey() {
         
-        baseTsKey_ = getDefaultInstance().getBaseTsKey();
+        base64TsKey_ = getDefaultInstance().getBase64TsKey();
         onChanged();
         return this;
       }
@@ -8941,16 +9114,16 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string base_ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setBaseTsKeyBytes(
+      public Builder setBase64TsKeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        baseTsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
@@ -10165,28 +10338,28 @@ public final class CoreProto {
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    java.lang.String getTsKey();
+    java.lang.String getBase64TsKey();
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     com.google.protobuf.ByteString
-        getTsKeyBytes();
+        getBase64TsKeyBytes();
 
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
-    java.lang.String getSiteDeviceId();
+    java.lang.String getToDeviceId();
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
     com.google.protobuf.ByteString
-        getSiteDeviceIdBytes();
+        getToDeviceIdBytes();
 
     /**
      * <pre>
@@ -10217,8 +10390,8 @@ public final class CoreProto {
       siteUserId_ = "";
       siteFriendId_ = "";
       imageId_ = "";
-      tsKey_ = "";
-      siteDeviceId_ = "";
+      base64TsKey_ = "";
+      toDeviceId_ = "";
       time_ = 0L;
     }
 
@@ -10274,13 +10447,13 @@ public final class CoreProto {
             case 42: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              tsKey_ = s;
+              base64TsKey_ = s;
               break;
             }
             case 50: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              siteDeviceId_ = s;
+              toDeviceId_ = s;
               break;
             }
             case 56: {
@@ -10447,24 +10620,24 @@ public final class CoreProto {
       }
     }
 
-    public static final int TS_KEY_FIELD_NUMBER = 5;
-    private volatile java.lang.Object tsKey_;
+    public static final int BASE64_TS_KEY_FIELD_NUMBER = 5;
+    private volatile java.lang.Object base64TsKey_;
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    public java.lang.String getTsKey() {
-      java.lang.Object ref = tsKey_;
+    public java.lang.String getBase64TsKey() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        tsKey_ = s;
+        base64TsKey_ = s;
         return s;
       }
     }
@@ -10473,50 +10646,50 @@ public final class CoreProto {
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     public com.google.protobuf.ByteString
-        getTsKeyBytes() {
-      java.lang.Object ref = tsKey_;
+        getBase64TsKeyBytes() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        tsKey_ = b;
+        base64TsKey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int SITE_DEVICE_ID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object siteDeviceId_;
+    public static final int TO_DEVICE_ID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object toDeviceId_;
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
-    public java.lang.String getSiteDeviceId() {
-      java.lang.Object ref = siteDeviceId_;
+    public java.lang.String getToDeviceId() {
+      java.lang.Object ref = toDeviceId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        siteDeviceId_ = s;
+        toDeviceId_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
     public com.google.protobuf.ByteString
-        getSiteDeviceIdBytes() {
-      java.lang.Object ref = siteDeviceId_;
+        getToDeviceIdBytes() {
+      java.lang.Object ref = toDeviceId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        siteDeviceId_ = b;
+        toDeviceId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -10560,11 +10733,11 @@ public final class CoreProto {
       if (!getImageIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, imageId_);
       }
-      if (!getTsKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, tsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, base64TsKey_);
       }
-      if (!getSiteDeviceIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, siteDeviceId_);
+      if (!getToDeviceIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, toDeviceId_);
       }
       if (time_ != 0L) {
         output.writeInt64(7, time_);
@@ -10588,11 +10761,11 @@ public final class CoreProto {
       if (!getImageIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, imageId_);
       }
-      if (!getTsKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, tsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, base64TsKey_);
       }
-      if (!getSiteDeviceIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, siteDeviceId_);
+      if (!getToDeviceIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, toDeviceId_);
       }
       if (time_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
@@ -10622,10 +10795,10 @@ public final class CoreProto {
           .equals(other.getSiteFriendId());
       result = result && getImageId()
           .equals(other.getImageId());
-      result = result && getTsKey()
-          .equals(other.getTsKey());
-      result = result && getSiteDeviceId()
-          .equals(other.getSiteDeviceId());
+      result = result && getBase64TsKey()
+          .equals(other.getBase64TsKey());
+      result = result && getToDeviceId()
+          .equals(other.getToDeviceId());
       result = result && (getTime()
           == other.getTime());
       return result;
@@ -10646,10 +10819,10 @@ public final class CoreProto {
       hash = (53 * hash) + getSiteFriendId().hashCode();
       hash = (37 * hash) + IMAGEID_FIELD_NUMBER;
       hash = (53 * hash) + getImageId().hashCode();
-      hash = (37 * hash) + TS_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getTsKey().hashCode();
-      hash = (37 * hash) + SITE_DEVICE_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getSiteDeviceId().hashCode();
+      hash = (37 * hash) + BASE64_TS_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getBase64TsKey().hashCode();
+      hash = (37 * hash) + TO_DEVICE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getToDeviceId().hashCode();
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
@@ -10783,9 +10956,9 @@ public final class CoreProto {
 
         imageId_ = "";
 
-        tsKey_ = "";
+        base64TsKey_ = "";
 
-        siteDeviceId_ = "";
+        toDeviceId_ = "";
 
         time_ = 0L;
 
@@ -10815,8 +10988,8 @@ public final class CoreProto {
         result.siteUserId_ = siteUserId_;
         result.siteFriendId_ = siteFriendId_;
         result.imageId_ = imageId_;
-        result.tsKey_ = tsKey_;
-        result.siteDeviceId_ = siteDeviceId_;
+        result.base64TsKey_ = base64TsKey_;
+        result.toDeviceId_ = toDeviceId_;
         result.time_ = time_;
         onBuilt();
         return result;
@@ -10875,12 +11048,12 @@ public final class CoreProto {
           imageId_ = other.imageId_;
           onChanged();
         }
-        if (!other.getTsKey().isEmpty()) {
-          tsKey_ = other.tsKey_;
+        if (!other.getBase64TsKey().isEmpty()) {
+          base64TsKey_ = other.base64TsKey_;
           onChanged();
         }
-        if (!other.getSiteDeviceId().isEmpty()) {
-          siteDeviceId_ = other.siteDeviceId_;
+        if (!other.getToDeviceId().isEmpty()) {
+          toDeviceId_ = other.toDeviceId_;
           onChanged();
         }
         if (other.getTime() != 0L) {
@@ -11188,21 +11361,21 @@ public final class CoreProto {
         return this;
       }
 
-      private java.lang.Object tsKey_ = "";
+      private java.lang.Object base64TsKey_ = "";
       /**
        * <pre>
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public java.lang.String getTsKey() {
-        java.lang.Object ref = tsKey_;
+      public java.lang.String getBase64TsKey() {
+        java.lang.Object ref = base64TsKey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          tsKey_ = s;
+          base64TsKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11213,16 +11386,16 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
       public com.google.protobuf.ByteString
-          getTsKeyBytes() {
-        java.lang.Object ref = tsKey_;
+          getBase64TsKeyBytes() {
+        java.lang.Object ref = base64TsKey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          tsKey_ = b;
+          base64TsKey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -11233,15 +11406,15 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setTsKey(
+      public Builder setBase64TsKey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        tsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
@@ -11250,11 +11423,11 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder clearTsKey() {
+      public Builder clearBase64TsKey() {
         
-        tsKey_ = getDefaultInstance().getTsKey();
+        base64TsKey_ = getDefaultInstance().getBase64TsKey();
         onChanged();
         return this;
       }
@@ -11263,85 +11436,85 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setTsKeyBytes(
+      public Builder setBase64TsKeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        tsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
 
-      private java.lang.Object siteDeviceId_ = "";
+      private java.lang.Object toDeviceId_ = "";
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public java.lang.String getSiteDeviceId() {
-        java.lang.Object ref = siteDeviceId_;
+      public java.lang.String getToDeviceId() {
+        java.lang.Object ref = toDeviceId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          siteDeviceId_ = s;
+          toDeviceId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
       public com.google.protobuf.ByteString
-          getSiteDeviceIdBytes() {
-        java.lang.Object ref = siteDeviceId_;
+          getToDeviceIdBytes() {
+        java.lang.Object ref = toDeviceId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          siteDeviceId_ = b;
+          toDeviceId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder setSiteDeviceId(
+      public Builder setToDeviceId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        siteDeviceId_ = value;
+        toDeviceId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder clearSiteDeviceId() {
+      public Builder clearToDeviceId() {
         
-        siteDeviceId_ = getDefaultInstance().getSiteDeviceId();
+        toDeviceId_ = getDefaultInstance().getToDeviceId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder setSiteDeviceIdBytes(
+      public Builder setToDeviceIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        siteDeviceId_ = value;
+        toDeviceId_ = value;
         onChanged();
         return this;
       }
@@ -14831,42 +15004,42 @@ public final class CoreProto {
         getSiteFriendIdBytes();
 
     /**
-     * <code>optional string voicdId = 4;</code>
+     * <code>optional string voiceId = 4;</code>
      */
-    java.lang.String getVoicdId();
+    java.lang.String getVoiceId();
     /**
-     * <code>optional string voicdId = 4;</code>
+     * <code>optional string voiceId = 4;</code>
      */
     com.google.protobuf.ByteString
-        getVoicdIdBytes();
+        getVoiceIdBytes();
 
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    java.lang.String getTsKey();
+    java.lang.String getBase64TsKey();
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     com.google.protobuf.ByteString
-        getTsKeyBytes();
+        getBase64TsKeyBytes();
 
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
-    java.lang.String getSiteDeviceId();
+    java.lang.String getToDeviceId();
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
     com.google.protobuf.ByteString
-        getSiteDeviceIdBytes();
+        getToDeviceIdBytes();
 
     /**
      * <pre>
@@ -14896,9 +15069,9 @@ public final class CoreProto {
       msgId_ = "";
       siteUserId_ = "";
       siteFriendId_ = "";
-      voicdId_ = "";
-      tsKey_ = "";
-      siteDeviceId_ = "";
+      voiceId_ = "";
+      base64TsKey_ = "";
+      toDeviceId_ = "";
       time_ = 0L;
     }
 
@@ -14948,19 +15121,19 @@ public final class CoreProto {
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              voicdId_ = s;
+              voiceId_ = s;
               break;
             }
             case 42: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              tsKey_ = s;
+              base64TsKey_ = s;
               break;
             }
             case 50: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              siteDeviceId_ = s;
+              toDeviceId_ = s;
               break;
             }
             case 56: {
@@ -15093,58 +15266,58 @@ public final class CoreProto {
       }
     }
 
-    public static final int VOICDID_FIELD_NUMBER = 4;
-    private volatile java.lang.Object voicdId_;
+    public static final int VOICEID_FIELD_NUMBER = 4;
+    private volatile java.lang.Object voiceId_;
     /**
-     * <code>optional string voicdId = 4;</code>
+     * <code>optional string voiceId = 4;</code>
      */
-    public java.lang.String getVoicdId() {
-      java.lang.Object ref = voicdId_;
+    public java.lang.String getVoiceId() {
+      java.lang.Object ref = voiceId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        voicdId_ = s;
+        voiceId_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string voicdId = 4;</code>
+     * <code>optional string voiceId = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getVoicdIdBytes() {
-      java.lang.Object ref = voicdId_;
+        getVoiceIdBytes() {
+      java.lang.Object ref = voiceId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        voicdId_ = b;
+        voiceId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int TS_KEY_FIELD_NUMBER = 5;
-    private volatile java.lang.Object tsKey_;
+    public static final int BASE64_TS_KEY_FIELD_NUMBER = 5;
+    private volatile java.lang.Object base64TsKey_;
     /**
      * <pre>
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
-    public java.lang.String getTsKey() {
-      java.lang.Object ref = tsKey_;
+    public java.lang.String getBase64TsKey() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        tsKey_ = s;
+        base64TsKey_ = s;
         return s;
       }
     }
@@ -15153,50 +15326,50 @@ public final class CoreProto {
      *加密key，值为aes密钥（原始bytes base64encode后的字符串）
      * </pre>
      *
-     * <code>optional string ts_key = 5;</code>
+     * <code>optional string base64_ts_key = 5;</code>
      */
     public com.google.protobuf.ByteString
-        getTsKeyBytes() {
-      java.lang.Object ref = tsKey_;
+        getBase64TsKeyBytes() {
+      java.lang.Object ref = base64TsKey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        tsKey_ = b;
+        base64TsKey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int SITE_DEVICE_ID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object siteDeviceId_;
+    public static final int TO_DEVICE_ID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object toDeviceId_;
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
-    public java.lang.String getSiteDeviceId() {
-      java.lang.Object ref = siteDeviceId_;
+    public java.lang.String getToDeviceId() {
+      java.lang.Object ref = toDeviceId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        siteDeviceId_ = s;
+        toDeviceId_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string site_device_id = 6;</code>
+     * <code>optional string to_device_id = 6;</code>
      */
     public com.google.protobuf.ByteString
-        getSiteDeviceIdBytes() {
-      java.lang.Object ref = siteDeviceId_;
+        getToDeviceIdBytes() {
+      java.lang.Object ref = toDeviceId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        siteDeviceId_ = b;
+        toDeviceId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -15237,14 +15410,14 @@ public final class CoreProto {
       if (!getSiteFriendIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, siteFriendId_);
       }
-      if (!getVoicdIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, voicdId_);
+      if (!getVoiceIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, voiceId_);
       }
-      if (!getTsKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, tsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, base64TsKey_);
       }
-      if (!getSiteDeviceIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, siteDeviceId_);
+      if (!getToDeviceIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, toDeviceId_);
       }
       if (time_ != 0L) {
         output.writeInt64(7, time_);
@@ -15265,14 +15438,14 @@ public final class CoreProto {
       if (!getSiteFriendIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, siteFriendId_);
       }
-      if (!getVoicdIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, voicdId_);
+      if (!getVoiceIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, voiceId_);
       }
-      if (!getTsKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, tsKey_);
+      if (!getBase64TsKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, base64TsKey_);
       }
-      if (!getSiteDeviceIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, siteDeviceId_);
+      if (!getToDeviceIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, toDeviceId_);
       }
       if (time_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
@@ -15300,12 +15473,12 @@ public final class CoreProto {
           .equals(other.getSiteUserId());
       result = result && getSiteFriendId()
           .equals(other.getSiteFriendId());
-      result = result && getVoicdId()
-          .equals(other.getVoicdId());
-      result = result && getTsKey()
-          .equals(other.getTsKey());
-      result = result && getSiteDeviceId()
-          .equals(other.getSiteDeviceId());
+      result = result && getVoiceId()
+          .equals(other.getVoiceId());
+      result = result && getBase64TsKey()
+          .equals(other.getBase64TsKey());
+      result = result && getToDeviceId()
+          .equals(other.getToDeviceId());
       result = result && (getTime()
           == other.getTime());
       return result;
@@ -15324,12 +15497,12 @@ public final class CoreProto {
       hash = (53 * hash) + getSiteUserId().hashCode();
       hash = (37 * hash) + SITE_FRIEND_ID_FIELD_NUMBER;
       hash = (53 * hash) + getSiteFriendId().hashCode();
-      hash = (37 * hash) + VOICDID_FIELD_NUMBER;
-      hash = (53 * hash) + getVoicdId().hashCode();
-      hash = (37 * hash) + TS_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getTsKey().hashCode();
-      hash = (37 * hash) + SITE_DEVICE_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getSiteDeviceId().hashCode();
+      hash = (37 * hash) + VOICEID_FIELD_NUMBER;
+      hash = (53 * hash) + getVoiceId().hashCode();
+      hash = (37 * hash) + BASE64_TS_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getBase64TsKey().hashCode();
+      hash = (37 * hash) + TO_DEVICE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getToDeviceId().hashCode();
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
@@ -15461,11 +15634,11 @@ public final class CoreProto {
 
         siteFriendId_ = "";
 
-        voicdId_ = "";
+        voiceId_ = "";
 
-        tsKey_ = "";
+        base64TsKey_ = "";
 
-        siteDeviceId_ = "";
+        toDeviceId_ = "";
 
         time_ = 0L;
 
@@ -15494,9 +15667,9 @@ public final class CoreProto {
         result.msgId_ = msgId_;
         result.siteUserId_ = siteUserId_;
         result.siteFriendId_ = siteFriendId_;
-        result.voicdId_ = voicdId_;
-        result.tsKey_ = tsKey_;
-        result.siteDeviceId_ = siteDeviceId_;
+        result.voiceId_ = voiceId_;
+        result.base64TsKey_ = base64TsKey_;
+        result.toDeviceId_ = toDeviceId_;
         result.time_ = time_;
         onBuilt();
         return result;
@@ -15551,16 +15724,16 @@ public final class CoreProto {
           siteFriendId_ = other.siteFriendId_;
           onChanged();
         }
-        if (!other.getVoicdId().isEmpty()) {
-          voicdId_ = other.voicdId_;
+        if (!other.getVoiceId().isEmpty()) {
+          voiceId_ = other.voiceId_;
           onChanged();
         }
-        if (!other.getTsKey().isEmpty()) {
-          tsKey_ = other.tsKey_;
+        if (!other.getBase64TsKey().isEmpty()) {
+          base64TsKey_ = other.base64TsKey_;
           onChanged();
         }
-        if (!other.getSiteDeviceId().isEmpty()) {
-          siteDeviceId_ = other.siteDeviceId_;
+        if (!other.getToDeviceId().isEmpty()) {
+          toDeviceId_ = other.toDeviceId_;
           onChanged();
         }
         if (other.getTime() != 0L) {
@@ -15799,90 +15972,90 @@ public final class CoreProto {
         return this;
       }
 
-      private java.lang.Object voicdId_ = "";
+      private java.lang.Object voiceId_ = "";
       /**
-       * <code>optional string voicdId = 4;</code>
+       * <code>optional string voiceId = 4;</code>
        */
-      public java.lang.String getVoicdId() {
-        java.lang.Object ref = voicdId_;
+      public java.lang.String getVoiceId() {
+        java.lang.Object ref = voiceId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          voicdId_ = s;
+          voiceId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string voicdId = 4;</code>
+       * <code>optional string voiceId = 4;</code>
        */
       public com.google.protobuf.ByteString
-          getVoicdIdBytes() {
-        java.lang.Object ref = voicdId_;
+          getVoiceIdBytes() {
+        java.lang.Object ref = voiceId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          voicdId_ = b;
+          voiceId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string voicdId = 4;</code>
+       * <code>optional string voiceId = 4;</code>
        */
-      public Builder setVoicdId(
+      public Builder setVoiceId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        voicdId_ = value;
+        voiceId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string voicdId = 4;</code>
+       * <code>optional string voiceId = 4;</code>
        */
-      public Builder clearVoicdId() {
+      public Builder clearVoiceId() {
         
-        voicdId_ = getDefaultInstance().getVoicdId();
+        voiceId_ = getDefaultInstance().getVoiceId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string voicdId = 4;</code>
+       * <code>optional string voiceId = 4;</code>
        */
-      public Builder setVoicdIdBytes(
+      public Builder setVoiceIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        voicdId_ = value;
+        voiceId_ = value;
         onChanged();
         return this;
       }
 
-      private java.lang.Object tsKey_ = "";
+      private java.lang.Object base64TsKey_ = "";
       /**
        * <pre>
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public java.lang.String getTsKey() {
-        java.lang.Object ref = tsKey_;
+      public java.lang.String getBase64TsKey() {
+        java.lang.Object ref = base64TsKey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          tsKey_ = s;
+          base64TsKey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15893,16 +16066,16 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
       public com.google.protobuf.ByteString
-          getTsKeyBytes() {
-        java.lang.Object ref = tsKey_;
+          getBase64TsKeyBytes() {
+        java.lang.Object ref = base64TsKey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          tsKey_ = b;
+          base64TsKey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -15913,15 +16086,15 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setTsKey(
+      public Builder setBase64TsKey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        tsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
@@ -15930,11 +16103,11 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder clearTsKey() {
+      public Builder clearBase64TsKey() {
         
-        tsKey_ = getDefaultInstance().getTsKey();
+        base64TsKey_ = getDefaultInstance().getBase64TsKey();
         onChanged();
         return this;
       }
@@ -15943,85 +16116,85 @@ public final class CoreProto {
        *加密key，值为aes密钥（原始bytes base64encode后的字符串）
        * </pre>
        *
-       * <code>optional string ts_key = 5;</code>
+       * <code>optional string base64_ts_key = 5;</code>
        */
-      public Builder setTsKeyBytes(
+      public Builder setBase64TsKeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        tsKey_ = value;
+        base64TsKey_ = value;
         onChanged();
         return this;
       }
 
-      private java.lang.Object siteDeviceId_ = "";
+      private java.lang.Object toDeviceId_ = "";
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public java.lang.String getSiteDeviceId() {
-        java.lang.Object ref = siteDeviceId_;
+      public java.lang.String getToDeviceId() {
+        java.lang.Object ref = toDeviceId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          siteDeviceId_ = s;
+          toDeviceId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
       public com.google.protobuf.ByteString
-          getSiteDeviceIdBytes() {
-        java.lang.Object ref = siteDeviceId_;
+          getToDeviceIdBytes() {
+        java.lang.Object ref = toDeviceId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          siteDeviceId_ = b;
+          toDeviceId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder setSiteDeviceId(
+      public Builder setToDeviceId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        siteDeviceId_ = value;
+        toDeviceId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder clearSiteDeviceId() {
+      public Builder clearToDeviceId() {
         
-        siteDeviceId_ = getDefaultInstance().getSiteDeviceId();
+        toDeviceId_ = getDefaultInstance().getToDeviceId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string site_device_id = 6;</code>
+       * <code>optional string to_device_id = 6;</code>
        */
-      public Builder setSiteDeviceIdBytes(
+      public Builder setToDeviceIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        siteDeviceId_ = value;
+        toDeviceId_ = value;
         onChanged();
         return this;
       }
@@ -33876,103 +34049,104 @@ public final class CoreProto {
       "tus\030\002 \001(\005\022\027\n\017msg_server_time\030\003 \001(\003\"c\n\007Ms" +
       "gText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
       "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(" +
-      "\014\022\014\n\004time\030\005 \001(\003\"\221\001\n\rMsgSecretText\022\016\n\006msg" +
+      "\014\022\014\n\004time\030\005 \001(\003\"\226\001\n\rMsgSecretText\022\016\n\006msg" +
       "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_" +
-      "friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\016\n\006ts_key\030" +
-      "\005 \001(\t\022\026\n\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 " +
-      "\001(\003\"d\n\tGroupText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site" +
-      "_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n" +
-      "\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\225\001\n\017GroupSecre",
-      "tText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014" +
-      "\022\023\n\013base_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 " +
-      "\001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg_id\030" +
-      "\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_frie" +
-      "nd_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001" +
-      "(\003\"\225\001\n\016MsgSecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
+      "friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\025\n\rbase64_" +
+      "ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004ti" +
+      "me\030\007 \001(\003\"}\n\tGroupText\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
+      "\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001" +
+      "(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\022\027\n\017at_sit",
+      "e_user_id\030\006 \001(\t\"\227\001\n\017GroupSecretText\022\016\n\006m" +
+      "sg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsit" +
+      "e_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\025\n\rbase64" +
+      "_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004t" +
+      "ime\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
       "\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 " +
-      "\001(\t\022\017\n\007imageId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n\016" +
-      "site_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGr",
-      "oupImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id" +
-      "\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId" +
-      "\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretImag" +
-      "e\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
-      "\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022" +
-      "\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006" +
-      " \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVoice\022\016\n\006msg_id" +
+      "\001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\232\001\n\016M" +
+      "sgSecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
+      "er_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007i" +
+      "mageId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014t",
+      "o_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroup" +
+      "Image\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
+      "\001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 " +
+      "\001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretImage\022\016" +
+      "\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\r" +
+      "site_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\025\n\r" +
+      "base64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(" +
+      "\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVoice\022\016\n\006msg_id\030\001 " +
+      "\001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend" +
+      "_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003",
+      "\"\232\001\n\016MsgSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
+      "ite_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(" +
+      "\t\022\017\n\007voiceId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(" +
+      "\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n" +
+      "\nGroupVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user" +
+      "_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voic" +
+      "eId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretV" +
+      "oice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001" +
+      "(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001" +
+      "(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_i",
+      "d\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2Map\022\016\n\006msg_id" +
       "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_fri" +
-      "end_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 " +
-      "\001(\003\"\225\001\n\016MsgSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024",
-      "\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003" +
-      " \001(\t\022\017\n\007voicdId\030\004 \001(\t\022\016\n\006ts_key\030\005 \001(\t\022\026\n" +
-      "\016site_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nG" +
-      "roupVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_i" +
-      "d\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceI" +
-      "d\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretVoi" +
-      "ce\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
-      "\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t" +
-      "\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030" +
-      "\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2Map\022\016\n\006msg_id\030\001",
+      "end_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014" +
+      "\n\004time\030\006 \001(\003\"\256\001\n\013U2SecretMap\022\016\n\006msg_id\030\001" +
       " \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_frien" +
-      "d_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014\n\004" +
-      "time\030\006 \001(\003\"\256\001\n\013U2SecretMap\022\016\n\006msg_id\030\001 \001" +
-      "(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_" +
-      "id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t\022\022\n\nbase64_l" +
-      "at\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 \001(\t\022\024\n\014to_de" +
-      "vice_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"o\n\010GroupMap\022" +
-      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n" +
-      "\rsite_group_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat" +
-      "\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016GroupSecretMap\022",
-      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n" +
-      "\rsite_group_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t" +
-      "\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 " +
-      "\001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"" +
-      "g\n\013U2MsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\026\n\016" +
-      "site_friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004ti" +
-      "me\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i\n\016GroupMsgNoti" +
-      "ce\022\024\n\014site_user_id\030\001 \001(\t\022\025\n\rsite_group_i" +
-      "d\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n\006m" +
-      "sg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n\006msg_id\030\001 \001(\t\022",
-      "\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030" +
-      "\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001" +
-      "(\003\"o\n\013GroupRecall\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014sit" +
-      "e_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\025" +
-      "\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"\204\001\n\005" +
-      "U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030" +
-      "\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014\n\004" +
-      "time\030\007 \001(\003\"\206\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(\t\022" +
-      "\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003",
-      " \001(\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n" +
-      "\006height\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\"k\n\013U2WebNoti" +
-      "ce\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
-      "\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001" +
-      "(\t\022\014\n\004time\030\005 \001(\003\"m\n\016GroupWebNotice\022\016\n\006ms" +
-      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite" +
-      "_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004tim" +
-      "e\030\005 \001(\003*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SOCKET_V" +
-      "ERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION_I" +
-      "D\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESSION_ID",
-      "\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLIEN" +
-      "T_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCKET_TYP" +
-      "E\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CLIE" +
-      "NT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_REQU" +
-      "EST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERSIO" +
-      "N\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SERV" +
-      "ER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027*\275" +
-      "\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001\022\010" +
-      "\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEXT\020" +
-      "\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014S",
-      "ECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROUP_" +
-      "SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VOIC" +
-      "E\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_VOI" +
-      "CE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n\tG" +
-      "ROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2_N" +
-      "OTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RECALL\020\025" +
-      "\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROUP_" +
-      "WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_NO" +
-      "TICE\020\032B\"\n\025com.akaxin.proto.coreB\tCorePro" +
-      "tob\006proto3"
+      "d_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t\022\022\n\nbase64" +
+      "_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 \001(\t\022\024\n\014to_" +
+      "device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"o\n\010GroupMa" +
+      "p\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
+      "\025\n\rsite_group_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003l",
+      "at\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016GroupSecretMa" +
+      "p\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
+      "\025\n\rsite_group_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001" +
+      "(\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030" +
+      "\006 \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(" +
+      "\003\"g\n\013U2MsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\026" +
+      "\n\016site_friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004" +
+      "time\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i\n\016GroupMsgNo" +
+      "tice\022\024\n\014site_user_id\030\001 \001(\t\022\025\n\rsite_group" +
+      "_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n",
+      "\006msg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n\006msg_id\030\001 \001(" +
+      "\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_i" +
+      "d\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005" +
+      " \001(\003\"o\n\013GroupRecall\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
+      "ite_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t" +
+      "\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"\204\001" +
+      "\n\005U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030" +
+      "\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_cod" +
+      "e\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014" +
+      "\n\004time\030\007 \001(\003\"\206\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(",
+      "\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id" +
+      "\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022" +
+      "\016\n\006height\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\"k\n\013U2WebNo" +
+      "tice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001" +
+      "(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030\004" +
+      " \001(\t\022\014\n\004time\030\005 \001(\003\"m\n\016GroupWebNotice\022\016\n\006" +
+      "msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsi" +
+      "te_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004t" +
+      "ime\030\005 \001(\003*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SOCKET" +
+      "_VERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION",
+      "_ID\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESSION_" +
+      "ID\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLI" +
+      "ENT_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCKET_T" +
+      "YPE\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CL" +
+      "IENT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_RE" +
+      "QUEST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERS" +
+      "ION\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SE" +
+      "RVER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027" +
+      "*\275\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001" +
+      "\022\010\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEX",
+      "T\020\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n" +
+      "\014SECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROU" +
+      "P_SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VO" +
+      "ICE\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_V" +
+      "OICE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n" +
+      "\tGROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2" +
+      "_NOTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RECALL" +
+      "\020\025\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROU" +
+      "P_WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_" +
+      "NOTICE\020\032B\"\n\025com.akaxin.proto.coreB\tCoreP",
+      "rotob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34033,19 +34207,19 @@ public final class CoreProto {
     internal_static_core_MsgSecretText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretText_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Text", "TsKey", "SiteDeviceId", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Text", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupText_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_core_GroupText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupText_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "Time", "AtSiteUserId", });
     internal_static_core_GroupSecretText_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_core_GroupSecretText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretText_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "BaseTsKey", "ToDeviceId", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_MsgImage_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_core_MsgImage_fieldAccessorTable = new
@@ -34057,7 +34231,7 @@ public final class CoreProto {
     internal_static_core_MsgSecretImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretImage_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "ImageId", "TsKey", "SiteDeviceId", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "ImageId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupImage_descriptor =
       getDescriptor().getMessageTypes().get(11);
     internal_static_core_GroupImage_fieldAccessorTable = new
@@ -34081,7 +34255,7 @@ public final class CoreProto {
     internal_static_core_MsgSecretVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretVoice_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "VoicdId", "TsKey", "SiteDeviceId", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "VoiceId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupVoice_descriptor =
       getDescriptor().getMessageTypes().get(15);
     internal_static_core_GroupVoice_fieldAccessorTable = new

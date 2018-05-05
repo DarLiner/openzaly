@@ -92,7 +92,7 @@ public class SiteConfig {
 			String value = getConfigMap().get(ConfigProto.ConfigKey.SITE_STATUS_VALUE);
 
 			if (StringUtils.isNumeric(value)) {
-				return ConfigProto.SiteStatus.OPEN_VALUE == Integer.valueOf(value);
+				return ConfigProto.SiteStatusConfig.OPEN_VALUE == Integer.valueOf(value);
 			}
 		}
 		return false;
@@ -107,20 +107,28 @@ public class SiteConfig {
 		return !isOpen();
 	}
 
-	/**
-	 * 获取用户的注册方式，通过后台管理进行修改用户注册方式
-	 * 
-	 * @return
-	 */
-	public static ConfigProto.RegisterWay getRegisterWay() {
-		ConfigProto.RegisterWay regway = null;
+	// 获取是否需要实名配置
+	public static ConfigProto.RealNameConfig getRealNameConfig() {
+		ConfigProto.RealNameConfig realNameConfig = null;
 		if (getConfigMap() != null) {
-			String value = getConfigMap().get(ConfigProto.ConfigKey.REGISTER_WAY_VALUE);
+			String value = getConfigMap().get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE);
 			if (StringUtils.isNumeric(value)) {
-				regway = ConfigProto.RegisterWay.forNumber(Integer.valueOf(value));
+				realNameConfig = ConfigProto.RealNameConfig.forNumber(Integer.valueOf(value));
 			}
 		}
-		return regway == null ? ConfigProto.RegisterWay.ANONYMOUS : regway;
+		return realNameConfig == null ? ConfigProto.RealNameConfig.REALNAME_NO : realNameConfig;
+	}
+
+	// 获取邀请码配置
+	public static ConfigProto.InviteCodeConfig getUICConfig() {
+		ConfigProto.InviteCodeConfig uicConfig = null;
+		if (getConfigMap() != null) {
+			String value = getConfigMap().get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE);
+			if (StringUtils.isNumeric(value)) {
+				uicConfig = ConfigProto.InviteCodeConfig.forNumber(Integer.valueOf(value));
+			}
+		}
+		return uicConfig == null ? ConfigProto.InviteCodeConfig.UIC_NO : uicConfig;
 	}
 
 	public static String getSiteAddress() {
@@ -205,19 +213,19 @@ public class SiteConfig {
 		return GroupConfig.GROUP_MAX_MEMBER_COUNT;
 	}
 
-	public static ConfigProto.U2EncryptionStatus getU2EncryStatus() {
+	public static ConfigProto.U2EncryptionConfig getU2EncryStatusConfig() {
 		try {
 			Map<Integer, String> map = getConfigMap();
 			if (map != null) {
 				String statusNum = map.get(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE);
 				if (StringUtils.isNumeric(statusNum)) {
-					return ConfigProto.U2EncryptionStatus.forNumber(Integer.valueOf(statusNum));
+					return ConfigProto.U2EncryptionConfig.forNumber(Integer.valueOf(statusNum));
 				}
 			}
 		} catch (Exception e) {
 			logger.error("get u2 encry status error", e);
 		}
-		return ConfigProto.U2EncryptionStatus.U2_CLOSE;
+		return ConfigProto.U2EncryptionConfig.U2_CLOSE;
 	}
 
 	public static String getSiteLogo() {

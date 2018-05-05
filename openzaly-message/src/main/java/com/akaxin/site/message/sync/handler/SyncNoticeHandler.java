@@ -61,28 +61,30 @@ public class SyncNoticeHandler extends AbstractSyncHandler<Command> {
 			String deviceId = command.getDeviceId();
 			LogUtils.requestDebugLog(logger, command, syncRequest.toString());
 
-//			long clientU2Pointer = syncRequest.getU2Pointer();
-//			long u2Pointer = syncDao.queryU2Pointer(siteUserId, deviceId);
-//			long startPointer = NumUtils.getMax(clientU2Pointer, u2Pointer);
-//			int syncTotalCount = 0;
-//
-//			while (true) {
-//				// 批量一次查询100条U2消息
-//				List<U2MessageBean> u2MessageList = syncDao.queryU2Message(siteUserId, deviceId, startPointer,
-//						SYNC_MAX_MESSAGE_COUNT);
-//				// 有二人消息才会发送给客户端，同时返回最大的游标
-//				if (u2MessageList != null && u2MessageList.size() > 0) {
-//					startPointer = u2MessageToClient(channelSession.getChannel(), u2MessageList);
-//					syncTotalCount += u2MessageList.size();
-//				}
-//				// 判断跳出循环的条件
-//				if (u2MessageList == null || u2MessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
-//					break;
-//				}
-//			}
-//
-//			logger.debug("client={} siteUserId={} deviceId={} sync u2-msg from pointer={} count={}.",
-//					command.getClientIp(), siteUserId, deviceId, startPointer, syncTotalCount);
+			// long clientU2Pointer = syncRequest.getU2Pointer();
+			// long u2Pointer = syncDao.queryU2Pointer(siteUserId, deviceId);
+			// long startPointer = NumUtils.getMax(clientU2Pointer, u2Pointer);
+			// int syncTotalCount = 0;
+			//
+			// while (true) {
+			// // 批量一次查询100条U2消息
+			// List<U2MessageBean> u2MessageList = syncDao.queryU2Message(siteUserId,
+			// deviceId, startPointer,
+			// SYNC_MAX_MESSAGE_COUNT);
+			// // 有二人消息才会发送给客户端，同时返回最大的游标
+			// if (u2MessageList != null && u2MessageList.size() > 0) {
+			// startPointer = u2MessageToClient(channelSession.getChannel(), u2MessageList);
+			// syncTotalCount += u2MessageList.size();
+			// }
+			// // 判断跳出循环的条件
+			// if (u2MessageList == null || u2MessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
+			// break;
+			// }
+			// }
+			//
+			// logger.debug("client={} siteUserId={} deviceId={} sync u2-msg from pointer={}
+			// count={}.",
+			// command.getClientIp(), siteUserId, deviceId, startPointer, syncTotalCount);
 		} catch (Exception e) {
 			logger.error("sync u2 message error", e);
 		}
@@ -113,9 +115,8 @@ public class SyncNoticeHandler extends AbstractSyncHandler<Command> {
 					byte[] secretTexgt = Base64.getDecoder().decode(bean.getContent());
 					CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder().setMsgId(bean.getMsgId())
 							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
-							.setText(ByteString.copyFrom(secretTexgt))
-							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
-							.setTime(bean.getMsgTime()).build();
+							.setText(ByteString.copyFrom(secretTexgt)).setToDeviceId(String.valueOf(bean.getDeviceId()))
+							.setBase64TsKey(bean.getTsKey()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_TEXT).setPointer(bean.getId()).setSecretText(secretText).build();
 					// logger.info("[Syncing U2] secret text message OK. bean={}",
@@ -136,7 +137,7 @@ public class SyncNoticeHandler extends AbstractSyncHandler<Command> {
 					CoreProto.MsgSecretImage secretImage = CoreProto.MsgSecretImage.newBuilder()
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
 							.setSiteFriendId(bean.getSiteUserId()).setImageId(bean.getContent())
-							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setToDeviceId(String.valueOf(bean.getDeviceId())).setBase64TsKey(bean.getTsKey())
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_IMAGE).setPointer(bean.getId()).setSecretImage(secretImage).build();
@@ -156,8 +157,8 @@ public class SyncNoticeHandler extends AbstractSyncHandler<Command> {
 				case CoreProto.MsgType.SECRET_VOICE_VALUE:
 					CoreProto.MsgSecretVoice secretVoice = CoreProto.MsgSecretVoice.newBuilder()
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
-							.setSiteFriendId(bean.getSiteUserId()).setVoicdId(bean.getContent())
-							.setSiteDeviceId(String.valueOf(bean.getDeviceId())).setTsKey(bean.getTsKey())
+							.setSiteFriendId(bean.getSiteUserId()).setVoiceId(bean.getContent())
+							.setToDeviceId(String.valueOf(bean.getDeviceId())).setBase64TsKey(bean.getTsKey())
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_VOICE).setPointer(bean.getId()).setSecretVoice(secretVoice).build();

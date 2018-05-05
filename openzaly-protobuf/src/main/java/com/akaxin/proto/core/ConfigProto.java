@@ -15,6 +15,499 @@ public final class ConfigProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
+   * <pre>
+   *实名枚举
+   * </pre>
+   *
+   * Protobuf enum {@code core.RealNameConfig}
+   */
+  public enum RealNameConfig
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *匿名方式
+     * </pre>
+     *
+     * <code>REALNAME_NO = 0;</code>
+     */
+    REALNAME_NO(0),
+    /**
+     * <pre>
+     *实名方式,必须用户是实名
+     * </pre>
+     *
+     * <code>REALNAME_YES = 1;</code>
+     */
+    REALNAME_YES(1),
+    /**
+     * <pre>
+     *优先实名方式，其次接受非实名用户
+     * </pre>
+     *
+     * <code>REALNAME_YES_NO = 2;</code>
+     */
+    REALNAME_YES_NO(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *匿名方式
+     * </pre>
+     *
+     * <code>REALNAME_NO = 0;</code>
+     */
+    public static final int REALNAME_NO_VALUE = 0;
+    /**
+     * <pre>
+     *实名方式,必须用户是实名
+     * </pre>
+     *
+     * <code>REALNAME_YES = 1;</code>
+     */
+    public static final int REALNAME_YES_VALUE = 1;
+    /**
+     * <pre>
+     *优先实名方式，其次接受非实名用户
+     * </pre>
+     *
+     * <code>REALNAME_YES_NO = 2;</code>
+     */
+    public static final int REALNAME_YES_NO_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static RealNameConfig valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static RealNameConfig forNumber(int value) {
+      switch (value) {
+        case 0: return REALNAME_NO;
+        case 1: return REALNAME_YES;
+        case 2: return REALNAME_YES_NO;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<RealNameConfig>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        RealNameConfig> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<RealNameConfig>() {
+            public RealNameConfig findValueByNumber(int number) {
+              return RealNameConfig.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final RealNameConfig[] VALUES = values();
+
+    public static RealNameConfig valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private RealNameConfig(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.RealNameConfig)
+  }
+
+  /**
+   * <pre>
+   *邀请码枚举
+   * </pre>
+   *
+   * Protobuf enum {@code core.InviteCodeConfig}
+   */
+  public enum InviteCodeConfig
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *不需要
+     * </pre>
+     *
+     * <code>UIC_NO = 0;</code>
+     */
+    UIC_NO(0),
+    /**
+     * <pre>
+     *关闭邀请码
+     * </pre>
+     *
+     * <code>UIC_YES = 1;</code>
+     */
+    UIC_YES(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *不需要
+     * </pre>
+     *
+     * <code>UIC_NO = 0;</code>
+     */
+    public static final int UIC_NO_VALUE = 0;
+    /**
+     * <pre>
+     *关闭邀请码
+     * </pre>
+     *
+     * <code>UIC_YES = 1;</code>
+     */
+    public static final int UIC_YES_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static InviteCodeConfig valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static InviteCodeConfig forNumber(int value) {
+      switch (value) {
+        case 0: return UIC_NO;
+        case 1: return UIC_YES;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<InviteCodeConfig>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        InviteCodeConfig> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<InviteCodeConfig>() {
+            public InviteCodeConfig findValueByNumber(int number) {
+              return InviteCodeConfig.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final InviteCodeConfig[] VALUES = values();
+
+    public static InviteCodeConfig valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private InviteCodeConfig(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.InviteCodeConfig)
+  }
+
+  /**
+   * <pre>
+   *站点开启，关闭状态
+   * </pre>
+   *
+   * Protobuf enum {@code core.SiteStatusConfig}
+   */
+  public enum SiteStatusConfig
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *站点关闭状态
+     * </pre>
+     *
+     * <code>CLOSE = 0;</code>
+     */
+    CLOSE(0),
+    /**
+     * <pre>
+     *站点开启状态
+     * </pre>
+     *
+     * <code>OPEN = 1;</code>
+     */
+    OPEN(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *站点关闭状态
+     * </pre>
+     *
+     * <code>CLOSE = 0;</code>
+     */
+    public static final int CLOSE_VALUE = 0;
+    /**
+     * <pre>
+     *站点开启状态
+     * </pre>
+     *
+     * <code>OPEN = 1;</code>
+     */
+    public static final int OPEN_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static SiteStatusConfig valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static SiteStatusConfig forNumber(int value) {
+      switch (value) {
+        case 0: return CLOSE;
+        case 1: return OPEN;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<SiteStatusConfig>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        SiteStatusConfig> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<SiteStatusConfig>() {
+            public SiteStatusConfig findValueByNumber(int number) {
+              return SiteStatusConfig.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final SiteStatusConfig[] VALUES = values();
+
+    public static SiteStatusConfig valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private SiteStatusConfig(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.SiteStatusConfig)
+  }
+
+  /**
+   * <pre>
+   *二人加密状态枚举
+   * </pre>
+   *
+   * Protobuf enum {@code core.U2EncryptionConfig}
+   */
+  public enum U2EncryptionConfig
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *二人加密关闭
+     * </pre>
+     *
+     * <code>U2_CLOSE = 0;</code>
+     */
+    U2_CLOSE(0),
+    /**
+     * <pre>
+     *二人加密开启
+     * </pre>
+     *
+     * <code>U2_OPEN = 1;</code>
+     */
+    U2_OPEN(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *二人加密关闭
+     * </pre>
+     *
+     * <code>U2_CLOSE = 0;</code>
+     */
+    public static final int U2_CLOSE_VALUE = 0;
+    /**
+     * <pre>
+     *二人加密开启
+     * </pre>
+     *
+     * <code>U2_OPEN = 1;</code>
+     */
+    public static final int U2_OPEN_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static U2EncryptionConfig valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static U2EncryptionConfig forNumber(int value) {
+      switch (value) {
+        case 0: return U2_CLOSE;
+        case 1: return U2_OPEN;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<U2EncryptionConfig>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        U2EncryptionConfig> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<U2EncryptionConfig>() {
+            public U2EncryptionConfig findValueByNumber(int number) {
+              return U2EncryptionConfig.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(3);
+    }
+
+    private static final U2EncryptionConfig[] VALUES = values();
+
+    public static U2EncryptionConfig valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private U2EncryptionConfig(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.U2EncryptionConfig)
+  }
+
+  /**
+   * <pre>
+   *站点后台管理配置key
+   * </pre>
+   *
    * Protobuf enum {@code core.ConfigKey}
    */
   public enum ConfigKey
@@ -69,12 +562,12 @@ public final class ConfigProto {
     SITE_INTRODUCTION(5),
     /**
      * <pre>
-     *站点注册方式 RegisterWay
+     *实名状态
      * </pre>
      *
-     * <code>REGISTER_WAY = 6;</code>
+     * <code>REALNAME_STATUS = 6;</code>
      */
-    REGISTER_WAY(6),
+    REALNAME_STATUS(6),
     /**
      * <pre>
      *站点支持群最大成员数
@@ -179,6 +672,14 @@ public final class ConfigProto {
      * <code>SITE_MANAGER = 19;</code>
      */
     SITE_MANAGER(19),
+    /**
+     * <pre>
+     *邀请码状态
+     * </pre>
+     *
+     * <code>INVITE_CODE_STATUS = 20;</code>
+     */
+    INVITE_CODE_STATUS(20),
     UNRECOGNIZED(-1),
     ;
 
@@ -232,12 +733,12 @@ public final class ConfigProto {
     public static final int SITE_INTRODUCTION_VALUE = 5;
     /**
      * <pre>
-     *站点注册方式 RegisterWay
+     *实名状态
      * </pre>
      *
-     * <code>REGISTER_WAY = 6;</code>
+     * <code>REALNAME_STATUS = 6;</code>
      */
-    public static final int REGISTER_WAY_VALUE = 6;
+    public static final int REALNAME_STATUS_VALUE = 6;
     /**
      * <pre>
      *站点支持群最大成员数
@@ -342,6 +843,14 @@ public final class ConfigProto {
      * <code>SITE_MANAGER = 19;</code>
      */
     public static final int SITE_MANAGER_VALUE = 19;
+    /**
+     * <pre>
+     *邀请码状态
+     * </pre>
+     *
+     * <code>INVITE_CODE_STATUS = 20;</code>
+     */
+    public static final int INVITE_CODE_STATUS_VALUE = 20;
 
 
     public final int getNumber() {
@@ -368,7 +877,7 @@ public final class ConfigProto {
         case 3: return SITE_LOGO;
         case 4: return SITE_VERSION;
         case 5: return SITE_INTRODUCTION;
-        case 6: return REGISTER_WAY;
+        case 6: return REALNAME_STATUS;
         case 7: return GROUP_MEMBERS_COUNT;
         case 8: return PIC_SIZE;
         case 9: return PIC_PATH;
@@ -382,6 +891,7 @@ public final class ConfigProto {
         case 17: return PUSH_CLIENT_STATUS;
         case 18: return LOG_LEVEL;
         case 19: return SITE_MANAGER;
+        case 20: return INVITE_CODE_STATUS;
         default: return null;
       }
     }
@@ -408,7 +918,7 @@ public final class ConfigProto {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(0);
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(4);
     }
 
     private static final ConfigKey[] VALUES = values();
@@ -432,373 +942,6 @@ public final class ConfigProto {
     }
 
     // @@protoc_insertion_point(enum_scope:core.ConfigKey)
-  }
-
-  /**
-   * <pre>
-   *站点的注册方式
-   * </pre>
-   *
-   * Protobuf enum {@code core.RegisterWay}
-   */
-  public enum RegisterWay
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <pre>
-     *匿名方式
-     * </pre>
-     *
-     * <code>ANONYMOUS = 0;</code>
-     */
-    ANONYMOUS(0),
-    /**
-     * <pre>
-     *实名方式
-     * </pre>
-     *
-     * <code>REALNAME = 1;</code>
-     */
-    REALNAME(1),
-    /**
-     * <pre>
-     *用户邀请码方式
-     * </pre>
-     *
-     * <code>USERUIC = 2;</code>
-     */
-    USERUIC(2),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <pre>
-     *匿名方式
-     * </pre>
-     *
-     * <code>ANONYMOUS = 0;</code>
-     */
-    public static final int ANONYMOUS_VALUE = 0;
-    /**
-     * <pre>
-     *实名方式
-     * </pre>
-     *
-     * <code>REALNAME = 1;</code>
-     */
-    public static final int REALNAME_VALUE = 1;
-    /**
-     * <pre>
-     *用户邀请码方式
-     * </pre>
-     *
-     * <code>USERUIC = 2;</code>
-     */
-    public static final int USERUIC_VALUE = 2;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static RegisterWay valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static RegisterWay forNumber(int value) {
-      switch (value) {
-        case 0: return ANONYMOUS;
-        case 1: return REALNAME;
-        case 2: return USERUIC;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<RegisterWay>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        RegisterWay> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<RegisterWay>() {
-            public RegisterWay findValueByNumber(int number) {
-              return RegisterWay.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(1);
-    }
-
-    private static final RegisterWay[] VALUES = values();
-
-    public static RegisterWay valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private RegisterWay(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:core.RegisterWay)
-  }
-
-  /**
-   * <pre>
-   *站点开启，关闭状态
-   * </pre>
-   *
-   * Protobuf enum {@code core.SiteStatus}
-   */
-  public enum SiteStatus
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <pre>
-     *站点关闭状态
-     * </pre>
-     *
-     * <code>CLOSE = 0;</code>
-     */
-    CLOSE(0),
-    /**
-     * <pre>
-     *站点开启状态
-     * </pre>
-     *
-     * <code>OPEN = 1;</code>
-     */
-    OPEN(1),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <pre>
-     *站点关闭状态
-     * </pre>
-     *
-     * <code>CLOSE = 0;</code>
-     */
-    public static final int CLOSE_VALUE = 0;
-    /**
-     * <pre>
-     *站点开启状态
-     * </pre>
-     *
-     * <code>OPEN = 1;</code>
-     */
-    public static final int OPEN_VALUE = 1;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static SiteStatus valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static SiteStatus forNumber(int value) {
-      switch (value) {
-        case 0: return CLOSE;
-        case 1: return OPEN;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<SiteStatus>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        SiteStatus> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<SiteStatus>() {
-            public SiteStatus findValueByNumber(int number) {
-              return SiteStatus.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(2);
-    }
-
-    private static final SiteStatus[] VALUES = values();
-
-    public static SiteStatus valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private SiteStatus(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:core.SiteStatus)
-  }
-
-  /**
-   * Protobuf enum {@code core.U2EncryptionStatus}
-   */
-  public enum U2EncryptionStatus
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <pre>
-     *二人加密关闭
-     * </pre>
-     *
-     * <code>U2_CLOSE = 0;</code>
-     */
-    U2_CLOSE(0),
-    /**
-     * <pre>
-     *二人加密开启
-     * </pre>
-     *
-     * <code>U2_OPEN = 1;</code>
-     */
-    U2_OPEN(1),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <pre>
-     *二人加密关闭
-     * </pre>
-     *
-     * <code>U2_CLOSE = 0;</code>
-     */
-    public static final int U2_CLOSE_VALUE = 0;
-    /**
-     * <pre>
-     *二人加密开启
-     * </pre>
-     *
-     * <code>U2_OPEN = 1;</code>
-     */
-    public static final int U2_OPEN_VALUE = 1;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static U2EncryptionStatus valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static U2EncryptionStatus forNumber(int value) {
-      switch (value) {
-        case 0: return U2_CLOSE;
-        case 1: return U2_OPEN;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<U2EncryptionStatus>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        U2EncryptionStatus> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<U2EncryptionStatus>() {
-            public U2EncryptionStatus findValueByNumber(int number) {
-              return U2EncryptionStatus.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(3);
-    }
-
-    private static final U2EncryptionStatus[] VALUES = values();
-
-    public static U2EncryptionStatus valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private U2EncryptionStatus(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:core.U2EncryptionStatus)
   }
 
   /**
@@ -910,7 +1053,7 @@ public final class ConfigProto {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(4);
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(5);
     }
 
     private static final PushClientStatus[] VALUES = values();
@@ -1041,16 +1184,24 @@ public final class ConfigProto {
 
     /**
      * <pre>
-     *站点注册方式
+     *站点是否需要实名
      * </pre>
      *
-     * <code>optional int32 register_way = 7;</code>
+     * <code>optional .core.RealNameConfig real_name_config = 7;</code>
      */
-    int getRegisterWay();
+    int getRealNameConfigValue();
+    /**
+     * <pre>
+     *站点是否需要实名
+     * </pre>
+     *
+     * <code>optional .core.RealNameConfig real_name_config = 7;</code>
+     */
+    com.akaxin.proto.core.ConfigProto.RealNameConfig getRealNameConfig();
 
     /**
      * <pre>
-     *支持图片大小
+     *支持图片大小（width x length）
      * </pre>
      *
      * <code>optional string pic_size = 8;</code>
@@ -1058,7 +1209,7 @@ public final class ConfigProto {
     java.lang.String getPicSize();
     /**
      * <pre>
-     *支持图片大小
+     *支持图片大小（width x length）
      * </pre>
      *
      * <code>optional string pic_size = 8;</code>
@@ -1071,9 +1222,17 @@ public final class ConfigProto {
      *站点状态
      * </pre>
      *
-     * <code>optional int32 site_status = 9;</code>
+     * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
      */
-    int getSiteStatus();
+    int getSiteStatusConfigValue();
+    /**
+     * <pre>
+     *站点状态
+     * </pre>
+     *
+     * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
+     */
+    com.akaxin.proto.core.ConfigProto.SiteStatusConfig getSiteStatusConfig();
 
     /**
      * <pre>
@@ -1098,9 +1257,34 @@ public final class ConfigProto {
      *二人消息加密状态
      * </pre>
      *
-     * <code>optional int32 u2_encryption_status = 11;</code>
+     * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
      */
-    int getU2EncryptionStatus();
+    int getU2EncryptionConfigValue();
+    /**
+     * <pre>
+     *二人消息加密状态
+     * </pre>
+     *
+     * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
+     */
+    com.akaxin.proto.core.ConfigProto.U2EncryptionConfig getU2EncryptionConfig();
+
+    /**
+     * <pre>
+     *站点注册是否需要邀请码
+     * </pre>
+     *
+     * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+     */
+    int getInviteCodeConfigValue();
+    /**
+     * <pre>
+     *站点注册是否需要邀请码
+     * </pre>
+     *
+     * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+     */
+    com.akaxin.proto.core.ConfigProto.InviteCodeConfig getInviteCodeConfig();
   }
   /**
    * <pre>
@@ -1124,11 +1308,12 @@ public final class ConfigProto {
       siteLogo_ = "";
       siteVersion_ = "";
       siteIntroduction_ = "";
-      registerWay_ = 0;
+      realNameConfig_ = 0;
       picSize_ = "";
-      siteStatus_ = 0;
+      siteStatusConfig_ = 0;
       siteStatusInfo_ = "";
-      u2EncryptionStatus_ = 0;
+      u2EncryptionConfig_ = 0;
+      inviteCodeConfig_ = 0;
     }
 
     @java.lang.Override
@@ -1192,8 +1377,9 @@ public final class ConfigProto {
               break;
             }
             case 56: {
+              int rawValue = input.readEnum();
 
-              registerWay_ = input.readInt32();
+              realNameConfig_ = rawValue;
               break;
             }
             case 66: {
@@ -1203,8 +1389,9 @@ public final class ConfigProto {
               break;
             }
             case 72: {
+              int rawValue = input.readEnum();
 
-              siteStatus_ = input.readInt32();
+              siteStatusConfig_ = rawValue;
               break;
             }
             case 82: {
@@ -1214,8 +1401,15 @@ public final class ConfigProto {
               break;
             }
             case 88: {
+              int rawValue = input.readEnum();
 
-              u2EncryptionStatus_ = input.readInt32();
+              u2EncryptionConfig_ = rawValue;
+              break;
+            }
+            case 96: {
+              int rawValue = input.readEnum();
+
+              inviteCodeConfig_ = rawValue;
               break;
             }
           }
@@ -1464,24 +1658,35 @@ public final class ConfigProto {
       }
     }
 
-    public static final int REGISTER_WAY_FIELD_NUMBER = 7;
-    private int registerWay_;
+    public static final int REAL_NAME_CONFIG_FIELD_NUMBER = 7;
+    private int realNameConfig_;
     /**
      * <pre>
-     *站点注册方式
+     *站点是否需要实名
      * </pre>
      *
-     * <code>optional int32 register_way = 7;</code>
+     * <code>optional .core.RealNameConfig real_name_config = 7;</code>
      */
-    public int getRegisterWay() {
-      return registerWay_;
+    public int getRealNameConfigValue() {
+      return realNameConfig_;
+    }
+    /**
+     * <pre>
+     *站点是否需要实名
+     * </pre>
+     *
+     * <code>optional .core.RealNameConfig real_name_config = 7;</code>
+     */
+    public com.akaxin.proto.core.ConfigProto.RealNameConfig getRealNameConfig() {
+      com.akaxin.proto.core.ConfigProto.RealNameConfig result = com.akaxin.proto.core.ConfigProto.RealNameConfig.valueOf(realNameConfig_);
+      return result == null ? com.akaxin.proto.core.ConfigProto.RealNameConfig.UNRECOGNIZED : result;
     }
 
     public static final int PIC_SIZE_FIELD_NUMBER = 8;
     private volatile java.lang.Object picSize_;
     /**
      * <pre>
-     *支持图片大小
+     *支持图片大小（width x length）
      * </pre>
      *
      * <code>optional string pic_size = 8;</code>
@@ -1500,7 +1705,7 @@ public final class ConfigProto {
     }
     /**
      * <pre>
-     *支持图片大小
+     *支持图片大小（width x length）
      * </pre>
      *
      * <code>optional string pic_size = 8;</code>
@@ -1519,17 +1724,28 @@ public final class ConfigProto {
       }
     }
 
-    public static final int SITE_STATUS_FIELD_NUMBER = 9;
-    private int siteStatus_;
+    public static final int SITE_STATUS_CONFIG_FIELD_NUMBER = 9;
+    private int siteStatusConfig_;
     /**
      * <pre>
      *站点状态
      * </pre>
      *
-     * <code>optional int32 site_status = 9;</code>
+     * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
      */
-    public int getSiteStatus() {
-      return siteStatus_;
+    public int getSiteStatusConfigValue() {
+      return siteStatusConfig_;
+    }
+    /**
+     * <pre>
+     *站点状态
+     * </pre>
+     *
+     * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
+     */
+    public com.akaxin.proto.core.ConfigProto.SiteStatusConfig getSiteStatusConfig() {
+      com.akaxin.proto.core.ConfigProto.SiteStatusConfig result = com.akaxin.proto.core.ConfigProto.SiteStatusConfig.valueOf(siteStatusConfig_);
+      return result == null ? com.akaxin.proto.core.ConfigProto.SiteStatusConfig.UNRECOGNIZED : result;
     }
 
     public static final int SITE_STATUS_INFO_FIELD_NUMBER = 10;
@@ -1574,17 +1790,52 @@ public final class ConfigProto {
       }
     }
 
-    public static final int U2_ENCRYPTION_STATUS_FIELD_NUMBER = 11;
-    private int u2EncryptionStatus_;
+    public static final int U2_ENCRYPTION_CONFIG_FIELD_NUMBER = 11;
+    private int u2EncryptionConfig_;
     /**
      * <pre>
      *二人消息加密状态
      * </pre>
      *
-     * <code>optional int32 u2_encryption_status = 11;</code>
+     * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
      */
-    public int getU2EncryptionStatus() {
-      return u2EncryptionStatus_;
+    public int getU2EncryptionConfigValue() {
+      return u2EncryptionConfig_;
+    }
+    /**
+     * <pre>
+     *二人消息加密状态
+     * </pre>
+     *
+     * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
+     */
+    public com.akaxin.proto.core.ConfigProto.U2EncryptionConfig getU2EncryptionConfig() {
+      com.akaxin.proto.core.ConfigProto.U2EncryptionConfig result = com.akaxin.proto.core.ConfigProto.U2EncryptionConfig.valueOf(u2EncryptionConfig_);
+      return result == null ? com.akaxin.proto.core.ConfigProto.U2EncryptionConfig.UNRECOGNIZED : result;
+    }
+
+    public static final int INVITE_CODE_CONFIG_FIELD_NUMBER = 12;
+    private int inviteCodeConfig_;
+    /**
+     * <pre>
+     *站点注册是否需要邀请码
+     * </pre>
+     *
+     * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+     */
+    public int getInviteCodeConfigValue() {
+      return inviteCodeConfig_;
+    }
+    /**
+     * <pre>
+     *站点注册是否需要邀请码
+     * </pre>
+     *
+     * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+     */
+    public com.akaxin.proto.core.ConfigProto.InviteCodeConfig getInviteCodeConfig() {
+      com.akaxin.proto.core.ConfigProto.InviteCodeConfig result = com.akaxin.proto.core.ConfigProto.InviteCodeConfig.valueOf(inviteCodeConfig_);
+      return result == null ? com.akaxin.proto.core.ConfigProto.InviteCodeConfig.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1617,20 +1868,23 @@ public final class ConfigProto {
       if (!getSiteIntroductionBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, siteIntroduction_);
       }
-      if (registerWay_ != 0) {
-        output.writeInt32(7, registerWay_);
+      if (realNameConfig_ != com.akaxin.proto.core.ConfigProto.RealNameConfig.REALNAME_NO.getNumber()) {
+        output.writeEnum(7, realNameConfig_);
       }
       if (!getPicSizeBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, picSize_);
       }
-      if (siteStatus_ != 0) {
-        output.writeInt32(9, siteStatus_);
+      if (siteStatusConfig_ != com.akaxin.proto.core.ConfigProto.SiteStatusConfig.CLOSE.getNumber()) {
+        output.writeEnum(9, siteStatusConfig_);
       }
       if (!getSiteStatusInfoBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, siteStatusInfo_);
       }
-      if (u2EncryptionStatus_ != 0) {
-        output.writeInt32(11, u2EncryptionStatus_);
+      if (u2EncryptionConfig_ != com.akaxin.proto.core.ConfigProto.U2EncryptionConfig.U2_CLOSE.getNumber()) {
+        output.writeEnum(11, u2EncryptionConfig_);
+      }
+      if (inviteCodeConfig_ != com.akaxin.proto.core.ConfigProto.InviteCodeConfig.UIC_NO.getNumber()) {
+        output.writeEnum(12, inviteCodeConfig_);
       }
     }
 
@@ -1658,23 +1912,27 @@ public final class ConfigProto {
       if (!getSiteIntroductionBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, siteIntroduction_);
       }
-      if (registerWay_ != 0) {
+      if (realNameConfig_ != com.akaxin.proto.core.ConfigProto.RealNameConfig.REALNAME_NO.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, registerWay_);
+          .computeEnumSize(7, realNameConfig_);
       }
       if (!getPicSizeBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, picSize_);
       }
-      if (siteStatus_ != 0) {
+      if (siteStatusConfig_ != com.akaxin.proto.core.ConfigProto.SiteStatusConfig.CLOSE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(9, siteStatus_);
+          .computeEnumSize(9, siteStatusConfig_);
       }
       if (!getSiteStatusInfoBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, siteStatusInfo_);
       }
-      if (u2EncryptionStatus_ != 0) {
+      if (u2EncryptionConfig_ != com.akaxin.proto.core.ConfigProto.U2EncryptionConfig.U2_CLOSE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, u2EncryptionStatus_);
+          .computeEnumSize(11, u2EncryptionConfig_);
+      }
+      if (inviteCodeConfig_ != com.akaxin.proto.core.ConfigProto.InviteCodeConfig.UIC_NO.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(12, inviteCodeConfig_);
       }
       memoizedSize = size;
       return size;
@@ -1704,16 +1962,14 @@ public final class ConfigProto {
           .equals(other.getSiteVersion());
       result = result && getSiteIntroduction()
           .equals(other.getSiteIntroduction());
-      result = result && (getRegisterWay()
-          == other.getRegisterWay());
+      result = result && realNameConfig_ == other.realNameConfig_;
       result = result && getPicSize()
           .equals(other.getPicSize());
-      result = result && (getSiteStatus()
-          == other.getSiteStatus());
+      result = result && siteStatusConfig_ == other.siteStatusConfig_;
       result = result && getSiteStatusInfo()
           .equals(other.getSiteStatusInfo());
-      result = result && (getU2EncryptionStatus()
-          == other.getU2EncryptionStatus());
+      result = result && u2EncryptionConfig_ == other.u2EncryptionConfig_;
+      result = result && inviteCodeConfig_ == other.inviteCodeConfig_;
       return result;
     }
 
@@ -1736,16 +1992,18 @@ public final class ConfigProto {
       hash = (53 * hash) + getSiteVersion().hashCode();
       hash = (37 * hash) + SITE_INTRODUCTION_FIELD_NUMBER;
       hash = (53 * hash) + getSiteIntroduction().hashCode();
-      hash = (37 * hash) + REGISTER_WAY_FIELD_NUMBER;
-      hash = (53 * hash) + getRegisterWay();
+      hash = (37 * hash) + REAL_NAME_CONFIG_FIELD_NUMBER;
+      hash = (53 * hash) + realNameConfig_;
       hash = (37 * hash) + PIC_SIZE_FIELD_NUMBER;
       hash = (53 * hash) + getPicSize().hashCode();
-      hash = (37 * hash) + SITE_STATUS_FIELD_NUMBER;
-      hash = (53 * hash) + getSiteStatus();
+      hash = (37 * hash) + SITE_STATUS_CONFIG_FIELD_NUMBER;
+      hash = (53 * hash) + siteStatusConfig_;
       hash = (37 * hash) + SITE_STATUS_INFO_FIELD_NUMBER;
       hash = (53 * hash) + getSiteStatusInfo().hashCode();
-      hash = (37 * hash) + U2_ENCRYPTION_STATUS_FIELD_NUMBER;
-      hash = (53 * hash) + getU2EncryptionStatus();
+      hash = (37 * hash) + U2_ENCRYPTION_CONFIG_FIELD_NUMBER;
+      hash = (53 * hash) + u2EncryptionConfig_;
+      hash = (37 * hash) + INVITE_CODE_CONFIG_FIELD_NUMBER;
+      hash = (53 * hash) + inviteCodeConfig_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1880,15 +2138,17 @@ public final class ConfigProto {
 
         siteIntroduction_ = "";
 
-        registerWay_ = 0;
+        realNameConfig_ = 0;
 
         picSize_ = "";
 
-        siteStatus_ = 0;
+        siteStatusConfig_ = 0;
 
         siteStatusInfo_ = "";
 
-        u2EncryptionStatus_ = 0;
+        u2EncryptionConfig_ = 0;
+
+        inviteCodeConfig_ = 0;
 
         return this;
       }
@@ -1918,11 +2178,12 @@ public final class ConfigProto {
         result.siteLogo_ = siteLogo_;
         result.siteVersion_ = siteVersion_;
         result.siteIntroduction_ = siteIntroduction_;
-        result.registerWay_ = registerWay_;
+        result.realNameConfig_ = realNameConfig_;
         result.picSize_ = picSize_;
-        result.siteStatus_ = siteStatus_;
+        result.siteStatusConfig_ = siteStatusConfig_;
         result.siteStatusInfo_ = siteStatusInfo_;
-        result.u2EncryptionStatus_ = u2EncryptionStatus_;
+        result.u2EncryptionConfig_ = u2EncryptionConfig_;
+        result.inviteCodeConfig_ = inviteCodeConfig_;
         onBuilt();
         return result;
       }
@@ -1987,22 +2248,25 @@ public final class ConfigProto {
           siteIntroduction_ = other.siteIntroduction_;
           onChanged();
         }
-        if (other.getRegisterWay() != 0) {
-          setRegisterWay(other.getRegisterWay());
+        if (other.realNameConfig_ != 0) {
+          setRealNameConfigValue(other.getRealNameConfigValue());
         }
         if (!other.getPicSize().isEmpty()) {
           picSize_ = other.picSize_;
           onChanged();
         }
-        if (other.getSiteStatus() != 0) {
-          setSiteStatus(other.getSiteStatus());
+        if (other.siteStatusConfig_ != 0) {
+          setSiteStatusConfigValue(other.getSiteStatusConfigValue());
         }
         if (!other.getSiteStatusInfo().isEmpty()) {
           siteStatusInfo_ = other.siteStatusInfo_;
           onChanged();
         }
-        if (other.getU2EncryptionStatus() != 0) {
-          setU2EncryptionStatus(other.getU2EncryptionStatus());
+        if (other.u2EncryptionConfig_ != 0) {
+          setU2EncryptionConfigValue(other.getU2EncryptionConfigValue());
+        }
+        if (other.inviteCodeConfig_ != 0) {
+          setInviteCodeConfigValue(other.getInviteCodeConfigValue());
         }
         onChanged();
         return this;
@@ -2513,40 +2777,66 @@ public final class ConfigProto {
         return this;
       }
 
-      private int registerWay_ ;
+      private int realNameConfig_ = 0;
       /**
        * <pre>
-       *站点注册方式
+       *站点是否需要实名
        * </pre>
        *
-       * <code>optional int32 register_way = 7;</code>
+       * <code>optional .core.RealNameConfig real_name_config = 7;</code>
        */
-      public int getRegisterWay() {
-        return registerWay_;
+      public int getRealNameConfigValue() {
+        return realNameConfig_;
       }
       /**
        * <pre>
-       *站点注册方式
+       *站点是否需要实名
        * </pre>
        *
-       * <code>optional int32 register_way = 7;</code>
+       * <code>optional .core.RealNameConfig real_name_config = 7;</code>
        */
-      public Builder setRegisterWay(int value) {
-        
-        registerWay_ = value;
+      public Builder setRealNameConfigValue(int value) {
+        realNameConfig_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *站点注册方式
+       *站点是否需要实名
        * </pre>
        *
-       * <code>optional int32 register_way = 7;</code>
+       * <code>optional .core.RealNameConfig real_name_config = 7;</code>
        */
-      public Builder clearRegisterWay() {
+      public com.akaxin.proto.core.ConfigProto.RealNameConfig getRealNameConfig() {
+        com.akaxin.proto.core.ConfigProto.RealNameConfig result = com.akaxin.proto.core.ConfigProto.RealNameConfig.valueOf(realNameConfig_);
+        return result == null ? com.akaxin.proto.core.ConfigProto.RealNameConfig.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *站点是否需要实名
+       * </pre>
+       *
+       * <code>optional .core.RealNameConfig real_name_config = 7;</code>
+       */
+      public Builder setRealNameConfig(com.akaxin.proto.core.ConfigProto.RealNameConfig value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
         
-        registerWay_ = 0;
+        realNameConfig_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点是否需要实名
+       * </pre>
+       *
+       * <code>optional .core.RealNameConfig real_name_config = 7;</code>
+       */
+      public Builder clearRealNameConfig() {
+        
+        realNameConfig_ = 0;
         onChanged();
         return this;
       }
@@ -2554,7 +2844,7 @@ public final class ConfigProto {
       private java.lang.Object picSize_ = "";
       /**
        * <pre>
-       *支持图片大小
+       *支持图片大小（width x length）
        * </pre>
        *
        * <code>optional string pic_size = 8;</code>
@@ -2573,7 +2863,7 @@ public final class ConfigProto {
       }
       /**
        * <pre>
-       *支持图片大小
+       *支持图片大小（width x length）
        * </pre>
        *
        * <code>optional string pic_size = 8;</code>
@@ -2593,7 +2883,7 @@ public final class ConfigProto {
       }
       /**
        * <pre>
-       *支持图片大小
+       *支持图片大小（width x length）
        * </pre>
        *
        * <code>optional string pic_size = 8;</code>
@@ -2610,7 +2900,7 @@ public final class ConfigProto {
       }
       /**
        * <pre>
-       *支持图片大小
+       *支持图片大小（width x length）
        * </pre>
        *
        * <code>optional string pic_size = 8;</code>
@@ -2623,7 +2913,7 @@ public final class ConfigProto {
       }
       /**
        * <pre>
-       *支持图片大小
+       *支持图片大小（width x length）
        * </pre>
        *
        * <code>optional string pic_size = 8;</code>
@@ -2640,27 +2930,26 @@ public final class ConfigProto {
         return this;
       }
 
-      private int siteStatus_ ;
+      private int siteStatusConfig_ = 0;
       /**
        * <pre>
        *站点状态
        * </pre>
        *
-       * <code>optional int32 site_status = 9;</code>
+       * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
        */
-      public int getSiteStatus() {
-        return siteStatus_;
+      public int getSiteStatusConfigValue() {
+        return siteStatusConfig_;
       }
       /**
        * <pre>
        *站点状态
        * </pre>
        *
-       * <code>optional int32 site_status = 9;</code>
+       * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
        */
-      public Builder setSiteStatus(int value) {
-        
-        siteStatus_ = value;
+      public Builder setSiteStatusConfigValue(int value) {
+        siteStatusConfig_ = value;
         onChanged();
         return this;
       }
@@ -2669,11 +2958,38 @@ public final class ConfigProto {
        *站点状态
        * </pre>
        *
-       * <code>optional int32 site_status = 9;</code>
+       * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
        */
-      public Builder clearSiteStatus() {
+      public com.akaxin.proto.core.ConfigProto.SiteStatusConfig getSiteStatusConfig() {
+        com.akaxin.proto.core.ConfigProto.SiteStatusConfig result = com.akaxin.proto.core.ConfigProto.SiteStatusConfig.valueOf(siteStatusConfig_);
+        return result == null ? com.akaxin.proto.core.ConfigProto.SiteStatusConfig.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *站点状态
+       * </pre>
+       *
+       * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
+       */
+      public Builder setSiteStatusConfig(com.akaxin.proto.core.ConfigProto.SiteStatusConfig value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
         
-        siteStatus_ = 0;
+        siteStatusConfig_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点状态
+       * </pre>
+       *
+       * <code>optional .core.SiteStatusConfig site_status_config = 9;</code>
+       */
+      public Builder clearSiteStatusConfig() {
+        
+        siteStatusConfig_ = 0;
         onChanged();
         return this;
       }
@@ -2767,27 +3083,26 @@ public final class ConfigProto {
         return this;
       }
 
-      private int u2EncryptionStatus_ ;
+      private int u2EncryptionConfig_ = 0;
       /**
        * <pre>
        *二人消息加密状态
        * </pre>
        *
-       * <code>optional int32 u2_encryption_status = 11;</code>
+       * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
        */
-      public int getU2EncryptionStatus() {
-        return u2EncryptionStatus_;
+      public int getU2EncryptionConfigValue() {
+        return u2EncryptionConfig_;
       }
       /**
        * <pre>
        *二人消息加密状态
        * </pre>
        *
-       * <code>optional int32 u2_encryption_status = 11;</code>
+       * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
        */
-      public Builder setU2EncryptionStatus(int value) {
-        
-        u2EncryptionStatus_ = value;
+      public Builder setU2EncryptionConfigValue(int value) {
+        u2EncryptionConfig_ = value;
         onChanged();
         return this;
       }
@@ -2796,11 +3111,102 @@ public final class ConfigProto {
        *二人消息加密状态
        * </pre>
        *
-       * <code>optional int32 u2_encryption_status = 11;</code>
+       * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
        */
-      public Builder clearU2EncryptionStatus() {
+      public com.akaxin.proto.core.ConfigProto.U2EncryptionConfig getU2EncryptionConfig() {
+        com.akaxin.proto.core.ConfigProto.U2EncryptionConfig result = com.akaxin.proto.core.ConfigProto.U2EncryptionConfig.valueOf(u2EncryptionConfig_);
+        return result == null ? com.akaxin.proto.core.ConfigProto.U2EncryptionConfig.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *二人消息加密状态
+       * </pre>
+       *
+       * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
+       */
+      public Builder setU2EncryptionConfig(com.akaxin.proto.core.ConfigProto.U2EncryptionConfig value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
         
-        u2EncryptionStatus_ = 0;
+        u2EncryptionConfig_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *二人消息加密状态
+       * </pre>
+       *
+       * <code>optional .core.U2EncryptionConfig u2_encryption_config = 11;</code>
+       */
+      public Builder clearU2EncryptionConfig() {
+        
+        u2EncryptionConfig_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int inviteCodeConfig_ = 0;
+      /**
+       * <pre>
+       *站点注册是否需要邀请码
+       * </pre>
+       *
+       * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+       */
+      public int getInviteCodeConfigValue() {
+        return inviteCodeConfig_;
+      }
+      /**
+       * <pre>
+       *站点注册是否需要邀请码
+       * </pre>
+       *
+       * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+       */
+      public Builder setInviteCodeConfigValue(int value) {
+        inviteCodeConfig_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点注册是否需要邀请码
+       * </pre>
+       *
+       * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+       */
+      public com.akaxin.proto.core.ConfigProto.InviteCodeConfig getInviteCodeConfig() {
+        com.akaxin.proto.core.ConfigProto.InviteCodeConfig result = com.akaxin.proto.core.ConfigProto.InviteCodeConfig.valueOf(inviteCodeConfig_);
+        return result == null ? com.akaxin.proto.core.ConfigProto.InviteCodeConfig.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *站点注册是否需要邀请码
+       * </pre>
+       *
+       * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+       */
+      public Builder setInviteCodeConfig(com.akaxin.proto.core.ConfigProto.InviteCodeConfig value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        inviteCodeConfig_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点注册是否需要邀请码
+       * </pre>
+       *
+       * <code>optional .core.InviteCodeConfig invite_code_config = 12;</code>
+       */
+      public Builder clearInviteCodeConfig() {
+        
+        inviteCodeConfig_ = 0;
         onChanged();
         return this;
       }
@@ -3557,33 +3963,39 @@ public final class ConfigProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021core/config.proto\022\004core\"\201\002\n\nSiteConfig" +
+      "\n\021core/config.proto\022\004core\"\210\003\n\nSiteConfig" +
       "\022\024\n\014site_address\030\001 \001(\t\022\021\n\tsite_port\030\002 \001(" +
       "\005\022\021\n\tsite_name\030\003 \001(\t\022\021\n\tsite_logo\030\004 \001(\t\022" +
       "\024\n\014site_version\030\005 \001(\t\022\031\n\021site_introducti" +
-      "on\030\006 \001(\t\022\024\n\014register_way\030\007 \001(\005\022\020\n\010pic_si" +
-      "ze\030\010 \001(\t\022\023\n\013site_status\030\t \001(\005\022\030\n\020site_st" +
-      "atus_info\030\n \001(\t\022\034\n\024u2_encryption_status\030" +
-      "\013 \001(\005\"~\n\016SiteBackConfig\0229\n\013site_config\030\001" +
-      " \003(\0132$.core.SiteBackConfig.SiteConfigEnt" +
-      "ry\0321\n\017SiteConfigEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005va",
-      "lue\030\002 \001(\t:\0028\001*\374\002\n\tConfigKey\022\020\n\014SITE_ADDR" +
-      "ESS\020\000\022\r\n\tSITE_PORT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tS" +
-      "ITE_LOGO\020\003\022\020\n\014SITE_VERSION\020\004\022\025\n\021SITE_INT" +
-      "RODUCTION\020\005\022\020\n\014REGISTER_WAY\020\006\022\027\n\023GROUP_M" +
-      "EMBERS_COUNT\020\007\022\014\n\010PIC_SIZE\020\010\022\014\n\010PIC_PATH" +
-      "\020\t\022\017\n\013SITE_STATUS\020\n\022\024\n\020SITE_STATUS_INFO\020" +
-      "\013\022\016\n\nSITE_ADMIN\020\014\022\025\n\021SITE_HTTP_ADDRESS\020\r" +
-      "\022\022\n\016SITE_HTTP_PORT\020\016\022\030\n\024U2_ENCRYPTION_ST" +
-      "ATUS\020\017\022\013\n\007DB_PATH\020\020\022\026\n\022PUSH_CLIENT_STATU" +
-      "S\020\021\022\r\n\tLOG_LEVEL\020\022\022\020\n\014SITE_MANAGER\020\023*7\n\013",
-      "RegisterWay\022\r\n\tANONYMOUS\020\000\022\014\n\010REALNAME\020\001" +
-      "\022\013\n\007USERUIC\020\002*!\n\nSiteStatus\022\t\n\005CLOSE\020\000\022\010" +
-      "\n\004OPEN\020\001*/\n\022U2EncryptionStatus\022\014\n\010U2_CLO" +
-      "SE\020\000\022\013\n\007U2_OPEN\020\001*L\n\020PushClientStatus\022\013\n" +
-      "\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUSH" +
-      "_DISPLAY_TEXT\020\002B$\n\025com.akaxin.proto.core" +
-      "B\013ConfigProtob\006proto3"
+      "on\030\006 \001(\t\022.\n\020real_name_config\030\007 \001(\0162\024.cor" +
+      "e.RealNameConfig\022\020\n\010pic_size\030\010 \001(\t\0222\n\022si" +
+      "te_status_config\030\t \001(\0162\026.core.SiteStatus" +
+      "Config\022\030\n\020site_status_info\030\n \001(\t\0226\n\024u2_e" +
+      "ncryption_config\030\013 \001(\0162\030.core.U2Encrypti" +
+      "onConfig\0222\n\022invite_code_config\030\014 \001(\0162\026.c",
+      "ore.InviteCodeConfig\"~\n\016SiteBackConfig\0229" +
+      "\n\013site_config\030\001 \003(\0132$.core.SiteBackConfi" +
+      "g.SiteConfigEntry\0321\n\017SiteConfigEntry\022\013\n\003" +
+      "key\030\001 \001(\005\022\r\n\005value\030\002 \001(\t:\0028\001*H\n\016RealName" +
+      "Config\022\017\n\013REALNAME_NO\020\000\022\020\n\014REALNAME_YES\020" +
+      "\001\022\023\n\017REALNAME_YES_NO\020\002*+\n\020InviteCodeConf" +
+      "ig\022\n\n\006UIC_NO\020\000\022\013\n\007UIC_YES\020\001*\'\n\020SiteStatu" +
+      "sConfig\022\t\n\005CLOSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2Encryp" +
+      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\227\003" +
+      "\n\tConfigKey\022\020\n\014SITE_ADDRESS\020\000\022\r\n\tSITE_PO",
+      "RT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tSITE_LOGO\020\003\022\020\n\014SI" +
+      "TE_VERSION\020\004\022\025\n\021SITE_INTRODUCTION\020\005\022\023\n\017R" +
+      "EALNAME_STATUS\020\006\022\027\n\023GROUP_MEMBERS_COUNT\020" +
+      "\007\022\014\n\010PIC_SIZE\020\010\022\014\n\010PIC_PATH\020\t\022\017\n\013SITE_ST" +
+      "ATUS\020\n\022\024\n\020SITE_STATUS_INFO\020\013\022\016\n\nSITE_ADM" +
+      "IN\020\014\022\025\n\021SITE_HTTP_ADDRESS\020\r\022\022\n\016SITE_HTTP" +
+      "_PORT\020\016\022\030\n\024U2_ENCRYPTION_STATUS\020\017\022\013\n\007DB_" +
+      "PATH\020\020\022\026\n\022PUSH_CLIENT_STATUS\020\021\022\r\n\tLOG_LE" +
+      "VEL\020\022\022\020\n\014SITE_MANAGER\020\023\022\026\n\022INVITE_CODE_S" +
+      "TATUS\020\024*L\n\020PushClientStatus\022\013\n\007PUSH_NO\020\000",
+      "\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUSH_DISPLAY_T" +
+      "EXT\020\002B$\n\025com.akaxin.proto.coreB\013ConfigPr" +
+      "otob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3602,7 +4014,7 @@ public final class ConfigProto {
     internal_static_core_SiteConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_SiteConfig_descriptor,
-        new java.lang.String[] { "SiteAddress", "SitePort", "SiteName", "SiteLogo", "SiteVersion", "SiteIntroduction", "RegisterWay", "PicSize", "SiteStatus", "SiteStatusInfo", "U2EncryptionStatus", });
+        new java.lang.String[] { "SiteAddress", "SitePort", "SiteName", "SiteLogo", "SiteVersion", "SiteIntroduction", "RealNameConfig", "PicSize", "SiteStatusConfig", "SiteStatusInfo", "U2EncryptionConfig", "InviteCodeConfig", });
     internal_static_core_SiteBackConfig_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_core_SiteBackConfig_fieldAccessorTable = new

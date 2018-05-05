@@ -47,8 +47,8 @@ public class U2MessageImageSecretHandler extends AbstractU2Handler<Command> {
 				String siteUserId = request.getSecretImage().getSiteUserId();
 				String siteFriendId = request.getSecretImage().getSiteFriendId();
 				String msgId = request.getSecretImage().getMsgId();
-				String tsKey = request.getSecretImage().getTsKey();
-				String ts_device_id = request.getSecretImage().getSiteDeviceId();
+				String tsKey = request.getSecretImage().getBase64TsKey();
+				String ts_device_id = request.getSecretImage().getToDeviceId();
 				String imageId = request.getSecretImage().getImageId();
 				command.setSiteUserId(siteUserId);
 				command.setSiteFriendId(siteFriendId);

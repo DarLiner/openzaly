@@ -26,6 +26,15 @@ public final class HaiUicCreateProto {
      * <code>optional int32 uic_number = 1;</code>
      */
     int getUicNumber();
+
+    /**
+     * <pre>
+     *每个UIC的长度
+     * </pre>
+     *
+     * <code>optional int32 uic_length = 2;</code>
+     */
+    int getUicLength();
   }
   /**
    * Protobuf type {@code plugin.HaiUicCreateRequest}
@@ -40,6 +49,7 @@ public final class HaiUicCreateProto {
     }
     private HaiUicCreateRequest() {
       uicNumber_ = 0;
+      uicLength_ = 0;
     }
 
     @java.lang.Override
@@ -70,6 +80,11 @@ public final class HaiUicCreateProto {
             case 8: {
 
               uicNumber_ = input.readInt32();
+              break;
+            }
+            case 16: {
+
+              uicLength_ = input.readInt32();
               break;
             }
           }
@@ -108,6 +123,19 @@ public final class HaiUicCreateProto {
       return uicNumber_;
     }
 
+    public static final int UIC_LENGTH_FIELD_NUMBER = 2;
+    private int uicLength_;
+    /**
+     * <pre>
+     *每个UIC的长度
+     * </pre>
+     *
+     * <code>optional int32 uic_length = 2;</code>
+     */
+    public int getUicLength() {
+      return uicLength_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -123,6 +151,9 @@ public final class HaiUicCreateProto {
       if (uicNumber_ != 0) {
         output.writeInt32(1, uicNumber_);
       }
+      if (uicLength_ != 0) {
+        output.writeInt32(2, uicLength_);
+      }
     }
 
     public int getSerializedSize() {
@@ -133,6 +164,10 @@ public final class HaiUicCreateProto {
       if (uicNumber_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, uicNumber_);
+      }
+      if (uicLength_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, uicLength_);
       }
       memoizedSize = size;
       return size;
@@ -152,6 +187,8 @@ public final class HaiUicCreateProto {
       boolean result = true;
       result = result && (getUicNumber()
           == other.getUicNumber());
+      result = result && (getUicLength()
+          == other.getUicLength());
       return result;
     }
 
@@ -164,6 +201,8 @@ public final class HaiUicCreateProto {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + UIC_NUMBER_FIELD_NUMBER;
       hash = (53 * hash) + getUicNumber();
+      hash = (37 * hash) + UIC_LENGTH_FIELD_NUMBER;
+      hash = (53 * hash) + getUicLength();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -284,6 +323,8 @@ public final class HaiUicCreateProto {
         super.clear();
         uicNumber_ = 0;
 
+        uicLength_ = 0;
+
         return this;
       }
 
@@ -307,6 +348,7 @@ public final class HaiUicCreateProto {
       public com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateRequest buildPartial() {
         com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateRequest result = new com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateRequest(this);
         result.uicNumber_ = uicNumber_;
+        result.uicLength_ = uicLength_;
         onBuilt();
         return result;
       }
@@ -350,6 +392,9 @@ public final class HaiUicCreateProto {
         if (other == com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateRequest.getDefaultInstance()) return this;
         if (other.getUicNumber() != 0) {
           setUicNumber(other.getUicNumber());
+        }
+        if (other.getUicLength() != 0) {
+          setUicLength(other.getUicLength());
         }
         onChanged();
         return this;
@@ -414,6 +459,44 @@ public final class HaiUicCreateProto {
         onChanged();
         return this;
       }
+
+      private int uicLength_ ;
+      /**
+       * <pre>
+       *每个UIC的长度
+       * </pre>
+       *
+       * <code>optional int32 uic_length = 2;</code>
+       */
+      public int getUicLength() {
+        return uicLength_;
+      }
+      /**
+       * <pre>
+       *每个UIC的长度
+       * </pre>
+       *
+       * <code>optional int32 uic_length = 2;</code>
+       */
+      public Builder setUicLength(int value) {
+        
+        uicLength_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *每个UIC的长度
+       * </pre>
+       *
+       * <code>optional int32 uic_length = 2;</code>
+       */
+      public Builder clearUicLength() {
+        
+        uicLength_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -466,6 +549,15 @@ public final class HaiUicCreateProto {
   public interface HaiUicCreateResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:plugin.HaiUicCreateResponse)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     *成功生成的个数
+     * </pre>
+     *
+     * <code>optional int32 success_number = 1;</code>
+     */
+    int getSuccessNumber();
   }
   /**
    * Protobuf type {@code plugin.HaiUicCreateResponse}
@@ -479,6 +571,7 @@ public final class HaiUicCreateProto {
       super(builder);
     }
     private HaiUicCreateResponse() {
+      successNumber_ = 0;
     }
 
     @java.lang.Override
@@ -491,6 +584,7 @@ public final class HaiUicCreateProto {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      int mutable_bitField0_ = 0;
       try {
         boolean done = false;
         while (!done) {
@@ -503,6 +597,11 @@ public final class HaiUicCreateProto {
               if (!input.skipField(tag)) {
                 done = true;
               }
+              break;
+            }
+            case 8: {
+
+              successNumber_ = input.readInt32();
               break;
             }
           }
@@ -528,6 +627,19 @@ public final class HaiUicCreateProto {
               com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse.class, com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse.Builder.class);
     }
 
+    public static final int SUCCESS_NUMBER_FIELD_NUMBER = 1;
+    private int successNumber_;
+    /**
+     * <pre>
+     *成功生成的个数
+     * </pre>
+     *
+     * <code>optional int32 success_number = 1;</code>
+     */
+    public int getSuccessNumber() {
+      return successNumber_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -540,6 +652,9 @@ public final class HaiUicCreateProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (successNumber_ != 0) {
+        output.writeInt32(1, successNumber_);
+      }
     }
 
     public int getSerializedSize() {
@@ -547,6 +662,10 @@ public final class HaiUicCreateProto {
       if (size != -1) return size;
 
       size = 0;
+      if (successNumber_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, successNumber_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -563,6 +682,8 @@ public final class HaiUicCreateProto {
       com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse other = (com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse) obj;
 
       boolean result = true;
+      result = result && (getSuccessNumber()
+          == other.getSuccessNumber());
       return result;
     }
 
@@ -573,6 +694,8 @@ public final class HaiUicCreateProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + SUCCESS_NUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + getSuccessNumber();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -691,6 +814,8 @@ public final class HaiUicCreateProto {
       }
       public Builder clear() {
         super.clear();
+        successNumber_ = 0;
+
         return this;
       }
 
@@ -713,6 +838,7 @@ public final class HaiUicCreateProto {
 
       public com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse buildPartial() {
         com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse result = new com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse(this);
+        result.successNumber_ = successNumber_;
         onBuilt();
         return result;
       }
@@ -754,6 +880,9 @@ public final class HaiUicCreateProto {
 
       public Builder mergeFrom(com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse other) {
         if (other == com.akaxin.proto.plugin.HaiUicCreateProto.HaiUicCreateResponse.getDefaultInstance()) return this;
+        if (other.getSuccessNumber() != 0) {
+          setSuccessNumber(other.getSuccessNumber());
+        }
         onChanged();
         return this;
       }
@@ -777,6 +906,44 @@ public final class HaiUicCreateProto {
             mergeFrom(parsedMessage);
           }
         }
+        return this;
+      }
+
+      private int successNumber_ ;
+      /**
+       * <pre>
+       *成功生成的个数
+       * </pre>
+       *
+       * <code>optional int32 success_number = 1;</code>
+       */
+      public int getSuccessNumber() {
+        return successNumber_;
+      }
+      /**
+       * <pre>
+       *成功生成的个数
+       * </pre>
+       *
+       * <code>optional int32 success_number = 1;</code>
+       */
+      public Builder setSuccessNumber(int value) {
+        
+        successNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *成功生成的个数
+       * </pre>
+       *
+       * <code>optional int32 success_number = 1;</code>
+       */
+      public Builder clearSuccessNumber() {
+        
+        successNumber_ = 0;
+        onChanged();
         return this;
       }
       public final Builder setUnknownFields(
@@ -847,13 +1014,14 @@ public final class HaiUicCreateProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\033plugin/hai_uic_create.proto\022\006plugin\")\n" +
+      "\n\033plugin/hai_uic_create.proto\022\006plugin\"=\n" +
       "\023HaiUicCreateRequest\022\022\n\nuic_number\030\001 \001(\005" +
-      "\"\026\n\024HaiUicCreateResponse2Z\n\023HaiUicCreate" +
-      "Service\022C\n\006create\022\033.plugin.HaiUicCreateR" +
-      "equest\032\034.plugin.HaiUicCreateResponseB,\n\027" +
-      "com.akaxin.proto.pluginB\021HaiUicCreatePro" +
-      "tob\006proto3"
+      "\022\022\n\nuic_length\030\002 \001(\005\".\n\024HaiUicCreateResp" +
+      "onse\022\026\n\016success_number\030\001 \001(\0052Z\n\023HaiUicCr" +
+      "eateService\022C\n\006create\022\033.plugin.HaiUicCre" +
+      "ateRequest\032\034.plugin.HaiUicCreateResponse" +
+      "B,\n\027com.akaxin.proto.pluginB\021HaiUicCreat" +
+      "eProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -872,13 +1040,13 @@ public final class HaiUicCreateProto {
     internal_static_plugin_HaiUicCreateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiUicCreateRequest_descriptor,
-        new java.lang.String[] { "UicNumber", });
+        new java.lang.String[] { "UicNumber", "UicLength", });
     internal_static_plugin_HaiUicCreateResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiUicCreateResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiUicCreateResponse_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "SuccessNumber", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

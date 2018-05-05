@@ -46,9 +46,9 @@ public class U2MessageVoiceSecretHandler extends AbstractU2Handler<Command> {
 				String siteUserId = command.getSiteUserId();
 				String siteFriendId = command.getSiteFriendId();
 				String msgId = request.getSecretVoice().getMsgId();
-				String tsKey = request.getSecretVoice().getTsKey();
-				String toDeviceId = request.getSecretVoice().getSiteDeviceId();
-				String secretVoiceId = request.getSecretVoice().getVoicdId();
+				String tsKey = request.getSecretVoice().getBase64TsKey();
+				String toDeviceId = request.getSecretVoice().getToDeviceId();
+				String secretVoiceId = request.getSecretVoice().getVoiceId();
 
 				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();

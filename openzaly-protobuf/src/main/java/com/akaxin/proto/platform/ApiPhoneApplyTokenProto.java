@@ -20,21 +20,21 @@ public final class ApiPhoneApplyTokenProto {
 
     /**
      * <pre>
-     *用户id，需要使用Global User ID
+     * 此值只做判断，不作为依据，应该从Session中获取用户的id。
      * </pre>
      *
-     * <code>optional string user_id = 1;</code>
+     * <code>optional string global_user_id = 1;</code>
      */
-    java.lang.String getUserId();
+    java.lang.String getGlobalUserId();
     /**
      * <pre>
-     *用户id，需要使用Global User ID
+     * 此值只做判断，不作为依据，应该从Session中获取用户的id。
      * </pre>
      *
-     * <code>optional string user_id = 1;</code>
+     * <code>optional string global_user_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getUserIdBytes();
+        getGlobalUserIdBytes();
   }
   /**
    * Protobuf type {@code platform.ApiPhoneApplyTokenRequest}
@@ -48,7 +48,7 @@ public final class ApiPhoneApplyTokenProto {
       super(builder);
     }
     private ApiPhoneApplyTokenRequest() {
-      userId_ = "";
+      globalUserId_ = "";
     }
 
     @java.lang.Override
@@ -79,7 +79,7 @@ public final class ApiPhoneApplyTokenProto {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              userId_ = s;
+              globalUserId_ = s;
               break;
             }
           }
@@ -105,42 +105,42 @@ public final class ApiPhoneApplyTokenProto {
               com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest.class, com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest.Builder.class);
     }
 
-    public static final int USER_ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object userId_;
+    public static final int GLOBAL_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object globalUserId_;
     /**
      * <pre>
-     *用户id，需要使用Global User ID
+     * 此值只做判断，不作为依据，应该从Session中获取用户的id。
      * </pre>
      *
-     * <code>optional string user_id = 1;</code>
+     * <code>optional string global_user_id = 1;</code>
      */
-    public java.lang.String getUserId() {
-      java.lang.Object ref = userId_;
+    public java.lang.String getGlobalUserId() {
+      java.lang.Object ref = globalUserId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        userId_ = s;
+        globalUserId_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *用户id，需要使用Global User ID
+     * 此值只做判断，不作为依据，应该从Session中获取用户的id。
      * </pre>
      *
-     * <code>optional string user_id = 1;</code>
+     * <code>optional string global_user_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getUserIdBytes() {
-      java.lang.Object ref = userId_;
+        getGlobalUserIdBytes() {
+      java.lang.Object ref = globalUserId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        userId_ = b;
+        globalUserId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -159,8 +159,8 @@ public final class ApiPhoneApplyTokenProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getUserIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userId_);
+      if (!getGlobalUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, globalUserId_);
       }
     }
 
@@ -169,8 +169,8 @@ public final class ApiPhoneApplyTokenProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getUserIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userId_);
+      if (!getGlobalUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, globalUserId_);
       }
       memoizedSize = size;
       return size;
@@ -188,8 +188,8 @@ public final class ApiPhoneApplyTokenProto {
       com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest other = (com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest) obj;
 
       boolean result = true;
-      result = result && getUserId()
-          .equals(other.getUserId());
+      result = result && getGlobalUserId()
+          .equals(other.getGlobalUserId());
       return result;
     }
 
@@ -200,8 +200,8 @@ public final class ApiPhoneApplyTokenProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + USER_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getUserId().hashCode();
+      hash = (37 * hash) + GLOBAL_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getGlobalUserId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -320,7 +320,7 @@ public final class ApiPhoneApplyTokenProto {
       }
       public Builder clear() {
         super.clear();
-        userId_ = "";
+        globalUserId_ = "";
 
         return this;
       }
@@ -344,7 +344,7 @@ public final class ApiPhoneApplyTokenProto {
 
       public com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest buildPartial() {
         com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest result = new com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest(this);
-        result.userId_ = userId_;
+        result.globalUserId_ = globalUserId_;
         onBuilt();
         return result;
       }
@@ -386,8 +386,8 @@ public final class ApiPhoneApplyTokenProto {
 
       public Builder mergeFrom(com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest other) {
         if (other == com.akaxin.proto.platform.ApiPhoneApplyTokenProto.ApiPhoneApplyTokenRequest.getDefaultInstance()) return this;
-        if (!other.getUserId().isEmpty()) {
-          userId_ = other.userId_;
+        if (!other.getGlobalUserId().isEmpty()) {
+          globalUserId_ = other.globalUserId_;
           onChanged();
         }
         onChanged();
@@ -416,21 +416,21 @@ public final class ApiPhoneApplyTokenProto {
         return this;
       }
 
-      private java.lang.Object userId_ = "";
+      private java.lang.Object globalUserId_ = "";
       /**
        * <pre>
-       *用户id，需要使用Global User ID
+       * 此值只做判断，不作为依据，应该从Session中获取用户的id。
        * </pre>
        *
-       * <code>optional string user_id = 1;</code>
+       * <code>optional string global_user_id = 1;</code>
        */
-      public java.lang.String getUserId() {
-        java.lang.Object ref = userId_;
+      public java.lang.String getGlobalUserId() {
+        java.lang.Object ref = globalUserId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          userId_ = s;
+          globalUserId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -438,19 +438,19 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *用户id，需要使用Global User ID
+       * 此值只做判断，不作为依据，应该从Session中获取用户的id。
        * </pre>
        *
-       * <code>optional string user_id = 1;</code>
+       * <code>optional string global_user_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getUserIdBytes() {
-        java.lang.Object ref = userId_;
+          getGlobalUserIdBytes() {
+        java.lang.Object ref = globalUserId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          userId_ = b;
+          globalUserId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -458,49 +458,49 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *用户id，需要使用Global User ID
+       * 此值只做判断，不作为依据，应该从Session中获取用户的id。
        * </pre>
        *
-       * <code>optional string user_id = 1;</code>
+       * <code>optional string global_user_id = 1;</code>
        */
-      public Builder setUserId(
+      public Builder setGlobalUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        userId_ = value;
+        globalUserId_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *用户id，需要使用Global User ID
+       * 此值只做判断，不作为依据，应该从Session中获取用户的id。
        * </pre>
        *
-       * <code>optional string user_id = 1;</code>
+       * <code>optional string global_user_id = 1;</code>
        */
-      public Builder clearUserId() {
+      public Builder clearGlobalUserId() {
         
-        userId_ = getDefaultInstance().getUserId();
+        globalUserId_ = getDefaultInstance().getGlobalUserId();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *用户id，需要使用Global User ID
+       * 此值只做判断，不作为依据，应该从Session中获取用户的id。
        * </pre>
        *
-       * <code>optional string user_id = 1;</code>
+       * <code>optional string global_user_id = 1;</code>
        */
-      public Builder setUserIdBytes(
+      public Builder setGlobalUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        userId_ = value;
+        globalUserId_ = value;
         onChanged();
         return this;
       }
@@ -604,21 +604,21 @@ public final class ApiPhoneApplyTokenProto {
 
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 4;</code>
+     * <code>optional string country_code = 4;</code>
      */
-    java.lang.String getGlobalRoaming();
+    java.lang.String getCountryCode();
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 4;</code>
+     * <code>optional string country_code = 4;</code>
      */
     com.google.protobuf.ByteString
-        getGlobalRoamingBytes();
+        getCountryCodeBytes();
   }
   /**
    * Protobuf type {@code platform.ApiPhoneApplyTokenResponse}
@@ -635,7 +635,7 @@ public final class ApiPhoneApplyTokenProto {
       phoneToken_ = "";
       expireTime_ = 0;
       phoneId_ = "";
-      globalRoaming_ = "";
+      countryCode_ = "";
     }
 
     @java.lang.Override
@@ -683,7 +683,7 @@ public final class ApiPhoneApplyTokenProto {
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              globalRoaming_ = s;
+              countryCode_ = s;
               break;
             }
           }
@@ -806,42 +806,42 @@ public final class ApiPhoneApplyTokenProto {
       }
     }
 
-    public static final int GLOBAL_ROAMING_FIELD_NUMBER = 4;
-    private volatile java.lang.Object globalRoaming_;
+    public static final int COUNTRY_CODE_FIELD_NUMBER = 4;
+    private volatile java.lang.Object countryCode_;
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 4;</code>
+     * <code>optional string country_code = 4;</code>
      */
-    public java.lang.String getGlobalRoaming() {
-      java.lang.Object ref = globalRoaming_;
+    public java.lang.String getCountryCode() {
+      java.lang.Object ref = countryCode_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        globalRoaming_ = s;
+        countryCode_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *国际区号
+     *+86
      * </pre>
      *
-     * <code>optional string global_roaming = 4;</code>
+     * <code>optional string country_code = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getGlobalRoamingBytes() {
-      java.lang.Object ref = globalRoaming_;
+        getCountryCodeBytes() {
+      java.lang.Object ref = countryCode_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        globalRoaming_ = b;
+        countryCode_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -869,8 +869,8 @@ public final class ApiPhoneApplyTokenProto {
       if (!getPhoneIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, phoneId_);
       }
-      if (!getGlobalRoamingBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, globalRoaming_);
+      if (!getCountryCodeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, countryCode_);
       }
     }
 
@@ -889,8 +889,8 @@ public final class ApiPhoneApplyTokenProto {
       if (!getPhoneIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, phoneId_);
       }
-      if (!getGlobalRoamingBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, globalRoaming_);
+      if (!getCountryCodeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, countryCode_);
       }
       memoizedSize = size;
       return size;
@@ -914,8 +914,8 @@ public final class ApiPhoneApplyTokenProto {
           == other.getExpireTime());
       result = result && getPhoneId()
           .equals(other.getPhoneId());
-      result = result && getGlobalRoaming()
-          .equals(other.getGlobalRoaming());
+      result = result && getCountryCode()
+          .equals(other.getCountryCode());
       return result;
     }
 
@@ -932,8 +932,8 @@ public final class ApiPhoneApplyTokenProto {
       hash = (53 * hash) + getExpireTime();
       hash = (37 * hash) + PHONE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getPhoneId().hashCode();
-      hash = (37 * hash) + GLOBAL_ROAMING_FIELD_NUMBER;
-      hash = (53 * hash) + getGlobalRoaming().hashCode();
+      hash = (37 * hash) + COUNTRY_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getCountryCode().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1058,7 +1058,7 @@ public final class ApiPhoneApplyTokenProto {
 
         phoneId_ = "";
 
-        globalRoaming_ = "";
+        countryCode_ = "";
 
         return this;
       }
@@ -1085,7 +1085,7 @@ public final class ApiPhoneApplyTokenProto {
         result.phoneToken_ = phoneToken_;
         result.expireTime_ = expireTime_;
         result.phoneId_ = phoneId_;
-        result.globalRoaming_ = globalRoaming_;
+        result.countryCode_ = countryCode_;
         onBuilt();
         return result;
       }
@@ -1138,8 +1138,8 @@ public final class ApiPhoneApplyTokenProto {
           phoneId_ = other.phoneId_;
           onChanged();
         }
-        if (!other.getGlobalRoaming().isEmpty()) {
-          globalRoaming_ = other.globalRoaming_;
+        if (!other.getCountryCode().isEmpty()) {
+          countryCode_ = other.countryCode_;
           onChanged();
         }
         onChanged();
@@ -1384,21 +1384,21 @@ public final class ApiPhoneApplyTokenProto {
         return this;
       }
 
-      private java.lang.Object globalRoaming_ = "";
+      private java.lang.Object countryCode_ = "";
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 4;</code>
+       * <code>optional string country_code = 4;</code>
        */
-      public java.lang.String getGlobalRoaming() {
-        java.lang.Object ref = globalRoaming_;
+      public java.lang.String getCountryCode() {
+        java.lang.Object ref = countryCode_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          globalRoaming_ = s;
+          countryCode_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1406,19 +1406,19 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 4;</code>
+       * <code>optional string country_code = 4;</code>
        */
       public com.google.protobuf.ByteString
-          getGlobalRoamingBytes() {
-        java.lang.Object ref = globalRoaming_;
+          getCountryCodeBytes() {
+        java.lang.Object ref = countryCode_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          globalRoaming_ = b;
+          countryCode_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -1426,49 +1426,49 @@ public final class ApiPhoneApplyTokenProto {
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 4;</code>
+       * <code>optional string country_code = 4;</code>
        */
-      public Builder setGlobalRoaming(
+      public Builder setCountryCode(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        globalRoaming_ = value;
+        countryCode_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 4;</code>
+       * <code>optional string country_code = 4;</code>
        */
-      public Builder clearGlobalRoaming() {
+      public Builder clearCountryCode() {
         
-        globalRoaming_ = getDefaultInstance().getGlobalRoaming();
+        countryCode_ = getDefaultInstance().getCountryCode();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *国际区号
+       *+86
        * </pre>
        *
-       * <code>optional string global_roaming = 4;</code>
+       * <code>optional string country_code = 4;</code>
        */
-      public Builder setGlobalRoamingBytes(
+      public Builder setCountryCodeBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        globalRoaming_ = value;
+        countryCode_ = value;
         onChanged();
         return this;
       }
@@ -1541,15 +1541,15 @@ public final class ApiPhoneApplyTokenProto {
   static {
     java.lang.String[] descriptorData = {
       "\n#platform/api_phone_applyToken.proto\022\010p" +
-      "latform\",\n\031ApiPhoneApplyTokenRequest\022\017\n\007" +
-      "user_id\030\001 \001(\t\"p\n\032ApiPhoneApplyTokenRespo" +
-      "nse\022\023\n\013phone_token\030\001 \001(\t\022\023\n\013expire_time\030" +
-      "\002 \001(\005\022\020\n\010phone_id\030\003 \001(\t\022\026\n\016global_roamin" +
-      "g\030\004 \001(\t2t\n\031ApiPhoneApplyTokenService\022W\n\n" +
-      "applyToken\022#.platform.ApiPhoneApplyToken" +
-      "Request\032$.platform.ApiPhoneApplyTokenRes" +
-      "ponseB4\n\031com.akaxin.proto.platformB\027ApiP" +
-      "honeApplyTokenProtob\006proto3"
+      "latform\"3\n\031ApiPhoneApplyTokenRequest\022\026\n\016" +
+      "global_user_id\030\001 \001(\t\"n\n\032ApiPhoneApplyTok" +
+      "enResponse\022\023\n\013phone_token\030\001 \001(\t\022\023\n\013expir" +
+      "e_time\030\002 \001(\005\022\020\n\010phone_id\030\003 \001(\t\022\024\n\014countr" +
+      "y_code\030\004 \001(\t2t\n\031ApiPhoneApplyTokenServic" +
+      "e\022W\n\napplyToken\022#.platform.ApiPhoneApply" +
+      "TokenRequest\032$.platform.ApiPhoneApplyTok" +
+      "enResponseB4\n\031com.akaxin.proto.platformB" +
+      "\027ApiPhoneApplyTokenProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1568,13 +1568,13 @@ public final class ApiPhoneApplyTokenProto {
     internal_static_platform_ApiPhoneApplyTokenRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_platform_ApiPhoneApplyTokenRequest_descriptor,
-        new java.lang.String[] { "UserId", });
+        new java.lang.String[] { "GlobalUserId", });
     internal_static_platform_ApiPhoneApplyTokenResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_platform_ApiPhoneApplyTokenResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_platform_ApiPhoneApplyTokenResponse_descriptor,
-        new java.lang.String[] { "PhoneToken", "ExpireTime", "PhoneId", "GlobalRoaming", });
+        new java.lang.String[] { "PhoneToken", "ExpireTime", "PhoneId", "CountryCode", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
