@@ -5,7 +5,7 @@
     <img
       alt="Akaxin"
       src="https://avatars3.githubusercontent.com/u/32624098?s=200&v=4"
-      width="64"
+      width="128"
     />
   </a>
 </p>
