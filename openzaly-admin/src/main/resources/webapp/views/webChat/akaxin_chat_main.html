@@ -146,8 +146,8 @@
 							<!-- <section class="vbox">  -->
 							<section class="vbox flex">
 
-								<header class="panel-heading text-center m-t b-light">
-									<div class="h4 block">王小腾</div>
+								<header id="chatHeader" class="panel-heading text-center m-t b-light">
+									<div class="h4 block"></div>
 								</header>
 
 								<!-- 消息聊天界面 -->
@@ -339,19 +339,25 @@
 		sendMessage();
 	});
 	
-	function gotoChatContentBottom(){
-		$('#chatContent').scrollTop( $('#chatContent')[0].scrollHeight);
-	}
-	
-	
 	function receiveMessage(text){
 		$("#chatContent").append(receiveTextMessageHtml(text));
 		
 		gotoChatContentBottom();
 	}
 	
+	//发送消息
 	function sendMessage(){
+		
+		var type = $('#add_group_user').attr('site-user-id');
 		var text = $("#editor").html();
+		
+		if(type=="u2"){
+			buildU2TextData();
+		}else{
+			buildGroupTextData();
+		}
+		
+		
 		$("#chatContent").append(sendTextMessageHtml(text));
 		
 		var status = checkWsStatus();
@@ -384,51 +390,28 @@
 		return false;
 	}
 	
-	function getChatList(){
-		var data = {
-			'sessionId' : sessionId
+	//二人文本消息格式
+	function buildU2TextData(from,to,text,time){
+		var u2TextData = {
+				"type":"u2Text",
+				"msgId":"",
+				"from":from,
+				"to":to,
+				"text":text,
+				"time":time
 		};
-
-		$.post("/akaxin/chatList", data, function(result) {
-			$.each(result, function (index, chatObj) {
-				var innerHtml = '<li class="list-group-item" id="'+chatObj.id+'" stype="'+chatObj.stype+'">'
-				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+chatObj.photo+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
-				+'<a href="#" class="clear"><strong class="block">'+chatObj.name+'</strong><small>'+chatObj.msg+'</small></a></li>';
-				$("#chatSessions").append(innerHtml);
-            });
-		}, "JSON");
 	}
 	
-	function getFriendList(){
-		var data = {
-			'sessionId' : sessionId
+	function buildGroupTextData(from,groupId,text,time){
+		var groupTextData = {
+				"type":"groupText",
+				"msgId":"",
+				"from":from,
+				"groupId":groupId,
+				"text":text,
+				"time":time
 		};
-		
-		$.post("/akaxin/friendList", data, function(result) {
-			$.each(result, function (index, friendObj) {
-				var innerHtml = '<li class="list-group-item" id="'+friendObj.siteUserId+'">'
-				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+friendObj.userPhoto+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
-				+'<a href="#" class="clear"><strong class="block">'+friendObj.userName+'</strong><small>&nbsp</small></a></li>';
-				$("#friends").append(innerHtml);
-            });
-		}, "JSON");
 	}
-	
-	function getGroupList(){
-		var data = {
-			'sessionId' : sessionId
-		};
-
-		$.post("/akaxin/groupList", data, function(result) {
-			$.each(result, function (index, groupObj) {
-				var innerHtml = '<li class="list-group-item" id="'+groupObj.siteGroupId+'">'
-				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+groupObj.groupPhoto+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
-				+'<a href="#" class="clear"><strong class="block">'+groupObj.groupName+'</strong><small>&nbsp</small></a></li>';
-				$("#groups").append(innerHtml);
-            });
-		}, "JSON");
-	}
-	
 	
 	function receiveTextMessageHtml(text){
 		var textHtml = 
@@ -469,6 +452,63 @@
 			+'</article>';
 		return textHtml;
 	}
+	
+	
+	function getChatList(){
+		var data = {
+			'sessionId' : sessionId
+		};
+
+		$.post("/akaxin/chatList", data, function(result) {
+			$.each(result, function (index, chatObj) {
+				var innerHtml = '<li class="list-group-item" id="'+chatObj.id+'" ctype="'+chatObj.ctype+'" onclick=gotoChat("'+chatObj.ctype+'","'+chatObj.id+'","'+chatObj.name+'","'+chatObj.photo+'");>'
+				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+chatObj.photo+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
+				+'<a href="#" class="clear"><strong class="block">'+chatObj.name+'</strong><small>'+chatObj.msg+'</small></a></li>';
+				$("#chatSessions").append(innerHtml);
+            });
+		}, "JSON");
+	}
+	
+	function getFriendList(){
+		var data = {
+			'sessionId' : sessionId
+		};
+		
+		$.post("/akaxin/friendList", data, function(result) {
+			var ctype = "u2";
+			$.each(result, function (index, friendObj) {
+				var innerHtml = '<li class="list-group-item" id="'+friendObj.siteUserId+'" onclick=gotoChat("'+ctype+'","'+friendObj.siteUserId+'","'+friendObj.userName+'","'+friendObj.userPhoto+'");>'
+				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+friendObj.userPhoto+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
+				+'<a href="#" class="clear"><strong class="block">'+friendObj.userName+'</strong><small>&nbsp</small></a></li>';
+				$("#friends").append(innerHtml);
+            });
+		}, "JSON");
+	}
+	
+	function getGroupList(){
+		var data = {
+			'sessionId' : sessionId
+		};
+
+		$.post("/akaxin/groupList", data, function(result) {
+			var ctype = "group";
+			$.each(result, function (index, groupObj) {
+				var innerHtml = '<li class="list-group-item" id="'+groupObj.siteGroupId+'"  onclick=gotoChat("'+ctype+'","'+groupObj.siteGroupId+'","'+groupObj.groupName+'","'+groupObj.groupPhoto+'");>'
+				+'<a href="#" class="thumb-sm pull-left m-r-sm"><img src="/file/download?fileId='+groupObj.groupPhoto+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
+				+'<a href="#" class="clear"><strong class="block">'+groupObj.groupName+'</strong><small>&nbsp</small></a></li>';
+				$("#groups").append(innerHtml);
+            });
+		}, "JSON");
+	}
+	
+	function gotoChat(ctype,id,name,photoId){
+		$("#chatHeader").html('<div class="h4 block" id="currentChatId" chatId="'+id+'" ctype="'+ctype+'" photoId="'+photoId+'">'+name+'</div>');
+	}
+	
+	function gotoChatContentBottom(){
+		$('#chatContent').scrollTop( $('#chatContent')[0].scrollHeight);
+	}
+	
 	
 </script>
 

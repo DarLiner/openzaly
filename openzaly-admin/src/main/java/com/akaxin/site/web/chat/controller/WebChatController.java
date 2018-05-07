@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.site.business.cache.WebSessionCache;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
@@ -48,16 +50,18 @@ public class WebChatController {
 	public ModelAndView toChatMain(@RequestParam String sessionId) {
 		ModelAndView modelAndView = new ModelAndView("webChat/akaxin_chat_main");
 		System.out.println("/akaxin/chat sessionid=" + sessionId);
-		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
+		String siteUserId = getSiteUserId(sessionId);
 
-		UserProfileBean bean = webChatService.getUserProfile(siteUserId);
-		if (bean != null) {
-			modelAndView.addObject("siteLogoId", SiteConfig.getSiteLogo());
-			modelAndView.addObject("siteName", SiteConfig.getConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE));
-			modelAndView.addObject("sessionId", sessionId);
-			modelAndView.addObject("userId", bean.getSiteUserId());
-			modelAndView.addObject("userName", bean.getUserName());
-			modelAndView.addObject("userPhoto", bean.getUserPhoto());
+		if (StringUtils.isNotEmpty(siteUserId)) {
+			UserProfileBean bean = webChatService.getUserProfile(siteUserId);
+			if (bean != null) {
+				modelAndView.addObject("siteLogoId", SiteConfig.getSiteLogo());
+				modelAndView.addObject("siteName", SiteConfig.getConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE));
+				modelAndView.addObject("sessionId", sessionId);
+				modelAndView.addObject("userId", bean.getSiteUserId());
+				modelAndView.addObject("userName", bean.getUserName());
+				modelAndView.addObject("userPhoto", bean.getUserPhoto());
+			}
 		}
 
 		return modelAndView;
@@ -67,7 +71,11 @@ public class WebChatController {
 	@ResponseBody
 	public String getChatSessions(@RequestParam String sessionId) {
 		List<Object> resData = new ArrayList<Object>();
-		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
+		String siteUserId = getSiteUserId(sessionId);
+
+		if (StringUtils.isEmpty(siteUserId)) {
+			return null;
+		}
 
 		List<SimpleUserBean> friendList = webChatService.getUserFriendList(siteUserId);
 		if (friendList != null) {
@@ -89,7 +97,7 @@ public class WebChatController {
 	@ResponseBody
 	public String getFriendList(@RequestParam String sessionId) {
 		List<Object> resData = new ArrayList<Object>();
-		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
+		String siteUserId = getSiteUserId(sessionId);
 
 		List<SimpleUserBean> friendList = webChatService.getUserFriendList(siteUserId);
 		if (friendList != null) {
@@ -106,9 +114,13 @@ public class WebChatController {
 
 	@RequestMapping(value = "/groupList", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public List<Object> getGroupList(@RequestParam String sessionId) {
+	public String getGroupList(@RequestParam String sessionId) {
 		List<Object> resData = new ArrayList<Object>();
-		String siteUserId = "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
+		String siteUserId = getSiteUserId(sessionId);
+
+		if (StringUtils.isEmpty(siteUserId)) {
+			return GsonUtils.toJson(resData);
+		}
 
 		List<SimpleGroupBean> groupList = webChatService.getUserGroupList(siteUserId);
 		if (groupList != null) {
@@ -120,6 +132,16 @@ public class WebChatController {
 				resData.add(map);
 			}
 		}
-		return resData;
+
+		return GsonUtils.toJson(resData);
 	}
+
+	private String getSiteUserId(String sessionId) {
+		if (StringUtils.isEmpty(sessionId)) {
+			return null;
+		}
+		WebSessionCache.getSiteUserId(sessionId);
+		return "77151873-0fc7-4cf1-8bd6-67d00190fcf6";
+	}
+
 }
