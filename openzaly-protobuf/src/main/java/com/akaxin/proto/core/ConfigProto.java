@@ -680,6 +680,22 @@ public final class ConfigProto {
      * <code>INVITE_CODE_STATUS = 20;</code>
      */
     INVITE_CODE_STATUS(20),
+    /**
+     * <pre>
+     *默认添加的用户好友
+     * </pre>
+     *
+     * <code>DEFAULT_USER_FRIENDS = 21;</code>
+     */
+    DEFAULT_USER_FRIENDS(21),
+    /**
+     * <pre>
+     *默认添加的用户群组
+     * </pre>
+     *
+     * <code>DEFAULT_USER_GROUPS = 22;</code>
+     */
+    DEFAULT_USER_GROUPS(22),
     UNRECOGNIZED(-1),
     ;
 
@@ -851,6 +867,22 @@ public final class ConfigProto {
      * <code>INVITE_CODE_STATUS = 20;</code>
      */
     public static final int INVITE_CODE_STATUS_VALUE = 20;
+    /**
+     * <pre>
+     *默认添加的用户好友
+     * </pre>
+     *
+     * <code>DEFAULT_USER_FRIENDS = 21;</code>
+     */
+    public static final int DEFAULT_USER_FRIENDS_VALUE = 21;
+    /**
+     * <pre>
+     *默认添加的用户群组
+     * </pre>
+     *
+     * <code>DEFAULT_USER_GROUPS = 22;</code>
+     */
+    public static final int DEFAULT_USER_GROUPS_VALUE = 22;
 
 
     public final int getNumber() {
@@ -892,6 +924,8 @@ public final class ConfigProto {
         case 18: return LOG_LEVEL;
         case 19: return SITE_MANAGER;
         case 20: return INVITE_CODE_STATUS;
+        case 21: return DEFAULT_USER_FRIENDS;
+        case 22: return DEFAULT_USER_GROUPS;
         default: return null;
       }
     }
@@ -3981,7 +4015,7 @@ public final class ConfigProto {
       "\001\022\023\n\017REALNAME_YES_NO\020\002*+\n\020InviteCodeConf" +
       "ig\022\n\n\006UIC_NO\020\000\022\013\n\007UIC_YES\020\001*\'\n\020SiteStatu" +
       "sConfig\022\t\n\005CLOSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2Encryp" +
-      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\227\003" +
+      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\312\003" +
       "\n\tConfigKey\022\020\n\014SITE_ADDRESS\020\000\022\r\n\tSITE_PO",
       "RT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tSITE_LOGO\020\003\022\020\n\014SI" +
       "TE_VERSION\020\004\022\025\n\021SITE_INTRODUCTION\020\005\022\023\n\017R" +
@@ -3992,10 +4026,11 @@ public final class ConfigProto {
       "_PORT\020\016\022\030\n\024U2_ENCRYPTION_STATUS\020\017\022\013\n\007DB_" +
       "PATH\020\020\022\026\n\022PUSH_CLIENT_STATUS\020\021\022\r\n\tLOG_LE" +
       "VEL\020\022\022\020\n\014SITE_MANAGER\020\023\022\026\n\022INVITE_CODE_S" +
-      "TATUS\020\024*L\n\020PushClientStatus\022\013\n\007PUSH_NO\020\000",
-      "\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUSH_DISPLAY_T" +
-      "EXT\020\002B$\n\025com.akaxin.proto.coreB\013ConfigPr" +
-      "otob\006proto3"
+      "TATUS\020\024\022\030\n\024DEFAULT_USER_FRIENDS\020\025\022\027\n\023DEF",
+      "AULT_USER_GROUPS\020\026*L\n\020PushClientStatus\022\013" +
+      "\n\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUS" +
+      "H_DISPLAY_TEXT\020\002B$\n\025com.akaxin.proto.cor" +
+      "eB\013ConfigProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
