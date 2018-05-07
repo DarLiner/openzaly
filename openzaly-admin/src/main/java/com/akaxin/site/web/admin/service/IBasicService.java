@@ -7,4 +7,6 @@ public interface IBasicService {
 	Map<Integer, String> getSiteConfig();
 
 	boolean updateSiteConfig(String siteUserId, Map<Integer, String> config);
+
+    boolean setUserDefault(String site_user_id);
 }

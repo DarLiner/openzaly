@@ -95,6 +95,10 @@
         <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info"
            url-data="/user/updateProfile" href="javascript:" id="update_user_info">确定</a>
 
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color set_user_default"
+           url-data="/user/setUserDefault" href="javascript:" id="set_user_default"
+           th:if="${defaultState}==0">设为默认添加用户</a>
+
         <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
            class="sealup-site-user weui-btn weui-btn_warn " url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a>
         <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
@@ -252,6 +256,24 @@
         var reqUri = $(this).attr('url-data');
         reqUrl(reqUri, JSON.stringify(userInfo), 'updateSiteUser');
     });
+
+    $(document).on("click", ".set_user_default", function () {
+        var siteUserId = $('.site_user_id').attr('data');
+        var userInfo = {
+            "siteUserId": siteUserId
+        };
+        var reqUri = $(this).attr('url-data');
+        reqUrl(reqUri, JSON.stringify(userInfo), 'setUserDefault');
+    });
+
+    function setUserDefault(results) {
+        if (results == 'success') {
+            $.toast("操作成功");
+            $('.set_user_default').remove();
+        } else {
+            $.toast("操作失败", "forbidden");
+        }
+    }
 
     function unfreezeSiteUser(results) {
         console.log('sealupUser');
