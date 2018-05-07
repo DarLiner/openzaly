@@ -70,6 +70,15 @@ public class SiteConfigDao {
         return false;
     }
 
+    public boolean delUserDefault(String s) {
+        try {
+            return siteConfigDao.delUserDefault(s);
+        } catch (SQLException e) {
+            logger.error("del user default error.", e);
+        }
+        return false;
+    }
+
     static class SingletonHolder {
         private static SiteConfigDao instance = new SiteConfigDao();
     }

@@ -23,6 +23,7 @@ import com.akaxin.site.storage.api.ISiteConfigDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.SQLiteSiteConfigDao;
+import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
 /**
  *
@@ -61,4 +62,9 @@ public class SiteConfigDaoService implements ISiteConfigDao {
         return SQLiteSiteConfigDao.getInstance().updateUserDefault(site_user_id);
     }
 
+    @Override
+    public boolean delUserDefault(String s) throws SQLException {
+        return SQLiteSiteConfigDao.getInstance().delUserDefault(s);
+    }
+    
 }

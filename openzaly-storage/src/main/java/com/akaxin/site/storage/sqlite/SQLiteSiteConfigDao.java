@@ -53,7 +53,6 @@ public class SQLiteSiteConfigDao {
 
         private static SQLiteSiteConfigDao instance = new SQLiteSiteConfigDao();
 
-
     }
 
     public Map<Integer, String> querySiteConfig() throws SQLException {
@@ -73,6 +72,22 @@ public class SQLiteSiteConfigDao {
 
         LogUtils.dbDebugLog(logger, startTime, configMap, sql);
         return configMap;
+    }
+
+    public boolean delUserDefault(String s) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String updateSql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(updateSql);
+        preparedStatement.setString(1, s);
+        preparedStatement.setInt(2, ConfigProto.ConfigKey.DEFAULT_USER_FRIENDS_VALUE);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime, s, updateSql);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, s, updateSql);
+
+        return false;
     }
 
     public boolean setUserDefault(String site_user_id) throws SQLException {
@@ -97,11 +112,18 @@ public class SQLiteSiteConfigDao {
         PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
         preStatement.setInt(1, ConfigProto.ConfigKey.DEFAULT_USER_FRIENDS_VALUE);
         ResultSet resultSet = preStatement.executeQuery();
-        String string = resultSet.getString(1);
-        String s = string + "," + site_user_id;
+        if (!resultSet.next()) {
+            return false;
+        }
+        String a = resultSet.getString(1);
+        if (StringUtils.isNotEmpty(a)) {
+            a = a + "," + site_user_id;
+        } else {
+            a = site_user_id;
+        }
         String updateSql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
         PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(updateSql);
-        preparedStatement.setString(1, s);
+        preparedStatement.setString(1, a);
         preparedStatement.setInt(2, ConfigProto.ConfigKey.DEFAULT_USER_FRIENDS_VALUE);
         int i = preparedStatement.executeUpdate();
         if (i > 0) {

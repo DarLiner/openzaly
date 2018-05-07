@@ -36,14 +36,14 @@
 </head>
 
 <body ontouchstart>
-<div class="weui-cells__title weui-cell ">
+<div class="weui-cells__title weui-cell " th:unless="${userDefaultSize} == 0">
     默认好友列表
 </div>
-<div class="weui-cells demos-content-padded" id='default_user-lists'>
+<div class="weui-cells demos-content-padded" id='default_user-lists' th:unless="${userDefaultSize} == 0">
     <a class="weui-cell weui-cell_access update-site-user" th:each="user:${userList}" url-data="/user/profile"
-       th:attr="id=${user.defaultState}"
+       th:attr="id=${user.siteUserId}"
        href="javascript:;">
-        <div class="weui-cell__hd" name="user_image" th:attr="id=${user.defaultState}"></div>
+        <div class="weui-cell__hd" name="user_image" th:attr="id=${user.userPhoto}"></div>
         <div class="weui-cell__bd site_user_name"><p th:text="${user.userName}"></p></div>
         <div class="weui-cell__ft"></div>
     </a>

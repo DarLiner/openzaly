@@ -50,13 +50,37 @@ public class BasicManageService implements IBasicService {
     @Override
     public boolean setUserDefault(String site_user_id) {
         List<String> defaultList = SiteConfigDao.getInstance().getUserDefault();
-        if (defaultList != null && defaultList.size() > 0) {
-            if (defaultList.size() > 5) {
-                return false;
-            }
-            return SiteConfigDao.getInstance().updateUserDefault(site_user_id);
+        if (defaultList != null && defaultList.size() >= 5) {
+            return false;
+        }
+        boolean b = SiteConfigDao.getInstance().updateUserDefault(site_user_id);
+        if (b) {
+            return b;
         }
         return SiteConfigDao.getInstance().setUserDefault(site_user_id);
+    }
+
+    @Override
+    public boolean delUserDefault(String site_user_id) {
+        List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
+        StringBuffer stringBuffer = new StringBuffer();
+        if (userDefault.contains(site_user_id)) {
+            userDefault.remove(site_user_id);
+            for (String s : userDefault) {
+                stringBuffer.append(s);
+                stringBuffer.append(",");
+            }
+            if (userDefault.size() == 0) {
+                String del = null;
+                return SiteConfigDao.getInstance().delUserDefault(del);
+            }
+            int i = stringBuffer.lastIndexOf(",");
+            stringBuffer.delete(i, i + 1);
+            String s = stringBuffer.toString();
+            return SiteConfigDao.getInstance().delUserDefault(s);
+        }
+
+        return false;
     }
 
 }

@@ -62,11 +62,16 @@ public class UserManageController extends AbstractController {
         ModelAndView modelAndView = new ModelAndView("user/index");
         List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
         List<UserProfileBean> userProfileBeans = new ArrayList<>();
-        for (String siteUserId : userDefault) {
-            UserProfileBean userProfile = userService.getUserProfile(siteUserId);
-            userProfileBeans.add(userProfile);
+        modelAndView.addObject("userDefaultSize", 0);
+        if (userDefault != null && userDefault.size() > 0) {
+            for (String siteUserId : userDefault) {
+                UserProfileBean userProfile = userService.getUserProfile(siteUserId);
+                userProfileBeans.add(userProfile);
+            }
+            modelAndView.addObject("userList", userProfileBeans);
+            modelAndView.addObject("userDefaultSize", String.valueOf(userDefault.size()));
         }
-        modelAndView.addObject("userList", userProfileBeans);
+
         return modelAndView;
     }
 
@@ -78,6 +83,23 @@ public class UserManageController extends AbstractController {
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
             boolean flag = basicService.setUserDefault(site_user_id);
+            if (flag) {
+                return "success";
+            }
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        return "false";
+    }
+
+    @RequestMapping("/delUserDefault")
+    @ResponseBody
+    public String delUserDefault(@RequestBody byte[] bodyParam) {
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String site_user_id = reqMap.get("siteUserId");
+            boolean flag = basicService.delUserDefault(site_user_id);
             if (flag) {
                 return "success";
             }
@@ -140,19 +162,32 @@ public class UserManageController extends AbstractController {
                         nodata = false;
                     }
                     List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
-                    for (SimpleUserBean bean : userList) {
-                        boolean contains = userDefault.contains(bean.getUserId());
-                        Map<String, Object> userMap = new HashMap<String, Object>();
-                        if (contains) {
-                            continue;
-                        }
-                        userMap.put("siteUserId", bean.getUserId());
-                        userMap.put("userName", bean.getUserName());
-                        userMap.put("userPhoto", bean.getUserPhoto());
-                        userMap.put("userStatus", bean.getUserStatus());
+                    if (userDefault != null && userDefault.size() > 0) {
+                        for (SimpleUserBean bean : userList) {
+                            boolean contains = userDefault.contains(bean.getUserId());
+                            Map<String, Object> userMap = new HashMap<String, Object>();
+                            if (contains) {
+                                continue;
+                            }
+                            userMap.put("siteUserId", bean.getUserId());
+                            userMap.put("userName", bean.getUserName());
+                            userMap.put("userPhoto", bean.getUserPhoto());
+                            userMap.put("userStatus", bean.getUserStatus());
 
-                        data.add(userMap);
+                            data.add(userMap);
+                        }
+                    } else {
+                        for (SimpleUserBean bean : userList) {
+                            Map<String, Object> userMap = new HashMap<String, Object>();
+                            userMap.put("siteUserId", bean.getUserId());
+                            userMap.put("userName", bean.getUserName());
+                            userMap.put("userPhoto", bean.getUserPhoto());
+                            userMap.put("userStatus", bean.getUserStatus());
+
+                            data.add(userMap);
+                        }
                     }
+
                 }
 
                 results.put("userData", data);

@@ -19,4 +19,7 @@ public interface ISiteConfigDao {
 	List<String> getUserDefault() throws SQLException;
 
 	boolean updateUserDefault(String site_user_id) throws SQLException;
+
+	boolean delUserDefault(String s) throws SQLException;
+	
 }
