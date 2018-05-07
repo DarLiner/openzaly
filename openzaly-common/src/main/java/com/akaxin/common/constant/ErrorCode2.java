@@ -75,6 +75,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_FILE_DOWNLOAD("error.file.download", ""), //
 
 	ERROR2_PHONE_SAME("error.phone.same", "本机身份已与此号码实名绑定"), //
+	ERROR2_PHONE_BIND_USER("error.phone.hasUser", "该手机号码已经绑定其他账号"), //
 	ERROR2_PHONE_EXIST("error.alter", "该手机号码已经绑定其他账号"), //
 	ERROR2_PHONE_REALNAME_EXIST("error.alter", "此账号已经绑定手机号码"), //
 	ERROR2_PHONE_VERIFYCODE("error.alter", "验证码验证失败"), //
