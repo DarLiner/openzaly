@@ -36,9 +36,9 @@ public class UserManageService implements IUserService {
     }
 
     private int ifDefaultUser(String siteUserId) {
-        List<UserProfileBean> userDefault = SiteConfigDao.getInstance().getUserDefault();
-        for (UserProfileBean bean : userDefault) {
-            if (siteUserId.equals(bean.getSiteUserId())) {
+        List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
+        for (String site_User_Id : userDefault) {
+            if (siteUserId.equals(site_User_Id)) {
                 return 1;
             }
         }

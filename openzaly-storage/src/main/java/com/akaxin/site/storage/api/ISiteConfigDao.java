@@ -16,7 +16,7 @@ public interface ISiteConfigDao {
 
     boolean setUserDefault(String site_user_id) throws SQLException;
 
-	List<UserProfileBean> getUserDefault() throws SQLException;
+	List<String> getUserDefault() throws SQLException;
 
 	boolean updateUserDefault(String site_user_id) throws SQLException;
 }

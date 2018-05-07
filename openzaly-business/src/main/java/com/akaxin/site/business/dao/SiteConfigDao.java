@@ -52,7 +52,7 @@ public class SiteConfigDao {
         return false;
     }
 
-    public List<UserProfileBean> getUserDefault() {
+    public List<String> getUserDefault() {
         try {
             return siteConfigDao.getUserDefault();
         } catch (SQLException e) {

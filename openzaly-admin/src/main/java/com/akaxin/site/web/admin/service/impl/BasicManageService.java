@@ -49,7 +49,7 @@ public class BasicManageService implements IBasicService {
 
     @Override
     public boolean setUserDefault(String site_user_id) {
-        List<UserProfileBean> defaultList = SiteConfigDao.getInstance().getUserDefault();
+        List<String> defaultList = SiteConfigDao.getInstance().getUserDefault();
         if (defaultList != null && defaultList.size() > 0) {
             if (defaultList.size() > 5) {
                 return false;

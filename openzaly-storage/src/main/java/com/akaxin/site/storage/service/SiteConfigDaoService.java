@@ -52,7 +52,7 @@ public class SiteConfigDaoService implements ISiteConfigDao {
     }
 
     @Override
-    public List<UserProfileBean> getUserDefault() throws SQLException {
+    public List<String> getUserDefault() throws SQLException {
         return SQLiteSiteConfigDao.getInstance().getUserDefault();
     }
 

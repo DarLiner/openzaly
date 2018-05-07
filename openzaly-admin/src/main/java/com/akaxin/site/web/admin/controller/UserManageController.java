@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
@@ -57,8 +58,16 @@ public class UserManageController extends AbstractController {
 
     // admin.html 分页获取用户列表
     @RequestMapping("/index")
-    public String toUserIndex() {
-        return "user/index";
+    public ModelAndView toUserIndex() {
+        ModelAndView modelAndView = new ModelAndView("user/index");
+        List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
+        List<UserProfileBean> userProfileBeans = new ArrayList<>();
+        for (String siteUserId : userDefault) {
+            UserProfileBean userProfile = userService.getUserProfile(siteUserId);
+            userProfileBeans.add(userProfile);
+        }
+        modelAndView.addObject("userList", userProfileBeans);
+        return modelAndView;
     }
 
     @RequestMapping("/setUserDefault")
@@ -130,8 +139,13 @@ public class UserManageController extends AbstractController {
                     if (PAGE_SIZE == userList.size()) {
                         nodata = false;
                     }
+                    List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
                     for (SimpleUserBean bean : userList) {
+                        boolean contains = userDefault.contains(bean.getUserId());
                         Map<String, Object> userMap = new HashMap<String, Object>();
+                        if (contains) {
+                            continue;
+                        }
                         userMap.put("siteUserId", bean.getUserId());
                         userMap.put("userName", bean.getUserName());
                         userMap.put("userPhoto", bean.getUserPhoto());

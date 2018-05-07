@@ -37,6 +37,18 @@
 
 <body ontouchstart>
 <div class="weui-cells__title weui-cell ">
+    默认好友列表
+</div>
+<div class="weui-cells demos-content-padded" id='default_user-lists'>
+    <a class="weui-cell weui-cell_access update-site-user" th:each="user:${userList}" url-data="/user/profile"
+       th:attr="id=${user.defaultState}"
+       href="javascript:;">
+        <div class="weui-cell__hd" name="user_image" th:attr="id=${user.defaultState}"></div>
+        <div class="weui-cell__bd site_user_name"><p th:text="${user.userName}"></p></div>
+        <div class="weui-cell__ft"></div>
+    </a>
+</div>
+<div class="weui-cells__title weui-cell ">
     站点成员列表
 </div>
 <div class="weui-cells demos-content-padded" id='user-lists'>
@@ -160,7 +172,7 @@
         var data = results.userData;
         var html = '';
         $.each(data, function (index, user) {
-            var html = '<a class="weui-cell weui-cell_access update-site-user" url-data="/user/profile" id="' + user.siteUserId + '" href="javascript:;"> <div class="weui-cell__hd" name="user_image" id="' + user.userPhoto + '" > </div> <div class="weui-cell__bd site_user_name" > <p>' + user.userName + '</p> </div> <div class="weui-cell__ft"></div> </a>';
+            var html = '<a class="weui-cell weui-cell_access update-site-user" url-data="/user/profile" id="' + user.siteUserId + '" href="javascript:;" > <div class="weui-cell__hd" name="user_image" id="' + user.userPhoto + '" > </div> <div class="weui-cell__bd site_user_name" > <p>' + user.userName + '</p> </div> <div class="weui-cell__ft"></div> </a>';
             $('#user-lists').append(html);
         });
         loading = results.loading;

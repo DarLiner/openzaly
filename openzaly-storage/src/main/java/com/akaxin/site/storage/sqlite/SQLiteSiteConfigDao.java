@@ -112,7 +112,7 @@ public class SQLiteSiteConfigDao {
         return false;
     }
 
-    public List<UserProfileBean> getUserDefault() throws SQLException {
+    public List<String> getUserDefault() throws SQLException {
         long startTime = System.currentTimeMillis();
         String sql = "SELECT config_value FROM site_config_info WHERE config_key = ? ;";
         PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -121,19 +121,17 @@ public class SQLiteSiteConfigDao {
         if (resultSet == null || resultSet.isClosed()) {
             return null;
         }
-        ArrayList<UserProfileBean> simpleUserBeans = new ArrayList<>();
+        ArrayList<String> Beans = new ArrayList<>();
         String string = resultSet.getString(1);
         if (string == null) {
             return null;
         }
         String[] split = string.split(",");
         for (String s : split) {
-            UserProfileBean simpleUserBean = new UserProfileBean();
-            simpleUserBean.setSiteUserId(s);
-            simpleUserBeans.add(simpleUserBean);
+            Beans.add(s);
         }
         LogUtils.dbDebugLog(logger, startTime, resultSet, sql);
-        return simpleUserBeans;
+        return Beans;
     }
 
     public int updateSiteConfig(int key, String value) throws SQLException {
