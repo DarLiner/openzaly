@@ -160,14 +160,26 @@
     </div>
 
 
-    <a class="weui-cell weui-cell_access register_way" th:attr="data=${site_register_way}" href="javascript:;">
+    <a class="weui-cell weui-cell_access register_way" th:attr="data=${realName_status}" href="javascript:;">
         <div class="weui-cell__bd">
             <p>站点注册方式</p>
         </div>
-        <div th:switch="${site_register_way}">
+        <div th:switch="${realName_status}">
             <div class="weui-cell__ft register_way—txt" th:case="'0'">匿名身份</div>
             <div class="weui-cell__ft register_way—txt" th:case="'1'">实名认证</div>
-            <div class="weui-cell__ft register_way—txt" th:case="'2'">邀请码</div>
+        </div>
+    </a>
+    <a class="weui-cell weui-cell_access uic_status" th:attr="data=${uic_status}" href="javascript:;">
+        <div class="weui-cell__bd">
+            <p>是否开启邀请码</p>
+        </div>
+        <div th:switch="${uic_status}">
+            <div class="weui-cell__ft uic_status—txt" th:case="0">
+                关闭邀请码
+            </div>
+            <div class="weui-cell__ft uic_status—txt" th:case="1">
+                开启邀请码
+            </div>
         </div>
     </a>
     <a class="weui-cell weui-cell_access site_push" th:attr="data=${push_client_status}" href="javascript:;">
@@ -313,7 +325,8 @@
         var siteName = $('.site-name').val();
         var siteGroupMaxnum = $('.site-group-maxnum').val();
         var siteImgAddr = $('.site-img-addr').val();
-        var siteRegisterType = $(".register_way").attr("data");
+        var uic_status = $(".uic_status").attr("data");
+        var realName_status = $(".register_way").attr("data");
         var pushClientStatus = $(".site_push").attr("data");
         var logLevel = $(".log_level").attr("data");
         var siteAddressInfo = $('.site_address_info').val();
@@ -368,7 +381,8 @@
             'group_members_count': siteGroupMaxnum,
             'pic_path': siteImgAddr,
             'site_logo': imageId,
-            'register_way': siteRegisterType,
+            'realName_status': realName_status,
+            'uic_status': uic_status,
             'u2_encryption_status': openSecret,
             'push_client_status': pushClientStatus,
             'log_level': logLevel,
@@ -442,14 +456,31 @@
                         $(".register_way").attr("data", "1");
                     }
                 },
-                {
-                    text: "邀请码",
-                    className: 'color-danger weui-dialog__btn',
-                    onClick: function () {
-                        $(".register_way—txt").html("邀请码");
-                        $(".register_way").attr("data", "2");
-                    }
+            ]
+        });
+    });
+    $(document).on("click", '.uic_status', function () {
+        $.actions({
+            title: "",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "关闭邀请码",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".uic_status—txt").html("关闭邀请码");
+                    $(".uic_status").attr("data", "0");
                 }
+            },
+                {
+                    text: "开启邀请码",
+                    className: "color-warning weui-dialog__btn",
+                    onClick: function () {
+                        $(".uic_status—txt").html("开启邀请码");
+                        $(".uic_status").attr("data", "1");
+                    }
+                },
             ]
         });
     });
