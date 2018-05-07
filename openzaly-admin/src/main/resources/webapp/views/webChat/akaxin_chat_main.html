@@ -154,37 +154,38 @@
 								<section>
 									<section class="vbox">
 
-										<section id="chatContent" class="chat-list panel-body scrollable" style="bottom: 50px">
+										<section id="chatContent"
+											class="chat-list panel-body scrollable" style="bottom: 50px">
 											<!-- 加载动画 -->
 											<div class="text-center wrapper">
 												<i class="fa fa-spinner fa fa-spin fa fa-large"></i>
 											</div>
 
 											<!-- 展示时间 -->
-											<article id="chat-item-time" class="chat-item b-light">
+											<!-- <article id="chat-item-time" class="chat-item b-light">
 												<section class="chat-body text-center">
 													<small class="text-muted">12:00</small>
 												</section>
-											</article>
+											</article> -->
 
 											<!-- 接受对方发送消息 -->
-											<article id="chat-receive" class="chat-item left">
+											<!-- <article id="chat-receive" class="chat-item left">
 												<a href="#" class="pull-left thumb-sm avatar"> <img
 													src="/webChat/images/avatar_2.jpg" class="img-circle">
 												</a>
 												<section class="chat-body">
 													<div class="panel b-light col-lg-4 m-b-none">
 														<div class="panel-body">
-															<!-- 向左的箭头-->
+															向左的箭头
 															<span class="arrow left"></span>
 															<p class="m-b-none">收到对方一条消息</p>
 														</div>
 													</div>
 												</section>
-											</article>
+											</article> -->
 
 											<!-- 展示时间 -->
-											<article id="chat-item-time" class="chat-item b-light">
+											<!-- <article id="chat-item-time" class="chat-item b-light">
 												<section class="chat-body text-center">
 													<small class="text-muted">12:00</small>
 												</section>
@@ -198,13 +199,13 @@
 													<div class="panel bg bg-success col-lg-4 m-b-none"
 														style="float: right;">
 														<div class="panel-body">
-															<!-- 向右的箭头-->
+															向右的箭头
 															<span class="arrow right"></span>
 															<p class="m-b-none">我发送了一条消息</p>
 														</div>
 													</div>
 												</section>
-											</article>
+											</article> -->
 
 										</section>
 									</section>
@@ -282,6 +283,13 @@
 	var wsUri = getWsRootUri() + "/akaxin/ws?sessionId="+sessionId;
 	var websocket;
 	
+	$("#editor").keydown(function(){
+		if(event.shiftKey && event.keyCode == 13){
+			sendMessage();
+		    //$("#submit").trigger("click");
+		  }
+	});
+	
 	$(function() {
 		/*<![CDATA[*/
 		var siteName = /*[[${siteName}]]*/;
@@ -311,12 +319,8 @@
 		
 		//接受消息
         websocket.onmessage = function(event){ 
-            var respMessage = document.getElementById("respMessage");
-            //respMessage.value = respMessage.value + "\n" + event.data;
-            alert("接受消息："+wsUri);
-            var textHtml = receiveTextMessageHtml();
-    		
-    			$("#chatContent").append(textHtml);
+           // alert("接受消息："+event.data);
+            receiveMessage(event.data);
         }
         
         //关闭
@@ -332,23 +336,33 @@
 
 	//点击发送消息
 	$("#sendMessage").click(function(){
-		var text = $("#editor").html();
-		
-		var textHtml = sendTextMessageHtml(text);
-		
-		$("#chatContent").append(textHtml);
-		
-		sendMessage(text);
-		$("#editor").empty();
+		sendMessage();
 	});
 	
-	function sendMessage(text){
+	function gotoChatContentBottom(){
+		$('#chatContent').scrollTop( $('#chatContent')[0].scrollHeight);
+	}
+	
+	
+	function receiveMessage(text){
+		$("#chatContent").append(receiveTextMessageHtml(text));
+		
+		gotoChatContentBottom();
+	}
+	
+	function sendMessage(){
+		var text = $("#editor").html();
+		$("#chatContent").append(sendTextMessageHtml(text));
+		
 		var status = checkWsStatus();
 		if(status){
-			websocket.send(text);	
+			websocket.send(text);
 		}else{
 			alert("连接状态失败");
 		}
+		
+		$("#editor").empty();
+		gotoChatContentBottom();
 	}
 	
 	function checkWsStatus(){
@@ -416,7 +430,7 @@
 	}
 	
 	
-	function receiveTextMessageHtml(){
+	function receiveTextMessageHtml(text){
 		var textHtml = 
 			'<article id="chat-item-time" class="chat-item b-light">'
 			+'<section class="chat-body text-center">'
@@ -429,7 +443,7 @@
 			+'		<div class="panel b-light col-lg-4 m-b-none">'
 			+'			<div class="panel-body">'
 			+'				<span class="arrow left"></span>'
-			+'				<p class="m-b-none">收到对方一条消息</p>'
+			+'				<p class="m-b-none">'+text+'</p>'
 			+'			</div>'
 			+'		</div>'
 			+'	</section>'
