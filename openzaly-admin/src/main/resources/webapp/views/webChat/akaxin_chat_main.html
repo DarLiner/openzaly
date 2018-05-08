@@ -310,8 +310,6 @@
 		
 		//打开连接
         websocket.onopen = function(event){
-            var respMessage = document.getElementById("respMessage");
-            //respMessage.value = "建立连接";
             getChatList();
             getFriendList();
             getGroupList();
@@ -428,7 +426,7 @@
 			+'	</section>'
 			+'</article>'
 			+'<article id="chat-receive" class="chat-item left">'
-			+'	<a href="#" class="pull-left thumb-sm avatar"><img src="/file/download?fileId='+photoId+'" class="img-circle"></a>'
+			+'	<a href="#" class="pull-left thumb-sm avatar"><img src="/file/download?fileId='+photoId+'" class="img-circle" onerror="javascript:this.src=\'/webChat/images/akaxin_logo.png\'"></a>'
 			+'	<section class="chat-body">'
 			+'		<div class="panel b-light col-lg-4 m-b-none">'
 			+'			<div class="panel-body">'

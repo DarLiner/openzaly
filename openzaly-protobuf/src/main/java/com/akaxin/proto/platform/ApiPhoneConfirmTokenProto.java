@@ -35,6 +35,24 @@ public final class ApiPhoneConfirmTokenProto {
      */
     com.google.protobuf.ByteString
         getPhoneTokenBytes();
+
+    /**
+     * <pre>
+     *当前站点地址demo.akaxin.com:2021
+     * </pre>
+     *
+     * <code>optional string site_address = 2;</code>
+     */
+    java.lang.String getSiteAddress();
+    /**
+     * <pre>
+     *当前站点地址demo.akaxin.com:2021
+     * </pre>
+     *
+     * <code>optional string site_address = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSiteAddressBytes();
   }
   /**
    * Protobuf type {@code platform.ApiPhoneConfirmTokenRequest}
@@ -49,6 +67,7 @@ public final class ApiPhoneConfirmTokenProto {
     }
     private ApiPhoneConfirmTokenRequest() {
       phoneToken_ = "";
+      siteAddress_ = "";
     }
 
     @java.lang.Override
@@ -80,6 +99,12 @@ public final class ApiPhoneConfirmTokenProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               phoneToken_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              siteAddress_ = s;
               break;
             }
           }
@@ -147,6 +172,48 @@ public final class ApiPhoneConfirmTokenProto {
       }
     }
 
+    public static final int SITE_ADDRESS_FIELD_NUMBER = 2;
+    private volatile java.lang.Object siteAddress_;
+    /**
+     * <pre>
+     *当前站点地址demo.akaxin.com:2021
+     * </pre>
+     *
+     * <code>optional string site_address = 2;</code>
+     */
+    public java.lang.String getSiteAddress() {
+      java.lang.Object ref = siteAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteAddress_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *当前站点地址demo.akaxin.com:2021
+     * </pre>
+     *
+     * <code>optional string site_address = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSiteAddressBytes() {
+      java.lang.Object ref = siteAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -162,6 +229,9 @@ public final class ApiPhoneConfirmTokenProto {
       if (!getPhoneTokenBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneToken_);
       }
+      if (!getSiteAddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, siteAddress_);
+      }
     }
 
     public int getSerializedSize() {
@@ -171,6 +241,9 @@ public final class ApiPhoneConfirmTokenProto {
       size = 0;
       if (!getPhoneTokenBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneToken_);
+      }
+      if (!getSiteAddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, siteAddress_);
       }
       memoizedSize = size;
       return size;
@@ -190,6 +263,8 @@ public final class ApiPhoneConfirmTokenProto {
       boolean result = true;
       result = result && getPhoneToken()
           .equals(other.getPhoneToken());
+      result = result && getSiteAddress()
+          .equals(other.getSiteAddress());
       return result;
     }
 
@@ -202,6 +277,8 @@ public final class ApiPhoneConfirmTokenProto {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + PHONE_TOKEN_FIELD_NUMBER;
       hash = (53 * hash) + getPhoneToken().hashCode();
+      hash = (37 * hash) + SITE_ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteAddress().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -322,6 +399,8 @@ public final class ApiPhoneConfirmTokenProto {
         super.clear();
         phoneToken_ = "";
 
+        siteAddress_ = "";
+
         return this;
       }
 
@@ -345,6 +424,7 @@ public final class ApiPhoneConfirmTokenProto {
       public com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest buildPartial() {
         com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest result = new com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest(this);
         result.phoneToken_ = phoneToken_;
+        result.siteAddress_ = siteAddress_;
         onBuilt();
         return result;
       }
@@ -388,6 +468,10 @@ public final class ApiPhoneConfirmTokenProto {
         if (other == com.akaxin.proto.platform.ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest.getDefaultInstance()) return this;
         if (!other.getPhoneToken().isEmpty()) {
           phoneToken_ = other.phoneToken_;
+          onChanged();
+        }
+        if (!other.getSiteAddress().isEmpty()) {
+          siteAddress_ = other.siteAddress_;
           onChanged();
         }
         onChanged();
@@ -501,6 +585,95 @@ public final class ApiPhoneConfirmTokenProto {
   checkByteStringIsUtf8(value);
         
         phoneToken_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object siteAddress_ = "";
+      /**
+       * <pre>
+       *当前站点地址demo.akaxin.com:2021
+       * </pre>
+       *
+       * <code>optional string site_address = 2;</code>
+       */
+      public java.lang.String getSiteAddress() {
+        java.lang.Object ref = siteAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *当前站点地址demo.akaxin.com:2021
+       * </pre>
+       *
+       * <code>optional string site_address = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteAddressBytes() {
+        java.lang.Object ref = siteAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *当前站点地址demo.akaxin.com:2021
+       * </pre>
+       *
+       * <code>optional string site_address = 2;</code>
+       */
+      public Builder setSiteAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *当前站点地址demo.akaxin.com:2021
+       * </pre>
+       *
+       * <code>optional string site_address = 2;</code>
+       */
+      public Builder clearSiteAddress() {
+        
+        siteAddress_ = getDefaultInstance().getSiteAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *当前站点地址demo.akaxin.com:2021
+       * </pre>
+       *
+       * <code>optional string site_address = 2;</code>
+       */
+      public Builder setSiteAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteAddress_ = value;
         onChanged();
         return this;
       }
@@ -1458,15 +1631,16 @@ public final class ApiPhoneConfirmTokenProto {
   static {
     java.lang.String[] descriptorData = {
       "\n%platform/api_phone_confirmToken.proto\022" +
-      "\010platform\"2\n\033ApiPhoneConfirmTokenRequest" +
-      "\022\023\n\013phone_token\030\001 \001(\t\"\\\n\034ApiPhoneConfirm" +
-      "TokenResponse\022\020\n\010phone_id\030\001 \001(\t\022\024\n\014count" +
-      "ry_code\030\002 \001(\t\022\024\n\014user_id_pubk\030\003 \001(\t2|\n\033A" +
-      "piPhoneConfirmTokenService\022]\n\014confirmTok" +
-      "en\022%.platform.ApiPhoneConfirmTokenReques" +
-      "t\032&.platform.ApiPhoneConfirmTokenRespons" +
-      "eB6\n\031com.akaxin.proto.platformB\031ApiPhone" +
-      "ConfirmTokenProtob\006proto3"
+      "\010platform\"H\n\033ApiPhoneConfirmTokenRequest" +
+      "\022\023\n\013phone_token\030\001 \001(\t\022\024\n\014site_address\030\002 " +
+      "\001(\t\"\\\n\034ApiPhoneConfirmTokenResponse\022\020\n\010p" +
+      "hone_id\030\001 \001(\t\022\024\n\014country_code\030\002 \001(\t\022\024\n\014u" +
+      "ser_id_pubk\030\003 \001(\t2|\n\033ApiPhoneConfirmToke" +
+      "nService\022]\n\014confirmToken\022%.platform.ApiP" +
+      "honeConfirmTokenRequest\032&.platform.ApiPh" +
+      "oneConfirmTokenResponseB6\n\031com.akaxin.pr" +
+      "oto.platformB\031ApiPhoneConfirmTokenProtob",
+      "\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1485,7 +1659,7 @@ public final class ApiPhoneConfirmTokenProto {
     internal_static_platform_ApiPhoneConfirmTokenRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_platform_ApiPhoneConfirmTokenRequest_descriptor,
-        new java.lang.String[] { "PhoneToken", });
+        new java.lang.String[] { "PhoneToken", "SiteAddress", });
     internal_static_platform_ApiPhoneConfirmTokenResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_platform_ApiPhoneConfirmTokenResponse_fieldAccessorTable = new

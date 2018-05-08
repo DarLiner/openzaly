@@ -27,7 +27,7 @@ public class ChannelSession {
 	private String userId; // 用户在站点的siteUserId，每个站点id不同（区别globalUserId）
 	private String deviceId;// 用户当前设备号
 	private Channel channel;// 用户当前连接的channel
-	private int ctype;// 1:IM 2:APi
+	private int ctype;// 1:IM 2:APi 3:WS
 	private long psnTime = 0;// 发送给用户PSN时间戳
 	private long synFinTime = 0;// 用户同步消息结束时间
 

@@ -31,7 +31,7 @@ import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
-import com.akaxin.site.connector.codec.parser.ParserConst;
+import com.akaxin.site.connector.codec.parser.ChannelConst;
 import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.session.SessionManager;
 
@@ -56,7 +56,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String clientIp = socketAddress.getAddress().getHostAddress();
-		ctx.channel().attr(ParserConst.CHANNELSESSION).set(new ChannelSession(ctx.channel()));
+		ctx.channel().attr(ChannelConst.CHANNELSESSION).set(new ChannelSession(ctx.channel()));
 		logger.debug("{} client={} connect to Netty Server...", AkxProject.PLN, clientIp);
 	}
 
@@ -67,7 +67,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		logger.debug("{} client={} close connection... ChannelSize={}", AkxProject.PLN, clientIp,
 				ChannelManager.getChannelSessionSize());
 
-		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
+		ChannelSession channelSession = ctx.channel().attr(ChannelConst.CHANNELSESSION).get();
 		if (channelSession.getCtype() == 1 && StringUtils.isNotEmpty(channelSession.getUserId())) {
 			ChannelManager.delChannelSession(channelSession.getDeviceId());
 			String siteUserId = channelSession.getUserId();
@@ -83,7 +83,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 	protected void channelRead0(ChannelHandlerContext ctx, RedisCommand redisCmd) throws Exception {
 		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String clientIp = socketAddress.getAddress().getHostAddress();
-		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
+		ChannelSession channelSession = ctx.channel().attr(ChannelConst.CHANNELSESSION).get();
 
 		// Channel不可用情况下，关闭连接事件
 		// disconnect tcp connection as channel is unavailable
