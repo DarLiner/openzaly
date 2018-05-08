@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.akaxin.site.storage.api.ISiteConfigDao;
+import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.SQLiteSiteConfigDao;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
 /**
- *
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-31 12:11:22
  */
@@ -66,5 +66,25 @@ public class SiteConfigDaoService implements ISiteConfigDao {
     public boolean delUserDefault(String s) throws SQLException {
         return SQLiteSiteConfigDao.getInstance().delUserDefault(s);
     }
-    
+
+    @Override
+    public List<String> getGroupDefault() throws SQLException {
+        return SQLiteSiteConfigDao.getInstance().getGroupDefault();
+    }
+
+    @Override
+    public boolean updateGroupDefault(String siteGroupId) throws SQLException {
+        return SQLiteSiteConfigDao.getInstance().updateGroupDefault(siteGroupId);
+    }
+
+    @Override
+    public boolean setGroupDefault(String siteGroupId) throws SQLException {
+        return SQLiteSiteConfigDao.getInstance().setGroupDefault(siteGroupId);
+    }
+
+    @Override
+    public boolean delGroupDefault(String del) throws SQLException {
+        return SQLiteSiteConfigDao.getInstance().delGroupDefault(del);
+    }
+
 }

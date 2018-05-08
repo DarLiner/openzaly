@@ -1,8 +1,5 @@
 package com.akaxin.site.storage.api;
 
-import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -21,5 +18,13 @@ public interface ISiteConfigDao {
 	boolean updateUserDefault(String site_user_id) throws SQLException;
 
 	boolean delUserDefault(String s) throws SQLException;
-	
+
+    List<String> getGroupDefault() throws SQLException;
+
+    boolean updateGroupDefault(String siteGroupId) throws SQLException;
+
+	boolean setGroupDefault(String siteGroupId) throws SQLException;
+
+	boolean delGroupDefault(String del) throws SQLException;
+
 }

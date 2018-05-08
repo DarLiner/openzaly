@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -34,6 +34,18 @@
 </head>
 
 <body ontouchstart="">
+<div class="weui-cells__title weui-cell " th:unless="${groupDefaultSize} == 0">
+    默认群列表
+</div>
+<div class="weui-cells demos-content-padded" id='default_group_lists' th:unless="${groupDefaultSize} == 0">
+    <a class="weui-cell weui-cell_access group-info" th:each="group:${groupList}"
+       th:attr="group-id=${group.groupId},group-name=${group.groupName}"
+       href="javascript:;" url-data="/group/manage">
+        <div class="weui-cell__bd"><p th:text="${group.groupName}"></p></div>
+        <div class="weui-cell__ft"></div>
+    </a>
+
+</div>
 <div class="weui-cells__title weui-cell ">
     群列表
 </div>

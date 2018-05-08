@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import org.slf4j.Logger;
@@ -73,6 +74,42 @@ public class SiteConfigDao {
     public boolean delUserDefault(String s) {
         try {
             return siteConfigDao.delUserDefault(s);
+        } catch (SQLException e) {
+            logger.error("del user default error.", e);
+        }
+        return false;
+    }
+
+    public List<String> getGroupDefault() {
+        try {
+            return siteConfigDao.getGroupDefault();
+        } catch (SQLException e) {
+            logger.error("get group default error.", e);
+        }
+        return null;
+    }
+
+    public boolean updateGroupDefault(String siteGroupId) {
+        try {
+            return siteConfigDao.updateGroupDefault(siteGroupId);
+        } catch (SQLException e) {
+            logger.error("update group default error.", e);
+        }
+        return false;
+    }
+
+    public boolean setGroupDefault(String siteGroupId) {
+        try {
+            return siteConfigDao.setGroupDefault(siteGroupId);
+        } catch (SQLException e) {
+            logger.error("update group default error.", e);
+        }
+        return false;
+    }
+
+    public boolean delGroupDefault(String del) {
+        try {
+            return siteConfigDao.delGroupDefault(del);
         } catch (SQLException e) {
             logger.error("del user default error.", e);
         }

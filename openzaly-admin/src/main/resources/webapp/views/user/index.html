@@ -39,7 +39,7 @@
 <div class="weui-cells__title weui-cell " th:unless="${userDefaultSize} == 0">
     默认好友列表
 </div>
-<div class="weui-cells demos-content-padded" id='default_user-lists' th:unless="${userDefaultSize} == 0">
+<div class="weui-cells demos-content-padded" id='default_user_lists' th:unless="${userDefaultSize} == 0">
     <a class="weui-cell weui-cell_access update-site-user" th:each="user:${userList}" url-data="/user/profile"
        th:attr="id=${user.siteUserId}"
        href="javascript:;">

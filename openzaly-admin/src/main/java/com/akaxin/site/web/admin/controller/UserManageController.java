@@ -62,7 +62,7 @@ public class UserManageController extends AbstractController {
         ModelAndView modelAndView = new ModelAndView("user/index");
         List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
         List<UserProfileBean> userProfileBeans = new ArrayList<>();
-        modelAndView.addObject("userDefaultSize", 0);
+        modelAndView.addObject("userDefaultSize", "0");
         if (userDefault != null && userDefault.size() > 0) {
             for (String siteUserId : userDefault) {
                 UserProfileBean userProfile = userService.getUserProfile(siteUserId);

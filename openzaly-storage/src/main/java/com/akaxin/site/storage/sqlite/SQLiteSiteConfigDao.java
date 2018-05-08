@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import org.apache.commons.lang3.StringUtils;
@@ -49,10 +50,27 @@ public class SQLiteSiteConfigDao {
         return SingletonHolder.instance;
     }
 
+
     static class SingletonHolder {
 
         private static SQLiteSiteConfigDao instance = new SQLiteSiteConfigDao();
 
+    }
+
+
+    public boolean delGroupDefault(String del) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String updateSql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(updateSql);
+        preparedStatement.setString(1, del);
+        preparedStatement.setInt(2, ConfigProto.ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime, del, updateSql);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, del, updateSql);
+        return false;
     }
 
     public Map<Integer, String> querySiteConfig() throws SQLException {
@@ -88,6 +106,28 @@ public class SQLiteSiteConfigDao {
         LogUtils.dbDebugLog(logger, startTime, s, updateSql);
 
         return false;
+    }
+
+    public List<String> getGroupDefault() throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "SELECT config_value FROM " + SITE_CONFIG_INFO_TABLE + " WHERE config_key = ? ;";
+        PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preStatement.setInt(1, ConfigProto.ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+        ResultSet resultSet = preStatement.executeQuery();
+        if (resultSet == null || resultSet.isClosed()) {
+            return null;
+        }
+        ArrayList<String> Beans = new ArrayList<>();
+        String string = resultSet.getString(1);
+        if (string == null) {
+            return null;
+        }
+        String[] split = string.split(",");
+        for (String s : split) {
+            Beans.add(s);
+        }
+        LogUtils.dbDebugLog(logger, startTime, resultSet, sql);
+        return Beans;
     }
 
     public boolean setUserDefault(String site_user_id) throws SQLException {
@@ -217,5 +257,49 @@ public class SQLiteSiteConfigDao {
 
         LogUtils.dbDebugLog(logger, startTime, result, sql, configKey, configValue);
         return result;
+    }
+
+    public boolean updateGroupDefault(String siteGroupId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String querySql = "SELECT config_value FROM " + SITE_CONFIG_INFO_TABLE + " WHERE config_key = ? ;";
+        PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(querySql);
+        preStatement.setInt(1, ConfigProto.ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+        ResultSet resultSet = preStatement.executeQuery();
+        if (!resultSet.next()) {
+            return false;
+        }
+        String a = resultSet.getString(1);
+        if (StringUtils.isNotEmpty(a)) {
+            a = a + "," + siteGroupId;
+        } else {
+            a = siteGroupId;
+        }
+        String updateSql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(updateSql);
+        preparedStatement.setString(1, a);
+        preparedStatement.setInt(2, ConfigProto.ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime, resultSet, updateSql);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, resultSet, updateSql);
+        return false;
+    }
+
+    public boolean setGroupDefault(String siteGroupId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String firstSql = "INSERT INTO " + SITE_CONFIG_INFO_TABLE + "(config_key,config_value) VALUES(?,?);";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(firstSql);
+        preparedStatement.setInt(1, ConfigProto.ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+        preparedStatement.setString(2, siteGroupId);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime, siteGroupId, firstSql);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, siteGroupId, firstSql);
+        return false;
+
     }
 }
