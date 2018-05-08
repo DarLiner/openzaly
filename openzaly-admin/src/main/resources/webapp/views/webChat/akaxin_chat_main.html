@@ -146,7 +146,8 @@
 							<!-- <section class="vbox">  -->
 							<section class="vbox flex">
 
-								<header id="chatHeader" class="panel-heading text-center m-t b-light">
+								<header id="chatHeader"
+									class="panel-heading text-center m-t b-light">
 									<div class="h4 block"></div>
 								</header>
 
@@ -311,10 +312,10 @@
         websocket.onopen = function(event){
             var respMessage = document.getElementById("respMessage");
             //respMessage.value = "建立连接";
-            alert("连接："+wsUri+"成功");
             getChatList();
             getFriendList();
             getGroupList();
+            alert("连接："+wsUri+"成功");
         }
 		
 		//接受消息
@@ -357,17 +358,15 @@
 			buildGroupTextData();
 		}
 		
-		
-		$("#chatContent").append(sendTextMessageHtml(text));
-		
 		var status = checkWsStatus();
 		if(status){
 			websocket.send(text);
+			$("#chatContent").append(sendTextMessageHtml(text));
+			$("#editor").empty();
 		}else{
 			alert("连接状态失败");
 		}
 		
-		$("#editor").empty();
 		gotoChatContentBottom();
 	}
 	
