@@ -218,13 +218,25 @@ public class GroupManageController extends AbstractController {
                 List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
                 List<SimpleGroupBean> groupList = groupService.getGroupList(pageNum, PAGE_SIZE);
                 if (groupList != null && groupList.size() > 0) {
-
+                    List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
                     for (SimpleGroupBean bean : groupList) {
-                        Map<String, Object> groupMap = new HashMap<String, Object>();
-                        groupMap.put("siteGroupId", bean.getGroupId());
-                        groupMap.put("groupName", bean.getGroupName());
-                        groupMap.put("groupPhoto", bean.getGroupPhoto());
-                        data.add(groupMap);
+                        if (groupDefault != null && groupDefault.size() > 0) {
+                            boolean contains = groupDefault.contains(bean.getGroupId());
+                            if (contains) {
+                                continue;
+                            }
+                            Map<String, Object> groupMap = new HashMap<String, Object>();
+                            groupMap.put("siteGroupId", bean.getGroupId());
+                            groupMap.put("groupName", bean.getGroupName());
+                            groupMap.put("groupPhoto", bean.getGroupPhoto());
+                            data.add(groupMap);
+                        } else {
+                            Map<String, Object> groupMap = new HashMap<String, Object>();
+                            groupMap.put("siteGroupId", bean.getGroupId());
+                            groupMap.put("groupName", bean.getGroupName());
+                            groupMap.put("groupPhoto", bean.getGroupPhoto());
+                            data.add(groupMap);
+                        }
                     }
 
                 }
