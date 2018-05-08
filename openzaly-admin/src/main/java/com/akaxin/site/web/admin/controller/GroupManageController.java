@@ -15,17 +15,15 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.dao.SiteConfigDao;
-import com.akaxin.site.storage.bean.UserProfileBean;
+import com.akaxin.site.storage.bean.GroupMemberBean;
+import com.akaxin.site.storage.bean.GroupProfileBean;
+import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.web.admin.service.IBasicService;
+import com.akaxin.site.web.admin.service.IGroupService;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +34,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.common.utils.GsonUtils;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.site.storage.bean.GroupMemberBean;
-import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleGroupBean;
-import com.akaxin.site.web.admin.service.IGroupService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 群组管理控制器
