@@ -67,6 +67,9 @@ mvn build
 * sisishiliu
 * SAM2O2O
 * childeYin
+* yi.chao
+* lei.yu
 * cuikun
+* alexfanchina
 * Mino0885
 * 505541778
