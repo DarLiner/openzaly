@@ -43,7 +43,7 @@ import com.akaxin.site.connector.handler.ImMessageHandler;
 import com.akaxin.site.connector.handler.ImSiteAuthHandler;
 import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
-import com.akaxin.site.connector.websocket.WebSocketServer;
+import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
@@ -167,7 +167,7 @@ public class Bootstrap {
 	}
 
 	private static void startWebSocketServer(String address, int port) throws Exception {
-		new WebSocketServer() {
+		new WsServer() {
 		}.start(address, port);
 	}
 
@@ -188,8 +188,10 @@ public class Bootstrap {
 
 	private static String getDefaultIcon(String base64Str) {
 		try {
+			String fileBasePath = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
 			byte[] iconBytes = Base64.getDecoder().decode(base64Str);
-			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(), FileType.SITE_PLUGIN, null);
+			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(fileBasePath),
+					FileType.SITE_PLUGIN, null);
 			return fileId;
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);

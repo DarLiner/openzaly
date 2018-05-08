@@ -1,4 +1,4 @@
-package com.akaxin.site.connector.websocket.handler;
+package com.akaxin.site.connector.ws.handler;
 
 import java.util.Date;
 
@@ -24,8 +24,8 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-05-02 15:01:08
  */
-public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
-	private static Logger logger = LoggerFactory.getLogger(WebSocketServerHandler.class);
+public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
+	private static Logger logger = LoggerFactory.getLogger(WsServerHandler.class);
 
 	private static final String AKAXIN_WS_PATH = "/akaxin/ws";
 	// ws 握手

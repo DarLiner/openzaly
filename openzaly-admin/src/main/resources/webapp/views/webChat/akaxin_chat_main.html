@@ -348,19 +348,24 @@
 	
 	//发送消息
 	function sendMessage(){
-		
-		var type = $('#add_group_user').attr('site-user-id');
+		/*<![CDATA[*/
+		var from = /*[[${userId}]]*/; 
+		/*]]>*/
+		var chatType = $('#currentChatId').attr('ctype');
 		var text = $("#editor").html();
+		var timestamp=new Date().getTime();
+		var to = $('#currentChatId').attr('chatid');
 		
-		if(type=="u2"){
-			buildU2TextData();
+		var jsonData;
+		if(chatType=="u2"){
+			jsonData = buildU2TextData(from,to,text,timestamp);
 		}else{
-			buildGroupTextData();
+			jsonData = buildGroupTextData(from,to,text,timestamp);
 		}
 		
 		var status = checkWsStatus();
 		if(status){
-			websocket.send(text);
+			websocket.send(JSON.stringify(jsonData));
 			$("#chatContent").append(sendTextMessageHtml(text));
 			$("#editor").empty();
 		}else{
@@ -392,27 +397,30 @@
 	//二人文本消息格式
 	function buildU2TextData(from,to,text,time){
 		var u2TextData = {
-				"type":"u2Text",
+				"type":3,//TEXT = 3;proto中类型
 				"msgId":"",
 				"from":from,
 				"to":to,
 				"text":text,
 				"time":time
 		};
+		return u2TextData;
 	}
 	
-	function buildGroupTextData(from,groupId,text,time){
+	function buildGroupTextData(from,to,text,time){
 		var groupTextData = {
-				"type":"groupText",
+				"type":5,//GROUP_TEXT = 5;
 				"msgId":"",
 				"from":from,
-				"groupId":groupId,
+				"to":to,
 				"text":text,
 				"time":time
 		};
+		return groupTextData;
 	}
 	
 	function receiveTextMessageHtml(text){
+		var photoId = $('#currentChatId').attr('photoid');
 		var textHtml = 
 			'<article id="chat-item-time" class="chat-item b-light">'
 			+'<section class="chat-body text-center">'
@@ -420,7 +428,7 @@
 			+'	</section>'
 			+'</article>'
 			+'<article id="chat-receive" class="chat-item left">'
-			+'	<a href="#" class="pull-left thumb-sm avatar"><img src="/webChat/images/avatar_2.jpg" class="img-circle"></a>'
+			+'	<a href="#" class="pull-left thumb-sm avatar"><img src="/file/download?fileId='+photoId+'" class="img-circle"></a>'
 			+'	<section class="chat-body">'
 			+'		<div class="panel b-light col-lg-4 m-b-none">'
 			+'			<div class="panel-body">'
@@ -501,7 +509,18 @@
 	}
 	
 	function gotoChat(ctype,id,name,photoId){
-		$("#chatHeader").html('<div class="h4 block" id="currentChatId" chatId="'+id+'" ctype="'+ctype+'" photoId="'+photoId+'">'+name+'</div>');
+		$("#chatHeader").html('<div class="h4 block" id="currentChatId" chatid="'+id+'" ctype="'+ctype+'" photoid="'+photoId+'">'+name+'</div>');
+		//post 异步加载聊天记录
+		var data = {
+			"pageNum" : 1,	//查首页
+			"pageSize" : 15	//每页15条
+		};
+		
+		$.post("/akaxin/messageList", data, function(result) {
+			$.each(result, function (index, groupObj) {
+				
+            });
+		}, "JSON");
 	}
 	
 	function gotoChatContentBottom(){

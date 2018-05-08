@@ -1,10 +1,10 @@
-package com.akaxin.site.connector.websocket;
+package com.akaxin.site.connector.ws;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.site.connector.constant.AkxProject;
-import com.akaxin.site.connector.websocket.handler.WebSocketServerHandler;
+import com.akaxin.site.connector.ws.handler.WsServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -15,7 +15,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
@@ -27,13 +26,13 @@ import io.netty.util.concurrent.GenericFutureListener;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-05-02 15:15:21
  */
-public abstract class WebSocketServer {
-	private static Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+public abstract class WsServer {
+	private static Logger logger = LoggerFactory.getLogger(WsServer.class);
 	private ServerBootstrap bootstrap;
 	private EventLoopGroup parentGroup;
 	private EventLoopGroup childGroup;
 
-	public WebSocketServer() {
+	public WsServer() {
 		// 负责对外连接线程
 		parentGroup = new NioEventLoopGroup();
 		// 负责对内分发业务的线程
@@ -57,7 +56,7 @@ public abstract class WebSocketServer {
 				// WebSocket 访问地址
 //				ch.pipeline().addLast(new WebSocketServerProtocolHandler("/akaxin/ws"));
 				// 自定义handler
-				ch.pipeline().addLast(new WebSocketServerHandler());
+				ch.pipeline().addLast(new WsServerHandler());
 			}
 		});
 
