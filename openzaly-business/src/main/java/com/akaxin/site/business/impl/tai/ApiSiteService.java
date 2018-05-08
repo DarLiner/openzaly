@@ -155,11 +155,14 @@ public class ApiSiteService extends AbstractRequest {
 				logger.debug("注册方式：实名注册");
 				if (StringUtils.isNotBlank(phoneToken)) {
 					phoneId = UserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
-					logger.debug("实名注册，站点获取手机号：{}", phoneId);
+					logger.info("实名注册，站点获取手机号：{}", phoneId);
 					if (!StringUtils.isNotBlank(phoneId)) {
 						errorCode = ErrorCode2.ERROR_REGISTER_PHONEID;
 						return commandResponse.setErrCode2(errorCode);
 					}
+				} else {
+					errorCode = ErrorCode2.ERROR_REGISTER_PHONETOKEN;
+					return commandResponse.setErrCode2(errorCode);
 				}
 				break;
 			default:
