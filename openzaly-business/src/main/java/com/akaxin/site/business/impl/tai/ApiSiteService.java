@@ -130,7 +130,7 @@ public class ApiSiteService extends AbstractRequest {
             String userIdPubk = request.getUserIdPubk();
             String userName = request.getUserName();
             String userPhoto = request.getUserPhoto();
-            String userUic = "000000";
+            String userUic = request.getUserUic();
             String applyInfo = request.getApplyInfo();
             String phoneToken = request.getPhoneToken();
             String phoneId = null;// 通过phoneCod
