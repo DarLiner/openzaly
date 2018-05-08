@@ -211,8 +211,7 @@ public class ApiSiteService extends AbstractRequest {
 					command.getAction());
 
 			if (ErrorCode2.SUCCESS == errorCode) {
-				boolean addRes = addDefaultFriendsAndGroups(siteUserId);
-				logger.debug("添加默认好友与群组={}", addRes);
+				addDefaultFriendsAndGroups(siteUserId);
 
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());
@@ -226,18 +225,21 @@ public class ApiSiteService extends AbstractRequest {
 
 	// 增加默认好友以及群组
 	private boolean addDefaultFriendsAndGroups(String siteUserId) {
+		boolean a = false;
+		boolean b = false;
 		try {
-			boolean a = false;
-			boolean b = false;
 			List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
 			if (userDefault != null && userDefault.size() > 0) {
 				for (String s : userDefault) {
 					a = UserFriendDao.getInstance().agreeApply(siteUserId, s, true);
 				}
-			} else {
-				logger.debug("默认好友为空");
 			}
 			logger.debug("添加默认好友={}", a);
+		} catch (Exception e) {
+			logger.error("add default friends and groups error", e);
+		}
+
+		try {
 			List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
 			if (groupDefault != null && groupDefault.size() > 0) {
 				ArrayList<String> strings = new ArrayList<>();
@@ -246,14 +248,13 @@ public class ApiSiteService extends AbstractRequest {
 					b = UserGroupDao.getInstance().addGroupMember(null, s, strings);
 				}
 				logger.debug("添加默认群组={}", b);
-			} else {
-				logger.debug("默认群组为空");
 			}
-			return a && b ? true : false;
+
 		} catch (Exception e) {
 			logger.error("add default friends and groups error", e);
 		}
-		return false;
+
+		return a && b ? true : false;
 	}
 
 	private void justForAdminUser(String siteUserId, Map<Integer, String> header) {
