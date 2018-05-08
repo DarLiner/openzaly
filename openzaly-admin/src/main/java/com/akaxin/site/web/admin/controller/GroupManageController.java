@@ -24,8 +24,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.akaxin.site.business.dao.SiteConfigDao;
+import com.akaxin.site.storage.bean.UserProfileBean;
+import com.akaxin.site.web.admin.service.IBasicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +57,8 @@ public class GroupManageController extends AbstractController {
 
     @Resource(name = "groupManageService")
     private IGroupService groupService;
+    @Autowired
+    private IBasicService basicService;
 
     // admin.html 为群列表页
     @RequestMapping("/index")
@@ -199,6 +204,30 @@ public class GroupManageController extends AbstractController {
         }
 
         return modelAndView;
+    }
+
+    @RequestMapping("/reFlush")
+    @ResponseBody
+
+    public Map<String, Object> reFlushDefault() {
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        List<String> groupDefault = basicService.getGroupDefault();
+        if (groupDefault == null || groupDefault.size() <= 0) {
+            stringObjectHashMap.put("size", 0);
+            return stringObjectHashMap;
+        }
+        ArrayList<Map<String, Object>> data = new ArrayList<>();
+        for (String s : groupDefault) {
+            GroupProfileBean bean = groupService.getGroupProfile(s);
+            HashMap<String, Object> groupMap = new HashMap<>();
+            groupMap.put("siteGroupId", bean.getGroupId());
+            groupMap.put("groupName", bean.getGroupName());
+            groupMap.put("groupPhoto", bean.getGroupPhoto());
+            data.add(groupMap);
+        }
+        stringObjectHashMap.put("size", data.size());
+        stringObjectHashMap.put("data", data);
+        return stringObjectHashMap;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/list")

@@ -83,4 +83,14 @@ public class BasicManageService implements IBasicService {
         return false;
     }
 
+    @Override
+    public List<String> getUserDefault() {
+        return SiteConfigDao.getInstance().getUserDefault();
+    }
+
+    @Override
+    public List<String> getGroupDefault() {
+        return SiteConfigDao.getInstance().getGroupDefault();
+    }
+
 }

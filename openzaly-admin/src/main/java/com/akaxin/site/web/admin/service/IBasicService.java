@@ -1,5 +1,6 @@
 package com.akaxin.site.web.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IBasicService {
@@ -11,4 +12,8 @@ public interface IBasicService {
     boolean setUserDefault(String site_user_id);
 
     boolean delUserDefault(String site_user_id);
+
+    List<String> getUserDefault();
+
+    List<String> getGroupDefault();
 }

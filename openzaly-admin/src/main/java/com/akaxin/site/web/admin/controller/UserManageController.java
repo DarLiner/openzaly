@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +140,30 @@ public class UserManageController extends AbstractController {
         }
 
         return modelAndView;
+    }
+
+    @RequestMapping("/reFlush")
+    @ResponseBody
+    public Map<String, Object> reFlushDefault() {
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        List<String> userDefault = basicService.getUserDefault();
+        if (userDefault == null || userDefault.size() <= 0) {
+            stringObjectHashMap.put("size", 0);
+            return stringObjectHashMap;
+        }
+        ArrayList<Map<String, Object>> data = new ArrayList<>();
+        for (String s : userDefault) {
+            UserProfileBean bean = userService.getUserProfile(s);
+            HashMap<String, Object> userMap = new HashMap<>();
+            userMap.put("siteUserId", bean.getSiteUserId());
+            userMap.put("userName", bean.getUserName());
+            userMap.put("userPhoto", bean.getUserPhoto());
+            userMap.put("userStatus", bean.getUserStatus());
+            data.add(userMap);
+        }
+        stringObjectHashMap.put("size", data.size());
+        stringObjectHashMap.put("data", data);
+        return stringObjectHashMap;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/userList")
