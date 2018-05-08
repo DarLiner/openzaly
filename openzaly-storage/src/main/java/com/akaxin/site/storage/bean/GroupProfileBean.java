@@ -14,6 +14,17 @@ public class GroupProfileBean {
 	private long createTime;
 	private boolean closeInviteGroupChat;
 
+	public int getDefaultState() {
+		return defaultState;
+	}
+
+	public void setDefaultState(int defaultState) {
+		this.defaultState = defaultState;
+	}
+
+	//默认添加状态
+	private int defaultState;
+
 	public int getId() {
 		return id;
 	}

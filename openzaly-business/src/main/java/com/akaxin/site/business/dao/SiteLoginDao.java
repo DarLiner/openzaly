@@ -30,6 +30,8 @@ import com.akaxin.site.storage.service.DeviceDaoService;
 import com.akaxin.site.storage.service.UserProfileDaoService;
 import com.akaxin.site.storage.service.UserSessionDaoService;
 
+import javax.transaction.TransactionRequiredException;
+
 /**
  * 用户登陆使用dao，负责用户信息入库
  * 
@@ -111,4 +113,7 @@ public class SiteLoginDao {
 		return false;
 	}
 
+	public boolean addDefault(UserProfileBean regBean) {
+		return true;
+	}
 }
