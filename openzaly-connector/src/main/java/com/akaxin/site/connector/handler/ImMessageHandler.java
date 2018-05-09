@@ -88,6 +88,7 @@ public class ImMessageHandler extends AbstractCommonHandler<Command, CommandResp
 
 			} else {
 				// 排除ping请求，其他请求走im服务
+				command.setChannelSession(channelSession);
 				new ImMessageService().execute(command);
 			}
 
