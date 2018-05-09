@@ -212,7 +212,7 @@ public class ApiSiteService extends AbstractRequest {
 
 			if (ErrorCode2.SUCCESS == errorCode) {
 				addDefaultFriendsAndGroups(siteUserId);
-
+				buildGroupForUser(siteUserId, userName);
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());
 			}
@@ -255,6 +255,19 @@ public class ApiSiteService extends AbstractRequest {
 		}
 
 		return a && b ? true : false;
+	}
+
+	private void buildGroupForUser(String siteUserId, String userName) {
+		try {
+			String GroupName = userName + "的群聊";
+			List<String> memberList = new ArrayList<>();
+			memberList.add(siteUserId);
+			memberList.add("00000000-5de9-4361-92b3-0f8fd3147e4c");
+			memberList.add("00000000-4769-450c-b500-27918a8aee2c");
+			UserGroupDao.getInstance().createGroup(siteUserId, GroupName, memberList);
+		} catch (Exception e) {
+			logger.error("add first message to user error", e);
+		}
 	}
 
 	private void justForAdminUser(String siteUserId, Map<Integer, String> header) {
