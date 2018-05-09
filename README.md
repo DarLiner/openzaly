@@ -19,6 +19,19 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
 
 反馈与建议，请联系 hi@akaxin.xyz
 
+特性：
+
+* 单聊、群聊（含文字、图片、语音等）
+* 端到端的加密消息（服务端不可解密，服务器可通过配置关闭此特性）
+* 匿名注册、实名注册，以及注册邀请码机制（只允许特定用户注册）
+* 扩展机制
+* 等
+
+
+<p align="center">
+  <img align="center" src="https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/5f/56/82/5f56825f-5a1d-751a-76ee-e4af3337133c/pr_source.png/0x0ss.jpg" width="200"  /> &nbsp; <img align="center" src="https://is1-ssl.mzstatic.com/image/thumb/Purple128/v4/0a/13/7f/0a137f45-a89e-57d6-3135-5c72b219b28d/pr_source.png/0x0ss.jpg" width="200"  /> &nbsp; <img align="center" src="https://is1-ssl.mzstatic.com/image/thumb/Purple128/v4/45/ec/0a/45ec0a96-6683-049e-139b-f11aaea306c8/pr_source.png/0x0ss.jpg" width="200"  /> &nbsp;
+</p>
+
 
 一、快速体验
 ----
@@ -68,15 +81,20 @@ sh build.sh
 三、扩展开发
 ----
 
-Akaxin 具有灵活、强大的扩展机制（“管理平台” 就是一个扩展）。通过嵌入WEB页面，与后端的扩展API进行交互， 可以很轻松的构建像附近交友、店铺点评、在线游戏等丰富多彩的业务功能，而你的聊天服务器，也将摇身一变，成为一个强大的社交软件平台。
+Akaxin 具有灵活、强大的扩展机制 `(“管理平台” 就是一个扩展)`。通过嵌入WEB页面，与后端的扩展API进行交互， 可以很轻松的构建丰富的业务功能，如：
+
+* 附近交友
+* 店铺点评
+* 在线游戏
+* 等等等等
+
+你的聊天服务器，将摇身一变，成为一个强大的社交软件平台。
 
 > 扩展机制处于技术预览阶段，如果你希望在自己的业务中开发自己的扩展，可以联系我们（ mail: hi@akaxin.xyz ），我们将免费提供文档与技术答疑。
 
 以下是我们开发的一个 “校园社交” 的扩展，截图如下：
 
 > 大家可以去 demo.akaxin.com 体验。
-
-**校园扩展截图**
 
 
 
