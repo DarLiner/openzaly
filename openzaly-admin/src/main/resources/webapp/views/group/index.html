@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -34,6 +34,28 @@
 </head>
 
 <body ontouchstart="">
+<div class="weui-pull-to-refresh__layer">
+    <div class='weui-pull-to-refresh__arrow'></div>
+    <div class='weui-pull-to-refresh__preloader'></div>
+    <div class="down">下拉刷新</div>
+    <div class="up">释放刷新</div>
+    <div class="refresh">正在刷新</div>
+</div>
+<div class="defaultGroup">
+    <div class="weui-cells__title weui-cell default_group_lists" th:unless="${groupDefaultSize} == 0">
+        默认群列表
+    </div>
+    <div class="weui-cells demos-content-padded default_group_lists" id='default_group_lists'
+         th:unless="${groupDefaultSize} == 0">
+        <a class="weui-cell weui-cell_access group-info" th:each="group:${groupList}"
+           th:attr="id=${group.groupId},group-id=${group.groupId},group-name=${group.groupName}"
+           href="javascript:;" url-data="/group/manage">
+            <div class="weui-cell__bd"><p th:text="${group.groupName}"></p></div>
+            <div class="weui-cell__ft"></div>
+        </a>
+
+    </div>
+</div>
 <div class="weui-cells__title weui-cell ">
     群列表
 </div>
@@ -150,8 +172,7 @@
     function loadGroupList() {
         if (loading) {
             $('.loadmore_group').addClass('weui-loadmore_line');
-            $('.loadmore_group span').html('暂无数据');
-            $('.loadmore_group i').remove();
+            $('.loadmore_group span').html('到底啦');
             return;
         }
         page = page + 1;
@@ -168,7 +189,7 @@
         var data = results.groupData;
         var html = '';
         $.each(data, function (index, group) {
-            var html = '<a class="weui-cell weui-cell_access group-info" group-id="' + group.siteGroupId + '"  href="javascript:;" group-name="' + group.groupName + '" url-data="/group/manage"> <div class="weui-cell__bd"> <p>' + group.groupName + '</p> </div> <div class="weui-cell__ft"> </div> </a>';
+            var html = '<a class="weui-cell weui-cell_access group-info" id="' + group.siteGroupId + '" group-id="' + group.siteGroupId + '"  href="javascript:;" group-name="' + group.groupName + '" url-data="/group/manage"> <div class="weui-cell__bd"> <p>' + group.groupName + '</p> </div> <div class="weui-cell__ft"> </div> </a>';
             $('#group-lists').append(html);
         });
         loading = results.loading;
@@ -176,6 +197,39 @@
             $(".weui-loadmore__tips").html("到底啦");
         } else {
             $(".weui-loadmore__tips").html("加载更多");
+        }
+    }
+
+    $(document.body).pullToRefresh(function () {
+        reqUrl("/group/reFlush", null, "reFlush");
+        $('#group-lists').html("");
+        page = 0;
+        loading = false;
+        loadGroupList();
+        $(document.body).pullToRefreshDone();
+
+    });
+
+    function reFlush(results) {
+        results = eval("(" + results + ")");
+        var size = results.size;
+        if (size <= 0) {
+            $('.defaultGroup').html("");
+        } else {
+            $('.defaultGroup').html("");
+            var defHtml = '<div class="weui-cells__title weui-cell default_group_lists" th:unless="${groupDefaultSize} == 0">\n' +
+                '        默认群列表\n' +
+                '    </div>\n' +
+                '    <div class="weui-cells demos-content-padded default_group_lists" id=\'default_group_lists\'\n' +
+                '         th:unless="${groupDefaultSize} == 0"></div>';
+            $('.defaultGroup').append(defHtml);
+            var data = results.data;
+            var html = '';
+            $.each(data, function (index, group) {
+                var html = '<a class="weui-cell weui-cell_access group-info" group-id="' + group.siteGroupId + '"  href="javascript:;" group-name="' + group.groupName + '" url-data="/group/manage"> <div class="weui-cell__bd"> <p>' + group.groupName + '</p> </div> <div class="weui-cell__ft"> </div> </a>';
+                $('#' + group.siteGroupId).remove();
+                $('#default_group_lists').append(html);
+            });
         }
     }
 </script>

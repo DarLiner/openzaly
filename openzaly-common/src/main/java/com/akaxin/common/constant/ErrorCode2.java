@@ -44,6 +44,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR_REGISTER_SAVEPROFILE("error.alter", "保存用户数据失败"), // 用户注册失败
 	ERROR_REGISTER_UIC("error.alter", "用户邀请码错误"), // 用户邀请码错误
 	ERROR_REGISTER_PHONEID("error.alter", "用户实名手机号验证错误"), // 验证手机号失败
+	ERROR_REGISTER_PHONETOKEN("error.phone.token", "用户实名认证失败"), // 验证手机号失败
 
 	ERROR2_MESSAGE_SEND_FAIL("error.alter", "消息发送失败"), //
 

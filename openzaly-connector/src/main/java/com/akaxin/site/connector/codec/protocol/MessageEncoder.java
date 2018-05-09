@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.RequestAction;
-import com.akaxin.site.connector.codec.parser.ParserConst;
+import com.akaxin.site.connector.codec.parser.ChannelConst;
 import com.akaxin.site.connector.constant.AkxProject;
 
 import io.netty.buffer.ByteBuf;
@@ -62,7 +62,7 @@ public class MessageEncoder extends MessageToByteEncoder<RedisCommand> {
 	protected void encode(ChannelHandlerContext ctx, RedisCommand msg, ByteBuf out) throws Exception {
 		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String clientIp = socketAddress.getAddress().getHostAddress();
-		ChannelSession channelSession = ctx.channel().attr(ParserConst.CHANNELSESSION).get();
+		ChannelSession channelSession = ctx.channel().attr(ChannelConst.CHANNELSESSION).get();
 		String version = msg.getParameterByIndex(0);
 		String action = msg.getParameterByIndex(1);
 		byte[] params = msg.getBytesParamByIndex(2);

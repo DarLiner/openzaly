@@ -41,6 +41,7 @@ import com.akaxin.site.connector.handler.ApiRequestHandler;
 import com.akaxin.site.connector.handler.HttpRequestHandler;
 import com.akaxin.site.connector.handler.ImMessageHandler;
 import com.akaxin.site.connector.handler.ImSiteAuthHandler;
+import com.akaxin.site.connector.handler.WSRequestHandler;
 import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
@@ -97,7 +98,10 @@ public class Bootstrap {
 			// start server
 			startHttpServer(httpAddress, httpPort);// 0.0.0.0:2021
 			startNettyServer(siteAddress, sitePort);// 0.0.0.0:8080
-			startWebSocketServer("0.0.0.0", 9090);// 0.0.0.0:9090
+
+
+            // disable websocket server
+			//startWebSocketServer("0.0.0.0", 9090);// 0.0.0.0:9090
 
 			// start spring
 			initSpringBoot(args);
@@ -168,6 +172,12 @@ public class Bootstrap {
 
 	private static void startWebSocketServer(String address, int port) throws Exception {
 		new WsServer() {
+
+			@Override
+			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
+				executor.addChain("WS-ACTION", new WSRequestHandler());
+			}
+
 		}.start(address, port);
 	}
 

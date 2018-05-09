@@ -3,6 +3,10 @@ package com.akaxin.site.connector.ws;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.command.Command;
+import com.akaxin.common.command.CommandResponse;
+import com.akaxin.common.executor.AbstracteExecutor;
+import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.ws.handler.WsServerHandler;
 
@@ -28,11 +32,15 @@ import io.netty.util.concurrent.GenericFutureListener;
  */
 public abstract class WsServer {
 	private static Logger logger = LoggerFactory.getLogger(WsServer.class);
+
+	private AbstracteExecutor<Command, CommandResponse> executor;
 	private ServerBootstrap bootstrap;
 	private EventLoopGroup parentGroup;
 	private EventLoopGroup childGroup;
 
 	public WsServer() {
+		executor = new SimpleExecutor<Command, CommandResponse>();
+		loadExecutor(executor);
 		// 负责对外连接线程
 		parentGroup = new NioEventLoopGroup();
 		// 负责对内分发业务的线程
@@ -49,14 +57,14 @@ public abstract class WsServer {
 				// HttpServerCodec：将请求和应答消息解码为HTTP消息
 				ch.pipeline().addLast(new HttpServerCodec());
 				// 针对大文件上传时，把 HttpMessage 和 HttpContent 聚合成一个
-				// FullHttpRequest,并定义可以接受的数据大小64M，可以支持params+multipart
+				// FullHttpRequest,并定义可以接受的数据大小64M(可以支持params+multipart)
 				ch.pipeline().addLast(new HttpObjectAggregator(64 * 1024));
 				// 针对大文件下发，分块写数据
 				ch.pipeline().addLast(new ChunkedWriteHandler());
 				// WebSocket 访问地址
-//				ch.pipeline().addLast(new WebSocketServerProtocolHandler("/akaxin/ws"));
+				// ch.pipeline().addLast(new WebSocketServerProtocolHandler("/akaxin/ws"));
 				// 自定义handler
-				ch.pipeline().addLast(new WsServerHandler());
+				ch.pipeline().addLast(new WsServerHandler(executor));
 			}
 		});
 
@@ -102,4 +110,5 @@ public abstract class WsServer {
 		}
 	}
 
+	public abstract void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor);
 }

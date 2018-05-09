@@ -21,6 +21,11 @@
             margin-top: 30px;
         }
 
+        .basic-color {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
         footer {
             text-align: center;
             font-size: 14px;
@@ -70,9 +75,17 @@
             </a>
 
             <div class="weui-cell weui-cell_access"></div>
+            <div class="weui-btn-area">
+                <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
+                   url-data="/group/setGroupDefault" href="javascript:" id="group_default"
+                   th:if="${defaultState}==0" th:attr="defaultState=${defaultState},group-id=${group_id}">设为默认添加群</a>
 
-            <div style="margin-top:40px">
-                <a href="javascript:;" url-data="/group/dissmissGroup" class="weui-btn weui-btn_warn disband-group"
+                <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
+                   url-data="/group/delGroupDefault" href="javascript:" id="group_default"
+                   th:if="${defaultState}==1" th:attr="defaultState=${defaultState},group-id=${group_id}">设为普通群</a>
+
+                <a href="javascript:;" url-data="/group/dissmissGroup"
+                   class="weui-btn basic-weui-btn weui-btn_warn disband-group"
                    th:attr="group-id=${group_id}">解散群</a>
             </div>
         </div>
@@ -203,6 +216,33 @@
             $.toast("解散群成功");
         } else {
             $.toast("解散群失败", "forbidden");
+        }
+    }
+
+    $(document).on("click", ".group_default", function () {
+        var groupId = $(this).attr('group-id');
+        var reqUri = $(this).attr('url-data');
+        var params = {
+            "group_id": groupId,
+        };
+        reqUrl(reqUri, JSON.stringify(params), 'groupDefault');
+    });
+
+    function groupDefault(results) {
+        if (results == 'success') {
+            $.toast("操作成功");
+            var attr = $('.group_default').attr('defaultState');
+            if (attr == '0') {
+                $('.group_default').attr('defaultState', '1');
+                $('.group_default').attr('url-data', '/group/delGroupDefault');
+                $('.group_default').html('设为普通群');
+            } else {
+                $('.group_default').attr('defaultState', '0');
+                $('.group_default').attr('url-data', '/group/setGroupDefault');
+                $('.group_default').html('设为默认添加群');
+            }
+        } else {
+            $.toast("操作失败", "forbidden");
         }
     }
 </script>

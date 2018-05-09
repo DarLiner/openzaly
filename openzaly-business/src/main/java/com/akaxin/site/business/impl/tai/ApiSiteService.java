@@ -17,7 +17,9 @@ package com.akaxin.site.business.impl.tai;
 
 import java.security.PublicKey;
 import java.security.Signature;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,12 +43,16 @@ import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.akaxin.proto.site.ApiSiteRegisterProto;
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.dao.SiteLoginDao;
+import com.akaxin.site.business.dao.UserFriendDao;
+import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
+import com.akaxin.site.business.impl.notice.User2Notice;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.business.impl.site.UserPhone;
 import com.akaxin.site.business.impl.site.UserUic;
 import com.akaxin.site.storage.api.IUserDeviceDao;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
@@ -61,6 +67,7 @@ import com.akaxin.site.storage.service.DeviceDaoService;
  * @since 2017-10-17 18:14:10
  */
 public class ApiSiteService extends AbstractRequest {
+
 	private static final Logger logger = LoggerFactory.getLogger(ApiSiteService.class);
 	private static final int DEFAULT_PORT = 2021;
 	private IUserDeviceDao userDeviceDao = new DeviceDaoService();
@@ -155,11 +162,14 @@ public class ApiSiteService extends AbstractRequest {
 				logger.debug("注册方式：实名注册");
 				if (StringUtils.isNotBlank(phoneToken)) {
 					phoneId = UserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
-					logger.debug("实名注册，站点获取手机号：{}", phoneId);
+					logger.info("实名注册，站点获取手机号：{}", phoneId);
 					if (!StringUtils.isNotBlank(phoneId)) {
 						errorCode = ErrorCode2.ERROR_REGISTER_PHONEID;
 						return commandResponse.setErrCode2(errorCode);
 					}
+				} else {
+					errorCode = ErrorCode2.ERROR_REGISTER_PHONETOKEN;
+					return commandResponse.setErrCode2(errorCode);
 				}
 				break;
 			default:
@@ -203,6 +213,7 @@ public class ApiSiteService extends AbstractRequest {
 					command.getAction());
 
 			if (ErrorCode2.SUCCESS == errorCode) {
+				addDefaultFriendsAndGroups(siteUserId);
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());
 			}
@@ -213,27 +224,68 @@ public class ApiSiteService extends AbstractRequest {
 		return commandResponse.setErrCode2(errorCode);
 	}
 
-	private void justForAdminUser(String siteUserId, Map<Integer, String> header) {
-		// 如果站点没有管理员
-		if (SiteConfig.hasNoAdminUser()) {
-			logger.debug("user first time to register site server ,set it as admin:{} map:{}", siteUserId, header);
-			SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_ADMIN_VALUE, siteUserId);
-			if (header != null) {
-				String host = header.get(CoreProto.HeaderKey.CLIENT_REQUEST_SERVER_HOST_VALUE);
-				if (StringUtils.isNotEmpty(host)) {
-					SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, host);
-					SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE, host);
+	// 增加默认好友以及群组
+	private boolean addDefaultFriendsAndGroups(String siteUserId) {
+		boolean a = false;
+		boolean b = false;
+		try {
+			List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
+			if (userDefault != null && userDefault.size() > 0) {
+				for (String s : userDefault) {
+					UserFriendDao.getInstance().saveFriendApply(s, siteUserId, "给我发消息试试看吧");
+					a = UserFriendDao.getInstance().agreeApply(siteUserId, s, true);
+					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId, s);
+					new User2Notice().addFriendTextMessage(applyBean);
 				}
-				String port = header.get(CoreProto.HeaderKey.CLIENT_REQUEST_SERVER_HOST_VALUE);
-				if (StringUtils.isNotBlank(port)) {
-					port = "" + DEFAULT_PORT;
-					SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_PORT_VALUE, port);
-				}
-				// 修改邀请码注册方式
-				SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE,
-						ConfigProto.InviteCodeConfig.UIC_NO_VALUE + "");
 			}
-			SiteConfig.updateConfig();
+			logger.debug("添加默认好友={}", a);
+		} catch (Exception e) {
+			logger.error("add default friends and groups error", e);
+		}
+
+		try {
+			List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
+			if (groupDefault != null && groupDefault.size() > 0) {
+				ArrayList<String> strings = new ArrayList<>();
+				strings.add(siteUserId);
+				for (String s : groupDefault) {
+					b = UserGroupDao.getInstance().addGroupMember(null, s, strings);
+				}
+				logger.debug("添加默认群组={}", b);
+			}
+
+		} catch (Exception e) {
+			logger.error("add default friends and groups error", e);
+		}
+
+		return a && b ? true : false;
+	}
+
+	private void justForAdminUser(String siteUserId, Map<Integer, String> header) {
+		try {
+			// 如果站点没有管理员
+			if (SiteConfig.hasNoAdminUser()) {
+				logger.debug("user first time to register site server ,set it as admin:{} map:{}", siteUserId, header);
+				SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_ADMIN_VALUE, siteUserId);
+				if (header != null) {
+					String host = header.get(CoreProto.HeaderKey.CLIENT_REQUEST_SERVER_HOST_VALUE);
+					if (StringUtils.isNotEmpty(host)) {
+						SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, host);
+						SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE, host);
+					}
+					String port = header.get(CoreProto.HeaderKey.CLIENT_REQUEST_SERVER_HOST_VALUE);
+					if (StringUtils.isNotBlank(port)) {
+						port = "" + DEFAULT_PORT;
+						SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.SITE_PORT_VALUE, port);
+					}
+					// 修改邀请码注册方式
+					SiteConfigDao.getInstance().updateSiteConfig(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE,
+							ConfigProto.InviteCodeConfig.UIC_NO_VALUE + "");
+				}
+				SiteConfig.updateConfig();
+			}
+		} catch (Exception e) {
+			logger.error("set site admin error", e);
 		}
 	}
 

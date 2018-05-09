@@ -95,6 +95,13 @@
         <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info"
            url-data="/user/updateProfile" href="javascript:" id="update_user_info">确定</a>
 
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
+           url-data="/user/setUserDefault" href="javascript:" id="user_default"
+           th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为默认添加用户</a>
+        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
+           url-data="/user/delUserDefault" href="javascript:" id="user_default"
+           th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">设为普通用户</a>
+
         <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
            class="sealup-site-user weui-btn weui-btn_warn " url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a>
         <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
@@ -252,6 +259,33 @@
         var reqUri = $(this).attr('url-data');
         reqUrl(reqUri, JSON.stringify(userInfo), 'updateSiteUser');
     });
+
+    $(document).on("click", ".user_default", function () {
+        var siteUserId = $('.site_user_id').attr('data');
+        var userInfo = {
+            "siteUserId": siteUserId
+        };
+        var reqUri = $(this).attr('url-data');
+        reqUrl(reqUri, JSON.stringify(userInfo), 'UserDefault');
+    });
+
+    function UserDefault(results) {
+        if (results == 'success') {
+            $.toast("操作成功");
+            var attr = $('.user_default').attr('defaultState');
+            if (attr == '0') {
+                $('.user_default').attr('defaultState', '1');
+                $('.user_default').attr('url-data', '/user/delUserDefault');
+                $('.user_default').html('设为普通用户');
+            } else {
+                $('.user_default').attr('defaultState', '0');
+                $('.user_default').attr('url-data', '/user/setUserDefault');
+                $('.user_default').html('设为默认添加用户');
+            }
+        } else {
+            $.toast("操作失败", "forbidden");
+        }
+    }
 
     function unfreezeSiteUser(results) {
         console.log('sealupUser');

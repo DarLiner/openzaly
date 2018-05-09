@@ -17,14 +17,24 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("monitor")
-public class MonitorController {
+public class MonitorController extends AbstractController {
 
     @Autowired
     private IMonitorService monitorService;
 
     @RequestMapping("/index")
     public ModelAndView toMonitor(@RequestBody byte[] bodyParam) {
+
         ModelAndView modelAndView = new ModelAndView("monitor/index");
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return modelAndView;
+            }
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+
         Map<String, Object> model = modelAndView.getModel();
 
         //转换可选时间
@@ -43,6 +53,9 @@ public class MonitorController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return null;
+            }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
