@@ -154,12 +154,12 @@ public abstract class NettyServer {
 
 			channel.pipeline().addLast(new MessageDecoder());
 			channel.pipeline().addLast(new MessageEncoder());
-			channel.pipeline().addLast("timeout", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
+			channel.pipeline().addLast("timeout", new IdleStateHandler(60 * 5, 60 * 5, 60 * 5, TimeUnit.SECONDS));
 
 			// ch.pipeline().addLast(new SslHandler(sslEngine));
 
-			channel.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(20, TimeUnit.SECONDS));
-			channel.pipeline().addLast("writeTimeoutHandler", new WriteTimeoutHandler(20, TimeUnit.SECONDS));
+			channel.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(60 * 5, TimeUnit.SECONDS));
+			channel.pipeline().addLast("writeTimeoutHandler", new WriteTimeoutHandler(60 * 5, TimeUnit.SECONDS));
 			channel.pipeline().addLast(new NettyServerHandler(executor));
 		}
 
