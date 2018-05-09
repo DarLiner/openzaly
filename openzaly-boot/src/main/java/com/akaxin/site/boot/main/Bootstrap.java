@@ -98,7 +98,10 @@ public class Bootstrap {
 			// start server
 			startHttpServer(httpAddress, httpPort);// 0.0.0.0:2021
 			startNettyServer(siteAddress, sitePort);// 0.0.0.0:8080
-			startWebSocketServer("0.0.0.0", 9090);// 0.0.0.0:9090
+
+
+            // disable websocket server
+			//startWebSocketServer("0.0.0.0", 9090);// 0.0.0.0:9090
 
 			// start spring
 			initSpringBoot(args);
