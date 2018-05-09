@@ -47,10 +47,12 @@ import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
+import com.akaxin.site.business.impl.notice.User2Notice;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.business.impl.site.UserPhone;
 import com.akaxin.site.business.impl.site.UserUic;
 import com.akaxin.site.storage.api.IUserDeviceDao;
+import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
@@ -231,7 +233,10 @@ public class ApiSiteService extends AbstractRequest {
 			List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
 			if (userDefault != null && userDefault.size() > 0) {
 				for (String s : userDefault) {
+					UserFriendDao.getInstance().saveFriendApply(s, siteUserId, "给我发消息试试看吧");
 					a = UserFriendDao.getInstance().agreeApply(siteUserId, s, true);
+					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId, s);
+					new User2Notice().addFriendTextMessage(applyBean);
 				}
 			}
 			logger.debug("添加默认好友={}", a);
