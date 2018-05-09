@@ -15,10 +15,7 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -59,8 +56,18 @@ public class UserManageController extends AbstractController {
 
     // admin.html 分页获取用户列表
     @RequestMapping("/index")
-    public ModelAndView toUserIndex() {
+    public ModelAndView toUserIndex(@RequestBody byte[] bodyParam) {
         ModelAndView modelAndView = new ModelAndView("user/index");
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return new ModelAndView("error");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("error");
+        }
         List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
         List<UserProfileBean> userProfileBeans = new ArrayList<>();
         modelAndView.addObject("userDefaultSize", "0");
@@ -81,6 +88,9 @@ public class UserManageController extends AbstractController {
     public String setUserDefault(@RequestBody byte[] bodyParam) {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return "false";
+            }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
             boolean flag = basicService.setUserDefault(site_user_id);
@@ -98,6 +108,9 @@ public class UserManageController extends AbstractController {
     public String delUserDefault(@RequestBody byte[] bodyParam) {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return "false";
+            }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
             boolean flag = basicService.delUserDefault(site_user_id);
@@ -144,7 +157,16 @@ public class UserManageController extends AbstractController {
 
     @RequestMapping("/reFlush")
     @ResponseBody
-    public Map<String, Object> reFlushDefault() {
+    public Map<String, Object> reFlushDefault(@RequestBody byte[] bodyParam) {
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> userDefault = basicService.getUserDefault();
         if (userDefault == null || userDefault.size() <= 0) {

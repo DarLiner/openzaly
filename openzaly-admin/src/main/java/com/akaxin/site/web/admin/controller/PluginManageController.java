@@ -48,18 +48,45 @@ public class PluginManageController extends AbstractController {
     private IPluginService pluginService;
 
     @RequestMapping("/indexPage")
-    public ModelAndView toPluginIndex() {
+    public ModelAndView toPluginIndex(@RequestBody byte[] bodyParam) {
         ModelAndView modelAndView = new ModelAndView("plugin/index");
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        if (!isManager(getRequestSiteUserId(pluginPackage))) {
+            return new ModelAndView("error");
+        }
         return modelAndView;
     }
 
     @RequestMapping("/addPage")
-    public String toPluginAdd() {
+    public String toPluginAdd(@RequestBody byte[] bodyParam) {
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        if (!isManager(getRequestSiteUserId(pluginPackage))) {
+            return "error";
+        }
         return "plugin/add";
     }
 
     @RequestMapping("/listPage")
-    public String toPluginList() {
+    public String toPluginList(@RequestBody byte[] bodyParam) {
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        if (!isManager(getRequestSiteUserId(pluginPackage))) {
+            return "error";
+        }
         return "plugin/list";
     }
 
@@ -140,13 +167,6 @@ public class PluginManageController extends AbstractController {
         return ERROR;
     }
 
-    // 获取扩展列表
-    @RequestMapping(method = RequestMethod.POST, value = "/getPlugin")
-    @ResponseBody
-    public Map<String, Object> getPlugin(HttpServletRequest request, @RequestBody byte[] bodyParam) {
-
-        return null;
-    }
 
     // 获取扩展列表
     @RequestMapping(method = RequestMethod.POST, value = "/pluginList")

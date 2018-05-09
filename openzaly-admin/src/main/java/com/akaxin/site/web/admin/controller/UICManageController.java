@@ -49,18 +49,46 @@ public class UICManageController extends AbstractController {
 	private IUICService uicServer;
 
 	@RequestMapping("/index")
-	public ModelAndView toUICIndex() {
+	public ModelAndView toUICIndex(@RequestBody byte[] bodyParam) {
 		ModelAndView modelAndView = new ModelAndView("uic/index");
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			if (!isManager(getRequestSiteUserId(pluginPackage))) {
+				return new ModelAndView("error");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ModelAndView("error");
+
+		}
 		return modelAndView;
 	}
 
 	@RequestMapping("/unused")
-	public String toUnUsed() {
+	public String toUnUsed(@RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			if (!isManager(getRequestSiteUserId(pluginPackage))) {
+				return "error";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
 		return "uic/unused_list";
 	}
 
 	@RequestMapping("/used")
-	public String toused() {
+	public String toused(@RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			if (!isManager(getRequestSiteUserId(pluginPackage))) {
+				return "error";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
 		return "uic/used_list";
 	}
 

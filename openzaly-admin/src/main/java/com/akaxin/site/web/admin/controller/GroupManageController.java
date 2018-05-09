@@ -18,6 +18,7 @@ package com.akaxin.site.web.admin.controller;
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.dao.SiteConfigDao;
+import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
@@ -59,20 +60,36 @@ public class GroupManageController extends AbstractController {
 
     // admin.html 为群列表页
     @RequestMapping("/index")
-    public ModelAndView toGroupIndex() {
-        ModelAndView modelAndView = new ModelAndView("group/index");
-        List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
-        ArrayList<GroupProfileBean> groupProfileBeans = new ArrayList<>();
-        modelAndView.addObject("groupDefaultSize", "0");
-        if (groupDefault != null && groupDefault.size() > 0) {
-            for (String s : groupDefault) {
-                GroupProfileBean groupProfile = groupService.getGroupProfile(s);
-                groupProfileBeans.add(groupProfile);
-            }
-            modelAndView.addObject("groupList", groupProfileBeans);
-            modelAndView.addObject("groupDefaultSize", String.valueOf(groupDefault.size()));
+    public ModelAndView toGroupIndex(@RequestBody byte[] bodyParam) {
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
         }
-        return modelAndView;
+        Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+        String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+        boolean isManager = SiteConfig.isSiteManager(siteUserId);
+        if (isManager) {
+
+
+            ModelAndView modelAndView = new ModelAndView("group/index");
+            List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
+            ArrayList<GroupProfileBean> groupProfileBeans = new ArrayList<>();
+            modelAndView.addObject("groupDefaultSize", "0");
+            if (groupDefault != null && groupDefault.size() > 0) {
+                for (String s : groupDefault) {
+                    GroupProfileBean groupProfile = groupService.getGroupProfile(s);
+                    groupProfileBeans.add(groupProfile);
+                }
+                modelAndView.addObject("groupList", groupProfileBeans);
+                modelAndView.addObject("groupDefaultSize", String.valueOf(groupDefault.size()));
+            }
+            return modelAndView;
+        } else {
+            return new ModelAndView("error");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -99,8 +116,11 @@ public class GroupManageController extends AbstractController {
             GroupProfileBean groupProfile = groupService.getGroupProfile(siteGroupId);
             model.put("group_id", siteGroupId);
             model.put("defaultState", groupProfile.getDefaultState());
+            return modelAndView;
+        } else {
+            return new ModelAndView("error");
+
         }
-        return modelAndView;
     }
 
     // 跳转到添加群成员界面
@@ -110,6 +130,10 @@ public class GroupManageController extends AbstractController {
         Map<String, Object> model = modelAndView.getModel();
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
+            String requestSiteUserId = getRequestSiteUserId(pluginPackage);
+            if (!isManager(requestSiteUserId)) {
+                return new ModelAndView("error");
+            }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             model.put("siteGroupId", siteGroupId);
@@ -124,6 +148,10 @@ public class GroupManageController extends AbstractController {
     public String setGroupDefault(@RequestBody byte[] bodyParams) {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
+            String requestSiteUserId = getRequestSiteUserId(pluginPackage);
+            if (!isManager(requestSiteUserId)) {
+                return "false";
+            }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             boolean flag = groupService.setGroupDefault(siteGroupId);
@@ -141,6 +169,10 @@ public class GroupManageController extends AbstractController {
     public String delGroupDefault(@RequestBody byte[] bodyParams) {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
+            String requestSiteUserId = getRequestSiteUserId(pluginPackage);
+            if (!isManager(requestSiteUserId)) {
+                return "false";
+            }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             boolean flag = groupService.delUserDefault(siteGroupId);
@@ -206,7 +238,17 @@ public class GroupManageController extends AbstractController {
     @RequestMapping("/reFlush")
     @ResponseBody
 
-    public Map<String, Object> reFlushDefault() {
+    public Map<String, Object> reFlushDefault(@RequestBody byte[] bodyParams) {
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        String siteUserId = getRequestSiteUserId(pluginPackage);
+        if (!isManager(siteUserId)) {
+            return null;
+        }
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> groupDefault = basicService.getGroupDefault();
         if (groupDefault == null || groupDefault.size() <= 0) {
