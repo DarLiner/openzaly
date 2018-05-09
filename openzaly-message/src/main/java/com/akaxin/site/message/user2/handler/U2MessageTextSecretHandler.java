@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.channel.ChannelWriter;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
+import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.crypto.AESCrypto;
@@ -117,7 +118,7 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 						+ "\nAkaxin 是一套开源聊天软件代码，你可以用来搭建自己的聊天服务器。";
 				String base64TsKey = null;
 				byte[] tsKey = AESCrypto.generateTSKey();
-				byte[] contentBytes = AESCrypto.encrypt(tsKey, text.getBytes());
+				byte[] contentBytes = AESCrypto.encrypt(tsKey, text.getBytes(CharsetCoding.UTF_8));
 
 				// 获取接受者的公钥
 				String devicePubkPem = ImUserDeviceDao.getInstance().getDevicePubk(siteUserId, deviceId);
