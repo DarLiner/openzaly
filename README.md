@@ -96,6 +96,10 @@ Akaxin 具有灵活、强大的扩展机制 `(“管理平台” 就是一个扩
 
 以下是我们开发的一个 “校园社交” 的扩展，截图如下：
 
+<p align="center">
+  <img align="center" src="https://raw.githubusercontent.com/akaxincom/faq/master/app_pic/plugin.1.jpeg" width="200"  /> &nbsp; <img align="center" src="https://raw.githubusercontent.com/akaxincom/faq/master/app_pic/plugin.2.jpeg" width="200"  /> &nbsp; <img align="center" src="https://raw.githubusercontent.com/akaxincom/faq/master/app_pic/plugin.3.jpeg" width="200"  /> &nbsp;
+</p>
+
 > 大家可以去 demo.akaxin.com 体验。
 
 
