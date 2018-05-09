@@ -38,7 +38,11 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
 
 **1. 启动服务器**
 
-* **最新版本: openzaly-0.5.4.jar [Github下载](https://github.com/akaxincom/openzaly/releases) [Gitee下载](https://gitee.com/akaxin/openzaly/releases/v0.5.4)**
+  * **最新版本: openzaly-0.5.4.jar**
+    * Github下载: https://github.com/akaxincom/openzaly/releases/download/v0.5.4/openzaly-server.jar
+    * Gitee下载: [下载链接](https://gitee.com/akaxin/openzaly/attach_files/download?i=135501&u=http%3A%2F%2Ffiles.git.oschina.net%2Fgroup1%2FM00%2F03%2F9E%2FPaAvDFry5K-Abyy7Alzm8DHB7SQ148.jar%3Ftoken%3D72b7fc403a66ed8f8231b6e46ef8ef97%26ts%3D1525867876%26attname%3Dopenzaly-server.jar)
+
+  * **Changelog**
     * 支持同时启用邀请码与实名账号
     * 增加默认好友、默认群
     * 管理员首次登陆后，注册机制默认修改为：匿名（无邀请码）
