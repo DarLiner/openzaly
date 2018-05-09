@@ -21,6 +21,11 @@
             margin-top: 30px;
         }
 
+        .basic-color {
+            background-color: #1E88E5;
+            color: #FFFFFF;
+        }
+
         footer {
             text-align: center;
             font-size: 14px;
@@ -71,11 +76,11 @@
 
             <div class="weui-cell weui-cell_access"></div>
             <div class="weui-btn-area">
-                <a class="weui-btn basic-weui-btn weui-btn_warn group_default"
+                <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
                    url-data="/group/setGroupDefault" href="javascript:" id="group_default"
                    th:if="${defaultState}==0" th:attr="defaultState=${defaultState},group-id=${group_id}">设为默认添加群</a>
 
-                <a class="weui-btn basic-weui-btn weui-btn_warn group_default"
+                <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
                    url-data="/group/delGroupDefault" href="javascript:" id="group_default"
                    th:if="${defaultState}==1" th:attr="defaultState=${defaultState},group-id=${group_id}">设为普通群</a>
 
