@@ -113,7 +113,8 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 					return;
 				}
 
-				String text = "我只接受绝密消息";
+				String text = "绝密消息只有聊天双方的设备能解密，网络通道与服务器均无法破解，非常安全。"
+						+ "\nAkaxin 是一套开源聊天软件代码，你可以用来搭建自己的聊天服务器。";
 				String base64TsKey = null;
 				byte[] tsKey = AESCrypto.generateTSKey();
 				byte[] contentBytes = AESCrypto.encrypt(tsKey, text.getBytes());
