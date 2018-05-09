@@ -27,6 +27,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.crypto.HashCrypto;
 import com.akaxin.common.crypto.RSACrypto;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.logs.AkxLog4jManager;
@@ -45,11 +46,10 @@ import com.akaxin.site.connector.handler.ApiRequestHandler;
 import com.akaxin.site.connector.handler.HttpRequestHandler;
 import com.akaxin.site.connector.handler.ImMessageHandler;
 import com.akaxin.site.connector.handler.ImSiteAuthHandler;
-import com.akaxin.site.connector.handler.WSRequestHandler;
 import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
-import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
@@ -177,14 +177,15 @@ public class Bootstrap {
 	}
 
 	private static void startWebSocketServer(String address, int port) throws Exception {
-//		new WsServer() {
-//
-//			@Override
-//			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
-//				executor.addChain("WS-ACTION", new WSRequestHandler());
-//			}
-//
-//		}.start(address, port);
+		// new WsServer() {
+		//
+		// @Override
+		// public void loadExecutor(AbstracteExecutor<Command, CommandResponse>
+		// executor) {
+		// executor.addChain("WS-ACTION", new WSRequestHandler());
+		// }
+		//
+		// }.start(address, port);
 	}
 
 	private static void initSpringBoot(String[] args) {
@@ -231,15 +232,32 @@ public class Bootstrap {
 					userName = "绝密体验小助手";
 				}
 
-				UserProfileBean regBean = new UserProfileBean();
-				regBean.setSiteUserId(siteUserId);
-				regBean.setUserIdPubk(userIdPubk);
-				regBean.setUserName(userName);
-				regBean.setUserPhoto("");
-				regBean.setUserStatus(UserProto.UserStatus.NORMAL_VALUE);
-				regBean.setRegisterTime(System.currentTimeMillis());
+				try {
+					UserProfileBean regBean = new UserProfileBean();
+					regBean.setSiteUserId(siteUserId);
+					regBean.setUserIdPubk(userIdPubk);
+					regBean.setUserName(userName);
+					regBean.setUserPhoto("");
+					regBean.setUserStatus(UserProto.UserStatus.NORMAL_VALUE);
+					regBean.setRegisterTime(System.currentTimeMillis());
 
-				SiteLoginDao.getInstance().registerUser(regBean);
+					SiteLoginDao.getInstance().registerUser(regBean);
+				} catch (Exception e) {
+					
+				}
+
+				// 保存设备信息
+				UserDeviceBean deviceBean = new UserDeviceBean();
+				deviceBean.setDeviceId(HashCrypto.MD5(userIdPubk));
+				deviceBean.setDeviceName("未知设备");
+				deviceBean.setSiteUserId(siteUserId);
+				deviceBean.setUserDevicePubk(userIdPubk);
+				deviceBean.setUserToken("");
+				deviceBean.setActiveTime(System.currentTimeMillis());
+				deviceBean.setAddTime(System.currentTimeMillis());
+
+				SiteLoginDao.getInstance().saveUserDevice(deviceBean);
+
 			}
 		} catch (Exception e) {
 			logger.error("add default officaial Users error");

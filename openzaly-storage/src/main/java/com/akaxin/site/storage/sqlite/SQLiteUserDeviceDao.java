@@ -162,6 +162,22 @@ public class SQLiteUserDeviceDao {
 		return deviceId;
 	}
 
+	public String queryDevicePubk(String siteUserId, String deviceId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT user_device_pubk FROM " + USER_DEVICE_TABLE + " WHERE site_user_id=? AND device_id=?;";
+		String devicePubk = null;
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setString(2, deviceId);
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			devicePubk = rs.getString(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, devicePubk, sql, siteUserId);
+		return devicePubk;
+	}
+
 	/**
 	 * 最新的用户设备，用户最近一次活跃时间算
 	 * 

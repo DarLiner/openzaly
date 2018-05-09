@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.message.user2.handler;
 
+import java.security.PublicKey;
 import java.util.Base64;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,12 +28,15 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.crypto.AESCrypto;
+import com.akaxin.common.crypto.RSACrypto;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.client.ImStcPsnProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
+import com.akaxin.site.message.dao.ImUserDeviceDao;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
+import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.service.MessageDaoService;
 import com.google.protobuf.ByteString;
 
@@ -62,9 +66,9 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 				ByteString byteStr = request.getSecretText().getText();
 				String msgText = Base64.getEncoder().encodeToString(byteStr.toByteArray());
 
+				long msgTime = System.currentTimeMillis();
 				if (!siteFriendId.equals("00000000-4769-450c-b500-27918a8aee2c")) {
 					// 正常流程
-					long msgTime = System.currentTimeMillis();
 					U2MessageBean u2Bean = new U2MessageBean();
 					u2Bean.setMsgId(msgId);
 					u2Bean.setMsgType(type);
@@ -83,6 +87,7 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 					return success;
 
 				} else {
+					msgStatusResponse(command, msgId, msgTime, true);
 					returnOneSecretText(command);
 				}
 
@@ -102,15 +107,29 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 		try {
 			if (siteFriendId.equals("00000000-4769-450c-b500-27918a8aee2c")) {
 				String deviceId = command.getDeviceId();
-
+				System.out.println("-----deviceId=" + deviceId);
 				if (StringUtils.isEmpty(deviceId)) {
 					logger.error("returnOneSecretText error command={}", command.toString());
 					return;
 				}
 
-				String text = "这是一条绝密消息";
-				byte[] tsKey = AESCrypto.generate256TSKey();
+				String text = "我只接受绝密消息";
+				String base64TsKey = null;
+				byte[] tsKey = AESCrypto.generateTSKey();
 				byte[] contentBytes = AESCrypto.encrypt(tsKey, text.getBytes());
+
+				// 获取接受者的公钥
+				String devicePubkPem = ImUserDeviceDao.getInstance().getDevicePubk(siteUserId, deviceId);
+				System.out.println("encrypted content length={}" + contentBytes);
+
+				// 判断公钥是否存在
+				if (StringUtils.isNotEmpty(devicePubkPem)) {
+					PublicKey pubKey = RSACrypto.getRSAPubKeyFromPem(devicePubkPem);
+					byte[] encTsKey = RSACrypto.encrypt(pubKey, tsKey);
+					System.out.println("tskey length=" + encTsKey);
+					base64TsKey = Base64.getEncoder().encodeToString(encTsKey);
+				}
+				System.out.println("base64TsKey = " + base64TsKey);
 
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(buildU2MsgId(siteFriendId));
@@ -118,7 +137,7 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 				u2Bean.setSendUserId(siteFriendId);
 				u2Bean.setSiteUserId(siteUserId);
 				u2Bean.setContent(Base64.getEncoder().encodeToString(contentBytes));
-				u2Bean.setTsKey(Base64.getEncoder().encodeToString(tsKey));
+				u2Bean.setTsKey(base64TsKey);
 				u2Bean.setDeviceId(deviceId);
 				u2Bean.setMsgTime(System.currentTimeMillis());
 

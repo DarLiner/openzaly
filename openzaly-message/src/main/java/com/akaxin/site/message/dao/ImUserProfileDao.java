@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.site.storage.api.IUserDeviceDao;
 import com.akaxin.site.storage.api.IUserProfileDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.service.DeviceDaoService;
 import com.akaxin.site.storage.service.UserProfileDaoService;
 
@@ -50,6 +51,15 @@ public class ImUserProfileDao {
 	public SimpleUserBean getSimpleUserProfile(String siteUserId) {
 		try {
 			return userProfileDao.getSimpleProfileById(siteUserId);
+		} catch (SQLException e) {
+			logger.error("get simple user profile error", e);
+		}
+		return null;
+	}
+
+	public UserProfileBean getUserProfile(String siteUserId) {
+		try {
+			return userProfileDao.getUserProfileById(siteUserId);
 		} catch (SQLException e) {
 			logger.error("get simple user profile error", e);
 		}

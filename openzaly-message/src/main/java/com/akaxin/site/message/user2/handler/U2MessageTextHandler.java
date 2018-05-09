@@ -81,9 +81,9 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
                 boolean success = messageDao.saveU2Message(u2Bean);
                 msgStatusResponse(command, msgId, msgTime, success);
 
-                if (siteFriendId.equals("c99d2dad-126f-4bcc-9f3d-1492de8538a1")) {
-                    u2Bean.setMsgId(UUID.randomUUID().toString());
-                    u2Bean.setMsgType(type);
+                if (siteFriendId.equals("00000000-5de9-4361-92b3-0f8fd3147e4c")) {
+                    u2Bean.setMsgId(buildU2MsgId(siteFriendId));
+                    u2Bean.setMsgType(CoreProto.MsgType.TEXT_VALUE);
                     u2Bean.setSendUserId(siteFriendId);
                     u2Bean.setSiteUserId(siteUserId);
                     String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(msgTime);
@@ -103,26 +103,7 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
                     command.getChannelSession().setSynFinTime(System.currentTimeMillis());
 
                 }
-                if (siteFriendId.equals("00000000-5de9-4361-92b3-0f8fd3147e4c")) {
-                    u2Bean.setMsgId(UUID.randomUUID().toString());
-                    u2Bean.setMsgType(type);
-                    u2Bean.setSendUserId(siteFriendId);
-                    u2Bean.setSiteUserId(siteUserId);
-                    u2Bean.setContent("请给我发送绝密消息。");
-                    u2Bean.setMsgTime(msgTime);
-                    LogUtils.requestDebugLog(logger, command, u2Bean.toString());
-                    String deviceId = command.getDeviceId();
-                    messageDao.saveU2Message(u2Bean);
-                    long l = syncDao.queryMaxU2MessageId(siteUserId);
-                    syncDao.updateU2Pointer(siteUserId, deviceId, l - 1);
-                    CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
-                            .setAction(CommandConst.IM_STC_PSN);
-                    ImStcPsnProto.ImStcPsnRequest pshRequest = ImStcPsnProto.ImStcPsnRequest.newBuilder().build();
-                    commandResponse.setParams(pshRequest.toByteArray());
-                    commandResponse.setErrCode2(ErrorCode2.SUCCESS);
-                    ChannelWriter.writeByDeviceId(deviceId, commandResponse);
-                    command.getChannelSession().setSynFinTime(System.currentTimeMillis());
-                }
+                
                 return success;
 
             }

@@ -51,6 +51,12 @@ public class RSACrypto {
 		return cipher.doFinal(content.getBytes());
 	}
 
+	public static byte[] encrypt(Key key, byte[] content) throws Exception {
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		return cipher.doFinal(content);
+	}
+
 	public static byte[] decrypt(Key key, byte[] encrypted) throws Exception {
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 		cipher.init(Cipher.DECRYPT_MODE, key);

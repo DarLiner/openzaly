@@ -49,6 +49,11 @@ public class DeviceDaoService implements IUserDeviceDao {
 	}
 
 	@Override
+	public String getDevicePubk(String siteUserId, String deviceId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().queryDevicePubk(siteUserId, deviceId);
+	}
+
+	@Override
 	public List<UserDeviceBean> getUserDeviceList(String siteUserId) throws SQLException {
 		return SQLiteUserDeviceDao.getInstance().queryDeviceList(siteUserId);
 	}

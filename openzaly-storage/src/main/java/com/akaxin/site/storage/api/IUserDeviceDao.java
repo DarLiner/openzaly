@@ -19,6 +19,8 @@ public interface IUserDeviceDao {
 
 	public UserDeviceBean getLatestDevice(String siteUserId) throws SQLException;
 
+	public String getDevicePubk(String siteUserId, String deviceId) throws SQLException;
+
 	public List<UserDeviceBean> getUserDeviceList(String siteUserId) throws SQLException;
 
 	public List<UserDeviceBean> getActiveDeviceList(String siteUserId) throws SQLException;
@@ -26,4 +28,5 @@ public interface IUserDeviceDao {
 	public String getUserToken(String siteUserId) throws SQLException;
 
 	public int limitDeviceNum(String siteUserId, int limit) throws SQLException;
+
 }

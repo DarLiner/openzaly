@@ -1,18 +1,22 @@
 package com.akaxin.common.crypto;
 
 import java.security.SecureRandom;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AESCrypto {
 	private static final Logger logger = LoggerFactory.getLogger(AESCrypto.class);
 	public static final String ALGORITHM = "AES/ECB/PKCS5Padding";
+
+	public static final String ALGORITHM_256 = "AES/ECB/PKCS7Padding";
 
 	/**
 	 * 生成Ts-key
@@ -23,8 +27,8 @@ public class AESCrypto {
 		try {
 			KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 			keyGenerator.init(256);
-			SecretKey skey = keyGenerator.generateKey();
-			return skey.getEncoded();
+			SecretKey sk = keyGenerator.generateKey();
+			return sk.getEncoded();
 		} catch (Exception e) {
 			logger.error("generate 256 tsKey error", e);
 		}
@@ -82,6 +86,21 @@ public class AESCrypto {
 			cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
 			return cipher.doFinal(content);
 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("aes encrypt error tsk-size={} content-size={}", tsk.length, content.length);
+		}
+		return null;
+	}
+
+	public static byte[] encrypt256(byte[] tsk, byte[] content) {
+		try {
+			SecretKeySpec key = new SecretKeySpec(tsk, "AES");
+			Security.addProvider(new BouncyCastleProvider());
+			Cipher cipher = Cipher.getInstance(ALGORITHM_256, "BC");// 创建密码器
+			cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
+			return cipher.doFinal(content);
+		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("aes encrypt error tsk-size={} content-size={}", tsk.length, content.length);
 		}
 		return null;
