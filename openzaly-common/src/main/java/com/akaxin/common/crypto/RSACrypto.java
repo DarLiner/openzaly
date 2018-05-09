@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
@@ -34,6 +37,13 @@ import org.slf4j.LoggerFactory;
 public class RSACrypto {
 	private static final Logger logger = LoggerFactory.getLogger(RSACrypto.class);
 	private static final String ALGORITHM = "RSA/ECB/PKCS1Padding";
+
+	// 生成keypair
+	public static KeyPair buildRSAKeyPair() throws NoSuchAlgorithmException {
+		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+		keyPairGenerator.initialize(1024);
+		return keyPairGenerator.genKeyPair();
+	}
 
 	public static byte[] encrypt(Key key, String content) throws Exception {
 		Cipher cipher = Cipher.getInstance(ALGORITHM);

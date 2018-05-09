@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.boot.main;
 
+import java.security.KeyPair;
 import java.util.Base64;
 import java.util.Map;
 
@@ -26,15 +27,18 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.constant.RequestAction;
+import com.akaxin.common.crypto.RSACrypto;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.logs.AkxLog4jManager;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.FileProto.FileType;
+import com.akaxin.proto.core.UserProto;
 import com.akaxin.site.boot.config.AkxProject;
 import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.boot.config.ConfigListener;
 import com.akaxin.site.boot.config.SiteDefaultIcon;
+import com.akaxin.site.business.dao.SiteLoginDao;
 import com.akaxin.site.business.utils.FilePathUtils;
 import com.akaxin.site.business.utils.FileServerUtils;
 import com.akaxin.site.connector.handler.ApiRequestHandler;
@@ -46,6 +50,7 @@ import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
 import com.akaxin.site.web.OpenzalyAdminApplication;
@@ -102,6 +107,10 @@ public class Bootstrap {
 
 			// start spring
 			initSpringBoot(args);
+
+			// 生成两个默认用户，并且存入数据库
+			addDefaultOfficialUsers();
+
 		} catch (Exception e) {
 			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
 			logger.error("openzaly-boot exit!!!");
@@ -168,14 +177,14 @@ public class Bootstrap {
 	}
 
 	private static void startWebSocketServer(String address, int port) throws Exception {
-		new WsServer() {
-
-			@Override
-			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
-				executor.addChain("WS-ACTION", new WSRequestHandler());
-			}
-
-		}.start(address, port);
+//		new WsServer() {
+//
+//			@Override
+//			public void loadExecutor(AbstracteExecutor<Command, CommandResponse> executor) {
+//				executor.addChain("WS-ACTION", new WSRequestHandler());
+//			}
+//
+//		}.start(address, port);
 	}
 
 	private static void initSpringBoot(String[] args) {
@@ -204,6 +213,37 @@ public class Bootstrap {
 			logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
 		}
 		return "";
+	}
+
+	private static void addDefaultOfficialUsers() {
+		try {
+			for (int i = 0; i < 2; i++) {
+				KeyPair keyPair = RSACrypto.buildRSAKeyPair();
+				String userIdPubk = RSACrypto.getPEMFromRSAKey(keyPair.getPublic());
+				String siteUserId = null;
+				String userName = null;
+
+				if (i == 0) {
+					siteUserId = "00000000-5de9-4361-92b3-0f8fd3147e4c";
+					userName = "报时管家";
+				} else {
+					siteUserId = "00000000-4769-450c-b500-27918a8aee2c";
+					userName = "绝密体验小助手";
+				}
+
+				UserProfileBean regBean = new UserProfileBean();
+				regBean.setSiteUserId(siteUserId);
+				regBean.setUserIdPubk(userIdPubk);
+				regBean.setUserName(userName);
+				regBean.setUserPhoto("");
+				regBean.setUserStatus(UserProto.UserStatus.NORMAL_VALUE);
+				regBean.setRegisterTime(System.currentTimeMillis());
+
+				SiteLoginDao.getInstance().registerUser(regBean);
+			}
+		} catch (Exception e) {
+			logger.error("add default officaial Users error");
+		}
 	}
 
 }

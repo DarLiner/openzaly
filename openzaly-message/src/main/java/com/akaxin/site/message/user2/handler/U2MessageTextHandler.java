@@ -103,7 +103,7 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
                     command.getChannelSession().setSynFinTime(System.currentTimeMillis());
 
                 }
-                if (siteFriendId.equals("dbd9f289-5de9-4361-92b3-0f8fd3147e4c")) {
+                if (siteFriendId.equals("00000000-5de9-4361-92b3-0f8fd3147e4c")) {
                     u2Bean.setMsgId(UUID.randomUUID().toString());
                     u2Bean.setMsgType(type);
                     u2Bean.setSendUserId(siteFriendId);

@@ -30,14 +30,14 @@ import com.akaxin.site.web.chat.service.WebChatService;
  * @since 2018-05-02 11:46:51
  */
 @Controller
-@RequestMapping("akaxin")
+//@RequestMapping("akaxin")
 public class WebChatController {
 
 	@Resource(name = "webChatService")
 	private WebChatService webChatService;
 
 	// 跳转到扫描二维码界面
-	@RequestMapping("/index")
+//	@RequestMapping("/index")
 	public ModelAndView toChatIndex() {
 		ModelAndView modelAndView = new ModelAndView("webChat/akaxin_chat_index");
 		modelAndView.getModel().put("siteName", SiteConfig.getConfig(ConfigProto.ConfigKey.SITE_NAME_VALUE));
@@ -46,7 +46,7 @@ public class WebChatController {
 	}
 
 	// 跳转到聊天主页面
-	@RequestMapping("/chat")
+//	@RequestMapping("/chat")
 	public ModelAndView toChatMain(@RequestParam String sessionId) {
 		ModelAndView modelAndView = new ModelAndView("webChat/akaxin_chat_main");
 		System.out.println("/akaxin/chat sessionid=" + sessionId);

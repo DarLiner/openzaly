@@ -15,6 +15,23 @@ public class AESCrypto {
 	public static final String ALGORITHM = "AES/ECB/PKCS5Padding";
 
 	/**
+	 * 生成Ts-key
+	 *
+	 * @return 返回256位的Ts-key
+	 */
+	public static byte[] generate256TSKey() {
+		try {
+			KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+			keyGenerator.init(256);
+			SecretKey skey = keyGenerator.generateKey();
+			return skey.getEncoded();
+		} catch (Exception e) {
+			logger.error("generate 256 tsKey error", e);
+		}
+		return null;
+	}
+
+	/**
 	 * 随机生成AES加密解密KEY
 	 * 
 	 * @return
