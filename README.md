@@ -19,6 +19,15 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
 
 反馈与建议，请联系 hi@akaxin.xyz
 
+特性：
+
+* 单聊、群聊（含文字、图片、语音等）
+* 端到端的加密消息（服务端不可解密，服务器可通过配置关闭此特性）
+* 匿名注册、实名注册，以及注册邀请码机制（只允许特定用户注册）
+* 扩展机制
+* 等
+
+
 <p align="center">
   <img align="center" src="https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/5f/56/82/5f56825f-5a1d-751a-76ee-e4af3337133c/pr_source.png/0x0ss.jpg" width="200"  /> &nbsp; <img align="center" src="https://is1-ssl.mzstatic.com/image/thumb/Purple128/v4/0a/13/7f/0a137f45-a89e-57d6-3135-5c72b219b28d/pr_source.png/0x0ss.jpg" width="200"  /> &nbsp; <img align="center" src="https://is1-ssl.mzstatic.com/image/thumb/Purple128/v4/45/ec/0a/45ec0a96-6683-049e-139b-f11aaea306c8/pr_source.png/0x0ss.jpg" width="200"  /> &nbsp;
 </p>
