@@ -66,8 +66,9 @@ public class Bootstrap {
     private static final String DEBUG_ENV = "DEBUG";
 
     public static void main(String[] args) {
-
+        //增加 -h|-help 启动参数 输出帮助文档
         boolean flag = Helper.startHelper(args);
+        //如果 -h|-help 启动,则不启动项目
         if (!flag) {
             return;
         }
