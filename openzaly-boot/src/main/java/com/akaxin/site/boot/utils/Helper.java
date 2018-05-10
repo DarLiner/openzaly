@@ -8,8 +8,8 @@ public class Helper {
     public static boolean startHelper(String[] args) {
 
         Options options = new Options();
-        options.addOption("h", false, "help list");
-        options.addOption("help", false, "help list");
+        options.addOption("h", false, "help message list");
+        options.addOption("help", false, "help message list");
         PosixParser posixParser = new PosixParser();
         CommandLine commandLine = null;
         try {
@@ -34,7 +34,6 @@ public class Helper {
                 System.out.println("\t-Dsite.address \t\topenzaly Netty address default:0.0.0.0");
                 System.out.println("\t-Dsite.port \t\topenzaly Netty port default:2021");
                 System.out.println("\t-Dhttp.address \t\topenzaly Http address default:0.0.0.0");
-                System.out.println("\t-Dhttp.port \t\topenzaly Http port default:8080");
                 System.out.println("\t-Dhttp.port \t\topenzaly Http port default:8080");
                 System.out.println("\t-Dsite.admin.address \topenzaly AdminSystem address default:127.0.0.1");
                 System.out.println("\t-Dsite.admin.port \topenzaly AdminSystem port default:8081");
