@@ -25,7 +25,7 @@ public class Helper {
                 System.out.println("Akaxin is an open source and free proprietary IM software，you can build private openzaly-server for everyone in any server.");
                 System.out.println();
                 HelpFormatter helpFormatter = new HelpFormatter();
-                helpFormatter.printHelp("OptionsTip java [<name>=value] -jar openzaly-server.jar [-h|-help]", options, false);
+                helpFormatter.printHelp("java [<name>=value] -jar openzaly-server.jar [-h|-help]", options, false);
                 System.out.println();
                 System.out.println("example:java -Dsite.port=2021 -jar openzaly-server.jar ");
                 System.out.println();
