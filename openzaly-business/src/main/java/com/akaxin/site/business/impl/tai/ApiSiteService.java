@@ -309,7 +309,7 @@ public class ApiSiteService extends AbstractRequest {
 			String userToken = loginRequest.getUserToken();
 			LogUtils.requestDebugLog(logger, command, loginRequest.toString());
 
-			if (StringUtils.isAnyEmpty(userIdPubk, userIdSignBase64)) {
+			if (StringUtils.isAnyEmpty(userIdPubk, userIdSignBase64, userToken)) {
 				errCode = ErrorCode2.ERROR2_LOGGIN_USERID_EMPTY;
 				return commandResponse.setErrCode2(errCode);
 			}
