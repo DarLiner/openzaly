@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PORT=$1
-JAVA_JAR="openzaly-boot-jar-with-dependencies"
+JAVA_JAR="openzaly-server"
 
 ##set tcp port
 if [ -n $PORT ]; then

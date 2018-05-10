@@ -13,9 +13,9 @@ if [ -n $PORT2 ]; then
 	PORT2=8080 
 fi
 
-echo "------------start openzaly tcp:port="$PORT" http port="$PORT2
+echo "---------start openzaly-server tcp:port="$PORT" http port="$PORT2
 
-JAVA_JAR="openzaly-boot-jar-with-dependencies"
+JAVA_JAR="openzaly-server"
 PID=$(ps -ef|grep $JAVA_JAR|grep $PORT |head -1| awk '{printf $2}')
 
 #如果存在PID，直接退出，不存在继续执行
@@ -26,7 +26,7 @@ else
     echo "execute Java -P="$PORT
 fi
 
-java -Dsite.port=$PORT -Dhttp.port=$PORT2 -jar openzaly-boot-jar-with-dependencies.jar >>stdout.log 2>&1 &
+java -Dsite.port=$PORT -Dhttp.port=$PORT2 -jar openzaly-server.jar >>stdout.log 2>&1 &
 
 PID=$(ps -ef|grep $JAVA_JAR|grep $PORT |head -1| awk '{printf $2}')
 
