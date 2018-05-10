@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 简单的加载properties文件内容
  * 
@@ -26,10 +29,11 @@ import java.util.Properties;
  * @since 2018-01-24 19:45:17
  */
 public class PropertiesUtils {
+	private static final Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
 
 	public static Properties getDefaultProperties() {
 		Properties properties = new Properties();
-//		properties.put("site.project.env", "DEBUG");
+		// properties.put("site.project.env", "DEBUG");
 		properties.put("site.project.env", "ONLINE");
 		properties.put("site.version", "0.3.2");
 		properties.put("site.address", "0.0.0.0");
@@ -45,9 +49,19 @@ public class PropertiesUtils {
 	}
 
 	public static Properties getProperties(String configPath) throws IOException {
-		InputStream inputStream = ClassLoader.getSystemResourceAsStream(configPath);
 		Properties properties = new Properties();
-		properties.load(inputStream);
+		InputStream inputStream = null;
+		try {
+			inputStream = ClassLoader.getSystemResourceAsStream(configPath);
+			properties.load(inputStream);
+			return properties;
+		} catch (Exception e) {
+			logger.error("get properties error", e);
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
 		return properties;
 	}
 
