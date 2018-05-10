@@ -40,7 +40,7 @@ PID=$(ps -ef|grep $JAVA_JAR|grep $PORT |head -1| awk '{printf $2}')
 
 ###if server is running, exit and echo error
 if [ $PID > 0 ]; then
-    echo "[ERROR] openzaly-server is running PID:"$PID
+    echo "[ERROR] openzaly-server is running [PID:"$PID"]"
     echo "[ERROR] openzaly-server start failure"
     echo ""
     exit
