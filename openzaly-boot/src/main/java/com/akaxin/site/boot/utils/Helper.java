@@ -3,10 +3,11 @@ package com.akaxin.site.boot.utils;
 import org.apache.commons.cli.*;
 
 import javax.sound.midi.Soundbank;
+import java.io.*;
 
 public class Helper {
     public static boolean startHelper(String[] args) {
-
+        BufferedReader buffer = null;
         Options options = new Options();
         options.addOption("h", false, "help message list");
         options.addOption("help", false, "help message list");
@@ -17,11 +18,17 @@ public class Helper {
 
             if (commandLine.hasOption("h") || commandLine.hasOption("help")) {
                 System.out.println();
-                System.out.println("    _      _  __     _     __  __  ___   _   _ \n" +
-                        "   / \\    | |/ /    / \\    \\ \\/ / |_ _| | \\ | |\n" +
-                        "  / _ \\   | ' /    / _ \\    \\  /   | |  |  \\| |\n" +
-                        " / ___ \\  | . \\   / ___ \\   /  \\   | |  | |\\  |\n" +
-                        "/_/   \\_\\ |_|\\_\\ /_/   \\_\\ /_/\\_\\ |___| |_| \\_|\n");
+                //读取文件打印logo
+                File file = new File("classes/logo.txt");
+                try {
+                    buffer = new BufferedReader(new FileReader(file));
+                    String line = null;
+                    while ((line = buffer.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } catch (Exception e) {
+                }
+                System.out.println();
                 System.out.println("Akaxin is an open source and free proprietary IM software，you can build private openzaly-server for everyone in any server.");
                 System.out.println();
                 HelpFormatter helpFormatter = new HelpFormatter();
@@ -47,6 +54,13 @@ public class Helper {
         } catch (ParseException e) {
             System.out.println("input error See '-h or -help' for more help.");
             return false;
+        } finally {
+            //关闭buffer
+            try {
+                buffer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
