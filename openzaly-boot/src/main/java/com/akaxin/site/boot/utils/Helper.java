@@ -1,9 +1,9 @@
 package com.akaxin.site.boot.utils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
@@ -25,7 +25,6 @@ public class Helper {
 	public static boolean startHelper(String[] args) {
 		PrintWriter pw = null;
 		try {
-			pw = new PrintWriter(System.out);
 			Options options = new Options();
 			options.addOption("h", false, "help message list");
 			options.addOption("help", false, "help message list");
@@ -33,8 +32,9 @@ public class Helper {
 			CommandLine commandLine = posixParser.parse(options, args);
 
 			if (commandLine.hasOption("h") || commandLine.hasOption("help")) {
+				pw = new PrintWriter(System.out);
 				// 1.print logo
-				printLogoToSystemOut(pw);
+				showAkaxinBanner(pw);
 				// 2.print Userage
 				HelpFormatter helpFormatter = new HelpFormatter();
 				helpFormatter.printHelp("java [<name>=value] -jar openzaly-server.jar [-h|-help]", options, false);
@@ -54,15 +54,17 @@ public class Helper {
 		return true;
 	}
 
-	private static void printLogoToSystemOut(PrintWriter pw) {
+	public static void showAkaxinBanner(PrintWriter pw) {
 		BufferedReader buffer = null;
 		try {
-			File file = new File("./logo.txt");
-			buffer = new BufferedReader(new FileReader(file));
+			InputStream inputStream = Helper.class.getResourceAsStream("/logo.txt");
+			buffer = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			while ((line = buffer.readLine()) != null) {
 				pw.println(line);
 			}
+			pw.flush();
+			inputStream.close();
 		} catch (Exception e) {
 			logger.error("read helper message from file error", e);
 		} finally {
@@ -75,6 +77,27 @@ public class Helper {
 				logger.error("buffer close error with IOException");
 			}
 		}
+	}
+
+	public static void buildEnvToSystemOut(PrintWriter pwriter) {
+		pwriter.println();
+		pwriter.println("openzaly-version : 0.5.4");
+		pwriter.println("java-version : JDK 1.8+");
+		pwriter.println("maven-version : 3.0+");
+		pwriter.println();
+		pwriter.println("[OK] openzaly-server is starting...");
+		pwriter.flush();
+	}
+
+	public static void startSuccess(PrintWriter pwriter) {
+		pwriter.println("[OK] start openzaly-server successfully");
+		pwriter.flush();
+	}
+
+	public static void startFail(PrintWriter pwriter) {
+		pwriter.println("[Error] start openzaly-server failed, server exit...");
+		pwriter.println();
+		pwriter.flush();
 	}
 
 	private static void printHelperMessage(PrintWriter pw) {
