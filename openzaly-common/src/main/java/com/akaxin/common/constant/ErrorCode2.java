@@ -93,7 +93,7 @@ public enum ErrorCode2 implements IErrorCode {
 	private String code;
 	private String info;
 
-	ErrorCode2 (String code, String info) {
+	ErrorCode2(String code, String info) {
 		this.code = code;
 		this.info = info;
 	}

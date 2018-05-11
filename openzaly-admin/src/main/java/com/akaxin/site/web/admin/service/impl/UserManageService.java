@@ -15,26 +15,23 @@
  */
 package com.akaxin.site.web.admin.service.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.dao.UserGroupDao;
+import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.storage.api.*;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserDeviceBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.service.*;
-import com.akaxin.site.storage.sqlite.SQLiteU2MessageDao;
-import org.apache.catalina.User;
+import com.akaxin.site.web.admin.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.akaxin.site.business.dao.UserProfileDao;
-import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
-import com.akaxin.site.web.admin.service.IUserService;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("userManageService")
 public class UserManageService implements IUserService {

@@ -35,7 +35,6 @@ import com.akaxin.site.storage.bean.SimpleUserRelationBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
-import org.sqlite.SQLiteJDBCLoader;
 
 /**
  * 用户个人资料表(db_table:site_user_profile)相关操作

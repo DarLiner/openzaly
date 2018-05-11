@@ -175,6 +175,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			UserProfileBean userProfileById = UserProfileDao.getInstance().getUserProfileById(siteUserId);
+			//如果用户被封禁 无法发送好友申请
 			if (userProfileById.getUserStatus() == 1) {
 				errCode = ErrorCode2.ERROR2_FRIEND_sealUped;
 				return commandResponse.setErrCode2(errCode);
@@ -295,6 +296,7 @@ public class ApiFriendService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
 			UserProfileBean userProfileById = UserProfileDao.getInstance().getUserProfileById(siteUserId);
+			//如果用户被封禁 无法发送接受好友申请
 			if (userProfileById.getUserStatus() == 1) {
 				errCode = ErrorCode2.ERROR2_FRIEND_sealUped;
 				return commandResponse.setErrCode2(errCode);

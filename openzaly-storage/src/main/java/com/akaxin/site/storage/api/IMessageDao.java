@@ -44,4 +44,4 @@ public interface IMessageDao {
     public int queryU2MessagePerDay(long now,int day) throws SQLException;
 
     boolean delUserMessage(String siteUserId)throws SQLException;
-}
+    }

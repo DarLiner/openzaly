@@ -90,7 +90,6 @@ public class CommandResponse {
 	public void setErrCode(String errCode) {
 		this.errCode = errCode;
 	}
-
 	public String getErrInfo() {
 		return errInfo;
 	}
