@@ -174,6 +174,11 @@ public class ApiFriendService extends AbstractRequest {
 			ApiFriendApplyProto.ApiFriendApplyRequest request = ApiFriendApplyProto.ApiFriendApplyRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
+			UserProfileBean userProfileById = UserProfileDao.getInstance().getUserProfileById(siteUserId);
+			if (userProfileById.getUserStatus() == 1) {
+				errCode = ErrorCode2.ERROR2_FRIEND_sealUped;
+				return commandResponse.setErrCode2(errCode);
+			}
 			String siteFriendId = request.getSiteFriendId();
 			String applyReason = request.getApplyReason();
 			LogUtils.requestDebugLog(logger, command, request.toString());
@@ -289,6 +294,11 @@ public class ApiFriendService extends AbstractRequest {
 			ApiFriendApplyResultProto.ApiFriendApplyResultRequest request = ApiFriendApplyResultProto.ApiFriendApplyResultRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
+			UserProfileBean userProfileById = UserProfileDao.getInstance().getUserProfileById(siteUserId);
+			if (userProfileById.getUserStatus() == 1) {
+				errCode = ErrorCode2.ERROR2_FRIEND_sealUped;
+				return commandResponse.setErrCode2(errCode);
+			}
 			String siteFriendId = request.getSiteFriendId();
 			boolean result = request.getApplyResult();
 			LogUtils.requestDebugLog(logger, command, request.toString());

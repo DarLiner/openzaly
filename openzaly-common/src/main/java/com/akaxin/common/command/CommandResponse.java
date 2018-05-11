@@ -87,6 +87,10 @@ public class CommandResponse {
 		return this;
 	}
 
+	public void setErrCode(String errCode) {
+		this.errCode = errCode;
+	}
+
 	public String getErrInfo() {
 		return errInfo;
 	}

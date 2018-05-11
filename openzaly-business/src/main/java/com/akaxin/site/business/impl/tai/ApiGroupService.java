@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright 2018-2028 Akaxin Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,12 +11,15 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 package com.akaxin.site.business.impl.tai;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.akaxin.site.storage.bean.*;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,17 +51,12 @@ import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.storage.bean.GroupMemberBean;
-import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleGroupBean;
-import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UserGroupBean;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ProtocolStringList;
 
 /**
  * 扩展服务器与站点之间通过hai接口，管理群组功能
- * 
+ *
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-13 21:48:35
  */
@@ -68,7 +66,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 获取用户群列表 <br>
 	 * 无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -113,7 +111,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 用户创建群，并添加初始群成员 <br>
 	 * 无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -127,6 +125,23 @@ public class ApiGroupService extends AbstractRequest {
 			String groupName = request.getGroupName();
 			ProtocolStringList groupMembers = request.getSiteUserIdsList();
 			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
+			ArrayList<UserProfileBean> tempList = new ArrayList<>();
+			for (String groupMemberId : groupMemberIds) {
+                UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(groupMemberId);
+				if (bean.getUserStatus() == 1) {
+					tempList.add(bean);
+				}
+			}
+			if (tempList != null && tempList.size() > 0) {
+				StringBuffer sb = new StringBuffer();
+				for (UserProfileBean bean : tempList) {
+					sb.append(bean.getUserName());
+					sb.append(" ");
+				}
+
+				commandResponse.setErrCode("error.alter");
+				return commandResponse.setErrInfo("用户 " + sb.toString() + " 已被站点封禁，无法添加进群");
+			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotEmpty(siteUserId) && groupMemberIds != null) {
@@ -177,7 +192,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * 用户删除群，此时需要验证用户是否具有权限 <br>
 	 * 目前：具有权限的仅为群的创建者 (群主)
 	 * </pre>
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -225,7 +240,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * 2.群主基本资料GroupMaster，群主通过GroupProfile获取 <br>
 	 * 3.群成员人数以及排在最前列的四位用户 <br>
 	 * 4.无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -307,7 +322,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 用户更新群资料<br>
 	 * 群主／管理员权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -374,7 +389,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 添加群成员，支持群成员拉取好友进群，因此无群主权限限制<br>
 	 * 无管理员权限限制 -> 添加群资料中是否允许添加成员
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -388,6 +403,24 @@ public class ApiGroupService extends AbstractRequest {
 			String groupId = request.getGroupId();
 			ProtocolStringList memberList = request.getUserListList();
 			List<String> addMemberList = Lists.newArrayList(memberList);// copy a new list
+			//记录封禁用户
+			ArrayList<UserProfileBean> tempList = new ArrayList<>();
+			for (String groupMemberId : addMemberList) {
+                UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(groupMemberId);
+                if (bean.getUserStatus() == 1) {
+					tempList.add(bean);
+                }
+			}
+			if (tempList != null && tempList.size() > 0) {
+				StringBuffer sb = new StringBuffer();
+				for (UserProfileBean bean : tempList) {
+					sb.append(bean.getUserName());
+					sb.append(" ");
+				}
+
+						commandResponse.setErrCode("error.alter");
+				return commandResponse.setErrInfo("用户 " + sb.toString() + " 已被站点封禁，无法添加进群");
+			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isAnyEmpty(siteUserId, groupId) || addMemberList == null) {
@@ -431,7 +464,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * 		1.关闭的开关是打开的
 	 * 		2.是管理员操作
 	 * </pre>
-	 * 
+	 *
 	 * @param siteUserId
 	 * @param bean
 	 * @return
@@ -452,7 +485,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 群主以及管理员删除群成员<br>
 	 * 群主／管理员权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -498,7 +531,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 用户退群 <br>
 	 * 无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -529,7 +562,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 获取群成员 <br>
 	 * 无权限控制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -582,7 +615,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 获取用户群组中，不存在的好友用户
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -635,7 +668,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 获取个人对群的设置
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -673,7 +706,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 个人更新群设置信息
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -750,7 +783,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 个人更新群设置信息
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */

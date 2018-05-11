@@ -193,7 +193,7 @@ public class SQLiteUserGroupDao {
 		long startTime = System.currentTimeMillis();
 		List<GroupMemberBean> membersList = new ArrayList<GroupMemberBean>();
 		int startNum = (pageNum - 1) * pageSize;
-		String sql = "SELECT site_user_id,user_name,user_photo FROM " + SQLConst.SITE_USER_PROFILE
+		String sql = "SELECT site_user_id,user_name,user_photo,user_status " + SQLConst.SITE_USER_PROFILE
 				+ " WHERE site_user_id NOT IN (SELECT DISTINCT site_user_id FROM " + SQLConst.SITE_USER_GROUP
 				+ " WHERE site_group_id=?) LIMIT ?,?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -207,6 +207,7 @@ public class SQLiteUserGroupDao {
 			member.setUserId(rs.getString(1));
 			member.setUserName(rs.getString(2));
 			member.setUserPhoto(rs.getString(3));
+			member.setUserStatus(rs.getInt(4));
 			member.setUserRole(GroupProto.GroupMemberRole.NONMEMBER_VALUE);
 			membersList.add(member);
 		}

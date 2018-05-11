@@ -15,13 +15,16 @@
  */
 package com.akaxin.site.web.admin.controller;
 
+import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.dao.SiteConfigDao;
+import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.akaxin.site.web.admin.service.IGroupService;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -399,6 +402,11 @@ public class GroupManageController extends AbstractController {
                 List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 
                 List<GroupMemberBean> noMemberList = groupService.getNonGroupMembers(siteGroupId, pageNum, PAGE_SIZE);
+                for (GroupMemberBean bean : noMemberList) {
+                    if (bean.getUserStatus() == 1) {
+                        noMemberList.remove(bean);
+                    }
+                }
 
                 if (noMemberList != null && noMemberList.size() > 0) {
                     if (PAGE_SIZE == noMemberList.size()) {
@@ -438,6 +446,12 @@ public class GroupManageController extends AbstractController {
                 Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
                 String siteGroupId = (String) reqMap.get("siteGroupId");
                 List<String> memberList = (List<String>) reqMap.get("groupMembers");
+                for (String id : memberList) {
+                    UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(id);
+                    if (bean.getUserStatus() == 1) {
+                        memberList.remove(id);
+                    }
+                }
                 logger.info("siteUserId={} add group={} members={}", siteUserId, siteGroupId, memberList);
 
                 if (groupService.addGroupMembers(siteGroupId, memberList)) {
