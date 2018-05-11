@@ -16,6 +16,7 @@
 package com.akaxin.site.storage.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.akaxin.site.storage.api.IGroupDao;
@@ -99,6 +100,13 @@ public class GroupDaoService implements IGroupDao {
 	public int getGroupNum(long now, int day) throws SQLException {
 		return SQLiteGroupProfileDao.getInstance().getGroupNum(now, day);
 	}
+
+	@Override
+	public boolean rmGroupProfile(String groupId) throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().rmGroupProfile(groupId);
+	}
+
+
 
 	@Override
 	public int updateGroupOwner(String siteUserId, String groupId) throws SQLException {

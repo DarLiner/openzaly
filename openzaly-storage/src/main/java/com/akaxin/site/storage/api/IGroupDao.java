@@ -1,6 +1,7 @@
 package com.akaxin.site.storage.api;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.akaxin.site.storage.bean.GroupMemberBean;
@@ -52,4 +53,7 @@ public interface IGroupDao {
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException;
 
     int getGroupNum(long now,int day) throws SQLException;
+
+	boolean rmGroupProfile(String groupId)throws SQLException;
+
 }

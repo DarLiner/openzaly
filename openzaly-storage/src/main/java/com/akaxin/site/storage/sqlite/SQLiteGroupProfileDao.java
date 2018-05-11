@@ -276,4 +276,23 @@ public class SQLiteGroupProfileDao {
         return groupNum;
 
     }
+
+    public boolean rmGroupProfile(String groupId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + GROUP_PROFILE_TABLE + "  WHERE site_group_id=?;";
+        String sql2= "DELETE FROM " + SQLConst.SITE_USER_GROUP + "  WHERE site_group_id=?;";
+        PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql2);
+        preparedStatement.setString(1,groupId);
+        int i = preparedStatement.executeUpdate();
+        preStatement.setString(1, groupId);
+        int result = preStatement.executeUpdate();
+        if (result > 0&&i>0) {
+            LogUtils.dbDebugLog(logger, startTime, result+","+i, sql);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, result+","+i, sql);
+        return false;
+
+    }
 }

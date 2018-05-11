@@ -108,7 +108,7 @@ public class UserManageService implements IUserService {
             for (SimpleGroupBean userGroup : userGroups) {
                 String groupMasterId = UserGroupDao.getInstance().getGroupMaster(userGroup.getGroupId());
                 if (groupMasterId.equals(siteUserId)) {
-                    groupDao.deleteGroupProfile(userGroup.getGroupId());
+                    groupDao.rmGroupProfile(userGroup.getGroupId());
                 } else {
                     ArrayList<String> delList = new ArrayList<>();
                     delList.add(siteUserId);
