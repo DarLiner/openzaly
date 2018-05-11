@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.boot.main;
 
+import java.io.PrintWriter;
 import java.util.Base64;
 import java.util.Map;
 
@@ -65,12 +66,16 @@ public class Bootstrap {
 	private static final String DEBUG_ENV = "DEBUG";
 
 	public static void main(String[] args) {
+
 		// 增加 -h|-help 启动参数 输出帮助文档
 		if (Helper.startHelper(args)) {
 			return;
 		}
 
-		logger.info("{} start site server...", AkxProject.PLN);
+		PrintWriter pwriter = new PrintWriter(System.out);
+		Helper.showAkaxinBanner(pwriter);
+		Helper.buildEnvToSystemOut(pwriter);
+
 		try {
 			// init log level
 			setSystemLogLevel();
@@ -110,10 +115,18 @@ public class Bootstrap {
 
 			// start spring
 			initSpringBoot(args);
+
+			Helper.startSuccess(pwriter);
+			logger.info("start openzaly-server successfully");
 		} catch (Exception e) {
-			logger.error(StringHelper.format("{} start Bootstrap error", AkxProject.PLN), e);
+			Helper.startFail(pwriter);
+			logger.error(StringHelper.format("{} start openzaly-server error", AkxProject.PLN), e);
 			logger.error("openzaly-boot exit!!!");
 			System.exit(-1);// 直接退出程序
+		} finally {
+			if (pwriter != null) {
+				pwriter.close();
+			}
 		}
 	}
 
