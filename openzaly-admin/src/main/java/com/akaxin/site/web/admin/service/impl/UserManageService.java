@@ -82,27 +82,24 @@ public class UserManageService implements IUserService {
 
     @Override
     public boolean delUser(String siteUserId) {
-        boolean delMessage = false;
         boolean delProfile = false;
-        boolean delFriend = false;
-        boolean delGroup = false;
 
         try {
             List<UserDeviceBean> userDeviceList = deviceDao.getUserDeviceList(siteUserId);
             for (UserDeviceBean userDeviceBean : userDeviceList) {
                 sessionDao.deleteUserSession(siteUserId, userDeviceBean.getDeviceId());
             }
-            delProfile = profileDao.delUser(siteUserId)&&deviceDao.delDevice(siteUserId);
+            delProfile = profileDao.delUser(siteUserId) && deviceDao.delDevice(siteUserId);
         } catch (SQLException e) {
             logger.error("del user profile error", e);
         }
         try {
-            delMessage = messageDao.delUserMessage(siteUserId);
+            messageDao.delUserMessage(siteUserId);
         } catch (SQLException e) {
             logger.error("del user Message error", e);
         }
         try {
-            delFriend = friendDao.delUserFriend(siteUserId);
+            friendDao.delUserFriend(siteUserId);
         } catch (SQLException e) {
             logger.error("del user friend error", e);
         }
@@ -111,10 +108,7 @@ public class UserManageService implements IUserService {
             for (SimpleGroupBean userGroup : userGroups) {
                 String groupMasterId = UserGroupDao.getInstance().getGroupMaster(userGroup.getGroupId());
                 if (groupMasterId.equals(siteUserId)) {
-                    boolean b = groupDao.deleteGroupProfile(userGroup.getGroupId());
-                    if (!b) {
-                        throw new SQLException();
-                    }
+                    groupDao.deleteGroupProfile(userGroup.getGroupId());
                 } else {
                     ArrayList<String> delList = new ArrayList<>();
                     delList.add(siteUserId);
@@ -125,7 +119,7 @@ public class UserManageService implements IUserService {
             logger.error("del user group error", e);
         }
 
-        return delMessage == delProfile == delFriend == delGroup == true ? true : false;
+        return delProfile;
     }
 
 }

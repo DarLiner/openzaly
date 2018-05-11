@@ -309,7 +309,9 @@ public class UserManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (isManager(siteUserId)) {
-                if (userService.delUser(siteUserId)) {
+                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+                String delUserID = reqMap.get("siteUserId");
+                if (userService.delUser(delUserID)) {
                     return SUCCESS;
                 }
             } else {
