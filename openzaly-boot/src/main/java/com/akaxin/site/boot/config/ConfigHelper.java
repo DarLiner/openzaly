@@ -42,7 +42,7 @@ public class ConfigHelper implements ConfigKey {
 
 	public static Properties getProperties() {
 		if (prop == null) {
-			prop = PropertiesUtils.getDefaultProperties();
+			prop = PropertiesUtils.getOZProperties();
 		}
 		return prop;
 	}

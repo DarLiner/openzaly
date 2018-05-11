@@ -1,9 +1,9 @@
 package com.akaxin.site.boot.utils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
@@ -57,12 +57,14 @@ public class Helper {
 	private static void printLogoToSystemOut(PrintWriter pw) {
 		BufferedReader buffer = null;
 		try {
-			File file = new File("./logo.txt");
-			buffer = new BufferedReader(new FileReader(file));
+			InputStream inputStream = Helper.class.getResourceAsStream("/logo.txt");
+			buffer = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			while ((line = buffer.readLine()) != null) {
 				pw.println(line);
 			}
+			pw.flush();
+			inputStream.close();
 		} catch (Exception e) {
 			logger.error("read helper message from file error", e);
 		} finally {
