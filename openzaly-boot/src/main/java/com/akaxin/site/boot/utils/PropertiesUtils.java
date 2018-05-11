@@ -61,7 +61,7 @@ public class PropertiesUtils {
 	public static Properties getDefaultProperties() {
 		Properties properties = new Properties();
 		properties.put("site.project.env", "ONLINE");
-		properties.put("site.version", "0.3.2");
+		properties.put("site.version", "0.5.4");
 		properties.put("site.address", "0.0.0.0");
 		properties.put("site.port", "2021");
 		properties.put("http.address", "0.0.0.0");
