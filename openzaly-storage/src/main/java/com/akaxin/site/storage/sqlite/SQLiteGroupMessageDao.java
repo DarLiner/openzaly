@@ -265,4 +265,19 @@ public class SQLiteGroupMessageDao {
     }
 
 
+    public boolean delUserMessage(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + GROUP_MESSAGE_TABLE + " WHERE  send_user_id = ? ";
+        PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        statement.setString(1, siteUserId);
+        int i = statement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime,i, sql, "true");
+
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime,i, sql, "false");
+
+        return false;
+    }
 }

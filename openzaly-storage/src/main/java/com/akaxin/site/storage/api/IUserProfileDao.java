@@ -43,4 +43,6 @@ public interface IUserProfileDao {
     public int queryNumRegisterPerDay(long now, int day) throws SQLException;
 
     int getUserNum(long now, int day) throws SQLException;
+
+    boolean delUser(String siteUserId) throws SQLException;
 }

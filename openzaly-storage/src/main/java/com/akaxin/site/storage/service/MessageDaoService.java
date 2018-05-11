@@ -96,4 +96,11 @@ public class MessageDaoService implements IMessageDao {
         int u2Count = SQLiteU2MessageDao.getInstance().queryNumMessagePerDay(now,day);
         return u2Count;
     }
+
+    @Override
+    public boolean delUserMessage(String siteUserId) throws SQLException {
+        boolean U2= SQLiteU2MessageDao.getInstance().delUserMessage(siteUserId);
+        boolean group = SQLiteGroupMessageDao.getInstance().delUserMessage(siteUserId);
+        return U2 == group == true ? true : false;
+    }
 }

@@ -18,4 +18,5 @@ public interface IUserService {
 	// 封禁用户
 	boolean sealUpUser(String siteUserId, int status);
 
+    boolean delUser(String siteUserId);
 }

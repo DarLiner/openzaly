@@ -117,4 +117,9 @@ public class UserProfileDaoService implements IUserProfileDao {
 		return SQLiteUserProfileDao.getInstance().getUserNum(now,day);
 	}
 
+	@Override
+	public boolean delUser(String siteUserId) throws SQLException{
+		return SQLiteUserProfileDao.getInstance().delUser(siteUserId);
+	}
+
 }

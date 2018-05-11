@@ -21,6 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserDeviceDao;
 import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.sqlite.SQLiteUserDeviceDao;
+import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -79,6 +80,11 @@ public class DeviceDaoService implements IUserDeviceDao {
 	@Override
 	public int limitDeviceNum(String siteUserId, int limit) throws SQLException {
 		return SQLiteUserDeviceDao.getInstance().limitDeviceNum(siteUserId, limit);
+	}
+
+	@Override
+	public boolean delDevice(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().delDevice(siteUserId);
 	}
 
 }

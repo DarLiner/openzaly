@@ -35,6 +35,7 @@ import com.akaxin.site.storage.bean.SimpleUserRelationBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
+import org.sqlite.SQLiteJDBCLoader;
 
 /**
  * 用户个人资料表(db_table:site_user_profile)相关操作
@@ -478,6 +479,21 @@ public class SQLiteUserProfileDao {
         int UserNum = resultSet.getInt(1);
         LogUtils.dbDebugLog(logger, startTime, UserNum, sql);
         return UserNum;
+
+    }
+
+    public boolean delUser(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + USER_PROFILE_TABLE + " WHERE site_user_id=? ";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, siteUserId);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime, i, sql, true);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, i, sql, false);
+        return false;
 
     }
 }

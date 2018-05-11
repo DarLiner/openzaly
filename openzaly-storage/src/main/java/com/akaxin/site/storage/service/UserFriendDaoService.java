@@ -80,4 +80,9 @@ public class UserFriendDaoService implements IUserFriendDao {
 	public int friendNum(long now,int day) throws SQLException {
 		return SQLiteUserFriendDao.getInstance().getFrienNum(now,day);
 	}
+
+	@Override
+	public boolean delUserFriend(String siteUserId) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().delUserFriend(siteUserId);
+	}
 }

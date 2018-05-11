@@ -232,4 +232,20 @@ public class SQLiteU2MessageDao {
         LogUtils.dbDebugLog(logger, startTime, u2Count, sql);
         return u2Count;
     }
+
+    public boolean delUserMessage(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + USER2_MESSAGE_TABLE + " WHERE site_user_id =? or send_user_id =?";
+        PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        statement.setString(1, siteUserId);
+        statement.setString(2, siteUserId);
+        int i = statement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime,i, sql, "true");
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime,i, sql, "false");
+
+        return false;
+    }
 }
