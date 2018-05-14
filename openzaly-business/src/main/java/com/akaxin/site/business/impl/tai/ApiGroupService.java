@@ -50,6 +50,11 @@ import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.site.SiteConfig;
+import com.akaxin.site.storage.bean.GroupMemberBean;
+import com.akaxin.site.storage.bean.GroupProfileBean;
+import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserGroupBean;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ProtocolStringList;
 

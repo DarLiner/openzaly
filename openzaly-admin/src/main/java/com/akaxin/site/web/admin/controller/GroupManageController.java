@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.dao.SiteConfigDao;

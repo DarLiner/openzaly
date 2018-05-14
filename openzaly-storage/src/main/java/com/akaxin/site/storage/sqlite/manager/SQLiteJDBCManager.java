@@ -249,10 +249,10 @@ public class SQLiteJDBCManager {
 				} else {
 					pst.setString(6, "");// authkey
 					pst.setString(7, "127.0.0.1");// allowed_ip
-					pst.setInt(8, PluginProto.PluginPosition.MSG_PAGE_VALUE);// position
+					pst.setInt(8, PluginProto.PluginPosition.HOME_PAGE_VALUE);// position
 					pst.setInt(9, 1);// sort
 					pst.setInt(10, PluginProto.PluginDisplayMode.NEW_PAGE_VALUE); // display_mode
-					pst.setInt(11, PluginProto.PermissionStatus.DISABLED_VALUE); // permission_status
+					pst.setInt(11, PluginProto.PermissionStatus.AVAILABLE_VALUE); // permission_status
 					pst.setLong(12, System.currentTimeMillis()); // add_time
 				}
 				result = (pst.executeUpdate() > 0);

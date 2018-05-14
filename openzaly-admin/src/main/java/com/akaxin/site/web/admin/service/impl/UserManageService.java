@@ -15,13 +15,20 @@
  */
 package com.akaxin.site.web.admin.service.impl;
 
+import java.util.List;
+
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.dao.UserGroupDao;
-import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.utils.FilePathUtils;
 import com.akaxin.site.storage.api.*;
-import com.akaxin.site.storage.bean.*;
+import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.service.*;
+import org.springframework.stereotype.Service;
+
+import com.akaxin.site.business.dao.UserProfileDao;
+import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.admin.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

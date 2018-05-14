@@ -24,7 +24,6 @@ import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.sqlite.SQLiteGroupMessageDao;
 import com.akaxin.site.storage.sqlite.SQLiteU2MessageDao;
-import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

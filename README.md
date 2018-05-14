@@ -1,5 +1,3 @@
-
-
 <p align="right">
   <a href="https://www.akaxin.com/">
     <img
@@ -10,14 +8,33 @@
   </a>
 </p>
 
-[Akaxin](https://www.akaxin.com)
+
+[Akaxin](https://www.akaxin.com) 
 ====
 
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
-Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务器上，搭建自己的聊天服务器，供自己与朋友、用户使用。
+**源码仓库**
 
-反馈与建议，请联系 hi@akaxin.xyz
+> * `推荐` `国内快` Gitee: https://gitee.com/akaxin/openzaly
+> * **Github**: https://github.com/akaxincom/openzaly
+
+
+_
+
+
+**向我们提问**
+
+> * `推荐` 开源中国社区: https://www.oschina.net/question/ask
+>     * 软件选项里请填写 `Akaxin` ，方便我们第一时间获知。
+> * Issues
+> * mail: hi@akaxin.xyz
+
+
+简介
+----
+
+Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务器上，搭建自己的聊天服务器，供自己与朋友、用户使用。
 
 特性：
 
