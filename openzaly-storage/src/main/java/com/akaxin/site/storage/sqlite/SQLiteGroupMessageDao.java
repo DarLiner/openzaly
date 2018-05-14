@@ -285,4 +285,18 @@ public class SQLiteGroupMessageDao {
 
         return false;
     }
+
+    public List queryMessageFile(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "select content from (select * from " + GROUP_MESSAGE_TABLE + " where msg_type in (9,13)) t where send_user_id = ?";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1,siteUserId);
+        ResultSet rs = preparedStatement.executeQuery();
+        ArrayList<String> groupFiles = new ArrayList<>();
+        while (rs.next()) {
+            groupFiles.add(rs.getString(1));
+        }
+        LogUtils.dbDebugLog(logger, startTime, rs, sql);
+        return groupFiles;
+    }
 }

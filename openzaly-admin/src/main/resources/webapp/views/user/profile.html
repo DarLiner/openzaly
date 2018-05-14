@@ -275,6 +275,7 @@
 
     $(document).on("click", ".delUser", function () {
         var siteUserId = $('.site_user_id').attr('data');
+        var reqUri = $(this).attr('url-data');
         $.confirm({
             title: '删除用户',
             text: '删除后,用户将被从站点彻底抹除',
@@ -282,7 +283,6 @@
                 var userInfo = {
                     "siteUserId": siteUserId
                 };
-                var reqUri = $(this).attr('url-data');
                 reqUrl(reqUri, JSON.stringify(userInfo), 'delUser');
                 $.closeModal();
             },

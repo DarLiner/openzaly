@@ -252,4 +252,19 @@ public class SQLiteU2MessageDao {
 
         return false;
     }
+
+    public List<String> queryMessageFile(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "select content from (select * from " + USER2_MESSAGE_TABLE + " where msg_type in (7,8,11,12)) t where site_user_id = ? or  send_user_id = ?";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1,siteUserId);
+        preparedStatement.setString(2, siteUserId);
+        ResultSet rs = preparedStatement.executeQuery();
+        ArrayList<String> u2Files = new ArrayList<>();
+        while (rs.next()) {
+            u2Files.add(rs.getString(1));
+        }
+        LogUtils.dbDebugLog(logger, startTime, rs, sql);
+        return u2Files;
+    }
 }

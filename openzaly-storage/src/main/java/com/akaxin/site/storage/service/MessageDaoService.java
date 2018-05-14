@@ -16,6 +16,7 @@
 package com.akaxin.site.storage.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.akaxin.site.storage.api.IMessageDao;
@@ -23,6 +24,7 @@ import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.sqlite.SQLiteGroupMessageDao;
 import com.akaxin.site.storage.sqlite.SQLiteU2MessageDao;
+import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -102,5 +104,15 @@ public class MessageDaoService implements IMessageDao {
         boolean U2= SQLiteU2MessageDao.getInstance().delUserMessage(siteUserId);
         boolean group = SQLiteGroupMessageDao.getInstance().delUserMessage(siteUserId);
         return U2 == group == true ? true : false;
+    }
+
+    @Override
+    public List queryMessageFile(String siteUserId) throws SQLException {
+        List u2FileList = SQLiteU2MessageDao.getInstance().queryMessageFile(siteUserId);
+        List groupFileList = SQLiteGroupMessageDao.getInstance().queryMessageFile(siteUserId);
+        ArrayList<String> msgList = new ArrayList<>();
+        msgList.addAll(u2FileList);
+        msgList.addAll(groupFileList);
+        return msgList;
     }
 }
