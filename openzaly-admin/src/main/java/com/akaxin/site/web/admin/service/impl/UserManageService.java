@@ -128,8 +128,7 @@ public class UserManageService implements IUserService {
             }
             File delFile = new File(FilePathUtils.getFilePathByFileId(userFilePath));
             if (delFile.exists()) {
-                boolean delete = delFile.delete();
-                System.out.println(delete);
+                delFile.delete();
             }
         }
         return delProfile;
