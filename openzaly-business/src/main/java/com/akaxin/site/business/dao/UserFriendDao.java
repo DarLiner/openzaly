@@ -146,7 +146,7 @@ public class UserFriendDao {
 	public int getApplyCount(String siteUserId) {
 		int count = 0;
 		try {
-			count = friendApplyDao.getApplyCount(siteUserId);
+			count = friendApplyDao.getApplyUsers(siteUserId).size();
 		} catch (SQLException e) {
 			logger.error("get apply user count error.", e);
 		}
