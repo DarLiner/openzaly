@@ -49,9 +49,6 @@ public class SiteMemberController extends AbstractController {
 			logger.error("to SiteMember error", e);
 			return new ModelAndView("siteMember/error");
 		}
-		if (!isManager(getRequestSiteUserId(pluginPackage))) {
-			return new ModelAndView("error");
-		}
 		return modelAndView;
 	}
 
@@ -63,9 +60,6 @@ public class SiteMemberController extends AbstractController {
 		boolean nodata = true;
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				return null;
-			}
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 
@@ -106,9 +100,6 @@ public class SiteMemberController extends AbstractController {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		try {
 			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				return new String[]{"失败没有权限", "0"};
-			}
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
