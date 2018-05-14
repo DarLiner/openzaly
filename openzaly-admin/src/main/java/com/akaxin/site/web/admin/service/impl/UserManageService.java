@@ -24,6 +24,7 @@ import com.akaxin.site.storage.api.*;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.UserDeviceBean;
 import com.akaxin.site.storage.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.akaxin.site.business.dao.UserProfileDao;
@@ -130,12 +131,15 @@ public class UserManageService implements IUserService {
             logger.error("del user group error", e);
         }
         for (String userFilePath : userFileIds) {
-            if (userFilePath.startsWith("AKX-") || userFilePath.startsWith("akx-")) {
-                userFilePath = userFilePath.substring(4, userFilePath.length());
-            }
-            File delFile = new File(FilePathUtils.getFilePathByFileId(userFilePath));
-            if (delFile.exists()) {
-                delFile.delete();
+            if (StringUtils.isNotBlank(userFilePath) && !"null".equals(userFilePath)) {
+
+                if (userFilePath.startsWith("AKX-") || userFilePath.startsWith("akx-")) {
+                    userFilePath = userFilePath.substring(4, userFilePath.length());
+                }
+                File delFile = new File(FilePathUtils.getFilePathByFileId(userFilePath));
+                if (delFile.exists()) {
+                    delFile.delete();
+                }
             }
         }
         return delProfile;
