@@ -275,13 +275,33 @@
 
     $(document).on("click", ".delUser", function () {
         var siteUserId = $('.site_user_id').attr('data');
-        var userInfo = {
-            "siteUserId": siteUserId
-        };
-        var reqUri = $(this).attr('url-data');
-        reqUrl(reqUri, JSON.stringify(userInfo), 'delUser');
+        $.confirm({
+            title: '删除用户',
+            text: '删除后,用户将被从站点彻底抹除',
+            onOK: function () {
+                var userInfo = {
+                    "siteUserId": siteUserId
+                };
+                var reqUri = $(this).attr('url-data');
+                reqUrl(reqUri, JSON.stringify(userInfo), 'delUser');
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+
     });
 
+        function delUser(results) {
+            if (results == 'success') {
+                $.toast("操作成功");
+            } else {
+                $.toast("操作失败", "forbidden");
+            }
+        }
     function UserDefault(results) {
         if (results == 'success') {
             $.toast("操作成功");
