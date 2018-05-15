@@ -297,7 +297,7 @@
     }
 
     function isDomain(siteAddress) {
-
+        siteAddress=siteAddress.replace(/(^\s*)|(\s*$)/g,"");
         if (siteAddress.indexOf("://") > -1) {
             hostname = siteAddress.split('/')[2];
         } else {

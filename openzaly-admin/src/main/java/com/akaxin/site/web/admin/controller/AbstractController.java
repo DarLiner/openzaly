@@ -50,6 +50,9 @@ public class AbstractController {
 	}
 
 	public String  trim(String parameter) {
+		if (parameter == null) {
+			return parameter;
+		}
 		String trim = parameter.replaceAll("[ |　]", " ").trim();
 		return trim;
 	}
