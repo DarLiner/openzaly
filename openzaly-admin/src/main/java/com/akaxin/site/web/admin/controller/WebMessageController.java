@@ -55,7 +55,7 @@ public class WebMessageController extends AbstractController {
 				return new ModelAndView("error");
 			}
 		} catch (InvalidProtocolBufferException e) {
-			e.printStackTrace();
+			return new ModelAndView("error");
 		}
 
 		return new ModelAndView("webMsg/test");

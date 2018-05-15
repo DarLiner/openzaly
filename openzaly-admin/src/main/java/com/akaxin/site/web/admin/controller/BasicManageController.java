@@ -60,7 +60,8 @@ public class BasicManageController extends AbstractController {
                 return "error";
             }
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to basic manage error", e);
+            return "error";
         }
         return "admin";
 
@@ -81,9 +82,10 @@ public class BasicManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 return new ModelAndView("error");
             }
-            model.put("manager_type", "site_manager");
             if (isAdmin(siteUserId)) {
                 model.put("manager_type", "admin");
+            } else if (isManager(siteUserId)) {
+                model.put("manager_type", "site_manager");
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic config page error", e);
@@ -193,24 +195,24 @@ public class BasicManageController extends AbstractController {
                 if (StringUtils.isNotEmpty(trim(dataMap.get("pic_path")))) {
                     configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, trim(dataMap.get("pic_path")));
                 }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("site_logo")))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, trim(dataMap.get("site_logo")));
+                if (StringUtils.isNotEmpty(dataMap.get("site_logo"))) {
+                    configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
                 }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("uic_status")))) {
-                    configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, trim(dataMap.get("uic_status")));
+                if (StringUtils.isNotEmpty(dataMap.get("uic_status"))) {
+                    configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, dataMap.get("uic_status"));
                 }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("realName_status")))) {
-                    configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, trim(dataMap.get("realName_status")));
+                if (StringUtils.isNotEmpty(dataMap.get("realName_status"))) {
+                    configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, dataMap.get("realName_status"));
                 }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("u2_encryption_status")))) {
+                if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
                     configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
-                            trim(dataMap.get("u2_encryption_status")));
+                            dataMap.get("u2_encryption_status"));
                 }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("push_client_status")))) {
-                    configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, trim(dataMap.get("push_client_status")));
+                if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {
+                    configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
                 }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("log_level")))) {
-                    configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, trim(dataMap.get("log_level")));
+                if (StringUtils.isNotEmpty(dataMap.get("log_level"))) {
+                    configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
                 }
                 // 普通管理员无权限
                 if (isAdmin(siteUserId) && StringUtils.isNotEmpty(trim(dataMap.get("site_manager")))) {

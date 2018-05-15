@@ -54,7 +54,8 @@ public class PluginManageController extends AbstractController {
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to plugin  error", e);
+            return new ModelAndView("error");
         }
         if (!isManager(getRequestSiteUserId(pluginPackage))) {
             return new ModelAndView("error");
@@ -125,7 +126,8 @@ public class PluginManageController extends AbstractController {
                 model.put("authKeyState", authKeyState);
 
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to plugin  error", e);
+            return new ModelAndView("error");
         }
         return modelAndView;
     }
@@ -146,14 +148,14 @@ public class PluginManageController extends AbstractController {
 
                 PluginBean bean = new PluginBean();
                 bean.setName(trim(pluginData.get("name")));
-                bean.setIcon(trim(pluginData.get("plugin_icon")));
+                bean.setIcon(pluginData.get("plugin_icon"));
                 bean.setUrlPage(trim(pluginData.get("url_page")));
                 bean.setApiUrl(trim(pluginData.get("api_url")));
                 bean.setAllowedIp(trim(pluginData.get("allow_ip")));
-                bean.setPosition(Integer.valueOf(trim(pluginData.get("position"))));
-                bean.setSort(Integer.valueOf(trim(pluginData.get("order"))));
+                bean.setPosition(Integer.valueOf(pluginData.get("position")));
+                bean.setSort(Integer.valueOf(pluginData.get("order")));
                 bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
-                bean.setPermissionStatus(Integer.valueOf(trim(pluginData.get("per_status"))));
+                bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
                 bean.setAddTime(System.currentTimeMillis());
                 bean.setAuthKey(StringHelper.generateRandomString(16));// 随机生成
 
@@ -233,12 +235,12 @@ public class PluginManageController extends AbstractController {
                 PluginBean bean = new PluginBean();
                 bean.setId(Integer.valueOf(trim(pluginData.get("plugin_id"))));
                 bean.setName(trim(pluginData.get("name")));
-                bean.setIcon(trim(pluginData.get("plugin_icon")));
+                bean.setIcon(pluginData.get("plugin_icon"));
                 bean.setUrlPage(trim(pluginData.get("url_page")));
                 bean.setApiUrl(trim(pluginData.get("api_url")));
-                bean.setPosition(Integer.valueOf(trim(pluginData.get("position"))));
-                bean.setSort(Integer.valueOf(trim(pluginData.get("order"))));
-                bean.setPermissionStatus(Integer.valueOf(trim(pluginData.get("per_status"))));
+                bean.setPosition(Integer.valueOf(pluginData.get("position")));
+                bean.setSort(Integer.valueOf(pluginData.get("order")));
+                bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
                 bean.setAllowedIp(trim(pluginData.get("allow_ip")));
                 logger.info("siteUserId={} update plugin bean={}", siteUserId, bean);
 

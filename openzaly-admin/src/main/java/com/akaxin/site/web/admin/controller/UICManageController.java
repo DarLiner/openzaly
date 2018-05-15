@@ -57,7 +57,7 @@ public class UICManageController extends AbstractController {
 				return new ModelAndView("error");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("to Uic error", e);
 			return new ModelAndView("error");
 
 		}

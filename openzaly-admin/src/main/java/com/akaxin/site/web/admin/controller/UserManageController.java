@@ -65,7 +65,7 @@ public class UserManageController extends AbstractController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("to User Manage error", e);
             return new ModelAndView("error");
         }
         List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
@@ -98,7 +98,7 @@ public class UserManageController extends AbstractController {
                 return SUCCESS;
             }
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to set User Default  error", e);
         }
         return ERROR;
     }
@@ -118,7 +118,7 @@ public class UserManageController extends AbstractController {
                 return SUCCESS;
             }
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to del User Default  error", e);
         }
         return ERROR;
     }
