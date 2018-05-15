@@ -56,13 +56,14 @@ public class BasicManageController extends AbstractController {
             Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
             String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
             boolean isManager = SiteConfig.isSiteManager(siteUserId);
-            if (isManager) {
-                return "admin";
+            if (!isManager) {
+                return "error";
             }
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to basic manage error", e);
+            return "error";
         }
-        return "error";
+        return "admin";
 
     }
 
@@ -78,12 +79,13 @@ public class BasicManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
             String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            if (!isManager(siteUserId)) {
+                return new ModelAndView("error");
+            }
             if (isAdmin(siteUserId)) {
                 model.put("manager_type", "admin");
             } else if (isManager(siteUserId)) {
                 model.put("manager_type", "site_manager");
-            } else {
-                return new ModelAndView("error");
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic config page error", e);
@@ -172,24 +174,26 @@ public class BasicManageController extends AbstractController {
             String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
             boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
-            if (isManager) {
+            if (!isManager) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
                 logger.info("siteUserId={} update config={}", siteUserId, dataMap);
                 Map<Integer, String> configMap = new HashMap<Integer, String>();
-                if (StringUtils.isNotEmpty(dataMap.get("site_name"))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, dataMap.get("site_name"));
+                if (StringUtils.isNotEmpty(trim(dataMap.get("site_name")))) {
+                    configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, trim(dataMap.get("site_name")));
                 }
-                if (StringUtils.isNotEmpty(dataMap.get("site_address"))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, dataMap.get("site_address"));
+                if (StringUtils.isNotEmpty(trim(dataMap.get("site_address")))) {
+                    configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, trim(dataMap.get("site_address")));
                 }
-                if (StringUtils.isNotEmpty(dataMap.get("site_port"))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, dataMap.get("site_port"));
+                if (StringUtils.isNotEmpty(trim(dataMap.get("site_port")))) {
+                    configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, trim(dataMap.get("site_port")));
                 }
-                if (StringUtils.isNotEmpty(dataMap.get("group_members_count"))) {
-                    configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, dataMap.get("group_members_count"));
+                if (StringUtils.isNotEmpty(trim(dataMap.get("group_members_count")))) {
+                    configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, trim(dataMap.get("group_members_count")));
                 }
-                if (StringUtils.isNotEmpty(dataMap.get("pic_path"))) {
-                    configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, dataMap.get("pic_path"));
+                if (StringUtils.isNotEmpty(trim(dataMap.get("pic_path")))) {
+                    configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, trim(dataMap.get("pic_path")));
                 }
                 if (StringUtils.isNotEmpty(dataMap.get("site_logo"))) {
                     configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
@@ -211,15 +215,12 @@ public class BasicManageController extends AbstractController {
                     configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
                 }
                 // 普通管理员无权限
-                if (isAdmin(siteUserId) && StringUtils.isNotEmpty(dataMap.get("site_manager"))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, dataMap.get("site_manager"));
+                if (isAdmin(siteUserId) && StringUtils.isNotEmpty(trim(dataMap.get("site_manager")))) {
+                    configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, trim(dataMap.get("site_manager")));
                 }
                 if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("update site config error", e);
         }

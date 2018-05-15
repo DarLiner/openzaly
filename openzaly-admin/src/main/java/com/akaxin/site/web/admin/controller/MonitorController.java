@@ -6,6 +6,8 @@ import com.akaxin.site.storage.bean.MonitorBean;
 import com.akaxin.site.web.admin.common.Timeutils;
 import com.akaxin.site.web.admin.service.IMonitorService;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("monitor")
 public class MonitorController extends AbstractController {
+    private static final Logger logger = LoggerFactory.getLogger(MonitorController.class);
 
     @Autowired
     private IMonitorService monitorService;
@@ -32,7 +35,7 @@ public class MonitorController extends AbstractController {
                 return modelAndView;
             }
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to Monitor  error", e);
         }
 
         Map<String, Object> model = modelAndView.getModel();
@@ -54,7 +57,7 @@ public class MonitorController extends AbstractController {
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return null;
+                return new MonitorBean();
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
