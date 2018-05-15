@@ -71,9 +71,9 @@ public class GroupManageController extends AbstractController {
         Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
         String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
         boolean isManager = SiteConfig.isSiteManager(siteUserId);
-        if (isManager) {
-
-
+        if (!isManager) {
+            return new ModelAndView("error");
+        }
             ModelAndView modelAndView = new ModelAndView("group/index");
             List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
             ArrayList<GroupProfileBean> groupProfileBeans = new ArrayList<>();
@@ -87,9 +87,7 @@ public class GroupManageController extends AbstractController {
                 modelAndView.addObject("groupDefaultSize", String.valueOf(groupDefault.size()));
             }
             return modelAndView;
-        } else {
-            return new ModelAndView("error");
-        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -110,17 +108,15 @@ public class GroupManageController extends AbstractController {
             e.printStackTrace();
         }
         String siteUserId = getRequestSiteUserId(pluginPackage);
-        if (isManager(siteUserId)) {
+        if (!isManager(siteUserId)) {
+            return new ModelAndView("error");
+        }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             GroupProfileBean groupProfile = groupService.getGroupProfile(siteGroupId);
             model.put("group_id", siteGroupId);
             model.put("defaultState", groupProfile.getDefaultState());
             return modelAndView;
-        } else {
-            return new ModelAndView("error");
-
-        }
     }
 
     // 跳转到添加群成员界面
@@ -150,18 +146,18 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String requestSiteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(requestSiteUserId)) {
-                return "false";
+                return NO_PERMISSION;
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             boolean flag = groupService.setGroupDefault(siteGroupId);
             if (flag) {
-                return "success";
+                return SUCCESS;
             }
         } catch (Exception e) {
             logger.error("to group add error", e);
         }
-        return "false";
+        return ERROR;
     }
 
     @RequestMapping("/delGroupDefault")
@@ -171,18 +167,18 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String requestSiteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(requestSiteUserId)) {
-                return "false";
+                return NO_PERMISSION;
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             boolean flag = groupService.delUserDefault(siteGroupId);
             if (flag) {
-                return "success";
+                return SUCCESS;
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        return "false";
+        return ERROR;
     }
 
     @RequestMapping("toMemberList")
@@ -193,13 +189,13 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             // 增加权限校验
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                new ModelAndView("error");
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
                 model.put("siteGroupId", siteGroupId);
-            } else {
-                new ModelAndView("error");
-            }
+
         } catch (Exception e) {
             logger.error("to group add error", e);
         }
@@ -214,7 +210,9 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return new ModelAndView("error");
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
 
@@ -226,7 +224,6 @@ public class GroupManageController extends AbstractController {
                 modelAndView.addObject("groupNotice", bean.getGroupNotice());
                 modelAndView.addObject("groupStatus", bean.getGroupStatus());
                 modelAndView.addObject("createTime", bean.getCreateTime());
-            }
 
         } catch (Exception e) {
             logger.error("to group profile error", e);
@@ -246,10 +243,11 @@ public class GroupManageController extends AbstractController {
             e.printStackTrace();
         }
         String siteUserId = getRequestSiteUserId(pluginPackage);
-        if (!isManager(siteUserId)) {
-            return null;
-        }
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+
+        if (!isManager(siteUserId)) {
+            return stringObjectHashMap;
+        }
         List<String> groupDefault = basicService.getGroupDefault();
         if (groupDefault == null || groupDefault.size() <= 0) {
             stringObjectHashMap.put("size", 0);
@@ -279,7 +277,10 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                results.put("loading", nodata);
+                return results;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 logger.info("=========page={}", reqMap);
                 int pageNum = Integer.valueOf(reqMap.get("page"));
@@ -309,7 +310,6 @@ public class GroupManageController extends AbstractController {
 
                 }
                 results.put("groupData", data);
-            }
         } catch (Exception e) {
             logger.error("get group list error", e);
         }
@@ -324,19 +324,18 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 GroupProfileBean bean = new GroupProfileBean();
-                bean.setGroupId(reqMap.get("siteGroupId"));
-                bean.setGroupName(reqMap.get("groupName"));
-                bean.setGroupPhoto(reqMap.get("groupPhoto"));
-                bean.setGroupNotice(reqMap.get("groupNotice"));
+                bean.setGroupId(trim(reqMap.get("siteGroupId")));
+                bean.setGroupName(trim(reqMap.get("groupName")));
+                bean.setGroupPhoto(trim(reqMap.get("groupPhoto")));
+                bean.setGroupNotice(trim(reqMap.get("groupNotice")));
                 if (groupService.updateGroupProfile(bean)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
@@ -352,7 +351,10 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                results.put("loading", nodata);
+                return results;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
                 int pageNum = Integer.valueOf(reqMap.get("page"));
@@ -376,7 +378,6 @@ public class GroupManageController extends AbstractController {
 
                 }
                 results.put("groupMemberData", data);
-            }
         } catch (Exception e) {
             logger.error("get group members error", e);
         }
@@ -392,7 +393,10 @@ public class GroupManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                results.put("loading", nodata);
+                return results;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
                 int pageNum = Integer.valueOf(reqMap.get("page"));
@@ -417,7 +421,6 @@ public class GroupManageController extends AbstractController {
 
                 }
                 results.put("nonGroupMemberData", data);
-            }
         } catch (Exception e) {
             logger.error("get non group members error", e);
         }
@@ -434,7 +437,9 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
                 String siteGroupId = (String) reqMap.get("siteGroupId");
                 List<String> memberList = (List<String>) reqMap.get("groupMembers");
@@ -443,9 +448,6 @@ public class GroupManageController extends AbstractController {
                 if (groupService.addGroupMembers(siteGroupId, memberList)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
@@ -461,7 +463,9 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
                 String siteGroupId = (String) reqMap.get("siteGroupId");
                 List<String> memberList = (List<String>) reqMap.get("groupMembers");
@@ -470,9 +474,6 @@ public class GroupManageController extends AbstractController {
                 if (groupService.removeGroupMembers(siteGroupId, memberList)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
@@ -487,7 +488,9 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
                 logger.info("siteUserId={} dissmis group={}", siteUserId, siteGroupId);
@@ -495,9 +498,6 @@ public class GroupManageController extends AbstractController {
                 if (groupService.dismissGroup(siteGroupId)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }

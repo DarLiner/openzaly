@@ -99,7 +99,9 @@ public class PluginManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
             String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return new ModelAndView("error");
+            }
                 //解析Plugin_id
                 int authKeyState = 1;
                 String data = pluginPackage.getData();
@@ -121,7 +123,7 @@ public class PluginManageController extends AbstractController {
                     authKeyState = 0;
                 }
                 model.put("authKeyState", authKeyState);
-            }
+
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -136,20 +138,22 @@ public class PluginManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
             String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> pluginData = getRequestDataMap(pluginPackage);
                 logger.info("siteUserId={} add new plugin={}", siteUserId, pluginData);
 
                 PluginBean bean = new PluginBean();
-                bean.setName(pluginData.get("name"));
-                bean.setIcon(pluginData.get("plugin_icon"));
-                bean.setUrlPage(pluginData.get("url_page"));
-                bean.setApiUrl(pluginData.get("api_url"));
-                bean.setAllowedIp(pluginData.get("allow_ip"));
-                bean.setPosition(Integer.valueOf(pluginData.get("position")));
-                bean.setSort(Integer.valueOf(pluginData.get("order")));
+                bean.setName(trim(pluginData.get("name")));
+                bean.setIcon(trim(pluginData.get("plugin_icon")));
+                bean.setUrlPage(trim(pluginData.get("url_page")));
+                bean.setApiUrl(trim(pluginData.get("api_url")));
+                bean.setAllowedIp(trim(pluginData.get("allow_ip")));
+                bean.setPosition(Integer.valueOf(trim(pluginData.get("position"))));
+                bean.setSort(Integer.valueOf(trim(pluginData.get("order"))));
                 bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
-                bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
+                bean.setPermissionStatus(Integer.valueOf(trim(pluginData.get("per_status"))));
                 bean.setAddTime(System.currentTimeMillis());
                 bean.setAuthKey(StringHelper.generateRandomString(16));// 随机生成
 
@@ -157,10 +161,6 @@ public class PluginManageController extends AbstractController {
                 if (pluginService.addNewPlugin(bean)) {
                     return SUCCESS;
                 }
-
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("add new plugin controller error", e);
         }
@@ -178,7 +178,10 @@ public class PluginManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                result.put("loading", nodata);
+                return result;
+            }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pageNum = Integer.valueOf(dataMap.get("page"));
                 logger.info("get plugin list ");
@@ -205,7 +208,6 @@ public class PluginManageController extends AbstractController {
                 }
 
                 result.put("pluginData", pluginList);
-            }
 
         } catch (Exception e) {
             logger.error("get plugin list error", e);
@@ -222,27 +224,28 @@ public class PluginManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> pluginData = getRequestDataMap(pluginPackage);
                 logger.info("siteUserId={} update plugin={}", siteUserId, pluginData);
 
                 PluginBean bean = new PluginBean();
-                bean.setId(Integer.valueOf(pluginData.get("plugin_id")));
-                bean.setName(pluginData.get("name"));
-                bean.setIcon(pluginData.get("plugin_icon"));
-                bean.setUrlPage(pluginData.get("url_page"));
-                bean.setApiUrl(pluginData.get("api_url"));
-                bean.setPosition(Integer.valueOf(pluginData.get("position")));
-                bean.setSort(Integer.valueOf(pluginData.get("order")));
-                bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
-                bean.setAllowedIp(pluginData.get("allow_ip"));
+                bean.setId(Integer.valueOf(trim(pluginData.get("plugin_id"))));
+                bean.setName(trim(pluginData.get("name")));
+                bean.setIcon(trim(pluginData.get("plugin_icon")));
+                bean.setUrlPage(trim(pluginData.get("url_page")));
+                bean.setApiUrl(trim(pluginData.get("api_url")));
+                bean.setPosition(Integer.valueOf(trim(pluginData.get("position"))));
+                bean.setSort(Integer.valueOf(trim(pluginData.get("order"))));
+                bean.setPermissionStatus(Integer.valueOf(trim(pluginData.get("per_status"))));
+                bean.setAllowedIp(trim(pluginData.get("allow_ip")));
                 logger.info("siteUserId={} update plugin bean={}", siteUserId, bean);
 
                 if (pluginService.updatePlugin(bean)) {
                     return SUCCESS;
                 }
 
-            }
         } catch (Exception e) {
             logger.error("edit plugin error", e);
         }
@@ -255,16 +258,15 @@ public class PluginManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pluginId = Integer.valueOf(dataMap.get("plugin_id"));
 
                 if (pluginService.deletePlugin(pluginId)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("edit plugin error", e);
         }
@@ -277,15 +279,16 @@ public class PluginManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pluginId = Integer.valueOf(dataMap.get("plugin_id"));
                 String authKey = pluginService.reSetAuthKey(pluginId);
                 return authKey;
-            }
         } catch (Exception e) {
             logger.error("edit plugin error", e);
         }
-        return "false";
+        return ERROR;
     }
 }

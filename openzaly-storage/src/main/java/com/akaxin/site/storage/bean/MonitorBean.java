@@ -18,6 +18,7 @@ public class MonitorBean {
         this.groupNum = groupNum;
         this.friendNum = friendNum;
     }
+    public MonitorBean() {}
 
     public int getRegisterNum() {
         return registerNum;

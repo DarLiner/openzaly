@@ -101,11 +101,10 @@ public class UICManageController extends AbstractController {
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 
-			if (isManager) {
-				return uicServer.addUIC(100, 16) ? SUCCESS : ERROR;
-			} else {
+			if (!isManager) {
 				return NO_PERMISSION;
 			}
+				return uicServer.addUIC(100, 16) ? SUCCESS : ERROR;
 		} catch (Exception e) {
 			logger.error("add new uic error", e);
 		}
@@ -123,7 +122,10 @@ public class UICManageController extends AbstractController {
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
-			if (isManager) {
+			if (!isManager) {
+				results.put("loading", nodata);
+				return results;
+			}
 				Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 
 				int pageNum = Integer.valueOf(uicReqMap.get("page"));
@@ -144,7 +146,6 @@ public class UICManageController extends AbstractController {
 					}
 				}
 				results.put("uicData", data);
-			}
 		} catch (Exception e) {
 			logger.error("get used uic list error", e);
 		}

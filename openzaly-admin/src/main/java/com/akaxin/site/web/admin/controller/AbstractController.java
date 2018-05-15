@@ -49,4 +49,8 @@ public class AbstractController {
 		return GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 	}
 
+	public String  trim(String parameter) {
+		String trim = parameter.replaceAll("[ |　]", " ").trim();
+		return trim;
+	}
 }

@@ -54,7 +54,7 @@ public class MonitorController extends AbstractController {
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return null;
+                return new MonitorBean();
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();

@@ -89,18 +89,18 @@ public class UserManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return "false";
+                return ERROR;
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
             boolean flag = basicService.setUserDefault(site_user_id);
             if (flag) {
-                return "success";
+                return SUCCESS;
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        return "false";
+        return ERROR;
     }
 
     @RequestMapping("/delUserDefault")
@@ -109,18 +109,18 @@ public class UserManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return "false";
+                return NO_PERMISSION;
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
             boolean flag = basicService.delUserDefault(site_user_id);
             if (flag) {
-                return "success";
+                return SUCCESS;
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        return "false";
+        return ERROR;
     }
 
     // 用户个人资料展示界面，此界面编辑用户资料，并执行更新
@@ -132,7 +132,9 @@ public class UserManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String currentUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(currentUserId)) {
+            if (!isManager(currentUserId)) {
+                return new ModelAndView("error");
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteUserId = reqMap.get("site_user_id");
 
@@ -145,9 +147,6 @@ public class UserManageController extends AbstractController {
                 modelAndView.addObject("regTime", bean.getRegisterTime());
                 modelAndView.addObject("defaultState", bean.getDefaultState());
 
-            } else {
-                return new ModelAndView("error");
-            }
         } catch (Exception e) {
             logger.error(StringHelper.format("siteUserId={} get user profile error"), e);
         }
@@ -161,11 +160,10 @@ public class UserManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return null;
+                return new HashMap<>();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return new HashMap<>();
         }
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> userDefault = basicService.getUserDefault();
@@ -198,7 +196,10 @@ public class UserManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                results.put("loading", nodata);
+                return results;
+            }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pageNum = Integer.valueOf(dataMap.get("page"));
 
@@ -238,7 +239,6 @@ public class UserManageController extends AbstractController {
                 }
 
                 results.put("userData", data);
-            }
 
         } catch (Exception e) {
             logger.error("get site user list error", e);
@@ -255,19 +255,19 @@ public class UserManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 UserProfileBean bean = new UserProfileBean();
-                bean.setSiteUserId(reqMap.get("siteUserId"));
-                bean.setUserName(reqMap.get("userName"));
-                bean.setUserPhoto(reqMap.get("userPhoto"));
-                bean.setSelfIntroduce(reqMap.get("userIntroduce"));
+                bean.setSiteUserId(trim(reqMap.get("siteUserId")));
+                bean.setUserName(trim(reqMap.get("userName")));
+                bean.setUserPhoto(trim(reqMap.get("userPhoto")));
+                bean.setSelfIntroduce(trim(reqMap.get("userIntroduce")));
                 if (userService.updateProfile(bean)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
+
         } catch (Exception e) {
             logger.error("update profile error", e);
         }
@@ -281,7 +281,9 @@ public class UserManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (isManager(siteUserId)) {
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String reqStatus = reqMap.get("type");
                 int status = UserStatus.NORMAL_VALUE;
@@ -292,9 +294,6 @@ public class UserManageController extends AbstractController {
                 if (userService.sealUpUser(reqMap.get("site_user_id"), status)) {
                     return SUCCESS;
                 }
-            } else {
-                return NO_PERMISSION;
-            }
         } catch (Exception e) {
             logger.error("update profile error", e);
         }

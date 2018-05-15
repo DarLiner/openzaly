@@ -42,6 +42,9 @@ public class SiteMemberController extends AbstractController {
 			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+			if (!isManager(getRequestSiteUserId(pluginPackage))) {
+				return new ModelAndView("error");
+			}
 			UserProfileBean userProfile = userService.getUserProfile(siteUserId);
 			model.put("site_user_id", siteUserId);
 			model.put("site_user_name", userProfile.getUserName());
@@ -49,9 +52,7 @@ public class SiteMemberController extends AbstractController {
 			logger.error("to SiteMember error", e);
 			return new ModelAndView("siteMember/error");
 		}
-		if (!isManager(getRequestSiteUserId(pluginPackage))) {
-			return new ModelAndView("error");
-		}
+
 		return modelAndView;
 	}
 
@@ -64,7 +65,8 @@ public class SiteMemberController extends AbstractController {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				return null;
+				results.put("loading", nodata);
+				return results;
 			}
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
