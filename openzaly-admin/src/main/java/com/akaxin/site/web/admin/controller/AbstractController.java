@@ -53,7 +53,7 @@ public class AbstractController {
 		if (parameter == null) {
 			return parameter;
 		}
-		String trim = parameter.replaceAll("[ |　]", " ").trim();
+		String trim = parameter.replaceAll("[ 　]", "");
 		return trim;
 	}
 }
