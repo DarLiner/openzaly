@@ -18,7 +18,7 @@ public class Helper {
 	private static final Logger logger = LoggerFactory.getLogger(Helper.class);
 
 	/**
-	 * 
+	 *
 	 * @param args
 	 * @return true:only print helper message false:start openzaly-server
 	 */
@@ -100,6 +100,27 @@ public class Helper {
 		pwriter.flush();
 	}
 
+    public static void startFail(PrintWriter pwriter, String message) {
+        pwriter.println("[Error] start openzaly-server failed, server exit...");
+		pwriter.println("[Error] " +message);
+        pwriter.println();
+        pwriter.flush();
+    }
+
+    public static String analysisException(Exception e, int sitePort, int httpPort) {
+        String message = e.getMessage();
+        String[] split = e.getCause().toString().split(":");
+        int httpState = message.indexOf("http");
+        if (httpState != -1) {
+			return e.getMessage() + "  " + split[split.length - 1] + ":" + httpPort;
+		}
+        int siteState = message.indexOf("netty");
+		if (siteState != -1) {
+			return e.getMessage() + "  " + split[split.length - 1] + ":" + sitePort;
+		}
+        return e.getMessage() + "  " + split[split.length - 1];
+    }
+
 	private static void printHelperMessage(PrintWriter pw) {
 		pw.println();
 		pw.println("example:java -Dsite.port=2021 -jar openzaly-server.jar ");
@@ -118,4 +139,5 @@ public class Helper {
 		pw.println();
 		pw.flush();
 	}
+
 }

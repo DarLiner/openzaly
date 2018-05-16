@@ -142,7 +142,6 @@ public class MonitorController extends AbstractController {
                 bean.setUserStatus(0);
                 bean.setRegisterTime(System.currentTimeMillis());
                 boolean b = SiteLoginDao.getInstance().registerUser(bean);
-                System.out.println("成功--" + count);
                 if (requestSiteUserId == "" && count == 1) {
                     requestSiteUserId = bean.getSiteUserId();
                     count++;
@@ -257,15 +256,10 @@ public class MonitorController extends AbstractController {
                         u2Bean.setMsgType(CoreProto.MsgType.TEXT_VALUE);
                         u2Bean.setSendUserId(simpleUserBean.getUserId());
                         u2Bean.setSiteUserId(requestSiteUserId);
-                        u2Bean.setContent("你好啊,我是:"+simpleUserBean.getUserName()+"这是我第 "+count+" 给你发消息");
+                        u2Bean.setContent("你好啊,我是:"+simpleUserBean.getUserName()+"这是我第 "+count+" 次给你发消息");
                         u2Bean.setMsgTime(System.currentTimeMillis());
                         try {
                             messageDao.saveU2Message(u2Bean);
-
-                            long l = 0;
-                            l = syncDao.queryMaxU2MessageId(requestSiteUserId);
-                            syncDao.updateU2Pointer(requestSiteUserId, deviceId, l - 1);
-                            //发送psn
                             CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
                                     .setAction(CommandConst.IM_STC_PSN);
                             ImStcPsnProto.ImStcPsnRequest pshRequest = ImStcPsnProto.ImStcPsnRequest.newBuilder().build();

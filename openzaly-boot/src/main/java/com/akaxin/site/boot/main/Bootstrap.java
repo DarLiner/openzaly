@@ -75,15 +75,16 @@ public class Bootstrap {
 		PrintWriter pwriter = new PrintWriter(System.out);
 		Helper.showAkaxinBanner(pwriter);
 		Helper.buildEnvToSystemOut(pwriter);
-
+		int httpPort = 8080;
+		int sitePort = 2021;
 		try {
 			// init log level
 			setSystemLogLevel();
 
 			String siteAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
-			int sitePort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
+			sitePort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
 			String httpAddress = ConfigHelper.getStringConfig(ConfigKey.HTTP_ADDRESS);
-			int httpPort = ConfigHelper.getIntConfig(ConfigKey.HTTP_PORT);
+			httpPort = ConfigHelper.getIntConfig(ConfigKey.HTTP_PORT);
 			String adminAddress = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
 			int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
 			String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
@@ -119,7 +120,7 @@ public class Bootstrap {
 			Helper.startSuccess(pwriter);
 			logger.info("start openzaly-server successfully");
 		} catch (Exception e) {
-			Helper.startFail(pwriter);
+			Helper.startFail(pwriter,Helper.analysisException(e,sitePort,httpPort));
 			logger.error(StringHelper.format("{} start openzaly-server error", AkxProject.PLN), e);
 			logger.error("openzaly-boot exit!!!");
 			System.exit(-1);// 直接退出程序
