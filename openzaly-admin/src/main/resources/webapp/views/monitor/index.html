@@ -71,6 +71,12 @@
 </div>
 <div class="weui-cells" id="monitor-lists">
 </div>
+<div class="weui-btn-area">
+    <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createFriend" href="javascript:"
+       url-data="/monitor/createFriend" id="createFriend">生成1000个用户</a>
+    <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createFriend" href="javascript:"
+       url-data="/monitor/sendMessage" id="sendMessage">给当前用户发送消息</a>
+</div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
@@ -140,6 +146,58 @@
             "dayNum": dayNum.toString(),
         };
         reqUrl(url, JSON.stringify(params), 'reDisplay');
+    }
+
+    $(document).on("click", "#createFriend", function () {
+        var reqUri = $(this).attr('url-data');
+        $.confirm({
+            title: '生成1000个好友',
+            text: '确定生成1000个好友,并且添加当前用户为好友?',
+            onOK: function () {
+                var params = {};
+                reqUrl(reqUri, JSON.stringify(params), "createFriend");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
+    $(document).on("click", "#sendMessage", function () {
+        var reqUri = $(this).attr('url-data');
+        $.confirm({
+            title: '批量发送消息',
+            text: '给当前用户发送消息',
+            onOK: function () {
+                var params = {};
+                reqUrl(reqUri, JSON.stringify(params), "sendMessage");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
+    function sendMessage(result) {
+        if (result == 'success') {
+            $.toast("操作成功");
+        } else {
+            $.toast("操作失败", "forbidden");
+        }
+    }
+
+    function createFriend(result) {
+        if (result == 'success') {
+            $.toast("操作成功");
+        } else {
+            $.toast("操作失败", "forbidden");
+        }
     }
 
     function reDisplay(results) {
