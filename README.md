@@ -30,6 +30,8 @@ _
 > * Issues
 > * mail: hi@akaxin.xyz
 
+> QQ群：`655249600`
+
 
 简介
 ----
