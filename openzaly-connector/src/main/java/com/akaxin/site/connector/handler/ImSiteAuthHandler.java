@@ -28,10 +28,10 @@ import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.chain.handler.MethodReflectHandler;
-import com.akaxin.common.utils.ServerAddressUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.site.ImSiteAuthProto;
 import com.akaxin.proto.site.ImSiteHelloProto;
+import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.connector.constant.AkxProject;
 import com.akaxin.site.connector.session.SessionManager;
 import com.akaxin.site.storage.bean.SimpleAuthBean;
@@ -134,7 +134,7 @@ public class ImSiteAuthHandler extends MethodReflectHandler<Command, CommandResp
 				.setAction(CommandConst.ACTION_RES);
 		ErrorCode2 errCode = ErrorCode2.ERROR_SESSION;
 		if (result) {
-			String siteServer = ServerAddressUtils.getAddressPort();
+			String siteServer = SiteConfig.getSiteAddress();
 			ImSiteAuthProto.ImSiteAuthResponse authResponse = ImSiteAuthProto.ImSiteAuthResponse.newBuilder()
 					.setSiteServer(siteServer).build();
 			commandResponse.setParams(authResponse.toByteArray());
