@@ -30,13 +30,14 @@ public class MultiPushThreadExecutor {
 	/**
 	 * <pre>
 	 * int corePoolSize = 5
-	 * int maximumPoolSize=10 
+	 * int maximumPoolSize=(n+1)*5 
 	 * long keepAliveTime=10 
 	 * TimeUnit unit=S
 	 * BlockingQueue<Runnable> workQueue
 	 * </pre>
 	 */
-	private static Executor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 10, TimeUnit.SECONDS,
+	private static int maxThreadNum = (Runtime.getRuntime().availableProcessors() + 1) * 5;
+	private static Executor threadPoolExecutor = new ThreadPoolExecutor(5, maxThreadNum, 10, TimeUnit.SECONDS,
 			new LinkedBlockingQueue<Runnable>());
 
 	private MultiPushThreadExecutor() {
