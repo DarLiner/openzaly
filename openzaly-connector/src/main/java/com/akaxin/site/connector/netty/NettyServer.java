@@ -63,8 +63,8 @@ public abstract class NettyServer {
 		try {
 			bootstrap = new ServerBootstrap();
 			int needThreadNum = Runtime.getRuntime().availableProcessors() + 1;
-			int parentNum = needThreadNum * 5 + 10;
-			int childNum = needThreadNum * 2 + 10;
+			int parentNum = 10;//accept from channel socket
+			int childNum = needThreadNum * 5 + 10;//give to business handler
 			// 处理服务端事件组
 			parentGroup = new NioEventLoopGroup(parentNum, new PrefixThreadFactory("bim-boss-evenloopgroup"));
 			// 处理客户端连接请求的事件组
