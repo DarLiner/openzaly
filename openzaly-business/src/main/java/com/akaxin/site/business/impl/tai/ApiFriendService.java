@@ -189,7 +189,7 @@ public class ApiFriendService extends AbstractRequest {
 				if (UserProto.UserRelation.RELATION_FRIEND == userRelation) {
 					errCode = ErrorCode2.ERROR2_FRIEND_IS;
 				} else {
-					 applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
+					applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
 					if (applyTimes >= 5) {
 						errCode = ErrorCode2.ERROR2_FRIEND_APPLYCOUNT;
 					} else {
@@ -305,7 +305,9 @@ public class ApiFriendService extends AbstractRequest {
 				if (ErrorCode2.SUCCESS.equals(errCode) && result) {
 					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
 							siteFriendId);
-					new User2Notice().addFriendTextMessage(applyBean);
+					if (applyBean != null && StringUtils.isNotEmpty(applyBean.getSiteUserId())) {
+						new User2Notice().addFriendTextMessage(applyBean);
+					}
 					logger.debug("client={} siteUserId={} add friend notice to siteUserId={}", command.getClientIp(),
 							siteFriendId);
 				}
