@@ -15,16 +15,25 @@
  */
 package com.akaxin.site.web.admin.controller;
 
+import com.akaxin.common.channel.ChannelWriter;
+import com.akaxin.common.command.CommandResponse;
+import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.client.ImStcPsnProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.storage.bean.GroupMemberBean;
-import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.api.IMessageDao;
+import com.akaxin.site.storage.api.IUserSessionDao;
+import com.akaxin.site.storage.bean.*;
+import com.akaxin.site.storage.service.MessageDaoService;
+import com.akaxin.site.storage.service.UserSessionDaoService;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.akaxin.site.web.admin.service.IGroupService;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +46,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 群组管理控制器
@@ -52,6 +59,7 @@ import java.util.Map;
 @RequestMapping("group")
 public class GroupManageController extends AbstractController {
     private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
+    private IMessageDao messageDao = new MessageDaoService();
 
     @Resource(name = "groupManageService")
     private IGroupService groupService;
@@ -74,19 +82,19 @@ public class GroupManageController extends AbstractController {
         if (!isManager) {
             return new ModelAndView("error");
         }
-            ModelAndView modelAndView = new ModelAndView("group/index");
-            List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
-            ArrayList<GroupProfileBean> groupProfileBeans = new ArrayList<>();
-            modelAndView.addObject("groupDefaultSize", "0");
-            if (groupDefault != null && groupDefault.size() > 0) {
-                for (String s : groupDefault) {
-                    GroupProfileBean groupProfile = groupService.getGroupProfile(s);
-                    groupProfileBeans.add(groupProfile);
-                }
-                modelAndView.addObject("groupList", groupProfileBeans);
-                modelAndView.addObject("groupDefaultSize", String.valueOf(groupDefault.size()));
+        ModelAndView modelAndView = new ModelAndView("group/index");
+        List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
+        ArrayList<GroupProfileBean> groupProfileBeans = new ArrayList<>();
+        modelAndView.addObject("groupDefaultSize", "0");
+        if (groupDefault != null && groupDefault.size() > 0) {
+            for (String s : groupDefault) {
+                GroupProfileBean groupProfile = groupService.getGroupProfile(s);
+                groupProfileBeans.add(groupProfile);
             }
-            return modelAndView;
+            modelAndView.addObject("groupList", groupProfileBeans);
+            modelAndView.addObject("groupDefaultSize", String.valueOf(groupDefault.size()));
+        }
+        return modelAndView;
 
     }
 
@@ -111,12 +119,12 @@ public class GroupManageController extends AbstractController {
         if (!isManager(siteUserId)) {
             return new ModelAndView("error");
         }
-            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-            String siteGroupId = reqMap.get("group_id");
-            GroupProfileBean groupProfile = groupService.getGroupProfile(siteGroupId);
-            model.put("group_id", siteGroupId);
-            model.put("defaultState", groupProfile.getDefaultState());
-            return modelAndView;
+        Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+        String siteGroupId = reqMap.get("group_id");
+        GroupProfileBean groupProfile = groupService.getGroupProfile(siteGroupId);
+        model.put("group_id", siteGroupId);
+        model.put("defaultState", groupProfile.getDefaultState());
+        return modelAndView;
     }
 
     // 跳转到添加群成员界面
@@ -192,9 +200,9 @@ public class GroupManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 new ModelAndView("error");
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                String siteGroupId = reqMap.get("group_id");
-                model.put("siteGroupId", siteGroupId);
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String siteGroupId = reqMap.get("group_id");
+            model.put("siteGroupId", siteGroupId);
 
         } catch (Exception e) {
             logger.error("to group add error", e);
@@ -213,17 +221,17 @@ public class GroupManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 return new ModelAndView("error");
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                String siteGroupId = reqMap.get("group_id");
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String siteGroupId = reqMap.get("group_id");
 
-                GroupProfileBean bean = groupService.getGroupProfile(siteGroupId);
-                modelAndView.addObject("siteGroupId", bean.getGroupId());
-                modelAndView.addObject("groupName", bean.getGroupName());
-                modelAndView.addObject("groupPhoto", bean.getGroupPhoto());
-                modelAndView.addObject("ownerUserId", bean.getCreateUserId());
-                modelAndView.addObject("groupNotice", bean.getGroupNotice());
-                modelAndView.addObject("groupStatus", bean.getGroupStatus());
-                modelAndView.addObject("createTime", bean.getCreateTime());
+            GroupProfileBean bean = groupService.getGroupProfile(siteGroupId);
+            modelAndView.addObject("siteGroupId", bean.getGroupId());
+            modelAndView.addObject("groupName", bean.getGroupName());
+            modelAndView.addObject("groupPhoto", bean.getGroupPhoto());
+            modelAndView.addObject("ownerUserId", bean.getCreateUserId());
+            modelAndView.addObject("groupNotice", bean.getGroupNotice());
+            modelAndView.addObject("groupStatus", bean.getGroupStatus());
+            modelAndView.addObject("createTime", bean.getCreateTime());
 
         } catch (Exception e) {
             logger.error("to group profile error", e);
@@ -281,35 +289,35 @@ public class GroupManageController extends AbstractController {
                 results.put("loading", nodata);
                 return results;
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                logger.info("=========page={}", reqMap);
-                int pageNum = Integer.valueOf(reqMap.get("page"));
-                List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-                List<SimpleGroupBean> groupList = groupService.getGroupList(pageNum, PAGE_SIZE);
-                if (groupList != null && groupList.size() > 0) {
-                    List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
-                    for (SimpleGroupBean bean : groupList) {
-                        if (groupDefault != null && groupDefault.size() > 0) {
-                            boolean contains = groupDefault.contains(bean.getGroupId());
-                            if (contains) {
-                                continue;
-                            }
-                            Map<String, Object> groupMap = new HashMap<String, Object>();
-                            groupMap.put("siteGroupId", bean.getGroupId());
-                            groupMap.put("groupName", bean.getGroupName());
-                            groupMap.put("groupPhoto", bean.getGroupPhoto());
-                            data.add(groupMap);
-                        } else {
-                            Map<String, Object> groupMap = new HashMap<String, Object>();
-                            groupMap.put("siteGroupId", bean.getGroupId());
-                            groupMap.put("groupName", bean.getGroupName());
-                            groupMap.put("groupPhoto", bean.getGroupPhoto());
-                            data.add(groupMap);
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            logger.info("=========page={}", reqMap);
+            int pageNum = Integer.valueOf(reqMap.get("page"));
+            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+            List<SimpleGroupBean> groupList = groupService.getGroupList(pageNum, PAGE_SIZE);
+            if (groupList != null && groupList.size() > 0) {
+                List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
+                for (SimpleGroupBean bean : groupList) {
+                    if (groupDefault != null && groupDefault.size() > 0) {
+                        boolean contains = groupDefault.contains(bean.getGroupId());
+                        if (contains) {
+                            continue;
                         }
+                        Map<String, Object> groupMap = new HashMap<String, Object>();
+                        groupMap.put("siteGroupId", bean.getGroupId());
+                        groupMap.put("groupName", bean.getGroupName());
+                        groupMap.put("groupPhoto", bean.getGroupPhoto());
+                        data.add(groupMap);
+                    } else {
+                        Map<String, Object> groupMap = new HashMap<String, Object>();
+                        groupMap.put("siteGroupId", bean.getGroupId());
+                        groupMap.put("groupName", bean.getGroupName());
+                        groupMap.put("groupPhoto", bean.getGroupPhoto());
+                        data.add(groupMap);
                     }
-
                 }
-                results.put("groupData", data);
+
+            }
+            results.put("groupData", data);
         } catch (Exception e) {
             logger.error("get group list error", e);
         }
@@ -327,15 +335,15 @@ public class GroupManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 return NO_PERMISSION;
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                GroupProfileBean bean = new GroupProfileBean();
-                bean.setGroupId(trim(reqMap.get("siteGroupId")));
-                bean.setGroupName(trim(reqMap.get("groupName")));
-                bean.setGroupPhoto(trim(reqMap.get("groupPhoto")));
-                bean.setGroupNotice(trim(reqMap.get("groupNotice")));
-                if (groupService.updateGroupProfile(bean)) {
-                    return SUCCESS;
-                }
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            GroupProfileBean bean = new GroupProfileBean();
+            bean.setGroupId(trim(reqMap.get("siteGroupId")));
+            bean.setGroupName(trim(reqMap.get("groupName")));
+            bean.setGroupPhoto(trim(reqMap.get("groupPhoto")));
+            bean.setGroupNotice(trim(reqMap.get("groupNotice")));
+            if (groupService.updateGroupProfile(bean)) {
+                return SUCCESS;
+            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
@@ -355,29 +363,29 @@ public class GroupManageController extends AbstractController {
                 results.put("loading", nodata);
                 return results;
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                String siteGroupId = reqMap.get("group_id");
-                int pageNum = Integer.valueOf(reqMap.get("page"));
-                List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String siteGroupId = reqMap.get("group_id");
+            int pageNum = Integer.valueOf(reqMap.get("page"));
+            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 
-                List<GroupMemberBean> memberList = groupService.getGroupMembers(siteGroupId, pageNum, PAGE_SIZE);
-                if (memberList != null && memberList.size() > 0) {
-                    if (PAGE_SIZE == memberList.size()) {
-                        nodata = false;
-                    }
-
-                    for (GroupMemberBean bean : memberList) {
-                        Map<String, Object> memberMap = new HashMap<String, Object>();
-                        memberMap.put("siteUserId", bean.getUserId());
-                        memberMap.put("userName", bean.getUserName());
-                        memberMap.put("userPhoto", bean.getUserPhoto());
-                        memberMap.put("userStatus", bean.getUserStatus());
-                        memberMap.put("userRole", bean.getUserRole());// 是否为群主
-                        data.add(memberMap);
-                    }
-
+            List<GroupMemberBean> memberList = groupService.getGroupMembers(siteGroupId, pageNum, PAGE_SIZE);
+            if (memberList != null && memberList.size() > 0) {
+                if (PAGE_SIZE == memberList.size()) {
+                    nodata = false;
                 }
-                results.put("groupMemberData", data);
+
+                for (GroupMemberBean bean : memberList) {
+                    Map<String, Object> memberMap = new HashMap<String, Object>();
+                    memberMap.put("siteUserId", bean.getUserId());
+                    memberMap.put("userName", bean.getUserName());
+                    memberMap.put("userPhoto", bean.getUserPhoto());
+                    memberMap.put("userStatus", bean.getUserStatus());
+                    memberMap.put("userRole", bean.getUserRole());// 是否为群主
+                    data.add(memberMap);
+                }
+
+            }
+            results.put("groupMemberData", data);
         } catch (Exception e) {
             logger.error("get group members error", e);
         }
@@ -397,30 +405,30 @@ public class GroupManageController extends AbstractController {
                 results.put("loading", nodata);
                 return results;
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                String siteGroupId = reqMap.get("group_id");
-                int pageNum = Integer.valueOf(reqMap.get("page"));
-                List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String siteGroupId = reqMap.get("group_id");
+            int pageNum = Integer.valueOf(reqMap.get("page"));
+            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 
-                List<GroupMemberBean> noMemberList = groupService.getNonGroupMembers(siteGroupId, pageNum, PAGE_SIZE);
+            List<GroupMemberBean> noMemberList = groupService.getNonGroupMembers(siteGroupId, pageNum, PAGE_SIZE);
 
-                if (noMemberList != null && noMemberList.size() > 0) {
-                    if (PAGE_SIZE == noMemberList.size()) {
-                        nodata = false;
-                    }
-
-                    for (GroupMemberBean bean : noMemberList) {
-                        Map<String, Object> nonMemberMap = new HashMap<String, Object>();
-                        nonMemberMap.put("siteUserId", bean.getUserId());
-                        nonMemberMap.put("userName", bean.getUserName());
-                        nonMemberMap.put("userPhoto", bean.getUserPhoto());
-                        nonMemberMap.put("userStatus", bean.getUserStatus());
-                        nonMemberMap.put("userRole", bean.getUserRole());// 这里全部为非群成员
-                        data.add(nonMemberMap);
-                    }
-
+            if (noMemberList != null && noMemberList.size() > 0) {
+                if (PAGE_SIZE == noMemberList.size()) {
+                    nodata = false;
                 }
-                results.put("nonGroupMemberData", data);
+
+                for (GroupMemberBean bean : noMemberList) {
+                    Map<String, Object> nonMemberMap = new HashMap<String, Object>();
+                    nonMemberMap.put("siteUserId", bean.getUserId());
+                    nonMemberMap.put("userName", bean.getUserName());
+                    nonMemberMap.put("userPhoto", bean.getUserPhoto());
+                    nonMemberMap.put("userStatus", bean.getUserStatus());
+                    nonMemberMap.put("userRole", bean.getUserRole());// 这里全部为非群成员
+                    data.add(nonMemberMap);
+                }
+
+            }
+            results.put("nonGroupMemberData", data);
         } catch (Exception e) {
             logger.error("get non group members error", e);
         }
@@ -440,14 +448,14 @@ public class GroupManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 return NO_PERMISSION;
             }
-                Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
-                String siteGroupId = (String) reqMap.get("siteGroupId");
-                List<String> memberList = (List<String>) reqMap.get("groupMembers");
-                logger.info("siteUserId={} add group={} members={}", siteUserId, siteGroupId, memberList);
+            Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
+            String siteGroupId = (String) reqMap.get("siteGroupId");
+            List<String> memberList = (List<String>) reqMap.get("groupMembers");
+            logger.info("siteUserId={} add group={} members={}", siteUserId, siteGroupId, memberList);
 
-                if (groupService.addGroupMembers(siteGroupId, memberList)) {
-                    return SUCCESS;
-                }
+            if (groupService.addGroupMembers(siteGroupId, memberList)) {
+                return SUCCESS;
+            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
@@ -466,14 +474,14 @@ public class GroupManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 return NO_PERMISSION;
             }
-                Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
-                String siteGroupId = (String) reqMap.get("siteGroupId");
-                List<String> memberList = (List<String>) reqMap.get("groupMembers");
-                logger.info("siteUserId={} remove group={} members={}", siteUserId, siteGroupId, memberList);
+            Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
+            String siteGroupId = (String) reqMap.get("siteGroupId");
+            List<String> memberList = (List<String>) reqMap.get("groupMembers");
+            logger.info("siteUserId={} remove group={} members={}", siteUserId, siteGroupId, memberList);
 
-                if (groupService.removeGroupMembers(siteGroupId, memberList)) {
-                    return SUCCESS;
-                }
+            if (groupService.removeGroupMembers(siteGroupId, memberList)) {
+                return SUCCESS;
+            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
@@ -491,16 +499,94 @@ public class GroupManageController extends AbstractController {
             if (!isManager(siteUserId)) {
                 return NO_PERMISSION;
             }
-                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                String siteGroupId = reqMap.get("group_id");
-                logger.info("siteUserId={} dissmis group={}", siteUserId, siteGroupId);
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String siteGroupId = reqMap.get("group_id");
+            logger.info("siteUserId={} dissmis group={}", siteUserId, siteGroupId);
 
-                if (groupService.dismissGroup(siteGroupId)) {
-                    return SUCCESS;
-                }
+            if (groupService.dismissGroup(siteGroupId)) {
+                return SUCCESS;
+            }
         } catch (Exception e) {
             logger.error("update group profile error", e);
         }
         return ERROR;
+    }
+
+    @RequestMapping("/sendMessage")
+    @ResponseBody
+    public String sendMessage(@RequestBody byte[] bodyParams) {
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
+
+            if (!isManager(siteUserId)) {
+                return NO_PERMISSION;
+            }
+            Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+            String siteGroupId = reqMap.get("group_id");
+            String groupMessage = reqMap.get("groupMessage");
+            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+            String sessionId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_SESSION_ID_VALUE);
+            IUserSessionDao sessionDao = new UserSessionDaoService();
+            SimpleAuthBean authBean = sessionDao.getUserSession(sessionId);
+            String deviceId = authBean.getDeviceId();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                List<GroupMemberBean> members = groupService.getGroupMembers(siteGroupId, 1, 100);
+                int count = 1;
+
+                while (true) {
+                    for (GroupMemberBean member : members) {
+                        if (siteUserId.equals(member.getUserId())) {
+                            continue;
+                        }
+                        GroupMessageBean gmsgBean = new GroupMessageBean();
+                        gmsgBean.setMsgId(buildGroupMsgId(member.getUserId()));
+                        gmsgBean.setSendUserId(member.getUserId());
+                        gmsgBean.setSendDeviceId(UUID.randomUUID().toString());
+                        gmsgBean.setSiteGroupId(siteGroupId);
+                        gmsgBean.setContent("我是:"+member.getUserName()+" 这是第"+count+"条消息");
+                        gmsgBean.setMsgType(5);
+                        gmsgBean.setMsgTime(System.currentTimeMillis());
+                        try {
+                            messageDao.saveGroupMessage(gmsgBean);
+                            CommandResponse commandResponse = new CommandResponse().setVersion(CommandConst.PROTOCOL_VERSION)
+                                    .setAction(CommandConst.IM_STC_PSN);
+                            ImStcPsnProto.ImStcPsnRequest pshRequest = ImStcPsnProto.ImStcPsnRequest.newBuilder().build();
+                            commandResponse.setParams(pshRequest.toByteArray());
+                            commandResponse.setErrCode2(ErrorCode2.SUCCESS);
+                            ChannelWriter.writeByDeviceId(deviceId, commandResponse);
+                            count++;
+                            if (count > Integer.valueOf(groupMessage)) {
+                                return;
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+//                    msgStatusResponse(command, gmsgId, msgTime, success);
+                    }
+                }
+
+            }).start();
+            return SUCCESS;
+        } catch (Exception e) {
+            logger.error("update group profile error", e);
+        }
+        return ERROR;
+    }
+
+    private String buildGroupMsgId(String siteUserid) {
+        StringBuilder sb = new StringBuilder("GROUP-");
+        if (StringUtils.isNotEmpty(siteUserid)) {
+            int len = siteUserid.length();
+            sb.append(siteUserid.substring(0, len >= 8 ? 8 : len));
+            sb.append("-");
+        }
+        sb.append(System.currentTimeMillis());
+        return sb.toString();
     }
 }

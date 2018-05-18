@@ -75,6 +75,17 @@
             </a>
 
             <div class="weui-cell weui-cell_access"></div>
+            <div class="weui-cells" id="Test">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">发送消息条数</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input groupMessage" name='groupMessage' type="text" placeholder="填写要发送的条数"
+                               style="text-align: right;">
+                    </div>
+                </div>
+            </div>
             <div class="weui-btn-area">
                 <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
                    url-data="/group/setGroupDefault" href="javascript:" id="group_default"
@@ -87,6 +98,9 @@
                 <a href="javascript:;" url-data="/group/dissmissGroup"
                    class="weui-btn basic-weui-btn weui-btn_warn disband-group"
                    th:attr="group-id=${group_id}">解散群</a>
+                <a href="javascript:;" url-data="/group/sendMessage"
+                   class="weui-btn basic-weui-btn weui-btn_warn sendMessage"
+                   th:attr="group-id=${group_id}">给当前用户批量发送消息</a>
             </div>
         </div>
     </div>
@@ -201,6 +215,41 @@
             }
         });
     });
+
+    $(document).on("click", ".sendMessage", function () {
+        var groupId = $(this).attr('group-id');
+        var reqUri = $(this).attr('url-data');
+        var groupMessage = $('.groupMessage').val();
+        if (groupMessage <= 0) {
+            alert("请填写正确的消息数量");
+            return;
+        }
+        $.confirm({
+            title: '发送消息',
+            text: '三秒后,开始给当前用户发送消息',
+            onOK: function () {
+                var params = {
+                    "group_id": groupId,
+                    "groupMessage": groupMessage
+                };
+                reqUrl(reqUri, JSON.stringify(params), "sendMessage");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
+    function sendMessage(result) {
+        if (result == 'success') {
+            $.toast("操作成功");
+        } else {
+            $.toast("操作失败", "forbidden");
+        }
+    }
 
     $(document).on("click", ".group-add-member", function () {
         var groupId = $(this).attr('group-id');
