@@ -77,13 +77,15 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					startPointer = u2MessageToClient(channelSession.getChannel(), u2MessageList);
 					syncTotalCount += u2MessageList.size();
 				}
+				logger.info("client={} siteUserId={} sync u2msg pointer={}", command.getClientIp(), command.getAction(),
+						startPointer);
 				// 判断跳出循环的条件
 				if (u2MessageList == null || u2MessageList.size() < SYNC_MAX_MESSAGE_COUNT) {
 					break;
 				}
 			}
 
-			logger.debug("client={} siteUserId={} deviceId={} sync u2-msg from pointer={} count={}.",
+			logger.info("client={} siteUserId={} deviceId={} sync u2-msg from pointer={} count={}.",
 					command.getClientIp(), siteUserId, deviceId, startPointer, syncTotalCount);
 		} catch (Exception e) {
 			logger.error("sync u2 message error", e);
