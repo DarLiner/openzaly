@@ -70,10 +70,33 @@
     </div>
 </div>
 <div class="weui-cells" id="monitor-lists">
+
+</div>
+<div class="weui-cells" id="Test">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">要生成的用户数</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input userNum" name='userNum' type="text"
+                   placeholder="请输入要生成的用户数" style="text-align: right;">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">要生成的群组数量和每个群组的人数(逗号隔开)</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input groupTestData" name='groupTestData' type="text"
+                   placeholder="请输入群组数量和群组人数,逗号隔开" style="text-align: right;">
+        </div>
+    </div>
 </div>
 <div class="weui-btn-area">
     <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createFriend" href="javascript:"
-       url-data="/monitor/createFriend" id="createFriend">生成1000个用户</a>
+       url-data="/monitor/createFriend" id="createFriend">生成指定数量用户</a>
+    <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createGroup" href="javascript:"
+       url-data="/monitor/createGroup" id="createGroup">生成指定数量和人数的群组</a>
     <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createFriend" href="javascript:"
        url-data="/monitor/sendMessage" id="sendMessage">给当前用户发送消息</a>
 </div>
@@ -150,11 +173,18 @@
 
     $(document).on("click", "#createFriend", function () {
         var reqUri = $(this).attr('url-data');
+        var userNum = $('.userNum').val();
+        if (userNum <= 0) {
+            alert("请填写正确的用户数量");
+        }
         $.confirm({
-            title: '生成1000个好友',
-            text: '确定生成1000个好友,并且添加当前用户为好友?',
+            title: '生成好友',
+            text: '确定生成用户,并且添加当前用户为好友?',
             onOK: function () {
-                var params = {};
+                var params = {
+                    'userNum': userNum
+                };
+
                 reqUrl(reqUri, JSON.stringify(params), "createFriend");
                 $.closeModal();
             },
@@ -165,6 +195,29 @@
             }
         });
     });
+
+    $(document).on("click", "#createGroup", function () {
+        var reqUri = $(this).attr('url-data');
+        var groupData = $('.groupTestData').val();
+        $.confirm({
+            title: '生成群组',
+            text: '确定生成群组?',
+            onOK: function () {
+                var params = {
+                    'groupData': groupData
+                };
+
+                reqUrl(reqUri, JSON.stringify(params), "createGroup");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
 
     $(document).on("click", "#sendMessage", function () {
         var reqUri = $(this).attr('url-data');
@@ -183,6 +236,14 @@
             }
         });
     });
+
+    function createGroup(result) {
+        if (result == 'success') {
+            $.toast("操作成功");
+        } else {
+            $.toast("操作失败", "forbidden");
+        }
+    }
 
     function sendMessage(result) {
         if (result == 'success') {

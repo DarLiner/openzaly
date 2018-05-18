@@ -120,6 +120,7 @@ public class Bootstrap {
 			Helper.startSuccess(pwriter);
 			logger.info("start openzaly-server successfully");
 		} catch (Exception e) {
+			Helper.startFail(pwriter);
 			Helper.startFail(pwriter,Helper.analysisException(e,sitePort,httpPort));
 			logger.error(StringHelper.format("{} start openzaly-server error", AkxProject.PLN), e);
 			logger.error("openzaly-boot exit!!!");

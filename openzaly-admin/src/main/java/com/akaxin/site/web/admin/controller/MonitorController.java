@@ -11,6 +11,7 @@ import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.dao.SiteLoginDao;
 import com.akaxin.site.business.dao.UserFriendDao;
+import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.utils.FileServerUtils;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.api.IUserSessionDao;
@@ -35,10 +36,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 import static com.akaxin.site.web.admin.common.MsgUtils.buildU2MsgId;
 
@@ -120,7 +119,8 @@ public class MonitorController extends AbstractController {
             if (!isManager(requestSiteUserId)) {
                 return ERROR;
             }
-            Random random = new Random();
+            Map<String, String> dataMap = getRequestDataMap(pluginPackage);
+            int userNum = Integer.parseInt(dataMap.get("userNum"));
             int count = 1;
             while (true) {
                 UserProfileBean bean = new UserProfileBean();
@@ -150,7 +150,7 @@ public class MonitorController extends AbstractController {
                 boolean b1 = UserFriendDao.getInstance().agreeApply(bean.getSiteUserId(), requestSiteUserId, true);
                 UserFriendDao.getInstance().agreeApplyWithClear(bean.getSiteUserId(), requestSiteUserId);
                 count++;
-                if (count > 1000) {
+                if (count > userNum) {
                     return SUCCESS;
                 }
             }
@@ -256,7 +256,7 @@ public class MonitorController extends AbstractController {
                         u2Bean.setMsgType(CoreProto.MsgType.TEXT_VALUE);
                         u2Bean.setSendUserId(simpleUserBean.getUserId());
                         u2Bean.setSiteUserId(requestSiteUserId);
-                        u2Bean.setContent("你好啊,我是:"+simpleUserBean.getUserName()+"这是我第 "+count+" 次给你发消息");
+                        u2Bean.setContent("你好啊,我是:" + simpleUserBean.getUserName() + "这是我第 " + count + " 次给你发消息");
                         u2Bean.setMsgTime(System.currentTimeMillis());
                         try {
                             messageDao.saveU2Message(u2Bean);
@@ -275,6 +275,72 @@ public class MonitorController extends AbstractController {
             }).start();
             return SUCCESS;
         } catch (Exception e) {
+        }
+        return ERROR;
+    }
+
+    @RequestMapping("/createGroup")
+    @ResponseBody
+    public String createGroup(@RequestBody byte[] bodyParam) {
+        PluginProto.ProxyPluginPackage pluginPackage = null;
+        try {
+            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            String requestSiteUserId = getRequestSiteUserId(pluginPackage);
+            if (!isManager(requestSiteUserId)) {
+                return ERROR;
+            }
+            Map<String, String> requestDataMap = getRequestDataMap(pluginPackage);
+            String groupData = requestDataMap.get("groupData");
+            String replaceAll = groupData.replaceAll("，", ",");
+            String[] split = replaceAll.split(",");
+            int groupNum = Integer.parseInt(split[0]);
+            int groupMemNum = Integer.parseInt(split[1]);
+            Random random = new Random();
+            int count = 1;
+            ArrayList<String> memberList = new ArrayList<>();
+            while (true) {
+                UserProfileBean bean = new UserProfileBean();
+                String Id = UUID.randomUUID().toString();
+                memberList.add(Id);
+                bean.setSiteUserId(Id);
+                bean.setUserIdPubk(UUID.randomUUID().toString());
+                int flag = Math.random() > 0.5 ? 1 : 0;
+                if (flag == 0) {
+                    bean.setUserName(getRandomJianHan(2) + "|" + count);
+                } else {
+                    bean.setUserName(getStringRandom(4) + "|" + count);
+                }
+                System.out.println(bean.getUserName());
+                byte[] bytes = StringToBytearray("U" + count);
+                String s = FileServerUtils.saveFile(bytes, "site-file/", FileProto.FileType.USER_PORTRAIT, FileProto.FileDesc.newBuilder().build());
+                bean.setApplyInfo("");
+                bean.setUserPhoto(s);
+                bean.setPhoneId("");
+                bean.setUserStatus(0);
+                bean.setRegisterTime(System.currentTimeMillis());
+                boolean b = SiteLoginDao.getInstance().registerUser(bean);
+                if (requestSiteUserId == "" && count == 1) {
+                    requestSiteUserId = bean.getSiteUserId();
+                    count++;
+                    continue;
+                }
+                UserFriendDao.getInstance().agreeApply(bean.getSiteUserId(), requestSiteUserId, true);
+                UserFriendDao.getInstance().agreeApplyWithClear(bean.getSiteUserId(), requestSiteUserId);
+                count++;
+                if (count > groupMemNum) {
+                    break;
+                }
+            }
+            int groupCount = 1;
+            while (true) {
+                UserGroupDao.getInstance().createGroup(requestSiteUserId, "Group" + groupCount, memberList);
+                groupCount++;
+                if (groupCount > groupNum) {
+                    return SUCCESS;
+                }
+            }
+        } catch (Exception e) {
+
         }
         return ERROR;
     }
