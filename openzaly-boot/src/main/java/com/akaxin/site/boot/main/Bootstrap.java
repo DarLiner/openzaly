@@ -29,6 +29,9 @@ import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.logs.AkxLog4jManager;
+import com.akaxin.common.monitor.JstatMonitor;
+import com.akaxin.common.monitor.RequestQpsMonitor;
+import com.akaxin.common.monitor.ZalyMonitorController;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.FileProto.FileType;
 import com.akaxin.site.boot.config.AkxProject;
@@ -105,6 +108,7 @@ public class Bootstrap {
 			// add config
 			initDataSource(config);
 			addConfigListener();
+			addZalyMonitor();
 
 			// start server
 			startHttpServer(httpAddress, httpPort);// 0.0.0.0:2021
@@ -212,6 +216,13 @@ public class Bootstrap {
 	private static void addConfigListener() {
 		ConfigListener.startListenning();
 		logger.info("{} add config listener to site-config", AkxProject.PLN);
+	}
+
+	private static void addZalyMonitor() {
+		ZalyMonitorController mm = new ZalyMonitorController();
+		mm.addMonitor(new JstatMonitor());
+		mm.addMonitor(new RequestQpsMonitor());
+		mm.start();
 	}
 
 	private static String getDefaultIcon(String base64Str) {

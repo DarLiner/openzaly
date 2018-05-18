@@ -29,6 +29,7 @@ import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.constant.RequestAction;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.monitor.RequestQpsMonitor;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.site.connector.codec.parser.ChannelConst;
@@ -54,6 +55,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		RequestQpsMonitor.IM_ONLINE.inc();
 		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String clientIp = socketAddress.getAddress().getHostAddress();
 		ctx.channel().attr(ChannelConst.CHANNELSESSION).set(new ChannelSession(ctx.channel()));
@@ -62,6 +64,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		RequestQpsMonitor.IM_ONLINE.dec();
 		InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String clientIp = socketAddress.getAddress().getHostAddress();
 		logger.debug("{} client={} close connection... ChannelSize={}", AkxProject.PLN, clientIp,
@@ -96,6 +99,16 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		String action = redisCmd.getParameterByIndex(1);
 		byte[] params = redisCmd.getBytesParamByIndex(2);
 		CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(params);
+
+		if ("api.site.register".equals(action)) {
+			RequestQpsMonitor.API_SITE_REGISTER.inc();
+		} else if ("api.site.login".equals(action)) {
+			RequestQpsMonitor.API_SITE_LOGIN.inc();
+		} else if ("im.cts.message".equals(action)) {
+			RequestQpsMonitor.IM_CTS_MESSAGE.inc();
+		} else if ("im.sync.message".equals(action)) {
+			RequestQpsMonitor.IM_SYNC_MESSAGE.inc();
+		}
 
 		Command command = new Command();
 		command.setClientIp(clientIp);
