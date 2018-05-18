@@ -75,20 +75,29 @@
 <div class="weui-cells" id="Test">
     <div class="weui-cell">
         <div class="weui-cell__hd">
-            <label class="weui-label">要生成的用户数</label>
+            <label class="weui-label">用户数</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input userNum" name='userNum' type="text"
-                   placeholder="请输入要生成的用户数" style="text-align: right;">
+            <input class="weui-input userNum" name='userNum' type="text" placeholder="填写要添加的用户数"
+                   style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd">
-            <label class="weui-label">要生成的群组数量和每个群组的人数(逗号隔开)</label>
+            <label class="weui-label">群组数和人数</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input groupTestData" name='groupTestData' type="text"
-                   placeholder="请输入群组数量和群组人数,逗号隔开" style="text-align: right;">
+            <input class="weui-input groupTestData" name='groupTestData' type="text" placeholder="(逗号隔开)"
+                   style="text-align: right;">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">消息条数</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input U2MessageCount" name='U2MessageCount' type="text" placeholder="填写单人要发送的消息条数"
+                   style="text-align: right;">
         </div>
     </div>
 </div>
@@ -98,7 +107,9 @@
     <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createGroup" href="javascript:"
        url-data="/monitor/createGroup" id="createGroup">生成指定数量和人数的群组</a>
     <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createFriend" href="javascript:"
-       url-data="/monitor/sendMessage" id="sendMessage">给当前用户发送消息</a>
+       url-data="/monitor/sendMessage" id="sendMessage">给当前用户发送消息(无限)</a>
+    <a class="weui-btn basic-weui-btn weui-btn_primary basic-color createFriend" href="javascript:"
+       url-data="/monitor/sendU2Message" id="U2sendMessage">单人给当前用户发送指定条数消息</a>
 </div>
 </div>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
@@ -176,6 +187,7 @@
         var userNum = $('.userNum').val();
         if (userNum <= 0) {
             alert("请填写正确的用户数量");
+            return;
         }
         $.confirm({
             title: '生成好友',
@@ -223,9 +235,34 @@
         var reqUri = $(this).attr('url-data');
         $.confirm({
             title: '批量发送消息',
-            text: '给当前用户发送消息',
+            text: '3s后,给当前用户发送消息',
             onOK: function () {
                 var params = {};
+                reqUrl(reqUri, JSON.stringify(params), "sendMessage");
+                $.closeModal();
+            },
+            onCancel: function () {
+                console.log('cancle');
+                toast('取消操作');
+                $.closeModal();
+            }
+        });
+    });
+
+    $(document).on("click", "#U2sendMessage", function () {
+        var reqUri = $(this).attr('url-data');
+        var u2Count = $('.U2MessageCount').val();
+        if (u2Count <= 0) {
+            alert("请填写正确的消息数量");
+            return;
+        }
+        $.confirm({
+            title: '批量发送消息',
+            text: '3s后,给当前用户发送指定条数消息',
+            onOK: function () {
+                var params = {
+                    'u2Count': u2Count
+                };
                 reqUrl(reqUri, JSON.stringify(params), "sendMessage");
                 $.closeModal();
             },
