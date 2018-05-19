@@ -4,6 +4,7 @@ import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.storage.bean.MonitorBean;
 import com.akaxin.site.web.admin.common.Timeutils;
+import com.akaxin.site.web.admin.exception.UserException;
 import com.akaxin.site.web.admin.service.IMonitorService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class MonitorController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return new ModelAndView("error");
+                throw new UserException("Current user is not a manager");
             }
         Map<String, Object> model = modelAndView.getModel();
 
@@ -45,6 +46,8 @@ public class MonitorController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to Monitor  error", e);
+        } catch (UserException e) {
+            logger.error("siteUserId error",e);
         }
         return new ModelAndView("error");
     }
@@ -63,7 +66,7 @@ public class MonitorController extends AbstractController {
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return new MonitorBean();
+                throw new UserException("Current user is not a manager");
             }
 
             Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
@@ -88,6 +91,8 @@ public class MonitorController extends AbstractController {
 
         } catch (InvalidProtocolBufferException e) {
             logger.error("monitor refresh error", e);
+        } catch (UserException e) {
+            logger.error("siteUserId error",e);
         }
         return new MonitorBean();
     }

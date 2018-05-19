@@ -15,12 +15,14 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.proto.core.ConfigProto.ConfigKey;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.impl.site.SiteConfig;
+import com.akaxin.site.web.admin.exception.UserException;
+import com.akaxin.site.web.admin.service.IBasicService;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +34,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.common.utils.GsonUtils;
-import com.akaxin.proto.core.ConfigProto;
-import com.akaxin.proto.core.ConfigProto.ConfigKey;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.web.admin.service.IBasicService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("manage")
@@ -56,14 +55,15 @@ public class BasicManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
             boolean isManager = SiteConfig.isSiteManager(siteUserId);
             if (!isManager) {
-                return "error";
+                throw new UserException("Current user is not a manager");
             }
+            return "admin";
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic manage error", e);
-            return "error";
+        } catch (UserException u) {
+            logger.error("siteUserId error",u);
         }
-        return "admin";
-
+        return "error";
     }
 
     // 获取站点配置信息
@@ -78,7 +78,7 @@ public class BasicManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                return new ModelAndView("error");
+                throw new UserException("Current user is not a manager");
             }
             if (isAdmin(siteUserId)) {
                 model.put("manager_type", "admin");
@@ -152,12 +152,14 @@ public class BasicManageController extends AbstractController {
                     break;
             }
 
-        }
-        model.put("siteAddressAndPort", site_address + ":" + site_prot);
-        model.put("httpAddressAndPort", http_address + ":" + http_prot);
+            }
+            model.put("siteAddressAndPort", site_address + ":" + site_prot);
+            model.put("httpAddressAndPort", http_address + ":" + http_prot);
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic config page error", e);
+        } catch (UserException u) {
+            logger.error("siteUserId error", u);
         }
         return new ModelAndView("error");
     }
@@ -173,7 +175,7 @@ public class BasicManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                return NO_PERMISSION;
+                throw new UserException("Current user is not a manager");
             }
                 Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
                 logger.info("siteUserId={} update config={}", siteUserId, dataMap);
@@ -219,8 +221,11 @@ public class BasicManageController extends AbstractController {
                 if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
                     return SUCCESS;
                 }
-        } catch (Exception e) {
+        } catch (InvalidProtocolBufferException e) {
             logger.error("update site config error", e);
+        } catch (UserException u) {
+            logger.error("siteUserId error", u);
+            return NO_PERMISSION;
         }
         return ERROR;
     }
