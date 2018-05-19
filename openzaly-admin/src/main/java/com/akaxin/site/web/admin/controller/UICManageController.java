@@ -56,12 +56,11 @@ public class UICManageController extends AbstractController {
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
 				return new ModelAndView("error");
 			}
+			return modelAndView;
 		} catch (Exception e) {
 			logger.error("to Uic error", e);
-			return new ModelAndView("error");
-
 		}
-		return modelAndView;
+		return new ModelAndView("error");
 	}
 
 	@RequestMapping("/unused")
@@ -71,11 +70,11 @@ public class UICManageController extends AbstractController {
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
 				return "error";
 			}
+			return "uic/unused_list";
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "error";
+			logger.error("get unused list error",e);
 		}
-		return "uic/unused_list";
+		return "error";
 	}
 
 	@RequestMapping("/used")
@@ -85,11 +84,11 @@ public class UICManageController extends AbstractController {
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
 				return "error";
 			}
+			return "uic/used_list";
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "error";
+			logger.error("get used list error",e);
 		}
-		return "uic/used_list";
+		return "error";
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/addUic")

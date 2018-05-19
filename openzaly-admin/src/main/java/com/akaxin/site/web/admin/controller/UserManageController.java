@@ -63,11 +63,6 @@ public class UserManageController extends AbstractController {
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
                 return new ModelAndView("error");
             }
-
-        } catch (Exception e) {
-            logger.error("to User Manage error", e);
-            return new ModelAndView("error");
-        }
         List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
         List<UserProfileBean> userProfileBeans = new ArrayList<>();
         modelAndView.addObject("userDefaultSize", "0");
@@ -79,8 +74,11 @@ public class UserManageController extends AbstractController {
             modelAndView.addObject("userList", userProfileBeans);
             modelAndView.addObject("userDefaultSize", String.valueOf(userDefault.size()));
         }
-
-        return modelAndView;
+            return modelAndView;
+        } catch (Exception e) {
+            logger.error("to User Manage error", e);
+        }
+        return new ModelAndView("error");
     }
 
     @RequestMapping("/setUserDefault")
@@ -137,7 +135,6 @@ public class UserManageController extends AbstractController {
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteUserId = reqMap.get("site_user_id");
-
                 UserProfileBean bean = userService.getUserProfile(siteUserId);
                 modelAndView.addObject("siteUserId", bean.getSiteUserId());
                 modelAndView.addObject("userName", bean.getUserName());
@@ -146,30 +143,27 @@ public class UserManageController extends AbstractController {
                 modelAndView.addObject("userStatus", bean.getUserStatus());
                 modelAndView.addObject("regTime", bean.getRegisterTime());
                 modelAndView.addObject("defaultState", bean.getDefaultState());
-
+            return modelAndView;
         } catch (Exception e) {
             logger.error(StringHelper.format("siteUserId={} get user profile error"), e);
         }
-
-        return modelAndView;
+        return new ModelAndView("error");
     }
 
-    @RequestMapping("/reFlush")
+    @RequestMapping("/refresh")
     @ResponseBody
     public Map<String, Object> reFlushDefault(@RequestBody byte[] bodyParam) {
+        HashMap<String, Object> dataMap = new HashMap<>();
+
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
                 return new HashMap<>();
             }
-        } catch (Exception e) {
-            return new HashMap<>();
-        }
-        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> userDefault = basicService.getUserDefault();
         if (userDefault == null || userDefault.size() <= 0) {
-            stringObjectHashMap.put("size", 0);
-            return stringObjectHashMap;
+            dataMap.put("size", 0);
+            return dataMap;
         }
         ArrayList<Map<String, Object>> data = new ArrayList<>();
         for (String s : userDefault) {
@@ -181,9 +175,13 @@ public class UserManageController extends AbstractController {
             userMap.put("userStatus", bean.getUserStatus());
             data.add(userMap);
         }
-        stringObjectHashMap.put("size", data.size());
-        stringObjectHashMap.put("data", data);
-        return stringObjectHashMap;
+            dataMap.put("size", data.size());
+            dataMap.put("data", data);
+            return dataMap;
+        } catch (Exception e) {
+            logger.error("refresh user list error",e);
+        }
+        return new HashMap<>();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/userList")

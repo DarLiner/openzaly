@@ -53,14 +53,16 @@ public class PluginManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("to plugin  error", e);
-            return new ModelAndView("error");
-        }
+
         if (!isManager(getRequestSiteUserId(pluginPackage))) {
             return new ModelAndView("error");
         }
-        return modelAndView;
+            return modelAndView;
+
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to plugin  error", e);
+        }
+        return new ModelAndView("error");
     }
 
     @RequestMapping("/addPage")
@@ -68,13 +70,17 @@ public class PluginManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+
+            if (!isManager(getRequestSiteUserId(pluginPackage))) {
+                return "error";
+            }
+            return "plugin/add";
+
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("to plugin add page error", e);
         }
-        if (!isManager(getRequestSiteUserId(pluginPackage))) {
-            return "error";
-        }
-        return "plugin/add";
+        return "error";
+
     }
 
     @RequestMapping("/listPage")
@@ -82,13 +88,16 @@ public class PluginManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
+
         if (!isManager(getRequestSiteUserId(pluginPackage))) {
             return "error";
         }
-        return "plugin/list";
+            return "plugin/list";
+
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to plugin list error",e);
+        }
+        return "error";
     }
 
     @RequestMapping("/editPage")
@@ -127,9 +136,8 @@ public class PluginManageController extends AbstractController {
 
         } catch (InvalidProtocolBufferException e) {
             logger.error("to plugin  error", e);
-            return new ModelAndView("error");
         }
-        return modelAndView;
+        return new ModelAndView("error");
     }
 
     // 增加新扩展
@@ -145,7 +153,6 @@ public class PluginManageController extends AbstractController {
             }
                 Map<String, String> pluginData = getRequestDataMap(pluginPackage);
                 logger.info("siteUserId={} add new plugin={}", siteUserId, pluginData);
-
                 PluginBean bean = new PluginBean();
                 bean.setName(trim(pluginData.get("name")));
                 bean.setIcon(pluginData.get("plugin_icon"));
@@ -208,9 +215,7 @@ public class PluginManageController extends AbstractController {
                         data.add(pluginMap);
                     }
                 }
-
                 result.put("pluginData", pluginList);
-
         } catch (Exception e) {
             logger.error("get plugin list error", e);
         }
@@ -247,7 +252,6 @@ public class PluginManageController extends AbstractController {
                 if (pluginService.updatePlugin(bean)) {
                     return SUCCESS;
                 }
-
         } catch (Exception e) {
             logger.error("edit plugin error", e);
         }

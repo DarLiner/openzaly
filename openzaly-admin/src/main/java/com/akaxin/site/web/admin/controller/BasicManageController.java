@@ -53,8 +53,7 @@ public class BasicManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
             boolean isManager = SiteConfig.isSiteManager(siteUserId);
             if (!isManager) {
                 return "error";
@@ -77,8 +76,7 @@ public class BasicManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
                 return new ModelAndView("error");
             }
@@ -87,9 +85,7 @@ public class BasicManageController extends AbstractController {
             } else if (isManager(siteUserId)) {
                 model.put("manager_type", "site_manager");
             }
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("to basic config page error", e);
-        }
+
         model.put("uic_status", "0");
         model.put("pic_size", "1");
         model.put("pic_path", "/akaxin");
@@ -159,7 +155,11 @@ public class BasicManageController extends AbstractController {
         }
         model.put("siteAddressAndPort", site_address + ":" + site_prot);
         model.put("httpAddressAndPort", http_address + ":" + http_prot);
-        return modelAndView;
+            return modelAndView;
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to basic config page error", e);
+        }
+        return new ModelAndView("error");
     }
 
     // 更新站点配置信息
@@ -170,11 +170,9 @@ public class BasicManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-            boolean isManager = SiteConfig.isSiteManager(siteUserId);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (!isManager) {
+            if (!isManager(siteUserId)) {
                 return NO_PERMISSION;
             }
                 Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);

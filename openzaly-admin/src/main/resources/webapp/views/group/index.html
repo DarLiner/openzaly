@@ -201,7 +201,7 @@
     }
 
     $(document.body).pullToRefresh(function () {
-        reqUrl("/group/reFlush", null, "reFlush");
+        reqUrl("/group/refresh", null, "doRefresh");
         $('#group-lists').html("");
         page = 0;
         loading = false;
@@ -210,7 +210,7 @@
 
     });
 
-    function reFlush(results) {
+    function doRefresh(results) {
         results = eval("(" + results + ")");
         var size = results.size;
         if (size <= 0) {
