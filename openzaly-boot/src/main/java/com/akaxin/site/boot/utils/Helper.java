@@ -100,6 +100,13 @@ public class Helper {
 		pwriter.flush();
 	}
 
+	public static void startFailWithError(PrintWriter pwriter, String errMessage) {
+		pwriter.println("[Error] error message:" + errMessage);
+		pwriter.println("[Error] start openzaly-server failed, server exit...");
+		pwriter.println();
+		pwriter.flush();
+	}
+
 	private static void printHelperMessage(PrintWriter pw) {
 		pw.println();
 		pw.println("example:java -Dsite.port=2021 -jar openzaly-server.jar ");

@@ -23,6 +23,7 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.executor.AbstracteExecutor;
 import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.connector.constant.AkxProject;
+import com.akaxin.site.connector.exception.HttpServerException;
 import com.akaxin.site.connector.http.handler.HttpServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -73,7 +74,7 @@ public abstract class HttpServer {
 		}
 	}
 
-	public void start(String address, int port) throws Exception {
+	public void start(String address, int port) throws HttpServerException {
 		try {
 			ChannelFuture channelFuture = bootstrap.bind(address, port).sync();
 			channelFuture.channel().closeFuture().addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -86,7 +87,7 @@ public abstract class HttpServer {
 			});
 		} catch (Exception e) {
 			closeGracefylly();
-			throw new Exception("start http server error", e);
+			throw new HttpServerException("start openzaly http-server error", e);
 		}
 	}
 
@@ -100,8 +101,8 @@ public abstract class HttpServer {
 				childGroup.shutdownGracefully();
 				childGroup.terminationFuture().sync();
 			}
-		} catch (Exception es) {
-			logger.error("shutdown http gracefylly error.", es);
+		} catch (InterruptedException e) {
+			logger.error("shutdown http gracefylly error.", e);
 		}
 	}
 

@@ -65,9 +65,9 @@ public class PropertiesUtils {
 		properties.put("site.address", "0.0.0.0");
 		properties.put("site.port", "2021");
 		properties.put("http.address", "0.0.0.0");
-		properties.put("http.port", "8080");
+		properties.put("http.port", "8280");
 		properties.put("site.admin.address", "127.0.0.1");
-		properties.put("site.admin.port", "8081");
+		properties.put("site.admin.port", "8288");
 		properties.put("site.admin.uic", "000000");
 		properties.put("site.baseDir", "./");
 		properties.put("group.members.count", "100");
