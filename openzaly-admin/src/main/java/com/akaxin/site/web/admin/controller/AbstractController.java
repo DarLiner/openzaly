@@ -49,4 +49,11 @@ public class AbstractController {
 		return GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 	}
 
+	public String  trim(String parameter) {
+		if (parameter == null) {
+			return parameter;
+		}
+		String trim = parameter.replaceAll("[ 　]", "");
+		return trim;
+	}
 }

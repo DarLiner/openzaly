@@ -209,11 +209,9 @@ public class ApiSiteService extends AbstractRequest {
 				errorCode = ErrorCode2.ERROR_REGISTER_USERID_UNIQUE;
 			}
 
-			logger.info("client={} siteUserId={} action={} register on site", command.getClientIp(), siteUserId,
-					command.getAction());
-
 			if (ErrorCode2.SUCCESS == errorCode) {
 				addDefaultFriendsAndGroups(siteUserId);
+
 				buildGroupForUser(siteUserId, userName);
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());

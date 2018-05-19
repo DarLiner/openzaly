@@ -47,7 +47,17 @@ public class WebMessageController extends AbstractController {
 	private IMessageManageService messageService;
 
 	@RequestMapping("/index")
-	public ModelAndView toIndex() {
+	public ModelAndView toIndex(@RequestBody byte[] bodyParam) {
+		PluginProto.ProxyPluginPackage pluginPackage = null;
+		try {
+			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			if (!isManager(getRequestSiteUserId(pluginPackage))) {
+				return new ModelAndView("error");
+			}
+		} catch (InvalidProtocolBufferException e) {
+			return new ModelAndView("error");
+		}
+
 		return new ModelAndView("webMsg/test");
 	}
 
@@ -56,7 +66,9 @@ public class WebMessageController extends AbstractController {
 	public String u2WebMessage(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-
+		if (!isManager(getRequestSiteUserId(pluginPackage))) {
+			return NO_PERMISSION;
+		}
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 		
@@ -78,6 +90,9 @@ public class WebMessageController extends AbstractController {
 	public String u2WebNotice(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+		if (!isManager(getRequestSiteUserId(pluginPackage))) {
+			return NO_PERMISSION;
+		}
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
@@ -97,6 +112,9 @@ public class WebMessageController extends AbstractController {
 	public void groupWebMessage(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+		if (!isManager(getRequestSiteUserId(pluginPackage))) {
+			return;
+		}
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
 		WebMessageBean bean = new WebMessageBean();
@@ -115,6 +133,9 @@ public class WebMessageController extends AbstractController {
 	public String groupWebNotice(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+		if (!isManager(getRequestSiteUserId(pluginPackage))) {
+			return NO_PERMISSION;
+		}
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 

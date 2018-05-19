@@ -74,7 +74,7 @@ public class SQLiteJDBCManager {
 		initSiteConfig(config.getConfigMap());
 		addSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getAdminApi(), config.getSiteServer(),
 				config.getAdminIcon());
-		addSitePlugin(2, PluginArgs.FRIEND_SQUARE_NAME, PluginArgs.FRIEND_SQUARE_API, PluginArgs.FRIEND_SQUARE_ADDRESS,
+		addSitePlugin(2, PluginArgs.FRIEND_SQUARE_NAME, PluginArgs.FRIEND_SQUARE_API, config.getSiteServer(),
 				config.getParam(PluginArgs.FRIEND_SQUARE, String.class));
 		initAdminUic(config.getAdminUic());
 	}
@@ -249,10 +249,10 @@ public class SQLiteJDBCManager {
 				} else {
 					pst.setString(6, "");// authkey
 					pst.setString(7, "127.0.0.1");// allowed_ip
-					pst.setInt(8, PluginProto.PluginPosition.MSG_PAGE_VALUE);// position
+					pst.setInt(8, PluginProto.PluginPosition.HOME_PAGE_VALUE);// position
 					pst.setInt(9, 1);// sort
 					pst.setInt(10, PluginProto.PluginDisplayMode.NEW_PAGE_VALUE); // display_mode
-					pst.setInt(11, PluginProto.PermissionStatus.DISABLED_VALUE); // permission_status
+					pst.setInt(11, PluginProto.PermissionStatus.AVAILABLE_VALUE); // permission_status
 					pst.setLong(12, System.currentTimeMillis()); // add_time
 				}
 				result = (pst.executeUpdate() > 0);

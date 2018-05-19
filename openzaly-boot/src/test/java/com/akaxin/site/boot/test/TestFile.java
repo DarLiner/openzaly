@@ -1,10 +1,14 @@
 package com.akaxin.site.boot.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.akaxin.proto.core.FileProto.FileType;
 import com.akaxin.site.business.utils.FilePathUtils;
 import com.akaxin.site.business.utils.FileServerUtils;
 
 public class TestFile {
+	private static final Logger logger = LoggerFactory.getLogger(TestFile.class);
 
 	private static String getDefaultSiteAdminIcon() {
 		try {
@@ -13,7 +17,7 @@ public class TestFile {
 					null);
 			return fileId;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("get default icon error", e);
 		}
 		return "";
 	}

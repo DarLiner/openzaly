@@ -64,7 +64,7 @@
             <label class="weui-label">扩展名称</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input plugin_name" type="text" placeholder="请输入扩展名称">
+            <input class="weui-input plugin_name" type="text" placeholder="请输入扩展名称" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -72,7 +72,7 @@
             <label class="weui-label">url_page</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input plugin_url_page" type="text" pattern="[a-z0-9]*" placeholder="落地页">
+            <input class="weui-input plugin_url_page" type="text" pattern="[a-z0-9]*" placeholder="落地页" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -81,7 +81,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_api_url" type="text" pattern="[a-z\/0-9]*"
-                   placeholder="例如http(s)://127.0.0.1">
+                   placeholder="例如http(s)://127.0.0.1" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -113,7 +113,7 @@
                 <label class="weui-label">扩展序号</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input order" type="text" pattern="[0-9]*" placeholder="输入序号">
+                <input class="weui-input order" type="text" pattern="[0-9]*" placeholder="输入序号" style="text-align: right;">
             </div>
         </div>
         <div class="weui-cell">
@@ -121,7 +121,7 @@
                 <label class="weui-label">允许访问的IP</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input allow_ip" type="text" pattern="(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)" placeholder="输入允许访问的IP地址, 用逗号隔开">
+                <input class="weui-input allow_ip" type="text" pattern="(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)" placeholder="输入允许访问的IP地址, 用逗号隔开" style="text-align: right;">
             </div>
         </div>
         <a class="weui-cell weui-cell_access position" href="javascript:;">
@@ -216,7 +216,7 @@
     }
 
     function isDomain(siteAddress) {
-
+        siteAddress=siteAddress.replace(/\s/g,"");
         if (siteAddress.indexOf("://") > -1) {
             hostname = siteAddress.split('/')[2];
         } else {
@@ -230,7 +230,7 @@
                 return true;
             }
 
-            var re2 = /^(.+\.)(com|edu|gov|int|mil|net|org|biz|info|name|museum|coop|aero|xyz|top|store|team|cc|shop|club|vip|ink|site|fun|online|work|red|group|tv|[a-z][a-z])$/;
+            var re2 = /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/;
             if (re2.test(domain)) {
                 return true;
             }
