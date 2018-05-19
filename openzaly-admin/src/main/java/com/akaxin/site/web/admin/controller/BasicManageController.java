@@ -20,7 +20,7 @@ import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.ConfigProto.ConfigKey;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.web.admin.exception.UserException;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang3.StringUtils;
@@ -55,13 +55,13 @@ public class BasicManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
             boolean isManager = SiteConfig.isSiteManager(siteUserId);
             if (!isManager) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             return "admin";
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic manage error", e);
-        } catch (UserException u) {
-            logger.error("siteUserId error",u);
+        } catch (UserPermissionException u) {
+            logger.error("to basic manage error : "+u.getMessage());
         }
         return "error";
     }
@@ -78,7 +78,7 @@ public class BasicManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             if (isAdmin(siteUserId)) {
                 model.put("manager_type", "admin");
@@ -158,8 +158,8 @@ public class BasicManageController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic config page error", e);
-        } catch (UserException u) {
-            logger.error("siteUserId error", u);
+        } catch (UserPermissionException u) {
+            logger.error("to basic config page error : "+u.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -175,7 +175,7 @@ public class BasicManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
                 logger.info("siteUserId={} update config={}", siteUserId, dataMap);
@@ -223,8 +223,8 @@ public class BasicManageController extends AbstractController {
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("update site config error", e);
-        } catch (UserException u) {
-            logger.error("siteUserId error", u);
+        } catch (UserPermissionException u) {
+            logger.error("update site config error : "+u.getMessage());
             return NO_PERMISSION;
         }
         return ERROR;

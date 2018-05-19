@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.akaxin.site.web.admin.exception.UserException;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,14 +56,14 @@ public class PluginManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
         if (!isManager(getRequestSiteUserId(pluginPackage))) {
-            throw new UserException("Current user is not a manager");
+            throw new UserPermissionException("Current user is not a manager");
         }
             return modelAndView;
 
         } catch (InvalidProtocolBufferException e) {
             logger.error("to plugin  error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to plugin  error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -75,14 +75,14 @@ public class PluginManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             return "plugin/add";
 
         } catch (InvalidProtocolBufferException e) {
             logger.error("to plugin add page error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to plugin add page error : "+e.getMessage());
         }
         return "error";
 
@@ -95,14 +95,14 @@ public class PluginManageController extends AbstractController {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
         if (!isManager(getRequestSiteUserId(pluginPackage))) {
-            throw new UserException("Current user is not a manager");
+            throw new UserPermissionException("Current user is not a manager");
         }
             return "plugin/list";
 
         } catch (InvalidProtocolBufferException e) {
             logger.error("to plugin list error",e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to plugin list error : "+e.getMessage());
         }
         return "error";
     }
@@ -117,7 +117,7 @@ public class PluginManageController extends AbstractController {
 
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 //解析Plugin_id
                 int authKeyState = 1;
@@ -143,8 +143,8 @@ public class PluginManageController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to plugin  error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to plugin  error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -158,10 +158,9 @@ public class PluginManageController extends AbstractController {
 
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> pluginData = getRequestDataMap(pluginPackage);
-                logger.info("siteUserId={} add new plugin={}", siteUserId, pluginData);
                 PluginBean bean = new PluginBean();
                 bean.setName(trim(pluginData.get("name")));
                 bean.setIcon(pluginData.get("plugin_icon"));
@@ -181,8 +180,8 @@ public class PluginManageController extends AbstractController {
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("add new plugin controller error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("add new plugin controller error : "+e.getMessage());
             return NO_PERMISSION;
         }
 
@@ -201,11 +200,10 @@ public class PluginManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pageNum = Integer.valueOf(dataMap.get("page"));
-                logger.info("get plugin list ");
                 List<PluginBean> pluginList = pluginService.getPluginList(pageNum, PAGE_SIZE);
                 List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
                 if (pluginList != null) {
@@ -230,8 +228,8 @@ public class PluginManageController extends AbstractController {
                 result.put("pluginData", pluginList);
         } catch (InvalidProtocolBufferException e) {
             logger.error("get plugin list error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("get plugin list error : "+e.getMessage());
         }
 
         result.put("loading", nodata);
@@ -247,11 +245,9 @@ public class PluginManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> pluginData = getRequestDataMap(pluginPackage);
-                logger.info("siteUserId={} update plugin={}", siteUserId, pluginData);
-
                 PluginBean bean = new PluginBean();
                 bean.setId(Integer.valueOf(trim(pluginData.get("plugin_id"))));
                 bean.setName(trim(pluginData.get("name")));
@@ -262,15 +258,13 @@ public class PluginManageController extends AbstractController {
                 bean.setSort(Integer.valueOf(pluginData.get("order")));
                 bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
                 bean.setAllowedIp(trim(pluginData.get("allow_ip")));
-                logger.info("siteUserId={} update plugin bean={}", siteUserId, bean);
-
                 if (pluginService.updatePlugin(bean)) {
                     return SUCCESS;
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("edit plugin error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("edit plugin error : "+e.getMessage());
             return NO_PERMISSION;
         }
 
@@ -284,7 +278,7 @@ public class PluginManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pluginId = Integer.valueOf(dataMap.get("plugin_id"));
@@ -294,8 +288,8 @@ public class PluginManageController extends AbstractController {
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("edit plugin error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("edit plugin error : "+e.getMessage());
             return NO_PERMISSION;
         }
         return ERROR;
@@ -308,7 +302,7 @@ public class PluginManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pluginId = Integer.valueOf(dataMap.get("plugin_id"));
@@ -316,8 +310,8 @@ public class PluginManageController extends AbstractController {
                 return authKey;
         } catch (InvalidProtocolBufferException e) {
             logger.error("edit plugin error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("edit plugin error : "+e.getMessage());
             return NO_PERMISSION;
         }
 

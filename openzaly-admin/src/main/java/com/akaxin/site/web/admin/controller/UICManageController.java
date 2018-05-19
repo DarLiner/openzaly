@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.akaxin.site.web.admin.exception.UserException;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,13 +56,13 @@ public class UICManageController extends AbstractController {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				throw new UserException("Current user is not a manager");
+				throw new UserPermissionException("Current user is not a manager");
 			}
 			return modelAndView;
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("to Uic error", e);
-		} catch (UserException e) {
-			logger.error("siteUserId error",e);
+		} catch (UserPermissionException e) {
+			logger.error("to Uic error : "+e.getMessage());
 		}
 		return new ModelAndView("error");
 	}
@@ -72,13 +72,13 @@ public class UICManageController extends AbstractController {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				throw new UserException("Current user is not a manager");
+				throw new UserPermissionException("Current user is not a manager");
 			}
 			return "uic/unused_list";
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("get unused list error", e);
-		} catch (UserException e) {
-			logger.error("siteUserId error", e);
+		} catch (UserPermissionException e) {
+			logger.error("get unused list error : "+e.getMessage());
 		}
 		return "error";
 	}
@@ -88,13 +88,13 @@ public class UICManageController extends AbstractController {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				throw new UserException("Current user is not a manager");
+				throw new UserPermissionException("Current user is not a manager");
 			}
 			return "uic/used_list";
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("get used list error",e);
-		} catch (UserException e) {
-			logger.error("siteUserId error",e);
+		} catch (UserPermissionException e) {
+			logger.error("get used list error : "+e.getMessage());
 		}
 		return "error";
 	}
@@ -108,13 +108,13 @@ public class UICManageController extends AbstractController {
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 			if (!isManager) {
-				throw new UserException("Current user is not a manager");
+				throw new UserPermissionException("Current user is not a manager");
 			}
 				return uicServer.addUIC(100, 16) ? SUCCESS : ERROR;
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("add new uic error", e);
-		} catch (UserException e) {
-			logger.error("siteUserId error",e);
+		} catch (UserPermissionException e) {
+			logger.error("add new uic error : "+e.getMessage());
 			return NO_PERMISSION;
 		}
 
@@ -133,14 +133,12 @@ public class UICManageController extends AbstractController {
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			boolean isManager = SiteConfig.isSiteManager(siteUserId);
 			if (!isManager) {
-				throw new UserException("Current user is not a manager");
+				throw new UserPermissionException("Current user is not a manager");
 			}
 				Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 
 				int pageNum = Integer.valueOf(uicReqMap.get("page"));
 				int status = Integer.valueOf(uicReqMap.get("code_status"));
-				logger.info("-----UIC LIST------pageNum={},status={}", pageNum, status);
-
 				List<UicBean> uicList = uicServer.getUsedUicList(pageNum, UIC_PAGE_SIZE, status);
 				List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 				if (uicList != null && uicList.size() > 0) {
@@ -157,8 +155,8 @@ public class UICManageController extends AbstractController {
 				results.put("uicData", data);
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("get used uic list error", e);
-		} catch (UserException e) {
-			logger.error("siteUserId error",e);
+		} catch (UserPermissionException e) {
+			logger.error("get used uic list error : "+e.getMessage());
 		}
 		results.put("loading", nodata);
 		return results;

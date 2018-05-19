@@ -4,7 +4,7 @@ import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.storage.bean.MonitorBean;
 import com.akaxin.site.web.admin.common.Timeutils;
-import com.akaxin.site.web.admin.exception.UserException;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.akaxin.site.web.admin.service.IMonitorService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class MonitorController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
         Map<String, Object> model = modelAndView.getModel();
 
@@ -45,16 +45,16 @@ public class MonitorController extends AbstractController {
         model.put("flag", "success");
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
-            logger.error("to Monitor  error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+            logger.error("to data report  error", e);
+        } catch (UserPermissionException e) {
+            logger.error("to data report  error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
 
-    @RequestMapping("/reDisplay")
+    @RequestMapping("/refresh")
     @ResponseBody
-    public MonitorBean reDisplay(@RequestBody byte[] bodyParam) {
+    public MonitorBean refresh(@RequestBody byte[] bodyParam) {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         int registerNum = 0;
         int messageNum = 0;
@@ -66,7 +66,7 @@ public class MonitorController extends AbstractController {
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
 
             Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
@@ -90,9 +90,9 @@ public class MonitorController extends AbstractController {
             return new MonitorBean(registerNum, messageNum, groupMsgNum, u2MsgNum, userNum, groupNum, friendNum);
 
         } catch (InvalidProtocolBufferException e) {
-            logger.error("monitor refresh error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+            logger.error("data report refresh error", e);
+        } catch (UserPermissionException e) {
+            logger.error("data report refresh error : "+e.getMessage());
         }
         return new MonitorBean();
     }

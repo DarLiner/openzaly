@@ -67,7 +67,6 @@ public class SiteMemberController extends AbstractController {
 			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 
 			int pageNum = Integer.valueOf(ReqMap.get("page"));
-			logger.info("-----Member LIST------pageNum={}}", pageNum);
 			List<SimpleUserBean> userList = userService.getUserList(pageNum, 20);
 			List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 			if (userList != null && userList.size() > 0) {

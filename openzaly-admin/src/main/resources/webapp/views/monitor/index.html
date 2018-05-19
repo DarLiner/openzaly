@@ -135,14 +135,14 @@
     });
 
     function sendReq(dayNum) {
-        var url = '/monitor/reDisplay';
+        var url = '/monitor/refresh';
         var params = {
             "dayNum": dayNum.toString(),
         };
-        reqUrl(url, JSON.stringify(params), 'reDisplay');
+        reqUrl(url, JSON.stringify(params), 'doRefresh');
     }
 
-    function reDisplay(results) {
+    function doRefresh(results) {
         $("#monitor-lists").html("");
         var res = eval("(" + results + ")");
         var htmlTip1 = '<div class="weui-loadmore weui-loadmore_line"><span class="weui-loadmore__tips">当日数据</span></div>';

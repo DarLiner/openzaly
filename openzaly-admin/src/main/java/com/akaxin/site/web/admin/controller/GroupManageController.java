@@ -21,7 +21,7 @@ import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
-import com.akaxin.site.web.admin.exception.UserException;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.akaxin.site.web.admin.service.IGroupService;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -68,7 +68,7 @@ public class GroupManageController extends AbstractController {
 
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
             ArrayList<GroupProfileBean> groupProfileBeans = new ArrayList<>();
@@ -84,8 +84,8 @@ public class GroupManageController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to group index error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to group index error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -107,7 +107,7 @@ public class GroupManageController extends AbstractController {
 
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
@@ -117,8 +117,8 @@ public class GroupManageController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to group manage error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to group manage error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -132,7 +132,7 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
@@ -140,8 +140,8 @@ public class GroupManageController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException  e) {
             logger.error("to group add error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to group add error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -153,7 +153,7 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String requestSiteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(requestSiteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
@@ -163,8 +163,8 @@ public class GroupManageController extends AbstractController {
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("to group add error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to group add error : "+e.getMessage());
             return NO_PERMISSION;
         }
         return ERROR;
@@ -177,7 +177,7 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
@@ -187,8 +187,8 @@ public class GroupManageController extends AbstractController {
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("del group default error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("del group default error : "+e.getMessage());
             return NO_PERMISSION;
         }
         return ERROR;
@@ -203,17 +203,16 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
             // 增加权限校验
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String siteGroupId = reqMap.get("group_id");
             model.put("siteGroupId", siteGroupId);
             return modelAndView;
-        }
-         catch (InvalidProtocolBufferException e) {
-             logger.error("to group add error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to group add error", e);
+        } catch (UserPermissionException e) {
+            logger.error("to group add error : " + e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -227,7 +226,7 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
@@ -243,8 +242,8 @@ public class GroupManageController extends AbstractController {
             return modelAndView;
         } catch (InvalidProtocolBufferException e) {
             logger.error("to group profile error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("to group profile error : "+e.getMessage());
         }
         return new ModelAndView("error");
     }
@@ -252,7 +251,7 @@ public class GroupManageController extends AbstractController {
     @RequestMapping("/refresh")
     @ResponseBody
 
-    public Map<String, Object> reFlushDefault(@RequestBody byte[] bodyParams) {
+    public Map<String, Object> refreshDefault(@RequestBody byte[] bodyParams) {
         HashMap<String, Object> dataMap = new HashMap<>();
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
@@ -261,7 +260,7 @@ public class GroupManageController extends AbstractController {
         String siteUserId = getRequestSiteUserId(pluginPackage);
 
         if (!isManager(siteUserId)) {
-            throw new UserException("Current user is not a manager");
+            throw new UserPermissionException("Current user is not a manager");
         }
         List<String> groupDefault = basicService.getGroupDefault();
         if (groupDefault == null || groupDefault.size() <= 0) {
@@ -281,8 +280,8 @@ public class GroupManageController extends AbstractController {
             dataMap.put("data", data);
         } catch (InvalidProtocolBufferException e) {
             logger.error("refresh group list error",e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("refresh group list error : "+e.getMessage());
         }
         return dataMap;
     }
@@ -298,10 +297,9 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-                logger.info("=========page={}", reqMap);
                 int pageNum = Integer.valueOf(reqMap.get("page"));
                 List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
                 List<SimpleGroupBean> groupList = groupService.getGroupList(pageNum, PAGE_SIZE);
@@ -331,8 +329,8 @@ public class GroupManageController extends AbstractController {
                 results.put("groupData", data);
         } catch (InvalidProtocolBufferException e) {
             logger.error("get group list error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("get group list error : "+e.getMessage());
         }
         results.put("loading", nodata);
         return results;
@@ -346,7 +344,7 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 GroupProfileBean bean = new GroupProfileBean();
@@ -359,8 +357,8 @@ public class GroupManageController extends AbstractController {
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("update group profile error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("update group profile error : "+e.getMessage());
             return NO_PERMISSION;
         }
         return ERROR;
@@ -376,7 +374,7 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
@@ -403,8 +401,8 @@ public class GroupManageController extends AbstractController {
                 results.put("groupMemberData", data);
         } catch (InvalidProtocolBufferException e) {
             logger.error("get group members error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("get group members error : "+e.getMessage());
         }
 
         results.put("loading", nodata);
@@ -420,7 +418,7 @@ public class GroupManageController extends AbstractController {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParams);
             String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
@@ -448,8 +446,8 @@ public class GroupManageController extends AbstractController {
                 results.put("nonGroupMemberData", data);
         } catch (InvalidProtocolBufferException e) {
             logger.error("get non group members error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("get non group members error : "+e.getMessage());
         }
 
         results.put("loading", nodata);
@@ -466,7 +464,7 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
                 String siteGroupId = (String) reqMap.get("siteGroupId");
@@ -478,8 +476,8 @@ public class GroupManageController extends AbstractController {
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("update group profile error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("update group profile error : "+e.getMessage());
             return NO_PERMISSION;
         }
 
@@ -496,20 +494,18 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
             String siteGroupId = (String) reqMap.get("siteGroupId");
             List<String> memberList = (List<String>) reqMap.get("groupMembers");
-            logger.info("siteUserId={} remove group={} members={}", siteUserId, siteGroupId, memberList);
-
             if (groupService.removeGroupMembers(siteGroupId, memberList)) {
                 return SUCCESS;
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("update group profile error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("update group profile error : "+e.getMessage());
             return NO_PERMISSION;
         }
 
@@ -525,19 +521,17 @@ public class GroupManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                throw new UserException("Current user is not a manager");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteGroupId = reqMap.get("group_id");
-                logger.info("siteUserId={} dissmis group={}", siteUserId, siteGroupId);
-
                 if (groupService.dismissGroup(siteGroupId)) {
                     return SUCCESS;
                 }
         } catch (InvalidProtocolBufferException e) {
             logger.error("update group profile error", e);
-        } catch (UserException e) {
-            logger.error("siteUserId error",e);
+        } catch (UserPermissionException e) {
+            logger.error("update group profile error : "+e.getMessage());
             return NO_PERMISSION;
         }
 
