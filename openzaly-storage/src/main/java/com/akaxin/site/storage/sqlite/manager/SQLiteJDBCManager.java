@@ -74,7 +74,7 @@ public class SQLiteJDBCManager {
 		initSiteConfig(config.getConfigMap());
 		addSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getAdminApi(), config.getSiteServer(),
 				config.getAdminIcon());
-		addSitePlugin(2, PluginArgs.FRIEND_SQUARE_NAME, PluginArgs.FRIEND_SQUARE_API, PluginArgs.FRIEND_SQUARE_ADDRESS,
+		addSitePlugin(2, PluginArgs.FRIEND_SQUARE_NAME, PluginArgs.FRIEND_SQUARE_API, config.getSiteServer(),
 				config.getParam(PluginArgs.FRIEND_SQUARE, String.class));
 		initAdminUic(config.getAdminUic());
 	}

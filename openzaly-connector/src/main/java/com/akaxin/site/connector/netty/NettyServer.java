@@ -27,6 +27,7 @@ import com.akaxin.common.executor.SimpleExecutor;
 import com.akaxin.site.connector.codec.protocol.MessageDecoder;
 import com.akaxin.site.connector.codec.protocol.MessageEncoder;
 import com.akaxin.site.connector.constant.AkxProject;
+import com.akaxin.site.connector.exception.TcpServerException;
 import com.akaxin.site.connector.netty.handler.NettyServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -63,8 +64,8 @@ public abstract class NettyServer {
 		try {
 			bootstrap = new ServerBootstrap();
 			int needThreadNum = Runtime.getRuntime().availableProcessors() + 1;
-			int parentNum = 10;//accept from channel socket
-			int childNum = needThreadNum * 5 + 10;//give to business handler
+			int parentNum = 10;// accept from channel socket
+			int childNum = needThreadNum * 5 + 10;// give to business handler
 			// 处理服务端事件组
 			parentGroup = new NioEventLoopGroup(parentNum, new PrefixThreadFactory("bim-boss-evenloopgroup"));
 			// 处理客户端连接请求的事件组
@@ -122,29 +123,24 @@ public abstract class NettyServer {
 			loadExecutor(executor);
 		} catch (Exception e) {
 			closeGracefully();
-			logger.error(AkxProject.PLN + " init netty server error.", e);
+			logger.error(AkxProject.PLN + " init openzaly netty-server error.", e);
 			System.exit(-10);
 		}
 	}
 
-	public void start(String address, int port) throws Exception {
+	public void start(String address, int port) throws TcpServerException {
 		try {
-			if (bootstrap != null) {
-				ChannelFuture channelFuture = bootstrap.bind(address, port).sync();
-				channelFuture.channel().closeFuture().addListener(new GenericFutureListener<Future<? super Void>>() {
+			ChannelFuture channelFuture = bootstrap.bind(address, port).sync();
+			channelFuture.channel().closeFuture().addListener(new GenericFutureListener<Future<? super Void>>() {
 
-					@Override
-					public void operationComplete(Future<? super Void> future) throws Exception {
-						closeGracefully();
-					}
-				});
-			} else {
-				// 扔出异常，让trycatch处理
-				throw new Exception();
-			}
+				@Override
+				public void operationComplete(Future<? super Void> future) throws Exception {
+					closeGracefully();
+				}
+			});
 		} catch (Exception e) {
 			closeGracefully();
-			throw new Exception("start netty server error", e);
+			throw new TcpServerException("start openzaly tcp-server error", e);
 		}
 	}
 
