@@ -70,11 +70,12 @@ public class ApiFileService extends AbstractRequest {
 		try {
 			ApiFileDownloadProto.ApiFileDownloadRequest request = ApiFileDownloadProto.ApiFileDownloadRequest
 					.parseFrom(command.getParams());
-			String fileId = request.getFileId();
+			// String fileId = request.getFileId();
+			String reqFileId = request.getFileId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotBlank(fileId) && !"null".equals(fileId)) {
-
+			if (StringUtils.isNotBlank(reqFileId) && !"null".equals(reqFileId)) {
+				String fileId = reqFileId;
 				if (fileId.startsWith("AKX-") || fileId.startsWith("akx-")) {
 					fileId = fileId.substring(4, fileId.length());
 				}
@@ -82,7 +83,7 @@ public class ApiFileService extends AbstractRequest {
 				byte[] imageBytes = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), fileId);
 
 				if (imageBytes != null && imageBytes.length > 0) {
-					FileProto.File file = FileProto.File.newBuilder().setFileId(fileId)
+					FileProto.File file = FileProto.File.newBuilder().setFileId(reqFileId)
 							.setFileContent(ByteString.copyFrom(imageBytes)).build();
 
 					ApiFileDownloadProto.ApiFileDownloadResponse response = ApiFileDownloadProto.ApiFileDownloadResponse
