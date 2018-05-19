@@ -119,7 +119,7 @@
             <label class="weui-label">扩展名称</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input plugin_name" type="text" th:value="${name}" placeholder="请输入扩展名称">
+            <input class="weui-input plugin_name" type="text" th:value="${name}" placeholder="请输入扩展名称" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -128,7 +128,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_url_page" type="text" th:value="${url_page}" pattern="[a-z0-9]*"
-                   placeholder="请输入落地页">
+                   placeholder="请输入落地页" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -137,7 +137,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_api_url" type="text" th:value="${api_url}" pattern="[a-z0-9]*"
-                   placeholder="请输入api_url">
+                   placeholder="请输入api_url" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -173,7 +173,7 @@
                 <label class="weui-label">扩展序号</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input order" type="text" pattern="[0-9]*" th:value="${order}">
+                <input class="weui-input order" type="text" pattern="[0-9]*" th:value="${order}" style="text-align: right;">
             </div>
         </div>
 
@@ -184,7 +184,7 @@
             <div class="weui-cell__bd">
                 <input class="weui-input allow_ip" type="text"
                        pattern="(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)"
-                       th:value="${allow_ip}">
+                       th:value="${allow_ip}" style="text-align: right;">
             </div>
         </div>
 

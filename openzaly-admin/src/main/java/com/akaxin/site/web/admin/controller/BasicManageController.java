@@ -15,12 +15,14 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.proto.core.ConfigProto.ConfigKey;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.impl.site.SiteConfig;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
+import com.akaxin.site.web.admin.service.IBasicService;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +34,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.common.utils.GsonUtils;
-import com.akaxin.proto.core.ConfigProto;
-import com.akaxin.proto.core.ConfigProto.ConfigKey;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.web.admin.service.IBasicService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("manage")
@@ -53,18 +52,18 @@ public class BasicManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
             boolean isManager = SiteConfig.isSiteManager(siteUserId);
             if (!isManager) {
-                return "error";
+                throw new UserPermissionException("Current user is not a manager");
             }
+            return "admin";
         } catch (InvalidProtocolBufferException e) {
             logger.error("to basic manage error", e);
-            return "error";
+        } catch (UserPermissionException u) {
+            logger.error("to basic manage error : "+u.getMessage());
         }
-        return "admin";
-
+        return "error";
     }
 
     // 获取站点配置信息
@@ -77,19 +76,16 @@ public class BasicManageController extends AbstractController {
         PluginProto.ProxyPluginPackage pluginPackage = null;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
             if (!isManager(siteUserId)) {
-                return new ModelAndView("error");
+                throw new UserPermissionException("Current user is not a manager");
             }
             if (isAdmin(siteUserId)) {
                 model.put("manager_type", "admin");
             } else if (isManager(siteUserId)) {
                 model.put("manager_type", "site_manager");
             }
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("to basic config page error", e);
-        }
+
         model.put("uic_status", "0");
         model.put("pic_size", "1");
         model.put("pic_path", "/akaxin");
@@ -156,10 +152,16 @@ public class BasicManageController extends AbstractController {
                     break;
             }
 
+            }
+            model.put("siteAddressAndPort", site_address + ":" + site_prot);
+            model.put("httpAddressAndPort", http_address + ":" + http_prot);
+            return modelAndView;
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to basic config page error", e);
+        } catch (UserPermissionException u) {
+            logger.error("to basic config page error : "+u.getMessage());
         }
-        model.put("siteAddressAndPort", site_address + ":" + site_prot);
-        model.put("httpAddressAndPort", http_address + ":" + http_prot);
-        return modelAndView;
+        return new ModelAndView("error");
     }
 
     // 更新站点配置信息
@@ -170,12 +172,10 @@ public class BasicManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
-            Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
-            String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-            boolean isManager = SiteConfig.isSiteManager(siteUserId);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (!isManager) {
-                return NO_PERMISSION;
+            if (!isManager(siteUserId)) {
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
                 logger.info("siteUserId={} update config={}", siteUserId, dataMap);
@@ -221,8 +221,11 @@ public class BasicManageController extends AbstractController {
                 if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
                     return SUCCESS;
                 }
-        } catch (Exception e) {
+        } catch (InvalidProtocolBufferException e) {
             logger.error("update site config error", e);
+        } catch (UserPermissionException u) {
+            logger.error("update site config error : "+u.getMessage());
+            return NO_PERMISSION;
         }
         return ERROR;
     }

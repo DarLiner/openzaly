@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.akaxin.site.business.dao.SiteConfigDao;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.akaxin.site.web.admin.service.IBasicService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.omg.CORBA.OBJ_ADAPTER;
@@ -61,13 +62,8 @@ public class UserManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return new ModelAndView("error");
+                throw new UserPermissionException("Current user is not a manager");
             }
-
-        } catch (Exception e) {
-            logger.error("to User Manage error", e);
-            return new ModelAndView("error");
-        }
         List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
         List<UserProfileBean> userProfileBeans = new ArrayList<>();
         modelAndView.addObject("userDefaultSize", "0");
@@ -79,8 +75,13 @@ public class UserManageController extends AbstractController {
             modelAndView.addObject("userList", userProfileBeans);
             modelAndView.addObject("userDefaultSize", String.valueOf(userDefault.size()));
         }
-
-        return modelAndView;
+            return modelAndView;
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to User Manage error", e);
+        } catch (UserPermissionException e) {
+            logger.error("to User Manage error : "+e.getMessage());
+        }
+        return new ModelAndView("error");
     }
 
     @RequestMapping("/setUserDefault")
@@ -89,7 +90,7 @@ public class UserManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return ERROR;
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
@@ -99,6 +100,9 @@ public class UserManageController extends AbstractController {
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("to set User Default  error", e);
+        } catch (UserPermissionException e) {
+            logger.error("to set User Default  error : "+e.getMessage());
+            return NO_PERMISSION;
         }
         return ERROR;
     }
@@ -109,7 +113,7 @@ public class UserManageController extends AbstractController {
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return NO_PERMISSION;
+                throw new UserPermissionException("Current user is not a manager");
             }
             Map<String, String> reqMap = getRequestDataMap(pluginPackage);
             String site_user_id = reqMap.get("siteUserId");
@@ -119,6 +123,9 @@ public class UserManageController extends AbstractController {
             }
         } catch (InvalidProtocolBufferException e) {
             logger.error("to del User Default  error", e);
+        } catch (UserPermissionException e) {
+            logger.error("to del User Default  error : "+e.getMessage());
+            return NO_PERMISSION;
         }
         return ERROR;
     }
@@ -133,11 +140,10 @@ public class UserManageController extends AbstractController {
             String currentUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(currentUserId)) {
-                return new ModelAndView("error");
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String siteUserId = reqMap.get("site_user_id");
-
                 UserProfileBean bean = userService.getUserProfile(siteUserId);
                 modelAndView.addObject("siteUserId", bean.getSiteUserId());
                 modelAndView.addObject("userName", bean.getUserName());
@@ -146,30 +152,29 @@ public class UserManageController extends AbstractController {
                 modelAndView.addObject("userStatus", bean.getUserStatus());
                 modelAndView.addObject("regTime", bean.getRegisterTime());
                 modelAndView.addObject("defaultState", bean.getDefaultState());
-
-        } catch (Exception e) {
+            return modelAndView;
+        } catch (InvalidProtocolBufferException e) {
             logger.error(StringHelper.format("siteUserId={} get user profile error"), e);
+        } catch (UserPermissionException e) {
+            logger.error("get user profile error : "+e.getMessage());
         }
-
-        return modelAndView;
+        return new ModelAndView("error");
     }
 
-    @RequestMapping("/reFlush")
+    @RequestMapping("/refresh")
     @ResponseBody
-    public Map<String, Object> reFlushDefault(@RequestBody byte[] bodyParam) {
+    public Map<String, Object> refreshDefault(@RequestBody byte[] bodyParam) {
+        HashMap<String, Object> dataMap = new HashMap<>();
+
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return new HashMap<>();
+                throw new UserPermissionException("Current user is not a manager");
             }
-        } catch (Exception e) {
-            return new HashMap<>();
-        }
-        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> userDefault = basicService.getUserDefault();
         if (userDefault == null || userDefault.size() <= 0) {
-            stringObjectHashMap.put("size", 0);
-            return stringObjectHashMap;
+            dataMap.put("size", 0);
+            return dataMap;
         }
         ArrayList<Map<String, Object>> data = new ArrayList<>();
         for (String s : userDefault) {
@@ -181,9 +186,15 @@ public class UserManageController extends AbstractController {
             userMap.put("userStatus", bean.getUserStatus());
             data.add(userMap);
         }
-        stringObjectHashMap.put("size", data.size());
-        stringObjectHashMap.put("data", data);
-        return stringObjectHashMap;
+            dataMap.put("size", data.size());
+            dataMap.put("data", data);
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("refresh user list error",e);
+        } catch (UserPermissionException e) {
+            logger.error("refresh user list error : "+e.getMessage());
+        }
+
+        return dataMap;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/userList")
@@ -197,8 +208,7 @@ public class UserManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                results.put("loading", nodata);
-                return results;
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> dataMap = getRequestDataMap(pluginPackage);
                 int pageNum = Integer.valueOf(dataMap.get("page"));
@@ -240,10 +250,11 @@ public class UserManageController extends AbstractController {
 
                 results.put("userData", data);
 
-        } catch (Exception e) {
+        } catch (InvalidProtocolBufferException e) {
             logger.error("get site user list error", e);
+        } catch (UserPermissionException e) {
+            logger.error("get site user list error : "+e.getMessage());
         }
-
         results.put("loading", nodata);
         return results;
     }
@@ -256,7 +267,7 @@ public class UserManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                return NO_PERMISSION;
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 UserProfileBean bean = new UserProfileBean();
@@ -268,9 +279,13 @@ public class UserManageController extends AbstractController {
                     return SUCCESS;
                 }
 
-        } catch (Exception e) {
+        } catch (InvalidProtocolBufferException e) {
             logger.error("update profile error", e);
+        } catch (UserPermissionException e) {
+            logger.error("update profile error : "+e.getMessage());
+            return NO_PERMISSION;
         }
+
         return ERROR;
     }
 
@@ -282,7 +297,7 @@ public class UserManageController extends AbstractController {
             String siteUserId = getRequestSiteUserId(pluginPackage);
 
             if (!isManager(siteUserId)) {
-                return NO_PERMISSION;
+                throw new UserPermissionException("Current user is not a manager");
             }
                 Map<String, String> reqMap = getRequestDataMap(pluginPackage);
                 String reqStatus = reqMap.get("type");
@@ -294,8 +309,11 @@ public class UserManageController extends AbstractController {
                 if (userService.sealUpUser(reqMap.get("site_user_id"), status)) {
                     return SUCCESS;
                 }
-        } catch (Exception e) {
+        } catch (InvalidProtocolBufferException e) {
             logger.error("update profile error", e);
+        } catch (UserPermissionException e) {
+            logger.error("update profile error : "+e.getMessage());
+            return NO_PERMISSION;
         }
         return ERROR;
     }
