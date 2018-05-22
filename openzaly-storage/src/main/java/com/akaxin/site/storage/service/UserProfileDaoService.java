@@ -117,4 +117,9 @@ public class UserProfileDaoService implements IUserProfileDao {
 		return SQLiteUserProfileDao.getInstance().getUserNum(now,day);
 	}
 
+	@Override
+	public List<SimpleUserBean> getUserPageList(String  text) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryUserList(text);
+	}
+
 }

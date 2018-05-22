@@ -318,4 +318,38 @@ public class UserManageController extends AbstractController {
         return ERROR;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/search")
+    @ResponseBody
+    public Map<String, Object> doSearch(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+        Map<String, Object> results = new HashMap<String, Object>();
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
+
+            if (!isManager(siteUserId)) {
+                throw new UserPermissionException("Current user is not a manager");
+            }
+            Map<String, String> dataMap = getRequestDataMap(pluginPackage);
+            String text = dataMap.get("text");
+
+            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+            List<SimpleUserBean> userList = userService.getUserList(text);
+            if (userList != null && userList.size() > 0) {
+                for (SimpleUserBean bean : userList) {
+                    Map<String, Object> userMap = new HashMap<String, Object>();
+                    userMap.put("siteUserId", bean.getUserId());
+                    userMap.put("userName", bean.getUserName());
+                    userMap.put("userPhoto", bean.getUserPhoto());
+                    userMap.put("userStatus", bean.getUserStatus());
+                    data.add(userMap);
+                }
+            }
+            results.put("userData", data);
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("Fuzzy query user list error", e);
+        } catch (UserPermissionException e) {
+            logger.error("Fuzzy query user list error : " + e.getMessage());
+        }
+        return results;
+    }
 }

@@ -17,5 +17,6 @@ public interface IUserService {
 
 	// 封禁用户
 	boolean sealUpUser(String siteUserId, int status);
-
+	//模糊查询
+    List<SimpleUserBean> getUserList(String  text);
 }

@@ -62,4 +62,9 @@ public class UserManageService implements IUserService {
         return UserProfileDao.getInstance().updateUserStatus(siteUserId, status);
     }
 
+    @Override
+    public List<SimpleUserBean> getUserList(String  text) {
+        return UserProfileDao.getInstance().getUserList(text);
+    }
+
 }

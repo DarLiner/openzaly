@@ -43,4 +43,6 @@ public interface IUserProfileDao {
     public int queryNumRegisterPerDay(long now, int day) throws SQLException;
 
     int getUserNum(long now, int day) throws SQLException;
+
+    List<SimpleUserBean> getUserPageList(String  text) throws SQLException;
 }

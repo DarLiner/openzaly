@@ -9,6 +9,7 @@ import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.admin.service.IUserService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang3.StringUtils;
+import org.bouncycastle.jce.provider.symmetric.TEA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -126,6 +127,45 @@ public class SiteMemberController extends AbstractController {
 		}
 		return new String[] { "添加失败", "0" };
 
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method = RequestMethod.POST, value = "/search")
+	@ResponseBody
+	public Map<String, Object> doSearch(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+		Map<String, Object> results = new HashMap<String, Object>();
+		boolean nodata = true;
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
+			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
+
+			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
+
+			String  text = ReqMap.get("text");
+			List<SimpleUserBean> userList = userService.getUserList(text);
+			List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+			if (userList != null && userList.size() > 0) {
+				for (SimpleUserBean bean : userList) {
+					Map<String, String> memberMap = new HashMap<String, String>();
+					if (siteUserId != bean.getUserId()) {
+						memberMap.put("site_user_id", bean.getUserId());
+						memberMap.put("site_user_name", bean.getUserName());
+						UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
+								bean.getUserId());
+						memberMap.put("site_user_relation", String.valueOf(userRelation.getNumber()));
+					} else {
+						continue;
+					}
+					data.add(memberMap);
+				}
+			}
+			results.put("Data", data);
+
+		} catch (Exception e) {
+			logger.error("get Member list error", e);
+		}
+		return results;
 	}
 
 }

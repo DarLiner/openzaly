@@ -480,4 +480,24 @@ public class SQLiteUserProfileDao {
         return UserNum;
 
     }
+
+    public List<SimpleUserBean> queryUserList(String  text) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "select site_user_id,user_name,user_photo,user_status from "+USER_PROFILE_TABLE+" where user_name like ? ";
+        PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        statement.setString(1,"%"+text+"%");
+        ResultSet rs = statement.executeQuery();
+        ArrayList<SimpleUserBean> userList = new ArrayList<>();
+        while (rs.next()) {
+            SimpleUserBean bean = new SimpleUserBean();
+            bean.setUserId(rs.getString(1));
+            bean.setUserName(rs.getString(2));
+            bean.setUserPhoto(rs.getString(3));
+            bean.setUserStatus(rs.getInt(4));
+            userList.add(bean);
+        }
+
+        LogUtils.dbDebugLog(logger, startTime, userList.size(), sql, userList);
+        return userList;
+    }
 }

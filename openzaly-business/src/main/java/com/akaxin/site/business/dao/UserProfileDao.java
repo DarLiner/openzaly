@@ -168,4 +168,14 @@ public class UserProfileDao {
 		}
 		return false;
 	}
+
+    public List<SimpleUserBean> getUserList(String  text) {
+		List<SimpleUserBean> userBeanList = null;
+		try {
+			return userProfileDao.getUserPageList(text);
+		} catch (SQLException e) {
+			logger.error("update user mute error.", e);
+		}
+		return userBeanList;
+    }
 }
