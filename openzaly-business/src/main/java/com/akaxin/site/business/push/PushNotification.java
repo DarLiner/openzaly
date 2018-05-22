@@ -27,8 +27,8 @@ public class PushNotification {
 		}
 	}
 
-	public static void send(String siteUserId, String siteFriendId, String subTitle, String pushContent,
-			String pushGoto) {
+	public static void send(final String siteUserId, final String siteFriendId, final String subTitle, final String pushContent,
+							final String pushGoto) {
 		MultiPushThreadExecutor.getExecutor().execute(new Runnable() {
 
 			@Override

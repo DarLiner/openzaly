@@ -40,9 +40,9 @@ import com.google.protobuf.ByteString;
 public class UserPushHandler extends AbstractU2Handler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(UserPushHandler.class);
 
-	public Boolean handle(Command command) {
+	public Boolean handle(final Command command) {
 		// 1.判断站点是否开启PUSH发送功能
-		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
+		final ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
 			logger.warn("push to client error. cause: pushClientStatus={}", ConfigProto.PushClientStatus.PUSH_NO);
 			return true;

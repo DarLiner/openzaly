@@ -44,9 +44,9 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupPushHandler.class);
 	private IGroupDao groupDao = new GroupDaoService();
 
-	public Boolean handle(Command command) {
+	public Boolean handle(final Command command) {
 		// 1.检测当前站点是否开启PUSH开关，开启才支持PUSH功能
-		ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
+		final ConfigProto.PushClientStatus pcs = SiteConfigHelper.getPushClientStatus();
 		if (ConfigProto.PushClientStatus.PUSH_NO == pcs) {
 			logger.warn("push to client error. cause: pushClientStatus={}", ConfigProto.PushClientStatus.PUSH_NO);
 			return true;
