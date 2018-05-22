@@ -82,8 +82,6 @@ public class Helper {
 	public static void buildEnvToSystemOut(PrintWriter pwriter) {
 		pwriter.println();
 		pwriter.println("openzaly-version : 0.5.4");
-		pwriter.println("java-version : JDK 1.8+");
-		pwriter.println("maven-version : 3.0+");
 		pwriter.println();
 		pwriter.println("[OK] openzaly-server is starting...");
 		pwriter.flush();
