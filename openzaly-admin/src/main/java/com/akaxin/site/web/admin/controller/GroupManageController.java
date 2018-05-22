@@ -560,11 +560,14 @@ public class GroupManageController extends AbstractController {
                             commandResponse.setParams(pshRequest.toByteArray());
                             commandResponse.setErrCode2(ErrorCode2.SUCCESS);
                             ChannelWriter.writeByDeviceId(deviceId, commandResponse);
+                            Thread.sleep(10);
                             count++;
                             if (count > Integer.valueOf(groupMessage)) {
                                 return;
                             }
                         } catch (SQLException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 //                    msgStatusResponse(command, gmsgId, msgTime, success);
