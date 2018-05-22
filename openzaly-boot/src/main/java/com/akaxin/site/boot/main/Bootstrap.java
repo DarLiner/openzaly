@@ -122,38 +122,21 @@ public class Bootstrap {
 		int nettyTcpPort = 2021;
 
 		String nettyHttpHost = "0.0.0.0";
-		int nettyHttpPort = 2021;
+		int nettyHttpPort = 8280;
 
 		try {
 			// init and set default log level by openzaly.properties
 			setSystemLogLevel();
 
+			// tcp address from openzaly.properties
 			nettyTcpHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
 			nettyTcpPort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
+			// http address from openzaly.properties
 			nettyHttpHost = ConfigHelper.getStringConfig(ConfigKey.HTTP_ADDRESS);
 			nettyHttpPort = ConfigHelper.getIntConfig(ConfigKey.HTTP_PORT);
 
-			String adminHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
-			int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
-
-			String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
-			String adminUic = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_UIC);
-			Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
-
-			DBConfig config = new DBConfig();
-			config.setDbDir(dbDir);
-			config.setAdminAddress(adminHost);
-			config.setAdminPort(adminPort);
-			config.setAdminUic(adminUic);
-			config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
-			config.setConfigMap(siteConfigMap);
-			// 设置后台管理默认图片
-			config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
-			// 设置用户广场默认图片
-			config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
-
 			// add site config to database
-			initDataSource(config);
+			initDataSource();
 			// use thread to update site-config cached in memory
 			addConfigListener();
 
@@ -172,22 +155,22 @@ public class Bootstrap {
 		} catch (Exception e) {
 			Helper.startFail(pwriter);
 			logger.error("start Openzaly-server error", e);
-			logger.error("Openzaly-server exit!!!");
-			System.exit(-1);// 直接退出程序
+			logger.error("Openzaly-server exit...");
+			System.exit(-1);// system exit
 		} catch (TcpServerException e) {
 			String errMessage = StringHelper.format("openzaly tcp-server {}:{} {}", nettyTcpHost, nettyTcpPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
 			logger.error("start Openzaly with tcp server error", e);
-			logger.error("Openzaly-server exit!!!");
-			System.exit(-2);// 直接退出程序
+			logger.error("Openzaly-server exit...");
+			System.exit(-2);// system exit
 		} catch (HttpServerException e) {
 			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", nettyHttpHost, nettyHttpPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
 			logger.error("start Openzaly with http server error", e);
-			logger.error("Openzaly-server exit!!!");
-			System.exit(-3);// 直接退出程序
+			logger.error("Openzaly-server exit...");
+			System.exit(-3);// system exit
 		} finally {
 			if (pwriter != null) {
 				pwriter.close();
@@ -210,7 +193,23 @@ public class Bootstrap {
 	/**
 	 * 初始化数据源
 	 */
-	private static void initDataSource(DBConfig config) {
+	private static void initDataSource() {
+		String adminHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
+		int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
+
+		String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+		String adminUic = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_UIC);
+		Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
+
+		DBConfig config = new DBConfig();
+		config.setDbDir(dbDir);
+		config.setAdminAddress(adminHost);
+		config.setAdminPort(adminPort);
+		config.setAdminUic(adminUic);
+		config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
+		config.setConfigMap(siteConfigMap);
+		config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
+		config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
 		logger.info("{} init datasource config={}", AkxProject.PLN, config.toString());
 		DataSourceManager.init(config);
 	}
@@ -253,6 +252,7 @@ public class Bootstrap {
 		logger.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
 	}
 
+	// websocket for web-im
 	private static void startWebSocketServer(String address, int port) throws Exception {
 		new WsServer() {
 
@@ -264,15 +264,18 @@ public class Bootstrap {
 		}.start(address, port);
 	}
 
+	// springboot for openzaly web
 	private static void initSpringBoot(String[] args) {
 		OpenzalyAdminApplication.main(args);
 	}
 
+	// add config listener,timing to update cached config value
 	private static void addConfigListener() {
 		ConfigListener.startListenning();
-		logger.info("{} add config listener to site-config", AkxProject.PLN);
+		logger.info("{} start listener to site-config", AkxProject.PLN);
 	}
 
+	// get pic by base64
 	private static String getDefaultIcon(String base64Str) {
 		try {
 			String fileBasePath = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
