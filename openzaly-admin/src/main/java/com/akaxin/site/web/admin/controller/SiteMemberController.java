@@ -9,7 +9,6 @@ import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.admin.service.IUserService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.jce.provider.symmetric.TEA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
