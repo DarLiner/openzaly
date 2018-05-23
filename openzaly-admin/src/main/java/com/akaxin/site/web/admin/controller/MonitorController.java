@@ -4,6 +4,7 @@ import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.storage.bean.MonitorBean;
 import com.akaxin.site.web.admin.common.Timeutils;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.akaxin.site.web.admin.service.IMonitorService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
@@ -27,17 +28,12 @@ public class MonitorController extends AbstractController {
 
     @RequestMapping("/index")
     public ModelAndView toMonitor(@RequestBody byte[] bodyParam) {
-
         ModelAndView modelAndView = new ModelAndView("monitor/index");
         try {
             PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return modelAndView;
+                throw new UserPermissionException("Current user is not a manager");
             }
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("to Monitor  error", e);
-        }
-
         Map<String, Object> model = modelAndView.getModel();
 
         //转换可选时间
@@ -47,39 +43,57 @@ public class MonitorController extends AbstractController {
         model.put("data_5", Timeutils.getDate(5));
         model.put("data_6", Timeutils.getDate(6));
         model.put("flag", "success");
-        return modelAndView;
+            return modelAndView;
+        } catch (InvalidProtocolBufferException e) {
+            logger.error("to data report  error", e);
+        } catch (UserPermissionException e) {
+            logger.error("to data report  error : "+e.getMessage());
+        }
+        return new ModelAndView("error");
     }
 
-    @RequestMapping("/reDisplay")
+    @RequestMapping("/refresh")
     @ResponseBody
-    public MonitorBean reDisplay(@RequestBody byte[] bodyParam) {
+    public MonitorBean refresh(@RequestBody byte[] bodyParam) {
         PluginProto.ProxyPluginPackage pluginPackage = null;
+        int registerNum = 0;
+        int messageNum = 0;
+        int groupMsgNum = 0;
+        int u2MsgNum = 0;
+        int userNum = 0;
+        int groupNum = 0;
+        int friendNum = 0;
         try {
             pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
             if (!isManager(getRequestSiteUserId(pluginPackage))) {
-                return new MonitorBean();
+                throw new UserPermissionException("Current user is not a manager");
             }
+
+            Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
+            Integer day = null;
+            if (uicReqMap != null) {
+
+                day = Integer.parseInt(uicReqMap.get("dayNum"));
+            }
+            if (day == null) {
+                day = 0;
+            }
+
+            long now = System.currentTimeMillis();
+            registerNum = monitorService.queryNumRegisterPerDay(now, day);
+            messageNum = monitorService.queryNumMessagePerDay(now, day);
+            groupMsgNum = monitorService.queryGroupMessagePerDay(now, day);
+            u2MsgNum = monitorService.queryU2MessagePerDay(now, day);
+            userNum = monitorService.getSiteUserNum(now, 0);
+            groupNum = monitorService.getGroupNum(now, 0);
+            friendNum = monitorService.friendNum(now, 0);
+            return new MonitorBean(registerNum, messageNum, groupMsgNum, u2MsgNum, userNum, groupNum, friendNum);
+
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            logger.error("data report refresh error", e);
+        } catch (UserPermissionException e) {
+            logger.error("data report refresh error : "+e.getMessage());
         }
-        Map<String, String> uicReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
-        Integer day = null;
-        if (uicReqMap != null) {
-
-            day = Integer.parseInt(uicReqMap.get("dayNum"));
-        }
-        if (day == null) {
-            day = 0;
-        }
-
-        long now = System.currentTimeMillis();
-        int registerNum = monitorService.queryNumRegisterPerDay(now, day);
-        int messageNum = monitorService.queryNumMessagePerDay(now, day);
-        int groupMsgNum = monitorService.queryGroupMessagePerDay(now, day);
-        int u2MsgNum = monitorService.queryU2MessagePerDay(now, day);
-        int userNum = monitorService.getSiteUserNum(now, 0);
-        int groupNum = monitorService.getGroupNum(now, 0);
-        int friendNum = monitorService.friendNum(now, 0);
-        return new MonitorBean(registerNum, messageNum, groupMsgNum, u2MsgNum, userNum, groupNum, friendNum);
+        return new MonitorBean();
     }
 }

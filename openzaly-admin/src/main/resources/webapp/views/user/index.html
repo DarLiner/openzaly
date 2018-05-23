@@ -195,7 +195,7 @@
     }
 
     $(document.body).pullToRefresh(function () {
-        reqUrl("/user/reFlush", null, "reFlush");
+        reqUrl("/user/refresh", null, "doRefresh");
         $('#user-lists').html("");
         page = 0;
         loading = false;
@@ -204,7 +204,7 @@
 
     });
 
-    function reFlush(results) {
+    function doRefresh(results) {
         results = eval("(" + results + ")");
         var size = results.size;
         if (size <= 0) {

@@ -42,9 +42,6 @@ public class SiteMemberController extends AbstractController {
 			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				return new ModelAndView("error");
-			}
 			UserProfileBean userProfile = userService.getUserProfile(siteUserId);
 			model.put("site_user_id", siteUserId);
 			model.put("site_user_name", userProfile.getUserName());
@@ -64,17 +61,12 @@ public class SiteMemberController extends AbstractController {
 		boolean nodata = true;
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				results.put("loading", nodata);
-				return results;
-			}
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 
 			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 
 			int pageNum = Integer.valueOf(ReqMap.get("page"));
-			logger.info("-----Member LIST------pageNum={}}", pageNum);
 			List<SimpleUserBean> userList = userService.getUserList(pageNum, 20);
 			List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 			if (userList != null && userList.size() > 0) {
@@ -108,9 +100,6 @@ public class SiteMemberController extends AbstractController {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		try {
 			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				return new String[]{"失败没有权限", "0"};
-			}
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
