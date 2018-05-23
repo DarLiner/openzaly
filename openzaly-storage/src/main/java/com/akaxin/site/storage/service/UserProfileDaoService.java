@@ -50,7 +50,13 @@ public class UserProfileDaoService implements IUserProfileDao {
 	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(userId);
 	}
+	
+	@Override
+	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySimpleProfileByGlobalUserId(globalUserId);
+	}
 
+	@Deprecated
 	@Override
 	public SimpleUserBean getSimpleProfileByPubk(String userIdPubk) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().querySimpleProfileByPubk(userIdPubk);
@@ -108,13 +114,13 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int queryNumRegisterPerDay(long now,int day) throws SQLException{
-		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now,day);
+	public int queryNumRegisterPerDay(long now, int day) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now, day);
 	}
 
 	@Override
-	public int getUserNum(long now,int day) throws SQLException{
-		return SQLiteUserProfileDao.getInstance().getUserNum(now,day);
+	public int getUserNum(long now, int day) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().getUserNum(now, day);
 	}
 
 }

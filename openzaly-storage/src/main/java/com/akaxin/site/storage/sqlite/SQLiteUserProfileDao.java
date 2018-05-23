@@ -134,6 +134,8 @@ public class SQLiteUserProfileDao {
         return userBean;
     }
 
+    // use querySimpleProfileByGlobalUserId() instead
+    @Deprecated
     public SimpleUserBean querySimpleProfileByPubk(String userIdPubk) throws SQLException {
         long startTime = System.currentTimeMillis();
         String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE

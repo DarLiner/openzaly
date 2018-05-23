@@ -52,6 +52,17 @@ public class UserProfileDao {
 		return userBean;
 	}
 
+	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) {
+		SimpleUserBean userBean = new SimpleUserBean();
+		try {
+			userBean = userProfileDao.getSimpleProfileByGlobalUserId(globalUserId);
+		} catch (SQLException e) {
+			logger.error("get User Simple Profile by globalUserId error.", e);
+		}
+		return userBean;
+	}
+
+	@Deprecated
 	public SimpleUserBean getSimpleProfileByPubk(String userIdPubk) {
 		SimpleUserBean userBean = new SimpleUserBean();
 		try {
