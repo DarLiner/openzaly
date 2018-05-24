@@ -42,6 +42,7 @@ import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.business.push.PushNotification;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
@@ -204,6 +205,8 @@ public class ApiFriendService extends AbstractRequest {
 				if (applyTimes == 0) {
 					new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
 				}
+				// 同时下发一条PUSH消息
+				PushNotification.sendAddFriend(siteUserId, siteFriendId);
 			}
 
 		} catch (Exception e) {
@@ -305,6 +308,10 @@ public class ApiFriendService extends AbstractRequest {
 				if (ErrorCode2.SUCCESS.equals(errCode) && result) {
 					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
 							siteFriendId);
+					// xxx 同意了你的好友申请 ,发送push
+					PushNotification.agreeAddFriend(siteUserId, siteFriendId);
+
+					// 发送文本消息
 					if (applyBean != null && StringUtils.isNotEmpty(applyBean.getSiteUserId())) {
 						new User2Notice().addFriendTextMessage(applyBean);
 					}

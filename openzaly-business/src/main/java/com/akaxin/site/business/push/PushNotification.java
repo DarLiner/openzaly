@@ -19,11 +19,28 @@ public class PushNotification {
 
 	public static void sendAddFriend(String siteUserId, String siteFriendId) {
 		try {
-			String pushContent = PushText.addFriendText(siteUserId);
-			String pushGoto = PushText.adFriendGoto(siteFriendId);
+			String pushContent = PushText.applyFriendText(siteUserId);
+			String pushGoto = PushText.applyFriendGoto(siteFriendId);
 			send(siteUserId, siteFriendId, null, pushContent, pushGoto);
 		} catch (Exception e) {
 			logger.error("add friend push error", e);
+		}
+	}
+
+	/**
+	 * siteUserId 同意了 siteFriendId 的好友添加请求
+	 * 
+	 * @param siteUserId
+	 * @param siteFriendId
+	 */
+	public static void agreeAddFriend(String siteUserId, String siteFriendId) {
+		try {
+			String pushContent = PushText.agreeFriendText(siteUserId);
+			// 接受到别人同意添加你为好友，点击goto跳转到消息对话框
+			String pushGoto = PushText.messageGoto(siteUserId);
+			send(siteUserId, siteFriendId, null, pushContent, pushGoto);
+		} catch (Exception e) {
+			logger.error("agree add friend push error", e);
 		}
 	}
 
