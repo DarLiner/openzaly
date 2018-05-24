@@ -16,6 +16,8 @@ public interface IUserProfileDao {
     public String getGlobalUserId(String userId) throws SQLException;
 
     public SimpleUserBean getSimpleProfileById(String userId) throws SQLException;
+    
+    public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException;
 
     public SimpleUserBean getSimpleProfileByPubk(String userId) throws SQLException;
 
