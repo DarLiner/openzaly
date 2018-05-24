@@ -28,6 +28,7 @@ public class Helper {
 			Options options = new Options();
 			options.addOption("h", false, "help message list");
 			options.addOption("help", false, "help message list");
+			options.addOption("upgrade", false, "upgrade openzaly server");
 			DefaultParser posixParser = new DefaultParser();
 			CommandLine commandLine = posixParser.parse(options, args);
 
@@ -40,6 +41,10 @@ public class Helper {
 				helpFormatter.printHelp("java [<name>=value] -jar openzaly-server.jar [-h|-help]", options, false);
 				// 3.print helper message
 				printHelperMessage(pw);
+				return true;
+			} else if (commandLine.hasOption("upgrade")) {
+				// 升级
+
 				return true;
 			}
 			return false;
