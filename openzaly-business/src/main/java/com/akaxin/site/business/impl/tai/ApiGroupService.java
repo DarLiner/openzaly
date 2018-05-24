@@ -130,16 +130,8 @@ public class ApiGroupService extends AbstractRequest {
 			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(siteUserId) || groupMemberIds != null) {
+			if (StringUtils.isAnyEmpty(siteUserId, groupName) || groupMemberIds == null) {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
-			}
-			
-			if (groupMemberIds.size() < 3) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_MEMBERLESS3);
-			}
-
-			if (!groupMemberIds.contains(siteUserId)) {
-				groupMemberIds.add(siteUserId);
 			}
 
 			// 检查用户是否被封禁，或者不存在
@@ -148,6 +140,14 @@ public class ApiGroupService extends AbstractRequest {
 				if (bean == null || bean.getUserStatus() == 1) {
 					groupMemberIds.remove(groupMemberId);
 				}
+			}
+
+			if (!groupMemberIds.contains(siteUserId)) {
+				groupMemberIds.add(siteUserId);
+			}
+
+			if (groupMemberIds.size() < 3) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_MEMBERLESS3);
 			}
 
 			GroupProfileBean groupBean = UserGroupDao.getInstance().createGroup(siteUserId, groupName, groupMemberIds);
