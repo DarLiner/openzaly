@@ -15,16 +15,14 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import com.akaxin.common.utils.GsonUtils;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.site.business.dao.SiteConfigDao;
-import com.akaxin.site.storage.bean.GroupMemberBean;
-import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleGroupBean;
-import com.akaxin.site.web.admin.exception.UserPermissionException;
-import com.akaxin.site.web.admin.service.IBasicService;
-import com.akaxin.site.web.admin.service.IGroupService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +33,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.dao.SiteConfigDao;
+import com.akaxin.site.business.dao.UserProfileDao;
+import com.akaxin.site.storage.bean.GroupMemberBean;
+import com.akaxin.site.storage.bean.GroupProfileBean;
+import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
+import com.akaxin.site.web.admin.service.IBasicService;
+import com.akaxin.site.web.admin.service.IGroupService;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * 群组管理控制器
@@ -426,6 +430,11 @@ public class GroupManageController extends AbstractController {
                 List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 
                 List<GroupMemberBean> noMemberList = groupService.getNonGroupMembers(siteGroupId, pageNum, PAGE_SIZE);
+                for (GroupMemberBean bean : noMemberList) {
+                    if (bean.getUserStatus() == 1) {
+                        noMemberList.remove(bean);
+                    }
+                }
 
                 if (noMemberList != null && noMemberList.size() > 0) {
                     if (PAGE_SIZE == noMemberList.size()) {
@@ -469,6 +478,12 @@ public class GroupManageController extends AbstractController {
                 Map<String, Object> reqMap = getRequestDataMapObj(pluginPackage);
                 String siteGroupId = (String) reqMap.get("siteGroupId");
                 List<String> memberList = (List<String>) reqMap.get("groupMembers");
+                for (String id : memberList) {
+                    UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(id);
+                    if (bean.getUserStatus() == 1) {
+                        memberList.remove(id);
+                    }
+                }
                 logger.info("siteUserId={} add group={} members={}", siteUserId, siteGroupId, memberList);
 
                 if (groupService.addGroupMembers(siteGroupId, memberList)) {

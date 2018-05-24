@@ -232,4 +232,39 @@ public class SQLiteU2MessageDao {
         LogUtils.dbDebugLog(logger, startTime, u2Count, sql);
         return u2Count;
     }
+
+    public boolean delUserMessage(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + USER2_MESSAGE_TABLE + " WHERE site_user_id =? or send_user_id =?";
+        String sqlP = "DELETE FROM " + USER2_MESSAGE_POINATER_TABLE + " WHERE site_user_id =? ";
+        PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        statement.setString(1, siteUserId);
+        statement.setString(2, siteUserId);
+        int res1 = statement.executeUpdate();
+        PreparedStatement statementP = SQLiteJDBCManager.getConnection().prepareStatement(sqlP);
+        statementP.setString(1, siteUserId);
+        int res2 = statementP.executeUpdate();
+        if (res1 > 0 && res2 > 0) {
+            LogUtils.dbDebugLog(logger, startTime, res1+","+res2, sql, "true");
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, res1+","+res2, sql, "false");
+
+        return false;
+    }
+
+    public List<String> queryMessageFile(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "select content from (select * from " + USER2_MESSAGE_TABLE + " where msg_type in (7,8,11,12)) t where site_user_id = ? or  send_user_id = ?";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1,siteUserId);
+        preparedStatement.setString(2, siteUserId);
+        ResultSet rs = preparedStatement.executeQuery();
+        ArrayList<String> u2Files = new ArrayList<>();
+        while (rs.next()) {
+            u2Files.add(rs.getString(1));
+        }
+        LogUtils.dbDebugLog(logger, startTime, rs, sql);
+        return u2Files;
+    }
 }

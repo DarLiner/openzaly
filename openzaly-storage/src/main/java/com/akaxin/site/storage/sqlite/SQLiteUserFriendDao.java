@@ -192,4 +192,20 @@ public class SQLiteUserFriendDao {
         LogUtils.dbDebugLog(logger, startTime, friendNum, sql);
         return friendNum/2;
     }
+
+    public boolean delUserFriend(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + USER_FRIEND_TABLE + " WHERE site_user_id= ? or site_friend_id= ?;";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, siteUserId);
+        preparedStatement.setString(2, siteUserId);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime,i, sql, "true");
+            return true;
+        } else {
+            LogUtils.dbDebugLog(logger, startTime,i, sql, "false");
+            return false;
+        }
+    }
 }

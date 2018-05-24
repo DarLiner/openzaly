@@ -318,4 +318,26 @@ public class UserManageController extends AbstractController {
         return ERROR;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "delUser")
+    @ResponseBody
+    public String delUser(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+        try {
+            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+            String siteUserId = getRequestSiteUserId(pluginPackage);
+
+            if (isManager(siteUserId)) {
+                Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+                String delUserID = reqMap.get("siteUserId");
+                if (userService.delUser(delUserID)) {
+                    return SUCCESS;
+                }
+            } else {
+                return NO_PERMISSION;
+            }
+        } catch (Exception e) {
+            logger.error("del User error", e);
+        }
+        return ERROR;
+    }
+
 }

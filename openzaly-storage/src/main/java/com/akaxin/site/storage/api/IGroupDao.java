@@ -52,4 +52,7 @@ public interface IGroupDao {
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException;
 
     int getGroupNum(long now,int day) throws SQLException;
+
+	boolean rmGroupProfile(String groupId)throws SQLException;
+
 }

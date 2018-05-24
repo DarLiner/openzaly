@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright 2018-2028 Akaxin Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,7 +11,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 package com.akaxin.common.constant;
 
@@ -22,7 +22,7 @@ package com.akaxin.common.constant;
  * 		2.错误需要提示用户使用code=error.alter，客户端能够展示错误信息
  * 		3.其他错误使用code=error 客户端默认提示请求失败或者不展示错误提示
  * </pre>
- * 
+ *
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-02 18:05:31
  */
@@ -55,6 +55,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_FRIEND_IS("error.alter", "用户已经是你的好友"), //
 	ERROR2_FRIEND_APPLYSELF("error.alter", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alter", "添加好友最多为5次"), //
+	ERROR2_FRIEND_sealUped("error.alter","你已经被封禁,无法执行操作"),
 
 	ERROR_GROUP_DELETED("error.group.deleted", "该群聊不存在"), //
 	ERROR_GROUP_WHEN_CREATE("error.alter", "创建群聊出错，请稍后重试"), //

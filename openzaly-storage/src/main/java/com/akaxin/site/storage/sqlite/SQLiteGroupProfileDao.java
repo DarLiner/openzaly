@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import com.akaxin.common.utils.TimeFormats;
@@ -64,28 +65,11 @@ public class SQLiteGroupProfileDao {
         return beanList;
     }
 
-    public String getMaxGroupId() throws SQLException {
-        long startTime = System.currentTimeMillis();
-        long newGroupId = 10000;
-        String sql = "SELECT max(id),site_group_id FROM " + GROUP_PROFILE_TABLE;
-        PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-        ResultSet rs = preStatement.executeQuery();
-        if (rs != null) {
-            long currentGroupId = rs.getLong(2);
-            if (currentGroupId < 10000) {
-                currentGroupId = 10000;
-            }
-            newGroupId = currentGroupId + 1;
-        }
-
-        LogUtils.dbDebugLog(logger, startTime, newGroupId, sql);
-        return String.valueOf(newGroupId);
-    }
 
     public GroupProfileBean saveGroupProfile(GroupProfileBean bean) throws SQLException {
         long startTime = System.currentTimeMillis();
         if (bean.getGroupId() == null) {
-            bean.setGroupId(this.getMaxGroupId());
+            bean.setGroupId(UUID.randomUUID().toString());
         }
         String sql = "INSERT INTO " + GROUP_PROFILE_TABLE
                 + "(site_group_id,group_name,group_photo,group_notice,group_status,create_user_id,close_invite_group_chat,create_time) VALUES(?,?,?,?,1,?,?,?);";
@@ -274,6 +258,25 @@ public class SQLiteGroupProfileDao {
         int groupNum = resultSet.getInt(1);
         LogUtils.dbDebugLog(logger, startTime, groupNum, sql);
         return groupNum;
+
+    }
+
+    public boolean rmGroupProfile(String groupId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + GROUP_PROFILE_TABLE + "  WHERE site_group_id=?;";
+        String sql2= "DELETE FROM " + SQLConst.SITE_USER_GROUP + "  WHERE site_group_id=?;";
+        PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql2);
+        preparedStatement.setString(1,groupId);
+        int i = preparedStatement.executeUpdate();
+        preStatement.setString(1, groupId);
+        int result = preStatement.executeUpdate();
+        if (result > 0&&i>0) {
+            LogUtils.dbDebugLog(logger, startTime, result+","+i, sql);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, result+","+i, sql);
+        return false;
 
     }
 }

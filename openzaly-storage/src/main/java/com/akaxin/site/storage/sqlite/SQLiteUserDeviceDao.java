@@ -305,4 +305,20 @@ public class SQLiteUserDeviceDao {
 		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
 		return num;
 	}
+
+	public boolean delDevice(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "DELETE from " + SQLConst.SITE_USER_DEVICE
+				+ " WHERE site_user_id=? ";
+		PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preparedStatement.setString(1, siteUserId);
+		int i = preparedStatement.executeUpdate();
+		if (i > 0) {
+			LogUtils.dbDebugLog(logger, startTime, i, sql, true);
+			return true;
+		}
+		LogUtils.dbDebugLog(logger, startTime, i, sql, false);
+		return false;
+
+	}
 }

@@ -265,4 +265,38 @@ public class SQLiteGroupMessageDao {
     }
 
 
+    public boolean delUserMessage(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + GROUP_MESSAGE_TABLE + " WHERE  send_user_id = ? ";
+        String sqlP = "DELETE FROM " + GROUP_POINTER_TABLE + " WHERE  site_user_id = ? ";
+
+        PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        statement.setString(1, siteUserId);
+        int res1 = statement.executeUpdate();
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sqlP);
+        preparedStatement.setString(1,siteUserId);
+        int res2 = preparedStatement.executeUpdate();
+        if (res1 > 0 && res2 > 0) {
+            LogUtils.dbDebugLog(logger, startTime,res1+","+res2, sql, "true");
+
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime,res1+","+res2, sql, "false");
+
+        return false;
+    }
+
+    public List queryMessageFile(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "select content from (select * from " + GROUP_MESSAGE_TABLE + " where msg_type in (9,13)) t where send_user_id = ?";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1,siteUserId);
+        ResultSet rs = preparedStatement.executeQuery();
+        ArrayList<String> groupFiles = new ArrayList<>();
+        while (rs.next()) {
+            groupFiles.add(rs.getString(1));
+        }
+        LogUtils.dbDebugLog(logger, startTime, rs, sql);
+        return groupFiles;
+    }
 }

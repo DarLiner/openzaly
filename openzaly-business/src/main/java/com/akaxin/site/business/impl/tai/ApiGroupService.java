@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright 2018-2028 Akaxin Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,7 +11,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 package com.akaxin.site.business.impl.tai;
 
@@ -53,12 +53,13 @@ import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserGroupBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ProtocolStringList;
 
 /**
  * 扩展服务器与站点之间通过hai接口，管理群组功能
- * 
+ *
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-13 21:48:35
  */
@@ -68,7 +69,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 获取用户群列表 <br>
 	 * 无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -113,7 +114,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 用户创建群，并添加初始群成员 <br>
 	 * 无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -129,38 +130,45 @@ public class ApiGroupService extends AbstractRequest {
 			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotEmpty(siteUserId) && groupMemberIds != null) {
-				if (groupMemberIds.size() < 3) {
-					throw new ZalyException(ErrorCode2.ERROR_GROUP_MEMBERLESS3);
-				}
-
-				if (!groupMemberIds.contains(siteUserId)) {
-					groupMemberIds.add(siteUserId);
-				}
-
-				GroupProfileBean groupBean = UserGroupDao.getInstance().createGroup(siteUserId, groupName,
-						groupMemberIds);
-				if (groupBean != null && StringUtils.isNotEmpty(groupBean.getGroupId())) {
-					GroupProto.GroupProfile.Builder groupProfileBuilder = GroupProto.GroupProfile.newBuilder();
-					groupProfileBuilder.setId(groupBean.getGroupId());
-					if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
-						groupProfileBuilder.setName(groupBean.getGroupName());
-					}
-					if (StringUtils.isNotEmpty(groupBean.getGroupPhoto())) {
-						groupProfileBuilder.setIcon(String.valueOf(groupBean.getGroupPhoto()));
-					}
-
-					ApiGroupCreateProto.ApiGroupCreateResponse response = ApiGroupCreateProto.ApiGroupCreateResponse
-							.newBuilder().setProfile(groupProfileBuilder.build()).build();
-					commandResponse.setParams(response.toByteArray());
-					errCode = ErrorCode2.SUCCESS;
-				} else {
-					errCode = ErrorCode2.ERROR_GROUP_WHEN_CREATE;
-				}
-
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+			if (StringUtils.isEmpty(siteUserId) || groupMemberIds != null) {
+				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
+			
+			if (groupMemberIds.size() < 3) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_MEMBERLESS3);
+			}
+
+			if (!groupMemberIds.contains(siteUserId)) {
+				groupMemberIds.add(siteUserId);
+			}
+
+			// 检查用户是否被封禁，或者不存在
+			for (String groupMemberId : groupMemberIds) {
+				UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(groupMemberId);
+				if (bean == null || bean.getUserStatus() == 1) {
+					groupMemberIds.remove(groupMemberId);
+				}
+			}
+
+			GroupProfileBean groupBean = UserGroupDao.getInstance().createGroup(siteUserId, groupName, groupMemberIds);
+			if (groupBean != null && StringUtils.isNotEmpty(groupBean.getGroupId())) {
+				GroupProto.GroupProfile.Builder groupProfileBuilder = GroupProto.GroupProfile.newBuilder();
+				groupProfileBuilder.setId(groupBean.getGroupId());
+				if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
+					groupProfileBuilder.setName(groupBean.getGroupName());
+				}
+				if (StringUtils.isNotEmpty(groupBean.getGroupPhoto())) {
+					groupProfileBuilder.setIcon(String.valueOf(groupBean.getGroupPhoto()));
+				}
+
+				ApiGroupCreateProto.ApiGroupCreateResponse response = ApiGroupCreateProto.ApiGroupCreateResponse
+						.newBuilder().setProfile(groupProfileBuilder.build()).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR_GROUP_WHEN_CREATE;
+			}
+
 		} catch (Exception e) {
 			if (e instanceof ZalyException) {
 				errCode = ((ZalyException) e).getErrCode();
@@ -177,7 +185,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * 用户删除群，此时需要验证用户是否具有权限 <br>
 	 * 目前：具有权限的仅为群的创建者 (群主)
 	 * </pre>
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -225,7 +233,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * 2.群主基本资料GroupMaster，群主通过GroupProfile获取 <br>
 	 * 3.群成员人数以及排在最前列的四位用户 <br>
 	 * 4.无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -307,7 +315,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 用户更新群资料<br>
 	 * 群主／管理员权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -374,7 +382,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 添加群成员，支持群成员拉取好友进群，因此无群主权限限制<br>
 	 * 无管理员权限限制 -> 添加群资料中是否允许添加成员
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -396,6 +404,14 @@ public class ApiGroupService extends AbstractRequest {
 			// 群是否存在
 			if (!checkGroupStatus(groupId)) {
 				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
+			}
+
+			// 校验用户,删除禁封的用户
+			for (String groupMemberId : addMemberList) {
+				UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(groupMemberId);
+				if (bean == null || bean.getUserStatus() == 1) {
+					addMemberList.remove(groupMemberId);
+				}
 			}
 
 			GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(groupId);
@@ -431,7 +447,7 @@ public class ApiGroupService extends AbstractRequest {
 	 * 		1.关闭的开关是打开的
 	 * 		2.是管理员操作
 	 * </pre>
-	 * 
+	 *
 	 * @param siteUserId
 	 * @param bean
 	 * @return
@@ -452,7 +468,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 群主以及管理员删除群成员<br>
 	 * 群主／管理员权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -498,7 +514,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 用户退群 <br>
 	 * 无权限限制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -529,7 +545,7 @@ public class ApiGroupService extends AbstractRequest {
 	/**
 	 * 获取群成员 <br>
 	 * 无权限控制
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -582,7 +598,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 获取用户群组中，不存在的好友用户
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -635,7 +651,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 获取个人对群的设置
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -673,7 +689,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 个人更新群设置信息
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -750,7 +766,7 @@ public class ApiGroupService extends AbstractRequest {
 
 	/**
 	 * 个人更新群设置信息
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */

@@ -101,6 +101,10 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public boolean rmGroupProfile(String groupId) throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().rmGroupProfile(groupId);
+	}
+	@Override
 	public int updateGroupOwner(String siteUserId, String groupId) throws SQLException {
 		return SQLiteGroupProfileDao.getInstance().updateGroupOwer(siteUserId, groupId);
 	}

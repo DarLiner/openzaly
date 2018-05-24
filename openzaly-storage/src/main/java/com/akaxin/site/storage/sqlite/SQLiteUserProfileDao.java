@@ -480,4 +480,19 @@ public class SQLiteUserProfileDao {
         return UserNum;
 
     }
+
+    public boolean delUser(String siteUserId) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        String sql = "DELETE FROM " + USER_PROFILE_TABLE + " WHERE site_user_id=? ";
+        PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, siteUserId);
+        int i = preparedStatement.executeUpdate();
+        if (i > 0) {
+            LogUtils.dbDebugLog(logger, startTime, i, sql, true);
+            return true;
+        }
+        LogUtils.dbDebugLog(logger, startTime, i, sql, false);
+        return false;
+
+    }
 }
