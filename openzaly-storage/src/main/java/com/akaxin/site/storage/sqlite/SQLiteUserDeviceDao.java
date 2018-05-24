@@ -269,7 +269,7 @@ public class SQLiteUserDeviceDao {
 	private int deleteDeviceAsLimit(String siteUserId, int limit) {
 		long startTime = System.currentTimeMillis();
 		String sql = "DELETE FROM " + USER_DEVICE_TABLE
-				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?,10000)";
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?,10000;";
 		int num = 0;
 		try {
 			PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -287,7 +287,7 @@ public class SQLiteUserDeviceDao {
 		long startTime = System.currentTimeMillis();
 		// 删除site_user_session中设备
 		String sql = "DELETE FROM " + USER_SESSION_TABLE
-				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?,10000;";
+				+ " WHERE site_user_id=? ORDER BY login_time DESC LIMIT ?,10000;";
 		int num = 0;
 		try {
 			PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
