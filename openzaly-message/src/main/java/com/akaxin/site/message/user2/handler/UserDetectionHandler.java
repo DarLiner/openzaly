@@ -130,6 +130,16 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 				return false;
 			}
 
+			// 检测接受者的状态
+			SimpleUserBean friendBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFriendId);
+			if (friendBean != null) {
+				if (friendBean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+
 			// 检测是否为好友关系
 			if (!ImUserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
 				return false;

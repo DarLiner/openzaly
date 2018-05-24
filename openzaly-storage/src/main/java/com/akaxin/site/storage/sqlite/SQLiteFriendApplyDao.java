@@ -96,7 +96,7 @@ public class SQLiteFriendApplyDao {
 	public int getApplyCount(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		int num = 0;
-		String sql = "SELECT COUNT(site_user_id) FROM " + FRIEND_APPLY_TABLE + " WHERE site_user_id=?;";
+		String sql = "SELECT COUNT(distinct site_friend_id) FROM "+FRIEND_APPLY_TABLE+" WHERE site_user_id=? ";
 
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setString(1, siteUserId);
@@ -149,8 +149,8 @@ public class SQLiteFriendApplyDao {
 		long startTime = System.currentTimeMillis();
 		List<ApplyUserBean> applyUsers = new ArrayList<ApplyUserBean>();
 
-        String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,a.apply_time FROM (SELECT site_friend_id,apply_reason,apply_time,COUNT(DISTINCT site_friend_id) FROM "+FRIEND_APPLY_TABLE+" WHERE site_user_id = ? GROUP BY site_friend_id ORDER BY apply_time) as a LEFT JOIN "+SQLConst.SITE_USER_PROFILE+" AS b " +
-                "WHERE a.site_friend_id= b.site_user_id";
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,max(a.apply_time) FROM  "+FRIEND_APPLY_TABLE+" AS a LEFT JOIN "+SQLConst.SITE_USER_PROFILE+" AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?  group by a.site_friend_id ";
+
 		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preState.setString(1, siteUserId);
 		ResultSet rs = preState.executeQuery();
