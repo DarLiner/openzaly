@@ -16,7 +16,6 @@
 package com.akaxin.site.business.dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.site.storage.api.IUserProfileDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.SimpleUserRelationBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.service.UserProfileDaoService;
 
@@ -40,6 +40,15 @@ public class UserProfileDao {
 
 	public static UserProfileDao getInstance() {
 		return instance;
+	}
+
+	public String getSiteUserIdByGlobalUserId(String globalUserId) {
+		try {
+			return userProfileDao.getSiteUserIdByGlobalUserId(globalUserId);
+		} catch (SQLException e) {
+			logger.error("get siteUserId by globalUserId error.", e);
+		}
+		return null;
 	}
 
 	public SimpleUserBean getSimpleProfileById(String siteUserId) {
@@ -72,15 +81,15 @@ public class UserProfileDao {
 		return userBean;
 	}
 
-//	public List<SimpleUserBean> getSimpleProfileByName(String userName) {
-//		List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
-//		try {
-//			userList = userProfileDao.getSimpleProfileByName(userName);
-//		} catch (SQLException e) {
-//			logger.error("get User Simple Profile error.", e);
-//		}
-//		return userList;
-//	}
+	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriendId) {
+		UserFriendBean bean = null;
+		try {
+			bean = userProfileDao.getFriendProfileById(siteUserId, siteFriendId);
+		} catch (SQLException e) {
+			logger.error("get friend Profile error.", e);
+		}
+		return bean;
+	}
 
 	public UserProfileBean getUserProfileById(String siteUserId) {
 		UserProfileBean userBean = null;

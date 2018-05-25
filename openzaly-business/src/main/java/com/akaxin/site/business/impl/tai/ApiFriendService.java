@@ -47,7 +47,6 @@ import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
 
 /**
  * <pre>
@@ -91,10 +90,15 @@ public class ApiFriendService extends AbstractRequest {
 				return commandResponse.setErrCode2(errCode);
 			}
 
-			UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(globalOrSiteFriendId);
-			if (null == userBean || StringUtils.isBlank(userBean.getSiteUserId())) {
-				// 直接复用之前的接口了。
-				userBean = UserProfileDao.getInstance().getUserProfileByGlobalUserId(globalOrSiteFriendId);
+			// 1.如果是siteUserId
+			UserFriendBean userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId,
+					globalOrSiteFriendId);
+			// 2.如果不是则认为是globalUserId
+			if (null == userBean || StringUtils.isNotEmpty(userBean.getSiteUserId())) {
+				String siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalOrSiteFriendId);
+				if (StringUtils.isNotEmpty(siteFriendId)) {
+					userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId, globalOrSiteFriendId);
+				}
 			}
 
 			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {

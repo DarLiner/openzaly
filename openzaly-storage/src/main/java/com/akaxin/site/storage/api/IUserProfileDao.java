@@ -5,46 +5,49 @@ import java.util.List;
 
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.SimpleUserRelationBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 
 public interface IUserProfileDao {
 
-    public boolean saveUserProfile(UserProfileBean bean) throws SQLException;
+	public boolean saveUserProfile(UserProfileBean bean) throws SQLException;
 
-    public String getSiteUserId(String userIdPubk) throws SQLException;
+	public String getSiteUserIdByGlobalUserId(String globalUserId) throws SQLException;
+	
+	public String getSiteUserId(String userIdPubk) throws SQLException;
 
-    public String getGlobalUserId(String userId) throws SQLException;
+	public String getGlobalUserId(String userId) throws SQLException;
 
-    public SimpleUserBean getSimpleProfileById(String userId) throws SQLException;
-    
-    public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException;
+	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException;
 
-    public SimpleUserBean getSimpleProfileByPubk(String userId) throws SQLException;
+	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException;
 
-//    public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException;
+	public SimpleUserBean getSimpleProfileByPubk(String userId) throws SQLException;
 
-    public UserProfileBean getUserProfileById(String userId) throws SQLException;
+	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriend) throws SQLException;
 
-    public UserProfileBean getUserProfileByGlobalUserId(String userId) throws SQLException;
+	public UserProfileBean getUserProfileById(String siteUserId) throws SQLException;
 
-    public UserProfileBean getUserProfileByPubk(String userIdPubk) throws SQLException;
+	public UserProfileBean getUserProfileByGlobalUserId(String userId) throws SQLException;
 
-    public int updateUserProfile(UserProfileBean userBean) throws SQLException;
+	public UserProfileBean getUserProfileByPubk(String userIdPubk) throws SQLException;
 
-    public int updateUserStatus(String siteUserId, int status) throws SQLException;
+	public int updateUserProfile(UserProfileBean userBean) throws SQLException;
 
-    public List<SimpleUserRelationBean> getUserRelationPageList(String siteUserId, int pageNum, int pageSize)
-            throws SQLException;
+	public int updateUserStatus(String siteUserId, int status) throws SQLException;
 
-    public List<SimpleUserBean> getUserPageList(int pageNum, int pageSize) throws SQLException;
+	public List<SimpleUserRelationBean> getUserRelationPageList(String siteUserId, int pageNum, int pageSize)
+			throws SQLException;
 
-    public boolean isMute(String userId) throws SQLException;
+	public List<SimpleUserBean> getUserPageList(int pageNum, int pageSize) throws SQLException;
 
-    public boolean updateMute(String userId, boolean mute) throws SQLException;
+	public boolean isMute(String userId) throws SQLException;
 
-    public int queryNumRegisterPerDay(long now, int day) throws SQLException;
+	public boolean updateMute(String userId, boolean mute) throws SQLException;
 
-    int getUserNum(long now, int day) throws SQLException;
+	public int queryNumRegisterPerDay(long now, int day) throws SQLException;
 
-    boolean delUser(String siteUserId) throws SQLException;
+	int getUserNum(long now, int day) throws SQLException;
+
+	boolean delUser(String siteUserId) throws SQLException;
 }

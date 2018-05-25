@@ -21,6 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserProfileDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.SimpleUserRelationBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
 
@@ -37,6 +38,11 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
+	public String getSiteUserIdByGlobalUserId(String globalUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteUserIdByGlobalUserId(globalUserId);
+	}
+
+	@Override
 	public String getSiteUserId(String userIdPubk) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().querySiteUserId(userIdPubk);
 	}
@@ -47,8 +53,8 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(userId,"");
+	public SimpleUserBean getSimpleProfileById(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(siteUserId);
 	}
 
 	@Override
@@ -61,10 +67,10 @@ public class UserProfileDaoService implements IUserProfileDao {
 		return SQLiteUserProfileDao.getInstance().querySimpleProfileByPubk(userIdPubk);
 	}
 
-//	@Override
-//	public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException {
-//		return SQLiteUserProfileDao.getInstance().querySimpleProfileByName(userName);
-//	}
+	@Override
+	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriendId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryFriendProfileById(siteUserId, siteFriendId);
+	}
 
 	@Override
 	public UserProfileBean getUserProfileById(String userId) throws SQLException {
@@ -123,7 +129,7 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public boolean delUser(String siteUserId) throws SQLException{
+	public boolean delUser(String siteUserId) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().delUser(siteUserId);
 	}
 
