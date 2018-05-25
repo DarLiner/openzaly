@@ -55,8 +55,6 @@ public class User2Notice {
 		command.setParams(noticeRequest.toByteArray());
 		// 发送im.stc.notice消息
 		boolean result = imService.execute(command);
-		// 同时下发一条PUSH消息
-		PushNotification.sendAddFriend(siteUserId, siteFriendId);
 		logger.debug("siteUserId={} apply friend notice friendId={} result={}", siteUserId, siteFriendId, result);
 	}
 
