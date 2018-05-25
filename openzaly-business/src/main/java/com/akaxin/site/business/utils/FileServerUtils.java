@@ -118,7 +118,7 @@ public class FileServerUtils {
 		}
 
 		// >21 新改版的fileId格式
-		String fileId = fileUrl.substring(defaultDir.length(), fileUrl.length()).replaceAll("/", "-");
+		String fileId = fileUrl.substring(defaultDir.length(), fileUrl.length()).replaceAll(getFileSeg(), "-");
 		if (fileName.length() != 21 || fileName.contains("_")) {
 			return FILE_PREFFIX + fileId;
 		}
@@ -214,4 +214,10 @@ public class FileServerUtils {
 		}
 	}
 
+	public static String getFileSeg() {
+		if (System.getProperty("os.name").contains("Windows")) {
+			return "\\\\";
+		}
+		return "/";
+	}
 }
