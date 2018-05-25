@@ -295,10 +295,18 @@ public final class UserProto {
         getSiteUserIdBytes();
 
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     java.lang.String getUserName();
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     com.google.protobuf.ByteString
@@ -337,6 +345,60 @@ public final class UserProto {
      * <code>optional int64 register_time = 6;</code>
      */
     long getRegisterTime();
+
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+     * </pre>
+     *
+     * <code>optional string site_login_id = 7;</code>
+     */
+    java.lang.String getSiteLoginId();
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+     * </pre>
+     *
+     * <code>optional string site_login_id = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getSiteLoginIdBytes();
+
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 8;</code>
+     */
+    java.lang.String getNickName();
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getNickNameBytes();
+
+    /**
+     * <pre>
+     *汉字转换拼音
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 9;</code>
+     */
+    java.lang.String getUsernameInLatin();
+    /**
+     * <pre>
+     *汉字转换拼音
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 9;</code>
+     */
+    com.google.protobuf.ByteString
+        getUsernameInLatinBytes();
   }
   /**
    * <pre>
@@ -360,6 +422,9 @@ public final class UserProto {
       selfIntroduce_ = "";
       userStatus_ = 0;
       registerTime_ = 0L;
+      siteLoginId_ = "";
+      nickName_ = "";
+      usernameInLatin_ = "";
     }
 
     @java.lang.Override
@@ -422,6 +487,24 @@ public final class UserProto {
               registerTime_ = input.readInt64();
               break;
             }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              siteLoginId_ = s;
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              nickName_ = s;
+              break;
+            }
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              usernameInLatin_ = s;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -482,6 +565,10 @@ public final class UserProto {
     public static final int USER_NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object userName_;
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     public java.lang.String getUserName() {
@@ -497,6 +584,10 @@ public final class UserProto {
       }
     }
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     public com.google.protobuf.ByteString
@@ -606,6 +697,132 @@ public final class UserProto {
       return registerTime_;
     }
 
+    public static final int SITE_LOGIN_ID_FIELD_NUMBER = 7;
+    private volatile java.lang.Object siteLoginId_;
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+     * </pre>
+     *
+     * <code>optional string site_login_id = 7;</code>
+     */
+    public java.lang.String getSiteLoginId() {
+      java.lang.Object ref = siteLoginId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteLoginId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+     * </pre>
+     *
+     * <code>optional string site_login_id = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSiteLoginIdBytes() {
+      java.lang.Object ref = siteLoginId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteLoginId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NICK_NAME_FIELD_NUMBER = 8;
+    private volatile java.lang.Object nickName_;
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 8;</code>
+     */
+    public java.lang.String getNickName() {
+      java.lang.Object ref = nickName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nickName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNickNameBytes() {
+      java.lang.Object ref = nickName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nickName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USERNAME_IN_LATIN_FIELD_NUMBER = 9;
+    private volatile java.lang.Object usernameInLatin_;
+    /**
+     * <pre>
+     *汉字转换拼音
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 9;</code>
+     */
+    public java.lang.String getUsernameInLatin() {
+      java.lang.Object ref = usernameInLatin_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        usernameInLatin_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *汉字转换拼音
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 9;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUsernameInLatinBytes() {
+      java.lang.Object ref = usernameInLatin_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        usernameInLatin_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -636,6 +853,15 @@ public final class UserProto {
       if (registerTime_ != 0L) {
         output.writeInt64(6, registerTime_);
       }
+      if (!getSiteLoginIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, siteLoginId_);
+      }
+      if (!getNickNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, nickName_);
+      }
+      if (!getUsernameInLatinBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, usernameInLatin_);
+      }
     }
 
     public int getSerializedSize() {
@@ -662,6 +888,15 @@ public final class UserProto {
       if (registerTime_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(6, registerTime_);
+      }
+      if (!getSiteLoginIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, siteLoginId_);
+      }
+      if (!getNickNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, nickName_);
+      }
+      if (!getUsernameInLatinBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, usernameInLatin_);
       }
       memoizedSize = size;
       return size;
@@ -690,6 +925,12 @@ public final class UserProto {
       result = result && userStatus_ == other.userStatus_;
       result = result && (getRegisterTime()
           == other.getRegisterTime());
+      result = result && getSiteLoginId()
+          .equals(other.getSiteLoginId());
+      result = result && getNickName()
+          .equals(other.getNickName());
+      result = result && getUsernameInLatin()
+          .equals(other.getUsernameInLatin());
       return result;
     }
 
@@ -713,6 +954,12 @@ public final class UserProto {
       hash = (37 * hash) + REGISTER_TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getRegisterTime());
+      hash = (37 * hash) + SITE_LOGIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteLoginId().hashCode();
+      hash = (37 * hash) + NICK_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getNickName().hashCode();
+      hash = (37 * hash) + USERNAME_IN_LATIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUsernameInLatin().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -847,6 +1094,12 @@ public final class UserProto {
 
         registerTime_ = 0L;
 
+        siteLoginId_ = "";
+
+        nickName_ = "";
+
+        usernameInLatin_ = "";
+
         return this;
       }
 
@@ -875,6 +1128,9 @@ public final class UserProto {
         result.selfIntroduce_ = selfIntroduce_;
         result.userStatus_ = userStatus_;
         result.registerTime_ = registerTime_;
+        result.siteLoginId_ = siteLoginId_;
+        result.nickName_ = nickName_;
+        result.usernameInLatin_ = usernameInLatin_;
         onBuilt();
         return result;
       }
@@ -937,6 +1193,18 @@ public final class UserProto {
         }
         if (other.getRegisterTime() != 0L) {
           setRegisterTime(other.getRegisterTime());
+        }
+        if (!other.getSiteLoginId().isEmpty()) {
+          siteLoginId_ = other.siteLoginId_;
+          onChanged();
+        }
+        if (!other.getNickName().isEmpty()) {
+          nickName_ = other.nickName_;
+          onChanged();
+        }
+        if (!other.getUsernameInLatin().isEmpty()) {
+          usernameInLatin_ = other.usernameInLatin_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -1035,6 +1303,10 @@ public final class UserProto {
 
       private java.lang.Object userName_ = "";
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public java.lang.String getUserName() {
@@ -1050,6 +1322,10 @@ public final class UserProto {
         }
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public com.google.protobuf.ByteString
@@ -1066,6 +1342,10 @@ public final class UserProto {
         }
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public Builder setUserName(
@@ -1079,6 +1359,10 @@ public final class UserProto {
         return this;
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public Builder clearUserName() {
@@ -1088,6 +1372,10 @@ public final class UserProto {
         return this;
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public Builder setUserNameBytes(
@@ -1309,6 +1597,273 @@ public final class UserProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object siteLoginId_ = "";
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+       * </pre>
+       *
+       * <code>optional string site_login_id = 7;</code>
+       */
+      public java.lang.String getSiteLoginId() {
+        java.lang.Object ref = siteLoginId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteLoginId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+       * </pre>
+       *
+       * <code>optional string site_login_id = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteLoginIdBytes() {
+        java.lang.Object ref = siteLoginId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteLoginId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+       * </pre>
+       *
+       * <code>optional string site_login_id = 7;</code>
+       */
+      public Builder setSiteLoginId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteLoginId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+       * </pre>
+       *
+       * <code>optional string site_login_id = 7;</code>
+       */
+      public Builder clearSiteLoginId() {
+        
+        siteLoginId_ = getDefaultInstance().getSiteLoginId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+       * </pre>
+       *
+       * <code>optional string site_login_id = 7;</code>
+       */
+      public Builder setSiteLoginIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteLoginId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nickName_ = "";
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 8;</code>
+       */
+      public java.lang.String getNickName() {
+        java.lang.Object ref = nickName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nickName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNickNameBytes() {
+        java.lang.Object ref = nickName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nickName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 8;</code>
+       */
+      public Builder setNickName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nickName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 8;</code>
+       */
+      public Builder clearNickName() {
+        
+        nickName_ = getDefaultInstance().getNickName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 8;</code>
+       */
+      public Builder setNickNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nickName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object usernameInLatin_ = "";
+      /**
+       * <pre>
+       *汉字转换拼音
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 9;</code>
+       */
+      public java.lang.String getUsernameInLatin() {
+        java.lang.Object ref = usernameInLatin_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          usernameInLatin_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *汉字转换拼音
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 9;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUsernameInLatinBytes() {
+        java.lang.Object ref = usernameInLatin_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          usernameInLatin_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *汉字转换拼音
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 9;</code>
+       */
+      public Builder setUsernameInLatin(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        usernameInLatin_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *汉字转换拼音
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 9;</code>
+       */
+      public Builder clearUsernameInLatin() {
+        
+        usernameInLatin_ = getDefaultInstance().getUsernameInLatin();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *汉字转换拼音
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 9;</code>
+       */
+      public Builder setUsernameInLatinBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        usernameInLatin_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -1373,10 +1928,18 @@ public final class UserProto {
         getSiteUserIdBytes();
 
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     java.lang.String getUserName();
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     com.google.protobuf.ByteString
@@ -1400,6 +1963,60 @@ public final class UserProto {
      * <code>optional .core.UserStatus user_status = 4;</code>
      */
     com.akaxin.proto.core.UserProto.UserStatus getUserStatus();
+
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一
+     * </pre>
+     *
+     * <code>optional string site_login_id = 5;</code>
+     */
+    java.lang.String getSiteLoginId();
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一
+     * </pre>
+     *
+     * <code>optional string site_login_id = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getSiteLoginIdBytes();
+
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 6;</code>
+     */
+    java.lang.String getNickName();
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getNickNameBytes();
+
+    /**
+     * <pre>
+     *张三-&gt;  zhangsan
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 7;</code>
+     */
+    java.lang.String getUsernameInLatin();
+    /**
+     * <pre>
+     *张三-&gt;  zhangsan
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getUsernameInLatinBytes();
   }
   /**
    * Protobuf type {@code core.SimpleUserProfile}
@@ -1417,6 +2034,9 @@ public final class UserProto {
       userName_ = "";
       userPhoto_ = "";
       userStatus_ = 0;
+      siteLoginId_ = "";
+      nickName_ = "";
+      usernameInLatin_ = "";
     }
 
     @java.lang.Override
@@ -1466,6 +2086,24 @@ public final class UserProto {
               int rawValue = input.readEnum();
 
               userStatus_ = rawValue;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              siteLoginId_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              nickName_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              usernameInLatin_ = s;
               break;
             }
           }
@@ -1528,6 +2166,10 @@ public final class UserProto {
     public static final int USER_NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object userName_;
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     public java.lang.String getUserName() {
@@ -1543,6 +2185,10 @@ public final class UserProto {
       }
     }
     /**
+     * <pre>
+     *如果用户有备注，这里使用备注，如果没有使用昵称
+     * </pre>
+     *
      * <code>optional string user_name = 2;</code>
      */
     public com.google.protobuf.ByteString
@@ -1609,6 +2255,132 @@ public final class UserProto {
       return result == null ? com.akaxin.proto.core.UserProto.UserStatus.UNRECOGNIZED : result;
     }
 
+    public static final int SITE_LOGIN_ID_FIELD_NUMBER = 5;
+    private volatile java.lang.Object siteLoginId_;
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一
+     * </pre>
+     *
+     * <code>optional string site_login_id = 5;</code>
+     */
+    public java.lang.String getSiteLoginId() {
+      java.lang.Object ref = siteLoginId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteLoginId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户唯一登陆名，站点唯一
+     * </pre>
+     *
+     * <code>optional string site_login_id = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSiteLoginIdBytes() {
+      java.lang.Object ref = siteLoginId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteLoginId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NICK_NAME_FIELD_NUMBER = 6;
+    private volatile java.lang.Object nickName_;
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 6;</code>
+     */
+    public java.lang.String getNickName() {
+      java.lang.Object ref = nickName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nickName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户个人设置的昵称
+     * </pre>
+     *
+     * <code>optional string nick_name = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNickNameBytes() {
+      java.lang.Object ref = nickName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nickName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USERNAME_IN_LATIN_FIELD_NUMBER = 7;
+    private volatile java.lang.Object usernameInLatin_;
+    /**
+     * <pre>
+     *张三-&gt;  zhangsan
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 7;</code>
+     */
+    public java.lang.String getUsernameInLatin() {
+      java.lang.Object ref = usernameInLatin_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        usernameInLatin_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *张三-&gt;  zhangsan
+     * </pre>
+     *
+     * <code>optional string username_in_latin = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUsernameInLatinBytes() {
+      java.lang.Object ref = usernameInLatin_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        usernameInLatin_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1633,6 +2405,15 @@ public final class UserProto {
       if (userStatus_ != com.akaxin.proto.core.UserProto.UserStatus.NORMAL.getNumber()) {
         output.writeEnum(4, userStatus_);
       }
+      if (!getSiteLoginIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, siteLoginId_);
+      }
+      if (!getNickNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, nickName_);
+      }
+      if (!getUsernameInLatinBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, usernameInLatin_);
+      }
     }
 
     public int getSerializedSize() {
@@ -1652,6 +2433,15 @@ public final class UserProto {
       if (userStatus_ != com.akaxin.proto.core.UserProto.UserStatus.NORMAL.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(4, userStatus_);
+      }
+      if (!getSiteLoginIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, siteLoginId_);
+      }
+      if (!getNickNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, nickName_);
+      }
+      if (!getUsernameInLatinBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, usernameInLatin_);
       }
       memoizedSize = size;
       return size;
@@ -1676,6 +2466,12 @@ public final class UserProto {
       result = result && getUserPhoto()
           .equals(other.getUserPhoto());
       result = result && userStatus_ == other.userStatus_;
+      result = result && getSiteLoginId()
+          .equals(other.getSiteLoginId());
+      result = result && getNickName()
+          .equals(other.getNickName());
+      result = result && getUsernameInLatin()
+          .equals(other.getUsernameInLatin());
       return result;
     }
 
@@ -1694,6 +2490,12 @@ public final class UserProto {
       hash = (53 * hash) + getUserPhoto().hashCode();
       hash = (37 * hash) + USER_STATUS_FIELD_NUMBER;
       hash = (53 * hash) + userStatus_;
+      hash = (37 * hash) + SITE_LOGIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteLoginId().hashCode();
+      hash = (37 * hash) + NICK_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getNickName().hashCode();
+      hash = (37 * hash) + USERNAME_IN_LATIN_FIELD_NUMBER;
+      hash = (53 * hash) + getUsernameInLatin().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1820,6 +2622,12 @@ public final class UserProto {
 
         userStatus_ = 0;
 
+        siteLoginId_ = "";
+
+        nickName_ = "";
+
+        usernameInLatin_ = "";
+
         return this;
       }
 
@@ -1846,6 +2654,9 @@ public final class UserProto {
         result.userName_ = userName_;
         result.userPhoto_ = userPhoto_;
         result.userStatus_ = userStatus_;
+        result.siteLoginId_ = siteLoginId_;
+        result.nickName_ = nickName_;
+        result.usernameInLatin_ = usernameInLatin_;
         onBuilt();
         return result;
       }
@@ -1901,6 +2712,18 @@ public final class UserProto {
         }
         if (other.userStatus_ != 0) {
           setUserStatusValue(other.getUserStatusValue());
+        }
+        if (!other.getSiteLoginId().isEmpty()) {
+          siteLoginId_ = other.siteLoginId_;
+          onChanged();
+        }
+        if (!other.getNickName().isEmpty()) {
+          nickName_ = other.nickName_;
+          onChanged();
+        }
+        if (!other.getUsernameInLatin().isEmpty()) {
+          usernameInLatin_ = other.usernameInLatin_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -1999,6 +2822,10 @@ public final class UserProto {
 
       private java.lang.Object userName_ = "";
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public java.lang.String getUserName() {
@@ -2014,6 +2841,10 @@ public final class UserProto {
         }
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public com.google.protobuf.ByteString
@@ -2030,6 +2861,10 @@ public final class UserProto {
         }
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public Builder setUserName(
@@ -2043,6 +2878,10 @@ public final class UserProto {
         return this;
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public Builder clearUserName() {
@@ -2052,6 +2891,10 @@ public final class UserProto {
         return this;
       }
       /**
+       * <pre>
+       *如果用户有备注，这里使用备注，如果没有使用昵称
+       * </pre>
+       *
        * <code>optional string user_name = 2;</code>
        */
       public Builder setUserNameBytes(
@@ -2175,6 +3018,273 @@ public final class UserProto {
       public Builder clearUserStatus() {
         
         userStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object siteLoginId_ = "";
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一
+       * </pre>
+       *
+       * <code>optional string site_login_id = 5;</code>
+       */
+      public java.lang.String getSiteLoginId() {
+        java.lang.Object ref = siteLoginId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteLoginId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一
+       * </pre>
+       *
+       * <code>optional string site_login_id = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteLoginIdBytes() {
+        java.lang.Object ref = siteLoginId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteLoginId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一
+       * </pre>
+       *
+       * <code>optional string site_login_id = 5;</code>
+       */
+      public Builder setSiteLoginId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteLoginId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一
+       * </pre>
+       *
+       * <code>optional string site_login_id = 5;</code>
+       */
+      public Builder clearSiteLoginId() {
+        
+        siteLoginId_ = getDefaultInstance().getSiteLoginId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户唯一登陆名，站点唯一
+       * </pre>
+       *
+       * <code>optional string site_login_id = 5;</code>
+       */
+      public Builder setSiteLoginIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteLoginId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nickName_ = "";
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 6;</code>
+       */
+      public java.lang.String getNickName() {
+        java.lang.Object ref = nickName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nickName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNickNameBytes() {
+        java.lang.Object ref = nickName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nickName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 6;</code>
+       */
+      public Builder setNickName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nickName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 6;</code>
+       */
+      public Builder clearNickName() {
+        
+        nickName_ = getDefaultInstance().getNickName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户个人设置的昵称
+       * </pre>
+       *
+       * <code>optional string nick_name = 6;</code>
+       */
+      public Builder setNickNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nickName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object usernameInLatin_ = "";
+      /**
+       * <pre>
+       *张三-&gt;  zhangsan
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 7;</code>
+       */
+      public java.lang.String getUsernameInLatin() {
+        java.lang.Object ref = usernameInLatin_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          usernameInLatin_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *张三-&gt;  zhangsan
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUsernameInLatinBytes() {
+        java.lang.Object ref = usernameInLatin_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          usernameInLatin_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *张三-&gt;  zhangsan
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 7;</code>
+       */
+      public Builder setUsernameInLatin(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        usernameInLatin_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *张三-&gt;  zhangsan
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 7;</code>
+       */
+      public Builder clearUsernameInLatin() {
+        
+        usernameInLatin_ = getDefaultInstance().getUsernameInLatin();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *张三-&gt;  zhangsan
+       * </pre>
+       *
+       * <code>optional string username_in_latin = 7;</code>
+       */
+      public Builder setUsernameInLatinBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        usernameInLatin_ = value;
         onChanged();
         return this;
       }
@@ -3701,23 +4811,27 @@ public final class UserProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017core/user.proto\022\004core\"\240\001\n\013UserProfile\022" +
+      "\n\017core/user.proto\022\004core\"\345\001\n\013UserProfile\022" +
       "\024\n\014site_user_id\030\001 \001(\t\022\021\n\tuser_name\030\002 \001(\t" +
       "\022\022\n\nuser_photo\030\003 \001(\t\022\026\n\016self_introduce\030\004" +
       " \001(\t\022%\n\013user_status\030\005 \001(\0162\020.core.UserSta" +
-      "tus\022\025\n\rregister_time\030\006 \001(\003\"w\n\021SimpleUser" +
-      "Profile\022\024\n\014site_user_id\030\001 \001(\t\022\021\n\tuser_na" +
-      "me\030\002 \001(\t\022\022\n\nuser_photo\030\003 \001(\t\022%\n\013user_sta" +
-      "tus\030\004 \001(\0162\020.core.UserStatus\"M\n\020ApplyUser" +
-      "Profile\022$\n\tapplyUser\030\001 \001(\0132\021.core.UserPr" +
-      "ofile\022\023\n\013applyReason\030\002 \001(\t\"e\n\023UserRelati",
-      "onProfile\022(\n\007profile\030\001 \001(\0132\027.core.Simple" +
-      "UserProfile\022$\n\010relation\030\002 \001(\0162\022.core.Use" +
-      "rRelation*$\n\nUserStatus\022\n\n\006NORMAL\020\000\022\n\n\006S" +
-      "EALUP\020\001*\\\n\014UserRelation\022\021\n\rRELATION_NONE" +
-      "\020\000\022\023\n\017RELATION_FRIEND\020\001\022\021\n\rRELATION_CARE" +
-      "\020\002\022\021\n\rRELATION_FANS\020\003B\"\n\025com.akaxin.prot" +
-      "o.coreB\tUserProtob\006proto3"
+      "tus\022\025\n\rregister_time\030\006 \001(\003\022\025\n\rsite_login" +
+      "_id\030\007 \001(\t\022\021\n\tnick_name\030\010 \001(\t\022\031\n\021username" +
+      "_in_latin\030\t \001(\t\"\274\001\n\021SimpleUserProfile\022\024\n" +
+      "\014site_user_id\030\001 \001(\t\022\021\n\tuser_name\030\002 \001(\t\022\022" +
+      "\n\nuser_photo\030\003 \001(\t\022%\n\013user_status\030\004 \001(\0162" +
+      "\020.core.UserStatus\022\025\n\rsite_login_id\030\005 \001(\t",
+      "\022\021\n\tnick_name\030\006 \001(\t\022\031\n\021username_in_latin" +
+      "\030\007 \001(\t\"M\n\020ApplyUserProfile\022$\n\tapplyUser\030" +
+      "\001 \001(\0132\021.core.UserProfile\022\023\n\013applyReason\030" +
+      "\002 \001(\t\"e\n\023UserRelationProfile\022(\n\007profile\030" +
+      "\001 \001(\0132\027.core.SimpleUserProfile\022$\n\010relati" +
+      "on\030\002 \001(\0162\022.core.UserRelation*$\n\nUserStat" +
+      "us\022\n\n\006NORMAL\020\000\022\n\n\006SEALUP\020\001*\\\n\014UserRelati" +
+      "on\022\021\n\rRELATION_NONE\020\000\022\023\n\017RELATION_FRIEND" +
+      "\020\001\022\021\n\rRELATION_CARE\020\002\022\021\n\rRELATION_FANS\020\003" +
+      "B\"\n\025com.akaxin.proto.coreB\tUserProtob\006pr",
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3736,13 +4850,13 @@ public final class UserProto {
     internal_static_core_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_UserProfile_descriptor,
-        new java.lang.String[] { "SiteUserId", "UserName", "UserPhoto", "SelfIntroduce", "UserStatus", "RegisterTime", });
+        new java.lang.String[] { "SiteUserId", "UserName", "UserPhoto", "SelfIntroduce", "UserStatus", "RegisterTime", "SiteLoginId", "NickName", "UsernameInLatin", });
     internal_static_core_SimpleUserProfile_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_core_SimpleUserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_SimpleUserProfile_descriptor,
-        new java.lang.String[] { "SiteUserId", "UserName", "UserPhoto", "UserStatus", });
+        new java.lang.String[] { "SiteUserId", "UserName", "UserPhoto", "UserStatus", "SiteLoginId", "NickName", "UsernameInLatin", });
     internal_static_core_ApplyUserProfile_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_core_ApplyUserProfile_fieldAccessorTable = new

@@ -48,7 +48,7 @@ public class UserProfileDaoService implements IUserProfileDao {
 
 	@Override
 	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(userId);
+		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(userId,"");
 	}
 
 	@Override
@@ -61,10 +61,10 @@ public class UserProfileDaoService implements IUserProfileDao {
 		return SQLiteUserProfileDao.getInstance().querySimpleProfileByPubk(userIdPubk);
 	}
 
-	@Override
-	public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySimpleProfileByName(userName);
-	}
+//	@Override
+//	public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException {
+//		return SQLiteUserProfileDao.getInstance().querySimpleProfileByName(userName);
+//	}
 
 	@Override
 	public UserProfileBean getUserProfileById(String userId) throws SQLException {

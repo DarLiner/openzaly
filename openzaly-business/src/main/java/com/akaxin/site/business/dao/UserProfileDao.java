@@ -72,15 +72,15 @@ public class UserProfileDao {
 		return userBean;
 	}
 
-	public List<SimpleUserBean> getSimpleProfileByName(String userName) {
-		List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
-		try {
-			userList = userProfileDao.getSimpleProfileByName(userName);
-		} catch (SQLException e) {
-			logger.error("get User Simple Profile error.", e);
-		}
-		return userList;
-	}
+//	public List<SimpleUserBean> getSimpleProfileByName(String userName) {
+//		List<SimpleUserBean> userList = new ArrayList<SimpleUserBean>();
+//		try {
+//			userList = userProfileDao.getSimpleProfileByName(userName);
+//		} catch (SQLException e) {
+//			logger.error("get User Simple Profile error.", e);
+//		}
+//		return userList;
+//	}
 
 	public UserProfileBean getUserProfileById(String siteUserId) {
 		UserProfileBean userBean = null;

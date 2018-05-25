@@ -21,7 +21,7 @@ public interface IUserProfileDao {
 
     public SimpleUserBean getSimpleProfileByPubk(String userId) throws SQLException;
 
-    public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException;
+//    public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException;
 
     public UserProfileBean getUserProfileById(String userId) throws SQLException;
 
