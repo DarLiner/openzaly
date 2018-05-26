@@ -15,6 +15,9 @@
  */
 package com.akaxin.site.business.impl.tai;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,7 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.IErrorCode;
-import com.akaxin.common.exceptions.ZalyException;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.UserProto;
@@ -124,7 +127,20 @@ public class ApiUserService extends AbstractRequest {
 
 			// 校验参数
 			if (StringUtils.isEmpty(siteUserId) || StringUtils.isAllEmpty(siteLoginId, userName, userPhoto)) {
-				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			// 用户名长度 1-16
+			if (StringUtils.isNotEmpty(userName) && userName.length() > 16) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER_NICKNAME);
+			}
+
+			// 站点账号 3-16
+			if (StringUtils.isNotEmpty(siteLoginId)) {
+				Matcher match = Pattern.compile("^[A-Za-z][A-Za-z0-9]{2,15}$").matcher(siteLoginId);
+				if (!match.matches()) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER_LOGINID);
+				}
 			}
 
 			UserProfileBean userBean = new UserProfileBean();
@@ -144,11 +160,10 @@ public class ApiUserService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			if (e instanceof ZalyException) {
-				errCode = ((ZalyException) e).getErrCode();
-			} else {
-				errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			}
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode(errCode);

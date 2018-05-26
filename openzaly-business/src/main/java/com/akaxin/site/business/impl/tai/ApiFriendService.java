@@ -111,9 +111,14 @@ public class ApiFriendService extends AbstractRequest {
 
 				if (StringUtils.isNotEmpty(userBean.getAliasName())) {
 					friendProfileBuilder.setUserName(userBean.getAliasName());
-					friendProfileBuilder.setNickName(userBean.getUserName());
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
+						friendProfileBuilder.setNickName(userBean.getUserName());
+					}
 				} else {
-					friendProfileBuilder.setUserName(userBean.getUserName());
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
+						friendProfileBuilder.setUserName(userBean.getUserName());
+						friendProfileBuilder.setNickName(userBean.getUserName());
+					}
 				}
 
 				if (StringUtils.isNotEmpty(userBean.getSiteLoginId())) {

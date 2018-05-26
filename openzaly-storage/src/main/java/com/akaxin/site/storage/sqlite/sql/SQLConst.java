@@ -33,7 +33,8 @@ public interface SQLConst {
 			+ "site_user_id VARCHAR(50) UNIQUE NOT NULL,"// 站点用户ID
 			+ "global_user_id VARCHAR(100) UNIQUE NOT NULL,"// 用户的全局ID
 			+ "user_id_pubk TEXT UNIQUE NOT NULL,"// 用户ID公钥
-			+ "site_login_id VARCHAR(50) UNIQUE,"// 用户登陆账号
+			+ "site_login_id VARCHAR(50) UNIQUE,"// 用户登陆账号 login_id_lowercase
+			+ "login_id_lowercase VARCHAR(50) UNIQUE,"// login_id_lowercase
 			+ "user_password VARCHAR(50),"// 用户登陆站点的密码
 			+ "user_name VARCHAR(50),"// 用户昵称
 			+ "user_name_in_latin VARCHAR(50),"// 用户昵称

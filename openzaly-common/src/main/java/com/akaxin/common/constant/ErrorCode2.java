@@ -30,12 +30,15 @@ public enum ErrorCode2 implements IErrorCode {
 	SUCCESS("success", ""), // 操作成功
 
 	ERROR_SYSTEMERROR("error.alter", "系统异常"), //
-	ERROR_PARAMETER("error.alter", "请求参数错误"), // 请求参数错误
 	ERROR_NOPERMISSION("error.alter", "用户无权限该操作"), // 用户无权限错误
 	ERROR_UNSUPPORT_PROTOCOL("error.alter", "协议版本错误"), // 服务端不支持该功能
 	ERROR_ILLEGALREQUEST("error.alter", "非法请求"), // 非法的请求
 	ERROR_INVALIDPACKAGEACTION("error.alter", "无效的包名称"), // 无效的包action
 	ERROR_DATABASE_EXECUTE("error.alter", "数据库执行错误"), // 无效的包action
+
+	ERROR_PARAMETER("error.alter", "请求参数错误"), // 请求参数错误
+	ERROR_PARAMETER_NICKNAME("error.alter", "昵称长度错误"), // 昵称格式错误
+	ERROR_PARAMETER_LOGINID("error.alter", "站点账号,格式错误"), // 昵称格式错误
 
 	ERROR_SESSION("error.session", "用户身份认证失败"), // session验证失败
 
@@ -55,7 +58,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_FRIEND_IS("error.alter", "用户已经是你的好友"), //
 	ERROR2_FRIEND_APPLYSELF("error.alter", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alter", "添加好友最多为5次"), //
-	ERROR2_FRIEND_sealUped("error.alter","你已经被封禁,无法执行操作"),
+	ERROR2_FRIEND_sealUped("error.alter", "你已经被封禁,无法执行操作"),
 
 	ERROR_GROUP_DELETED("error.group.deleted", "该群聊不存在"), //
 	ERROR_GROUP_WHEN_CREATE("error.alter", "创建群聊出错，请稍后重试"), //
