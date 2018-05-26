@@ -38,7 +38,9 @@ public enum ErrorCode2 implements IErrorCode {
 
 	ERROR_PARAMETER("error.alter", "请求参数错误"), // 请求参数错误
 	ERROR_PARAMETER_NICKNAME("error.alter", "昵称长度错误"), // 昵称格式错误
-	ERROR_PARAMETER_LOGINID("error.alter", "站点账号,格式错误"), // 昵称格式错误
+
+	ERROR_LOGINID_LENGTH("error.alter", "站点账号,格式错误"), // 昵称格式错误
+	ERROR_LOGINID_EXIST("error.alter", "站点账号只允许设置一次"), // 昵称格式错误
 
 	ERROR_SESSION("error.session", "用户身份认证失败"), // session验证失败
 

@@ -139,7 +139,15 @@ public class ApiUserService extends AbstractRequest {
 			if (StringUtils.isNotEmpty(siteLoginId)) {
 				Matcher match = Pattern.compile("^[A-Za-z][A-Za-z0-9]{2,15}$").matcher(siteLoginId);
 				if (!match.matches()) {
-					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER_LOGINID);
+					throw new ZalyException2(ErrorCode2.ERROR_LOGINID_LENGTH);
+				}
+
+				String loginId = UserProfileDao.getInstance().getSiteLoginIdBySiteUserId(siteUserId);
+				if (loginId != null && !loginId.equalsIgnoreCase(siteLoginId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_LOGINID_EXIST);
+				} else if (siteLoginId.equalsIgnoreCase(loginId)) {
+					// equal, ignore
+					siteLoginId = null;
 				}
 			}
 

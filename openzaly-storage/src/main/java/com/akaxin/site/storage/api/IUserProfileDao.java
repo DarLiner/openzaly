@@ -10,13 +10,17 @@ import com.akaxin.site.storage.bean.UserProfileBean;
 
 public interface IUserProfileDao {
 
-	public boolean saveUserProfile(UserProfileBean bean) throws SQLException;
+	public boolean saveProfile(UserProfileBean bean) throws SQLException;
 
 	public String getSiteUserIdByGlobalUserId(String globalUserId) throws SQLException;
-	
-	public String getSiteUserId(String userIdPubk) throws SQLException;
 
-	public String getGlobalUserId(String userId) throws SQLException;
+	public String getSiteUserIdByPubk(String userIdPubk) throws SQLException;
+
+	public String getSiteUserIdByLowercaseLoginId(String lowercaseLoginId) throws SQLException;
+
+	public String getGlobalUserIdBySiteUserId(String siteUserId) throws SQLException;
+
+	public String getSiteLoginIdBySiteUserId(String siteUserId) throws SQLException;
 
 	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException;
 
@@ -32,7 +36,7 @@ public interface IUserProfileDao {
 
 	public UserProfileBean getUserProfileByPubk(String userIdPubk) throws SQLException;
 
-	public int updateUserProfile(UserProfileBean userBean) throws SQLException;
+	public int updateProfile(UserProfileBean userBean) throws SQLException;
 
 	public int updateUserStatus(String siteUserId, int status) throws SQLException;
 
@@ -45,7 +49,7 @@ public interface IUserProfileDao {
 
 	public boolean updateMute(String userId, boolean mute) throws SQLException;
 
-	public int queryNumRegisterPerDay(long now, int day) throws SQLException;
+	public int queryRegisterNumPerDay(long now, int day) throws SQLException;
 
 	int getUserNum(long now, int day) throws SQLException;
 

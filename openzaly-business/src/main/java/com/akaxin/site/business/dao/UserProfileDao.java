@@ -51,6 +51,15 @@ public class UserProfileDao {
 		return null;
 	}
 
+	public String getSiteLoginIdBySiteUserId(String siteUserId) {
+		try {
+			return userProfileDao.getSiteLoginIdBySiteUserId(siteUserId);
+		} catch (SQLException e) {
+			logger.error("get siteLoginId by siteUserId error.", e);
+		}
+		return null;
+	}
+
 	public SimpleUserBean getSimpleProfileById(String siteUserId) {
 		SimpleUserBean userBean = new SimpleUserBean();
 		try {
@@ -127,7 +136,7 @@ public class UserProfileDao {
 	public boolean updateUserProfile(UserProfileBean userBean) {
 		int result = 0;
 		try {
-			result = userProfileDao.updateUserProfile(userBean);
+			result = userProfileDao.updateProfile(userBean);
 		} catch (SQLException e) {
 			logger.error("update user profile error.", e);
 		}

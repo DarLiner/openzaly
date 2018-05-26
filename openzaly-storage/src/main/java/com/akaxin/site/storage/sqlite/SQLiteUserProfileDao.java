@@ -55,7 +55,8 @@ public class SQLiteUserProfileDao {
 		return instance;
 	}
 
-	public boolean saveUserProfile(UserProfileBean bean) throws SQLException {
+	// save Profile
+	public boolean saveProfile(UserProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + USER_PROFILE_TABLE // 用户profile表
 				+ "(site_user_id," // 站点ID
@@ -90,6 +91,7 @@ public class SQLiteUserProfileDao {
 		return result == 1;
 	}
 
+	// globalUserId -> siteUserId
 	public String querySiteUserIdByGlobalUserId(String globalUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String siteUserId = null;
@@ -106,8 +108,8 @@ public class SQLiteUserProfileDao {
 		return siteUserId;
 	}
 
-	// 查询siteUserId
-	public String querySiteUserId(String userIdPubk) throws SQLException {
+	// userIdPubk -> siteUserId
+	public String querySiteUserIdByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String siteUserId = null;
 		String sql = "SELECT site_user_id FROM " + SQLConst.SITE_USER_PROFILE + " WHERE user_id_pubk=?;";
@@ -123,6 +125,58 @@ public class SQLiteUserProfileDao {
 		return siteUserId;
 	}
 
+	// lowerCaseLoginId -> siteUserId
+	public String querySiteUserIdByLowercaseLoginId(String lowercaseLoginId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String globalUserId = null;
+		String sql = "SELECT site_user_id FROM " + USER_PROFILE_TABLE + " WHERE login_id_lowercase=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, lowercaseLoginId);
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			globalUserId = rs.getString(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, globalUserId, sql, lowercaseLoginId);
+		return globalUserId;
+	}
+
+	// siteUserId -> gloabalUserId
+	public String queryGlobalUserIdBySiteUserId(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String globalUserId = null;
+		String sql = "SELECT global_user_id FROM " + USER_PROFILE_TABLE + " WHERE site_user_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			globalUserId = rs.getString(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, globalUserId, sql, siteUserId);
+		return globalUserId;
+	}
+
+	// siteUserId -> siteLoginId
+	public String querySiteLoginIdBySiteUserId(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String globalUserId = null;
+		String sql = "SELECT site_login_id FROM " + USER_PROFILE_TABLE + " WHERE site_user_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			globalUserId = rs.getString(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, globalUserId, sql, siteUserId);
+		return globalUserId;
+	}
+
+	// siteUserId -> Simple Profile
 	public SimpleUserBean querySimpleProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
@@ -145,7 +199,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
-	// 使用globalUserId查询个人profile
+	// globalUserId -> Simple Profile
 	public SimpleUserBean querySimpleProfileByGlobalUserId(String globalUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		SimpleUserBean userBean = new SimpleUserBean();
@@ -166,6 +220,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
+	// userIdPubk -> Simple Profile
 	public SimpleUserBean querySimpleProfileByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
@@ -188,13 +243,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
-	/**
-	 * 通过站点用户ID，查询用户
-	 *
-	 * @param siteUserId
-	 * @return
-	 * @throws SQLException
-	 */
+	// siteUserId -> Full Profile
 	public UserProfileBean queryUserProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time,phone_id FROM "
@@ -222,7 +271,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
-	// 查询好友的个人资料页
+	// siteUserId,siteFriendId -> Friend Full Profile
 	public UserFriendBean queryFriendProfileById(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 
@@ -258,30 +307,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
-	public String queryGlobalUserId(String siteUserId) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		String globalUserId = null;
-		String sql = "SELECT global_user_id FROM " + USER_PROFILE_TABLE + " WHERE site_user_id=?;";
-
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, siteUserId);
-		ResultSet rs = preStatement.executeQuery();
-		if (rs.next()) {
-			globalUserId = rs.getString(1);
-		}
-
-		LogUtils.dbDebugLog(logger, startTime, globalUserId, sql, siteUserId);
-		return globalUserId;
-	}
-
-	/**
-	 * 通过globalUserId查询用户信息
-	 *
-	 * @param globalUserId
-	 *            globalUserId
-	 * @return
-	 * @throws SQLException
-	 */
+	// globalUserId -> Full Profile
 	public UserProfileBean queryUserProfileByGlobalUserId(String globalUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
@@ -308,6 +334,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
+	// userIdPubk -> Full Profile
 	public UserProfileBean queryUserProfileByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,user_status,self_introduce,register_time FROM "
@@ -334,6 +361,7 @@ public class SQLiteUserProfileDao {
 		return userBean;
 	}
 
+	// Update Profile
 	public int updateUserProfile(UserProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_PROFILE_TABLE + " {} WHERE site_user_id=?;";
@@ -363,16 +391,7 @@ public class SQLiteUserProfileDao {
 		return result;
 	}
 
-	/**
-	 * <pre>
-	 * 更新用户的个人状态
-	 * </pre>
-	 *
-	 * @param siteUserId
-	 * @param status
-	 * @return
-	 * @throws SQLException
-	 */
+	// Update User Status
 	public int updateUserStatus(String siteUserId, int status) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_PROFILE_TABLE + " SET user_status=? WHERE site_user_id=?;";
@@ -386,6 +405,7 @@ public class SQLiteUserProfileDao {
 		return result;
 	}
 
+	// siteUserId -> Friends
 	public List<SimpleUserBean> queryUserFriends(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
@@ -455,10 +475,12 @@ public class SQLiteUserProfileDao {
 	}
 
 	/**
-	 * 单独获取当前站点的用户列表
+	 * 分页获取站点上所有用户
 	 *
 	 * @param pageNum
+	 *            第几页，从1开始
 	 * @param pageSize
+	 *            每页大小
 	 * @return
 	 * @throws SQLException
 	 */
@@ -486,6 +508,7 @@ public class SQLiteUserProfileDao {
 		return userPageList;
 	}
 
+	// siteUserId -> Mute
 	public boolean queryMute(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		boolean mute = false;
@@ -502,6 +525,7 @@ public class SQLiteUserProfileDao {
 		return mute;
 	}
 
+	// Update Mute
 	public boolean updateMute(String siteUserId, boolean mute) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_PROFILE_TABLE + " SET mute=? WHERE site_user_id=?;";
@@ -515,7 +539,7 @@ public class SQLiteUserProfileDao {
 		return result > 0;
 	}
 
-	public int queryNumRegisterPerDay(long now, int day) throws SQLException {
+	public int queryRegisterNumPerDay(long now, int day) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		long startTimeOfDay = TimeFormats.getStartTimeOfDay(now);
 		long endTimeOfDay = TimeFormats.getEndTimeOfDay(now);

@@ -52,7 +52,7 @@ public class SiteLoginDao {
 
 	public boolean registerUser(UserProfileBean userBean) {
 		try {
-			return userProfileDao.saveUserProfile(userBean);
+			return userProfileDao.saveProfile(userBean);
 		} catch (SQLException e) {
 			logger.error("register user error.", e);
 		}
@@ -97,7 +97,7 @@ public class SiteLoginDao {
 
 	public String getSiteUserId(String userIdPubk) {
 		try {
-			return userProfileDao.getSiteUserId(userIdPubk);
+			return userProfileDao.getSiteUserIdByPubk(userIdPubk);
 		} catch (SQLException e) {
 			logger.error("get site user id error.", e);
 		}

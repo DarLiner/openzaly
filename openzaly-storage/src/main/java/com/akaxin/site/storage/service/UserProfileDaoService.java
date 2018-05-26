@@ -33,8 +33,8 @@ import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
 public class UserProfileDaoService implements IUserProfileDao {
 
 	@Override
-	public boolean saveUserProfile(UserProfileBean bean) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().saveUserProfile(bean);
+	public boolean saveProfile(UserProfileBean bean) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().saveProfile(bean);
 	}
 
 	@Override
@@ -43,13 +43,23 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public String getSiteUserId(String userIdPubk) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySiteUserId(userIdPubk);
+	public String getSiteUserIdByPubk(String userIdPubk) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteUserIdByPubk(userIdPubk);
 	}
 
 	@Override
-	public String getGlobalUserId(String siteUserId) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().queryGlobalUserId(siteUserId);
+	public String getSiteUserIdByLowercaseLoginId(String lowercaseLoginId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteUserIdByLowercaseLoginId(lowercaseLoginId);
+	}
+
+	@Override
+	public String getGlobalUserIdBySiteUserId(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryGlobalUserIdBySiteUserId(siteUserId);
+	}
+
+	@Override
+	public String getSiteLoginIdBySiteUserId(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteLoginIdBySiteUserId(siteUserId);
 	}
 
 	@Override
@@ -88,7 +98,7 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int updateUserProfile(UserProfileBean userBean) throws SQLException {
+	public int updateProfile(UserProfileBean userBean) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().updateUserProfile(userBean);
 	}
 
@@ -119,8 +129,8 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int queryNumRegisterPerDay(long now, int day) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now, day);
+	public int queryRegisterNumPerDay(long now, int day) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryRegisterNumPerDay(now, day);
 	}
 
 	@Override
