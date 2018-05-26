@@ -341,7 +341,7 @@ public class SQLiteUserProfileDao {
 		Map<String, String> sqlMap = new HashMap<String, String>();
 		sqlMap.put("site_login_id", bean.getSiteLoginId());// 站点账号
 		sqlMap.put("user_name", bean.getUserName());// 用户昵称nickname
-		sqlMap.put("user_name_in_latin", bean.getUserName());// 用户昵称拼音
+		sqlMap.put("user_name_in_latin", bean.getUserNameInLatin());// 用户昵称拼音
 		sqlMap.put("user_photo", bean.getUserPhoto());// 用户头像
 		sqlMap.put("self_introduce", bean.getSelfIntroduce());// 自我介绍
 
