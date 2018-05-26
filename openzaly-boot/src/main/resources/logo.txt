@@ -13,4 +13,4 @@
             \ /  
               
  
-Akaxin is an open source and free proprietary IM software，you can build private openzaly-server for everyone in any server.
+Akaxin is an open source and free proprietary IM software,you can build private openzaly-server for everyone in any server.

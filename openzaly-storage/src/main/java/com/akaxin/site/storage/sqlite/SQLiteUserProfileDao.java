@@ -228,7 +228,7 @@ public class SQLiteUserProfileDao {
 
 		String sql = "SELECT a.site_user_id,a.site_login_id,a.user_id_pubk,a.user_name,a.user_name_in_latin,a.user_photo,a.self_introduce,a.user_status,a.register_time,b.mute,b.alias_name,b.alias_name_in_latin FROM "
 				+ USER_PROFILE_TABLE
-				+ " AS a LEFT JOIN (SELECT site_user_id,site_friend_id,relation,alias_name,alias_name_in_latin FROM "
+				+ " AS a LEFT JOIN (SELECT site_user_id,site_friend_id,mute,alias_name,alias_name_in_latin FROM "
 				+ USER_FRIEND_TABLE
 				+ " WHERE site_user_id=?) AS b ON a.site_user_id=b.site_friend_id WHERE a.site_user_id=?;";
 
@@ -254,7 +254,7 @@ public class SQLiteUserProfileDao {
 			userBean.setAliasNameInLatin(rs.getString(12));
 		}
 
-		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId);
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId, siteFriendId);
 		return userBean;
 	}
 

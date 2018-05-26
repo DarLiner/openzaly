@@ -101,7 +101,7 @@ public class ApiFriendService extends AbstractRequest {
 			if (null == userBean || StringUtils.isNotEmpty(userBean.getSiteUserId())) {
 				String siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalOrSiteFriendId);
 				if (StringUtils.isNotEmpty(siteFriendId)) {
-					userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId, globalOrSiteFriendId);
+					userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId, siteFriendId);
 				}
 			}
 

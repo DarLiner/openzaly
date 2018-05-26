@@ -15,7 +15,7 @@ public class UserProfileBean extends SimpleUserBean {
 	private String selfIntroduce;
 	private String applyInfo;
 	private String phoneId;
-	private int userStatus;
+//	private int userStatus;
 	private long registerTime;
 	private int defaultState;
 
@@ -93,13 +93,13 @@ public class UserProfileBean extends SimpleUserBean {
 		this.registerTime = registerTime;
 	}
 
-	public int getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(int userStatus) {
-		this.userStatus = userStatus;
-	}
+//	public int getUserStatus() {
+//		return userStatus;
+//	}
+//
+//	public void setUserStatus(int userStatus) {
+//		this.userStatus = userStatus;
+//	}
 
 	public String toString() {
 		return GsonUtils.toJson(this);
