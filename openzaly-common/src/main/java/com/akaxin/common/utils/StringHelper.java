@@ -98,7 +98,6 @@ public class StringHelper {
 				if (Character.toString(ch).matches("[\\u4E00-\\u9FA5]+")) {
 					String[] temp = PinyinHelper.toHanyuPinyinStringArray(ch, format);
 					result.append(temp[0]);
-					result.append(" ");
 				} else
 					result.append(Character.toString(ch));
 			}
