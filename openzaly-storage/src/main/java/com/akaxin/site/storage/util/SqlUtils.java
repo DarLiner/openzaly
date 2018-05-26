@@ -3,6 +3,8 @@ package com.akaxin.site.storage.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -18,7 +20,7 @@ public class SqlUtils {
 		if (sqlMap != null) {
 			int index = 0;
 			for (String key : sqlMap.keySet()) {
-				if (sqlMap.get(key) != null) {
+				if (StringUtils.isNotEmpty(sqlMap.get(key))) {
 					if (index++ > 0) {
 						sqlTag.append(",");
 					}
