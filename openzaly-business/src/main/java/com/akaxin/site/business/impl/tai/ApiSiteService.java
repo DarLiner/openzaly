@@ -147,7 +147,7 @@ public class ApiSiteService extends AbstractRequest {
 			String phoneToken = request.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
 			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
-			String siteLoginName = request.getSiteLoginName();
+			String siteLoginId = request.getSiteLoginId();// 站点账号
 
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
@@ -195,6 +195,7 @@ public class ApiSiteService extends AbstractRequest {
 			regBean.setSiteUserId(siteUserId);
 			regBean.setUserIdPubk(userIdPubk);
 			regBean.setUserName(userName);
+			regBean.setUserNameInLatin(StringHelper.toLatinPinYin(userName));
 			regBean.setApplyInfo(applyInfo);
 			regBean.setUserPhoto(userPhoto);
 			regBean.setPhoneId(phoneId);

@@ -77,12 +77,20 @@ public class UserFriendDaoService implements IUserFriendDao {
 	}
 
 	@Override
-	public int friendNum(long now,int day) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().getFrienNum(now,day);
+	public boolean remarkFriend(String siteUserId, String siteFriendId, String aliasName, String aliasNameInLatin)
+			throws SQLException {
+		return SQLiteUserFriendDao.getInstance().updateFriendAlias(siteUserId, siteFriendId, aliasName,
+				aliasNameInLatin);
+	}
+
+	@Override
+	public int friendNum(long now, int day) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().getFrienNum(now, day);
 	}
 
 	@Override
 	public boolean delUserFriend(String siteUserId) throws SQLException {
 		return SQLiteUserFriendDao.getInstance().delUserFriend(siteUserId);
 	}
+
 }

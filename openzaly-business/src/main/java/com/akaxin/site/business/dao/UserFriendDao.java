@@ -207,4 +207,13 @@ public class UserFriendDao {
 		}
 		return false;
 	}
+
+	public boolean remarkFriend(String siteUserId, String siteFriendId, String aliasName, String aliasInLatin) {
+		try {
+			return userFriendDao.remarkFriend(siteUserId, siteFriendId, aliasName, aliasInLatin);
+		} catch (SQLException e) {
+			logger.error("update friend mute error", e);
+		}
+		return false;
+	}
 }

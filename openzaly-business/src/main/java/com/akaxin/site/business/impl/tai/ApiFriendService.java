@@ -25,7 +25,10 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiFriendApplyCountProto;
 import com.akaxin.proto.site.ApiFriendApplyListProto;
@@ -35,6 +38,7 @@ import com.akaxin.proto.site.ApiFriendDeleteProto;
 import com.akaxin.proto.site.ApiFriendListProto;
 import com.akaxin.proto.site.ApiFriendMuteProto;
 import com.akaxin.proto.site.ApiFriendProfileProto;
+import com.akaxin.proto.site.ApiFriendRemarkProto;
 import com.akaxin.proto.site.ApiFriendSettingProto;
 import com.akaxin.proto.site.ApiFriendUpdateMuteProto;
 import com.akaxin.proto.site.ApiFriendUpdateSettingProto;
@@ -102,15 +106,30 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {
-				UserProto.UserProfile userProfileProto = UserProto.UserProfile.newBuilder()
-						.setSiteUserId(String.valueOf(userBean.getSiteUserId()))
-						.setUserName(String.valueOf(userBean.getUserName()))
-						.setUserPhoto(String.valueOf(userBean.getUserPhoto()))
-						.setUserStatusValue(userBean.getUserStatus()).build();
+				UserProto.UserProfile.Builder friendProfileBuilder = UserProto.UserProfile.newBuilder();
+				friendProfileBuilder.setSiteUserId(userBean.getSiteUserId());
+
+				if (StringUtils.isNotEmpty(userBean.getAliasName())) {
+					friendProfileBuilder.setUserName(userBean.getAliasName());
+					friendProfileBuilder.setNickName(userBean.getUserName());
+				} else {
+					friendProfileBuilder.setUserName(userBean.getUserName());
+				}
+
+				if (StringUtils.isNotEmpty(userBean.getSiteLoginId())) {
+					friendProfileBuilder.setSiteLoginId(userBean.getSiteLoginId());
+				}
+				if (StringUtils.isNotEmpty(userBean.getUserPhoto())) {
+					friendProfileBuilder.setUserPhoto(userBean.getUserPhoto());
+				}
+				friendProfileBuilder.setUserStatusValue(userBean.getUserStatus());
+				UserProto.UserProfile friendProfile = friendProfileBuilder.build();
+
+				// 查关系
 				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
 						userBean.getSiteUserId());
 				ApiFriendProfileProto.ApiFriendProfileResponse response = ApiFriendProfileProto.ApiFriendProfileResponse
-						.newBuilder().setProfile(userProfileProto).setRelation(userRelation)
+						.newBuilder().setProfile(friendProfile).setRelation(userRelation)
 						.setUserIdPubk(userBean.getUserIdPubk()).build();
 				commandResponse.setParams(response.toByteArray());
 				errCode = ErrorCode2.SUCCESS;
@@ -146,11 +165,19 @@ public class ApiFriendService extends AbstractRequest {
 				for (SimpleUserBean friendBean : friendBeanList) {
 					UserProto.SimpleUserProfile.Builder friendBuilder = UserProto.SimpleUserProfile.newBuilder();
 					friendBuilder.setSiteUserId(friendBean.getUserId());
-					if (StringUtils.isNotEmpty(friendBean.getUserName())) {
-						friendBuilder.setUserName(String.valueOf(friendBean.getUserName()));
+					if (StringUtils.isNotEmpty(friendBean.getAliasName())) {
+						friendBuilder.setUserName(friendBean.getAliasName());
+						if (StringUtils.isNotEmpty(friendBean.getAliasNameInLatin())) {
+							friendBuilder.setUsernameInLatin(friendBean.getAliasNameInLatin());
+						}
+					} else {
+						friendBuilder.setUserName(friendBean.getUserName());
+						if (StringUtils.isNotEmpty(friendBean.getUserNameInLatin())) {
+							friendBuilder.setUsernameInLatin(friendBean.getUserNameInLatin());
+						}
 					}
 					if (StringUtils.isNotEmpty(friendBean.getUserPhoto())) {
-						friendBuilder.setUserPhoto(String.valueOf(friendBean.getUserPhoto()));
+						friendBuilder.setUserPhoto(friendBean.getUserPhoto());
 					}
 					responseBuilder.addList(friendBuilder.build());
 				}
@@ -502,6 +529,38 @@ public class ApiFriendService extends AbstractRequest {
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
+	}
+
+	public CommandResponse remark(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			ApiFriendRemarkProto.ApiFriendRemarkRequest request = ApiFriendRemarkProto.ApiFriendRemarkRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+			String aliasName = request.getAliasName();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId, aliasName)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			String aliasInLatin = StringHelper.toLatinPinYin(aliasName);
+			if (UserFriendDao.getInstance().remarkFriend(siteUserId, siteFriendId, aliasName, aliasInLatin)) {
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+			}
+
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode(errCode);
 	}
 
 }

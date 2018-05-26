@@ -26,7 +26,10 @@ public interface IUserFriendDao {
 
 	public boolean updateMute(String siteUserId, String siteFriendId, boolean mute) throws SQLException;
 
-	public int friendNum(long now,int day)throws SQLException;
+	public boolean remarkFriend(String siteUserId, String siteFriendId, String aliasName, String aliasInLatin)
+			throws SQLException;
 
-    boolean delUserFriend(String siteUserId)throws SQLException;
+	public int friendNum(long now, int day) throws SQLException;
+
+	boolean delUserFriend(String siteUserId) throws SQLException;
 }

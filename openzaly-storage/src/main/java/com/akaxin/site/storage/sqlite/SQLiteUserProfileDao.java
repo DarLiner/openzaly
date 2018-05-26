@@ -19,7 +19,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +37,7 @@ import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
+import com.akaxin.site.storage.util.SqlUtils;
 
 /**
  * 用户个人资料表(db_table:site_user_profile)相关操作
@@ -86,7 +89,7 @@ public class SQLiteUserProfileDao {
 				bean.getSelfIntroduce(), bean.getApplyInfo(), bean.getRegisterTime(), bean.getGlobalUserId());
 		return result == 1;
 	}
-	
+
 	public String querySiteUserIdByGlobalUserId(String globalUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String siteUserId = null;
@@ -194,7 +197,7 @@ public class SQLiteUserProfileDao {
 	 */
 	public UserProfileBean queryUserProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time,phone_id FROM "
+		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time,phone_id FROM "
 				+ USER_PROFILE_TABLE + " WHERE site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -205,13 +208,14 @@ public class SQLiteUserProfileDao {
 		if (rs.next()) {
 			userBean = new UserProfileBean();
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserIdPubk(rs.getString(2));
-			userBean.setUserName(rs.getString(3));
-			userBean.setUserPhoto(rs.getString(4));
-			userBean.setSelfIntroduce(rs.getString(5));
-			userBean.setUserStatus(rs.getInt(6));
-			userBean.setRegisterTime(rs.getLong(7));
-			userBean.setPhoneId(rs.getString(8));
+			userBean.setSiteLoginId(rs.getString(2));
+			userBean.setUserIdPubk(rs.getString(3));
+			userBean.setUserName(rs.getString(4));
+			userBean.setUserPhoto(rs.getString(5));
+			userBean.setSelfIntroduce(rs.getString(6));
+			userBean.setUserStatus(rs.getInt(7));
+			userBean.setRegisterTime(rs.getLong(8));
+			userBean.setPhoneId(rs.getString(9));
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId);
@@ -222,7 +226,7 @@ public class SQLiteUserProfileDao {
 	public UserFriendBean queryFriendProfileById(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 
-		String sql = "SELECT a.site_user_id,a.user_id_pubk,a.user_name,a.user_name_in_latin,a.user_photo,a.self_introduce,a.user_status,a.register_time,b.mute,b.alias_name,b.alias_name_in_latin FROM "
+		String sql = "SELECT a.site_user_id,a.site_login_id,a.user_id_pubk,a.user_name,a.user_name_in_latin,a.user_photo,a.self_introduce,a.user_status,a.register_time,b.mute,b.alias_name,b.alias_name_in_latin FROM "
 				+ USER_PROFILE_TABLE
 				+ " AS a LEFT JOIN (SELECT site_user_id,site_friend_id,relation,alias_name,alias_name_in_latin FROM "
 				+ USER_FRIEND_TABLE
@@ -237,16 +241,17 @@ public class SQLiteUserProfileDao {
 		if (rs.next()) {
 			userBean = new UserFriendBean();
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserIdPubk(rs.getString(2));
-			userBean.setUserName(rs.getString(3));
-			userBean.setUserNameInLatin(rs.getString(4));
-			userBean.setUserPhoto(rs.getString(5));
-			userBean.setSelfIntroduce(rs.getString(6));
-			userBean.setUserStatus(rs.getInt(7));
-			userBean.setRegisterTime(rs.getLong(8));
-			userBean.setMute(rs.getBoolean(9));
-			userBean.setAliasName(rs.getString(10));
-			userBean.setAliasNameInLatin(rs.getString(11));
+			userBean.setSiteLoginId(rs.getString(2));
+			userBean.setUserIdPubk(rs.getString(3));
+			userBean.setUserName(rs.getString(4));
+			userBean.setUserNameInLatin(rs.getString(5));
+			userBean.setUserPhoto(rs.getString(6));
+			userBean.setSelfIntroduce(rs.getString(7));
+			userBean.setUserStatus(rs.getInt(8));
+			userBean.setRegisterTime(rs.getLong(9));
+			userBean.setMute(rs.getBoolean(10));
+			userBean.setAliasName(rs.getString(11));
+			userBean.setAliasNameInLatin(rs.getString(12));
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId);
@@ -279,7 +284,7 @@ public class SQLiteUserProfileDao {
 	 */
 	public UserProfileBean queryUserProfileByGlobalUserId(String globalUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
+		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE global_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -290,12 +295,13 @@ public class SQLiteUserProfileDao {
 		if (rs.next()) {
 			userBean = new UserProfileBean();
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserIdPubk(rs.getString(2));
-			userBean.setUserName(rs.getString(3));
-			userBean.setUserPhoto(rs.getString(4));
-			userBean.setSelfIntroduce(rs.getString(5));
-			userBean.setUserStatus(rs.getInt(6));
-			userBean.setRegisterTime(rs.getLong(7));
+			userBean.setSiteLoginId(rs.getString(2));
+			userBean.setUserIdPubk(rs.getString(3));
+			userBean.setUserName(rs.getString(4));
+			userBean.setUserPhoto(rs.getString(5));
+			userBean.setSelfIntroduce(rs.getString(6));
+			userBean.setUserStatus(rs.getInt(7));
+			userBean.setRegisterTime(rs.getLong(8));
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, userBean, sql, globalUserId);
@@ -304,7 +310,7 @@ public class SQLiteUserProfileDao {
 
 	public UserProfileBean queryUserProfileByPubk(String userIdPubk) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,user_id_pubk,user_name,user_photo,user_status,self_introduce,register_time FROM "
+		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,user_status,self_introduce,register_time FROM "
 				+ USER_PROFILE_TABLE + " WHERE user_id_pubk=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -315,12 +321,13 @@ public class SQLiteUserProfileDao {
 		if (rs.next()) {
 			userBean = new UserProfileBean();
 			userBean.setSiteUserId(rs.getString(1));
-			userBean.setUserIdPubk(rs.getString(2));
-			userBean.setUserName(rs.getString(3));
-			userBean.setUserPhoto(rs.getString(4));
-			userBean.setUserStatus(rs.getInt(5));
-			userBean.setSelfIntroduce(rs.getString(6));
-			userBean.setRegisterTime(rs.getLong(7));
+			userBean.setSiteLoginId(rs.getString(2));
+			userBean.setUserIdPubk(rs.getString(3));
+			userBean.setUserName(rs.getString(4));
+			userBean.setUserPhoto(rs.getString(5));
+			userBean.setUserStatus(rs.getInt(6));
+			userBean.setSelfIntroduce(rs.getString(7));
+			userBean.setRegisterTime(rs.getLong(8));
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, userBean, sql, userIdPubk);
@@ -329,17 +336,26 @@ public class SQLiteUserProfileDao {
 
 	public int updateUserProfile(UserProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "UPDATE " + USER_PROFILE_TABLE
-				+ " SET user_name=?,user_photo=?,self_introduce=? WHERE site_user_id=?;";
+		String sql = "UPDATE " + USER_PROFILE_TABLE + " {} WHERE site_user_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, bean.getUserName());
-		preStatement.setString(2, bean.getUserPhoto());
-		preStatement.setString(3, bean.getSelfIntroduce());
-		preStatement.setString(4, bean.getSiteUserId());
+		Map<String, String> sqlMap = new HashMap<String, String>();
+		sqlMap.put("site_login_id", bean.getSiteLoginId());// 站点账号
+		sqlMap.put("user_name", bean.getUserName());// 用户昵称nickname
+		sqlMap.put("user_name_in_latin", bean.getUserName());// 用户昵称拼音
+		sqlMap.put("user_photo", bean.getUserPhoto());// 用户头像
+		sqlMap.put("self_introduce", bean.getSelfIntroduce());// 自我介绍
+
+		SqlUtils.SqlBean sqlBean = SqlUtils.buildUpdateSql(sql, sqlMap);
+		String realSql = sqlBean.getSql();
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(realSql);
+		for (Integer index : sqlBean.getParams().keySet()) {
+			preStatement.setString(index, sqlBean.getParams().get(index));
+		}
+		preStatement.setString(sqlBean.getParams().size() + 1, bean.getSiteUserId());
 		int result = preStatement.executeUpdate();
 
-		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getUserName(), bean.getUserPhoto(),
+		LogUtils.dbDebugLog(logger, startTime, result, realSql, bean.getUserName(), bean.getUserPhoto(),
 				bean.getSelfIntroduce(), bean.getSiteUserId());
 		return result;
 	}
@@ -370,8 +386,9 @@ public class SQLiteUserProfileDao {
 	public List<SimpleUserBean> queryUserFriends(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
-		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + USER_FRIEND_TABLE + " AS a LEFT JOIN "
-				+ USER_PROFILE_TABLE + " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
+		String sql = "SELECT a.site_friend_id,a.alias_name,a.alias_name_in_latin,b.user_name,b.user_name_in_latin,b.user_photo FROM "
+				+ USER_FRIEND_TABLE + " AS a LEFT JOIN " + USER_PROFILE_TABLE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preStatement.setString(1, siteUserId);
@@ -379,8 +396,11 @@ public class SQLiteUserProfileDao {
 		while (rs.next()) {
 			SimpleUserBean bean = new SimpleUserBean();
 			bean.setUserId(rs.getString(1));
-			bean.setUserName(rs.getString(2));
-			bean.setUserPhoto(rs.getString(3));
+			bean.setAliasName(rs.getString(2));
+			bean.setAliasNameInLatin(rs.getString(3));
+			bean.setUserName(rs.getString(4));
+			bean.setUserNameInLatin(rs.getString(5));
+			bean.setUserPhoto(rs.getString(6));
 			userFriendList.add(bean);
 		}
 
@@ -389,7 +409,7 @@ public class SQLiteUserProfileDao {
 	}
 
 	/**
-	 * 分页获取用户列表，这个列表包含用户与查询的用户之前的关系
+	 * 分页获取用户列表，这个列表包含用户与查询的用户之间的关系,扩展中使用
 	 *
 	 * @param siteUserId
 	 * @param pageNum
@@ -401,7 +421,7 @@ public class SQLiteUserProfileDao {
 			throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<SimpleUserRelationBean> userPageList = new ArrayList<SimpleUserRelationBean>();
-		String sql = "SELECT a.site_user_id,a.user_name,a.user_photo,a.user_status,b.site_friend_id from "
+		String sql = "SELECT a.site_user_id,a.user_name,a.user_name_in_latin,a.user_photo,a.user_status,b.site_friend_id from "
 				+ USER_PROFILE_TABLE + " AS a LEFT JOIN (SELECT site_user_id,site_friend_id FROM "
 				+ SQLConst.SITE_USER_FRIEND
 				+ " WHERE site_user_id=?) AS b ON a.site_user_id=b.site_friend_id ORDER BY a.id DESC LIMIT ?,?;";
@@ -416,9 +436,10 @@ public class SQLiteUserProfileDao {
 			SimpleUserRelationBean bean = new SimpleUserRelationBean();
 			bean.setUserId(rs.getString(1));
 			bean.setUserName(rs.getString(2));
-			bean.setUserPhoto(rs.getString(3));
-			bean.setUserStatus(rs.getInt(4));
-			if (StringUtils.isNotBlank(rs.getString(5))) {
+			bean.setUserNameInLatin(rs.getString(3));
+			bean.setUserPhoto(rs.getString(4));
+			bean.setUserStatus(rs.getInt(5));
+			if (StringUtils.isNotBlank(rs.getString(6))) {
 				bean.setRelation(UserProto.UserRelation.RELATION_FRIEND_VALUE);
 			} else {
 				bean.setRelation(UserProto.UserRelation.RELATION_NONE_VALUE);

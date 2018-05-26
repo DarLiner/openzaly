@@ -18,11 +18,5 @@ public class StringRandomUtils {
 		return newRandomStr.toString();
 	}
 
-	public static void main(String args[]) {
-//		try {
-//			System.out.println(generateRandomString(16));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-	}
+	
 }
