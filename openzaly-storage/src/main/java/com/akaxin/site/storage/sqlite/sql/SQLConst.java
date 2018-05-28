@@ -10,6 +10,8 @@ import java.util.HashMap;
  */
 public interface SQLConst {
 
+	int SITE_DB_VERSION = 9;// 0.9.5
+
 	String SITE_CONFIG_INFO = "site_config_info";
 	String SITE_USER_PROFILE = "site_user_profile";
 	String SITE_USER_SESSION = "site_user_session";

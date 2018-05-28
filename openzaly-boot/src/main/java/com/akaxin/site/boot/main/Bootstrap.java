@@ -50,6 +50,8 @@ import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
 import com.akaxin.site.web.OpenzalyAdminApplication;
@@ -171,6 +173,15 @@ public class Bootstrap {
 			logger.error("start Openzaly with http server error", e);
 			logger.error("Openzaly-server exit...");
 			System.exit(-3);// system exit
+		} catch (InitDatabaseException e) {
+			String errMessage = StringHelper.format("openzaly init database error {}", e.getCause().getMessage());
+			Helper.startFailWithError(pwriter, errMessage);
+			logger.error("start Openzaly with init database error", e);
+			logger.error("Openzaly-server exit...");
+			System.exit(-4);// system exit
+		} catch (UpgradeDatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			if (pwriter != null) {
 				pwriter.close();
@@ -192,8 +203,11 @@ public class Bootstrap {
 
 	/**
 	 * 初始化数据源
+	 * 
+	 * @throws InitDatabaseException
+	 * @throws UpgradeDatabaseException
 	 */
-	private static void initDataSource() {
+	private static void initDataSource() throws InitDatabaseException, UpgradeDatabaseException {
 		String adminHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
 		int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
 

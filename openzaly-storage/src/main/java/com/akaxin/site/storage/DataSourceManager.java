@@ -15,9 +15,10 @@
  */
 package com.akaxin.site.storage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.SQLException;
 
+import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 
@@ -33,7 +34,11 @@ public class DataSourceManager {
 
 	}
 
-	public static void init(DBConfig config) {
-		SQLiteJDBCManager.initSqliteDB(config);
+	public static void init(DBConfig config) throws InitDatabaseException, UpgradeDatabaseException {
+		try {
+			SQLiteJDBCManager.initSqliteDB(config);
+		} catch (SQLException e) {
+			throw new InitDatabaseException("init database error", e);
+		}
 	}
 }
