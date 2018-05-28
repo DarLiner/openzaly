@@ -177,18 +177,6 @@
             </div>
         </div>
 
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">允许访问的IP</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input allow_ip" type="text"
-                       pattern="(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)"
-                       th:value="${allow_ip}" style="text-align: right;">
-            </div>
-        </div>
-
-
         <a class="weui-cell weui-cell_access position" href="javascript:;" th:attr="data=${position}">
             <div class="weui-cell__bd">
                 <p>扩展位置</p>
@@ -200,8 +188,15 @@
             <div class="weui-cell__bd">
                 <p>扩展状态</p>
             </div>
-            <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 0">仅管理员使用</div>
-            <div class="weui-cell__ft per_status-txt" th:unless="${per_status} == 0">全员使用</div>
+            <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 0">仅管理员可用</div>
+            <div class="weui-cell__ft per_status-txt" th:unless="${per_status} == 0">所有用户可用</div>
+        </a>
+        <a class="weui-cell weui-cell_access display_mode" href="javascript:;" th:attr="data=${display_mode}">
+            <div class="weui-cell__bd">
+                <p>展现方式</p>
+            </div>
+            <div class="weui-cell__ft display_mode-txt" th:if="${display_mode} == 0">新页面</div>
+            <div class="weui-cell__ft display_mode-txt" th:unless="${display_mode} == 0">浮屏</div>
         </a>
     </div>
     <div th:if="${authKeyState} == 1">
@@ -228,6 +223,16 @@
                 <button class="weui-input subgenus_admin authkey" th:text="${auth_key}"
                         th:attr="data-clipboard-text=${auth_key}"></button>
             </div>
+            <div class="weui-cell">
+	            <div class="weui-cell__hd">
+	                <label class="weui-label">允许访问的IP</label>
+	            </div>
+	            <div class="weui-cell__bd">
+	                <input class="weui-input allow_ip" type="text"
+	                       pattern="(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)"
+	                       th:value="${allow_ip}" style="text-align: right;">
+	            </div>
+	        </div>
         </div>
     </div>
     <div class="weui-btn-area">
@@ -394,7 +399,8 @@
             var position = $(".position").attr("data");
             var order = $(".order").val();
             var allowIp = $(".allow_ip").val();
-
+            var displayMode = $(".display_mode").attr("data");
+            
             if (!name || name.length < 1) {
                 $.toptip('插件名称不能为空', 'error');
                 return false;
@@ -424,7 +430,8 @@
                         'plugin_icon': pluginIcon,
                         'name': name,
                         'order': order,
-                        'allow_ip': allowIp
+                        'allow_ip': allowIp,
+                        'display_mode':displayMode
                     };
                     reqUrl(reqUri, JSON.stringify(params), "updatePlugin");
 
@@ -556,24 +563,51 @@
                     console.log("close");
                 },
                 actions: [{
-                    text: "仅管理员",
+                    text: "仅管理员可用",
                     className: "color-primary weui-dialog__btn ",
                     onClick: function () {
-                        $(".per_status-txt").html("仅管理员");
+                        $(".per_status-txt").html("仅管理员可用");
                         $(".per_status").attr("data", "0");
                     }
                 },
                     {
-                        text: "全员展示",
+                        text: "所有用户可用",
                         className: "color-warning weui-dialog__btn",
                         onClick: function () {
-                            $(".per_status-txt").html("全员展示");
+                            $(".per_status-txt").html("所有用户可用");
                             $(".per_status").attr("data", "1");
                         }
                     }
                 ]
             });
         });
+        
+       $(document).on("click", '.display_mode', function () {
+        $.actions({
+            title: "",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "新页面展示",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".display_mode-txt").html("新页面展示");
+                    $(".display_mode").attr("data", "0");
+                }
+            },
+                {
+                    text: "浮屏展示",
+                    className: "color-warning weui-dialog__btn",
+                    onClick: function () {
+                        $(".display_mode-txt").html("浮屏展示");
+                        $(".display_mode").attr("data", "1");
+                    }
+                }
+            ]
+        });
+        
+    });
     </script>
 </div>
 </body>
