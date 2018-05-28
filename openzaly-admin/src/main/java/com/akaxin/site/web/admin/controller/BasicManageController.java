@@ -39,195 +39,201 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 阿卡信 - 后台管理 - 站点设置
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com} ,Mino
+ * @since 2018-05-28 14:10:05
+ */
 @Controller
 @RequestMapping("manage")
 public class BasicManageController extends AbstractController {
-    private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
-    @Autowired
-    private IBasicService basicManageService;
+	@Autowired
+	private IBasicService basicManageService;
 
-    @RequestMapping("/index")
-    public String homePage(@RequestBody byte[] bodyParam) {
-        PluginProto.ProxyPluginPackage pluginPackage = null;
-        try {
-            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            String siteUserId = getRequestSiteUserId(pluginPackage);
-            boolean isManager = SiteConfig.isSiteManager(siteUserId);
-            if (!isManager) {
-                throw new UserPermissionException("Current user is not a manager");
-            }
-            return "admin";
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("to basic manage error", e);
-        } catch (UserPermissionException u) {
-            logger.error("to basic manage error : "+u.getMessage());
-        }
-        return "error";
-    }
+	@RequestMapping("/index")
+	public String homePage(@RequestBody byte[] bodyParam) {
+		PluginProto.ProxyPluginPackage pluginPackage = null;
+		try {
+			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			boolean isManager = SiteConfig.isSiteManager(siteUserId);
+			if (!isManager) {
+				throw new UserPermissionException("Current user is not a manager");
+			}
+			return "admin";
+		} catch (InvalidProtocolBufferException e) {
+			logger.error("to basic manage error", e);
+		} catch (UserPermissionException u) {
+			logger.error("to basic manage error : " + u.getMessage());
+		}
+		return "error";
+	}
 
-    // 获取站点配置信息
-    @RequestMapping("/basicConfig")
-    public ModelAndView toBasic(@RequestBody byte[] bodyParam) {
+	// 获取站点配置信息
+	@RequestMapping("/basicConfig")
+	public ModelAndView toBasic(@RequestBody byte[] bodyParam) {
 
-        ModelAndView modelAndView = new ModelAndView("basic/config");
-        Map<String, Object> model = modelAndView.getModel();
-        // 设置默认属性
-        PluginProto.ProxyPluginPackage pluginPackage = null;
-        try {
-            pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-            String siteUserId = getRequestSiteUserId(pluginPackage);
-            if (!isManager(siteUserId)) {
-                throw new UserPermissionException("Current user is not a manager");
-            }
-            if (isAdmin(siteUserId)) {
-                model.put("manager_type", "admin");
-            } else if (isManager(siteUserId)) {
-                model.put("manager_type", "site_manager");
-            }
+		ModelAndView modelAndView = new ModelAndView("basic/config");
+		Map<String, Object> model = modelAndView.getModel();
+		// 设置默认属性
+		PluginProto.ProxyPluginPackage pluginPackage = null;
+		try {
+			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			if (!isManager(siteUserId)) {
+				throw new UserPermissionException("Current user is not a manager");
+			}
+			if (isAdmin(siteUserId)) {
+				model.put("manager_type", "admin");
+			} else if (isManager(siteUserId)) {
+				model.put("manager_type", "site_manager");
+			}
 
-        model.put("uic_status", "0");
-        model.put("pic_size", "1");
-        model.put("pic_path", "/akaxin");
-        model.put("group_members_count", "100");
-        model.put("u2_encryption_status", "1");
-        model.put("push_client_status", "0");
-        model.put("log_level", "INFO");
-        Map<Integer, String> map = basicManageService.getSiteConfig();
-        Set<Integer> integers = map.keySet();
-        String site_prot = "";
-        String site_address = "";
-        String http_prot = "";
-        String http_address = "";
-        for (Integer integer : integers) {
-            String res = map.get(integer);
-            switch (integer) {
-                case ConfigKey.SITE_NAME_VALUE:
-                    model.put("site_name", res);
-                    break;
-                case ConfigKey.SITE_ADDRESS_VALUE:
-                    site_address = res;
-                    break;
-                case ConfigKey.SITE_PORT_VALUE:
-                    site_prot = res;
-                    break;
-                case ConfigKey.SITE_HTTP_ADDRESS_VALUE:
-                    http_address = res;
-                    break;
-                case ConfigKey.SITE_HTTP_PORT_VALUE:
-                    http_prot = res;
-                    break;
-                case ConfigKey.SITE_LOGO_VALUE:
-                    model.put("site_logo", res);
-                    break;
-                case ConfigKey.SITE_INTRODUCTION_VALUE:
-                    model.put("site_desc", res);
-                    break;
-                case ConfigKey.REALNAME_STATUS_VALUE:
-                    model.put("realName_status", res);
-                    break;
-                case ConfigKey.INVITE_CODE_STATUS_VALUE:
-                    model.put("uic_status", res);
-                    break;
-                case ConfigKey.PIC_SIZE_VALUE:
-                    model.put("pic_size", res);
-                    break;
-                case ConfigKey.PIC_PATH_VALUE:
-                    model.put("pic_path", res);
-                    break;
-                case ConfigKey.GROUP_MEMBERS_COUNT_VALUE:
-                    model.put("group_members_count", res);
-                    break;
-                case ConfigKey.U2_ENCRYPTION_STATUS_VALUE:
-                    model.put("u2_encryption_status", res);
-                    break;
-                case ConfigKey.PUSH_CLIENT_STATUS_VALUE:
-                    model.put("push_client_status", res);
-                    break;
-                case ConfigKey.LOG_LEVEL_VALUE:
-                    model.put("log_level", res);
-                    break;
-                case ConfigKey.SITE_MANAGER_VALUE:
-                    model.put("subgenus_admin", res);
-                    break;
-            }
+			model.put("uic_status", "0");
+			model.put("pic_size", "1");
+			model.put("pic_path", "/akaxin");
+			model.put("group_members_count", "100");
+			model.put("u2_encryption_status", "1");
+			model.put("push_client_status", "0");
+			model.put("log_level", "INFO");
+			Map<Integer, String> map = basicManageService.getSiteConfig();
+			Set<Integer> integers = map.keySet();
+			String site_prot = "";
+			String site_address = "";
+			String http_prot = "";
+			String http_address = "";
+			for (Integer integer : integers) {
+				String res = map.get(integer);
+				switch (integer) {
+				case ConfigKey.SITE_NAME_VALUE:
+					model.put("site_name", res);
+					break;
+				case ConfigKey.SITE_ADDRESS_VALUE:
+					site_address = res;
+					break;
+				case ConfigKey.SITE_PORT_VALUE:
+					site_prot = res;
+					break;
+				case ConfigKey.SITE_HTTP_ADDRESS_VALUE:
+					http_address = res;
+					break;
+				case ConfigKey.SITE_HTTP_PORT_VALUE:
+					http_prot = res;
+					break;
+				case ConfigKey.SITE_LOGO_VALUE:
+					model.put("site_logo", res);
+					break;
+				case ConfigKey.SITE_INTRODUCTION_VALUE:
+					model.put("site_desc", res);
+					break;
+				case ConfigKey.REALNAME_STATUS_VALUE:
+					model.put("realName_status", res);
+					break;
+				case ConfigKey.INVITE_CODE_STATUS_VALUE:
+					model.put("uic_status", res);
+					break;
+				case ConfigKey.PIC_SIZE_VALUE:
+					model.put("pic_size", res);
+					break;
+				case ConfigKey.PIC_PATH_VALUE:
+					model.put("pic_path", res);
+					break;
+				case ConfigKey.GROUP_MEMBERS_COUNT_VALUE:
+					model.put("group_members_count", res);
+					break;
+				case ConfigKey.U2_ENCRYPTION_STATUS_VALUE:
+					model.put("u2_encryption_status", res);
+					break;
+				case ConfigKey.PUSH_CLIENT_STATUS_VALUE:
+					model.put("push_client_status", res);
+					break;
+				case ConfigKey.LOG_LEVEL_VALUE:
+					model.put("log_level", res);
+					break;
+				case ConfigKey.SITE_MANAGER_VALUE:
+					model.put("subgenus_admin", res);
+					break;
+				}
 
-            }
-            model.put("siteAddressAndPort", site_address + ":" + site_prot);
-            model.put("httpAddressAndPort", http_address + ":" + http_prot);
-            return modelAndView;
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("to basic config page error", e);
-        } catch (UserPermissionException u) {
-            logger.error("to basic config page error : "+u.getMessage());
-        }
-        return new ModelAndView("error");
-    }
+			}
+			model.put("siteAddressAndPort", site_address + ":" + site_prot);
+			model.put("httpAddressAndPort", http_address + ":" + http_prot);
+			return modelAndView;
+		} catch (InvalidProtocolBufferException e) {
+			logger.error("to basic config page error", e);
+		} catch (UserPermissionException u) {
+			logger.error("to basic config page error : " + u.getMessage());
+		}
+		return new ModelAndView("error");
+	}
 
-    // 更新站点配置信息
-    @SuppressWarnings("unchecked")
-    @RequestMapping(method = RequestMethod.POST, value = "/updateConfig")
-    @ResponseBody
-    public String updateBasicConfig(HttpServletRequest request, @RequestBody byte[] bodyParam) {
-        try {
-            PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+	// 更新站点配置信息
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method = RequestMethod.POST, value = "/updateConfig")
+	@ResponseBody
+	public String updateBasicConfig(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
-            String siteUserId = getRequestSiteUserId(pluginPackage);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
 
-            if (!isManager(siteUserId)) {
-                throw new UserPermissionException("Current user is not a manager");
-            }
-                Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
-                logger.info("siteUserId={} update config={}", siteUserId, dataMap);
-                Map<Integer, String> configMap = new HashMap<Integer, String>();
-                if (StringUtils.isNotEmpty(trim(dataMap.get("site_name")))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, trim(dataMap.get("site_name")));
-                }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("site_address")))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, trim(dataMap.get("site_address")));
-                }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("site_port")))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, trim(dataMap.get("site_port")));
-                }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("group_members_count")))) {
-                    configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, trim(dataMap.get("group_members_count")));
-                }
-                if (StringUtils.isNotEmpty(trim(dataMap.get("pic_path")))) {
-                    configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, trim(dataMap.get("pic_path")));
-                }
-                if (StringUtils.isNotEmpty(dataMap.get("site_logo"))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
-                }
-                if (StringUtils.isNotEmpty(dataMap.get("uic_status"))) {
-                    configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, dataMap.get("uic_status"));
-                }
-                if (StringUtils.isNotEmpty(dataMap.get("realName_status"))) {
-                    configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, dataMap.get("realName_status"));
-                }
-                if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
-                    configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
-                            dataMap.get("u2_encryption_status"));
-                }
-                if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {
-                    configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
-                }
-                if (StringUtils.isNotEmpty(dataMap.get("log_level"))) {
-                    configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
-                }
-                // 普通管理员无权限
-                if (isAdmin(siteUserId) && StringUtils.isNotEmpty(trim(dataMap.get("site_manager")))) {
-                    configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, trim(dataMap.get("site_manager")));
-                }
-                if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
-                    return SUCCESS;
-                }
-        } catch (InvalidProtocolBufferException e) {
-            logger.error("update site config error", e);
-        } catch (UserPermissionException u) {
-            logger.error("update site config error : "+u.getMessage());
-            return NO_PERMISSION;
-        }
-        return ERROR;
-    }
+			if (!isManager(siteUserId)) {
+				throw new UserPermissionException("Current user is not a manager");
+			}
+			Map<String, String> dataMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
+			logger.info("siteUserId={} update config={}", siteUserId, dataMap);
+			Map<Integer, String> configMap = new HashMap<Integer, String>();
+			if (StringUtils.isNotEmpty(trim(dataMap.get("site_name")))) {
+				configMap.put(ConfigProto.ConfigKey.SITE_NAME_VALUE, trim(dataMap.get("site_name")));
+			}
+			if (StringUtils.isNotEmpty(trim(dataMap.get("site_address")))) {
+				configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, trim(dataMap.get("site_address")));
+			}
+			if (StringUtils.isNotEmpty(trim(dataMap.get("site_port")))) {
+				configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, trim(dataMap.get("site_port")));
+			}
+			if (StringUtils.isNotEmpty(trim(dataMap.get("group_members_count")))) {
+				configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE,
+						trim(dataMap.get("group_members_count")));
+			}
+			if (StringUtils.isNotEmpty(trim(dataMap.get("pic_path")))) {
+				configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, trim(dataMap.get("pic_path")));
+			}
+			if (StringUtils.isNotEmpty(dataMap.get("site_logo"))) {
+				configMap.put(ConfigProto.ConfigKey.SITE_LOGO_VALUE, dataMap.get("site_logo"));
+			}
+			if (StringUtils.isNotEmpty(dataMap.get("uic_status"))) {
+				configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, dataMap.get("uic_status"));
+			}
+			if (StringUtils.isNotEmpty(dataMap.get("realName_status"))) {
+				configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, dataMap.get("realName_status"));
+			}
+			if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
+				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE, dataMap.get("u2_encryption_status"));
+			}
+			if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {
+				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
+			}
+			if (StringUtils.isNotEmpty(dataMap.get("log_level"))) {
+				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
+			}
+			// 普通管理员无权限
+			if (isAdmin(siteUserId) && StringUtils.isNotEmpty(trim(dataMap.get("site_manager")))) {
+				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, trim(dataMap.get("site_manager")));
+			}
+			if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
+				return SUCCESS;
+			}
+		} catch (InvalidProtocolBufferException e) {
+			logger.error("update site config error", e);
+		} catch (UserPermissionException u) {
+			logger.error("update site config error : " + u.getMessage());
+			return NO_PERMISSION;
+		}
+		return ERROR;
+	}
 
 }
