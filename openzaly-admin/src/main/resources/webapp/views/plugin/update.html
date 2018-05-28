@@ -116,6 +116,14 @@
 <div class="weui-cells weui-cells_form">
     <div class="weui-cell">
         <div class="weui-cell__hd">
+            <label class="weui-label">ID</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input plugin_id" type="text" th:value="${plugin_id}" style="text-align: right;" disabled="disabled">
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
             <label class="weui-label">扩展名称</label>
         </div>
         <div class="weui-cell__bd">
@@ -214,7 +222,7 @@
                     <div class="weui-cell__ft">
                         <a href="javascript:;"
                            class="weui-btn basic-weui-btn generate-authKey  weui-btn_mini  basic-color"
-                           url-data="/plugin/reSet" th:attr="plugin-id=${id}" style="text-align: left;">生成新的秘钥</a>
+                           url-data="/plugin/reSet" th:attr="plugin-id=${plugin_id}" style="text-align: left;">生成新的秘钥</a>
                     </div>
                 </div>
                 <br>
@@ -238,9 +246,9 @@
     <div class="weui-btn-area">
         <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_plugin_info"
            url-data="/plugin/editPlugin"
-           href="javascript:" id="addPluginButton" th:attr="plugin-id=${id}">确定</a>
+           href="javascript:" id="addPluginButton" th:attr="plugin-id=${plugin_id}">确定</a>
         <a class="weui-btn  weui-btn_warn delete-plugin" url-data="/plugin/delPlugin" href="javascript:"
-           id="addPluginButton" th:attr="plugin-id=${id}">删除扩展</a>
+           id="addPluginButton" th:attr="plugin-id=${plugin_id}">删除扩展</a>
     </div>
 
 

@@ -134,7 +134,7 @@ public class PluginManageController extends AbstractController {
 			model.put("position", plugin.getPosition());
 			model.put("per_status", plugin.getPermissionStatus());
 			model.put("display_mode", plugin.getDisplayMode());
-			model.put("id", plugin.getId());
+			model.put("plugin_id", plugin.getId());
 			model.put("auth_key", plugin.getAuthKey());
 			// 如果是默认添加的扩展则不提供修改authkey设置
 			if (plugin.getId() == 1 || plugin.getId() == 2) {
