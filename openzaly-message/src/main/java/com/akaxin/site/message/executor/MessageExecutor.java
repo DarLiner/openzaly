@@ -98,6 +98,8 @@ public class MessageExecutor {
 		executor.addChain(RequestAction.IM_SYNC_MESSAGE.getName(), syncMessageChain);
 		// "im.sync.finish"
 		executor.addChain(RequestAction.IM_SYNC_FINISH.getName(), new SyncFinishHandler());
+		// "im.sync.msgStatus"
+		executor.addChain(RequestAction.IM_SYNC_MSGSTATUS.getName(), new SyncFinishHandler());
 		// "im.stc.notice"
 		executor.addChain(RequestAction.IM_STC_NOTICE.getName(), noticeChain);
 	}

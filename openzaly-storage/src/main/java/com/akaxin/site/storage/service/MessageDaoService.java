@@ -31,87 +31,97 @@ import com.akaxin.site.storage.sqlite.SQLiteU2MessageDao;
  */
 public class MessageDaoService implements IMessageDao {
 
-    @Override
-    public boolean saveU2Message(U2MessageBean u2Bean) throws SQLException {
-        return SQLiteU2MessageDao.getInstance().saveU2Message(u2Bean);
-    }
+	@Override
+	public boolean saveU2Message(U2MessageBean u2Bean) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().saveU2Message(u2Bean);
+	}
 
-    @Override
-    public boolean updateU2Pointer(String id, String deviceId, long finish) throws SQLException {
-        return SQLiteU2MessageDao.getInstance().updateU2MessagePointer(id, deviceId, finish);
-    }
+	@Override
+	public boolean updateU2Pointer(String id, String deviceId, long finish) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().updateU2MessagePointer(id, deviceId, finish);
+	}
 
-    @Override
-    public List<U2MessageBean> queryU2Message(String id, String deviceId, long start, long limit) throws SQLException {
-        return SQLiteU2MessageDao.getInstance().getU2Message(id, deviceId, start, limit);
-    }
+	@Override
+	public List<U2MessageBean> queryU2Message(String id, String deviceId, long start, long limit) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().getU2Message(id, deviceId, start, limit);
+	}
 
-    @Override
-    public long queryU2Pointer(String userId, String deviceId) throws SQLException {
-        return SQLiteU2MessageDao.getInstance().queryU2MessagePointer(userId, deviceId);
-    }
+	@Override
+	public long queryU2Pointer(String userId, String deviceId) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().queryU2MessagePointer(userId, deviceId);
+	}
 
-    @Override
-    public long queryMaxU2Pointer(String userId) throws SQLException {
-        return SQLiteU2MessageDao.getInstance().queryMaxU2MessagePointer(userId);
-    }
+	@Override
+	public long queryMaxU2Pointer(String userId) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().queryMaxU2MessagePointer(userId);
+	}
 
-    @Override
-    public long queryMaxU2MessageId(String userId) throws SQLException {
-        return SQLiteU2MessageDao.getInstance().queryMaxU2MessageId(userId);
-    }
+	@Override
+	public long queryMaxU2MessageId(String userId) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().queryMaxU2MessageId(userId);
+	}
 
-    @Override
-    public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException {
-        return SQLiteGroupMessageDao.getInstance().saveGroupMessage(gmsgBean);
-    }
+	@Override
+	public List<U2MessageBean> queryU2MessageByMsgId(List<String> msgIds) throws SQLException {
+		return SQLiteU2MessageDao.getInstance().queryU2MessageByMsgId(msgIds);
+	}
 
-    @Override
-    public boolean updateGroupPointer(String gid, String userId, String deviceId, long finish) throws SQLException {
-        return SQLiteGroupMessageDao.getInstance().updateGroupMessagePointer(gid, userId, deviceId, finish);
-    }
+	@Override
+	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().saveGroupMessage(gmsgBean);
+	}
 
-    @Override
-    public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
-                                                    int limit) throws SQLException {
-        return SQLiteGroupMessageDao.getInstance().queryGroupMessage(groupId, userId, deviceId, start, limit);
-    }
+	@Override
+	public boolean updateGroupPointer(String gid, String userId, String deviceId, long finish) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().updateGroupMessagePointer(gid, userId, deviceId, finish);
+	}
 
-    @Override
-    public long queryGroupMessagePointer(String groupId, String siteUserId, String deviceId) throws SQLException {
-        return SQLiteGroupMessageDao.getInstance().queryGroupPointer(groupId, siteUserId, deviceId, 0);
-    }
+	@Override
+	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
+			int limit) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryGroupMessage(groupId, userId, deviceId, start, limit);
+	}
 
-    @Override
-    public long queryMaxGroupPointer(String groupId) throws SQLException {
-        return SQLiteGroupMessageDao.getInstance().queryMaxGroupPointer(groupId);
-    }
+	@Override
+	public long queryGroupMessagePointer(String groupId, String siteUserId, String deviceId) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryGroupPointer(groupId, siteUserId, deviceId, 0);
+	}
 
-    @Override
-    public long queryMaxUserGroupPointer(String groupId, String siteUserId) throws SQLException {
-        return SQLiteGroupMessageDao.getInstance().queryMaxUserGroupPointer(groupId, siteUserId);
-    }
+	@Override
+	public long queryMaxGroupPointer(String groupId) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryMaxGroupPointer(groupId);
+	}
 
-    @Override
-    public int queryU2MessagePerDay(long now,int day) throws SQLException {
-        int u2Count = SQLiteU2MessageDao.getInstance().queryNumMessagePerDay(now,day);
-        return u2Count;
-    }
+	@Override
+	public long queryMaxUserGroupPointer(String groupId, String siteUserId) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryMaxUserGroupPointer(groupId, siteUserId);
+	}
 
-    @Override
-    public boolean delUserMessage(String siteUserId) throws SQLException {
-        boolean U2= SQLiteU2MessageDao.getInstance().delUserMessage(siteUserId);
-        boolean group = SQLiteGroupMessageDao.getInstance().delUserMessage(siteUserId);
-        return U2 == group == true ? true : false;
-    }
+	@Override
+	public List<GroupMessageBean> queryGroupMesageByMsgId(List<String> msgIds) throws SQLException {
+		return SQLiteGroupMessageDao.getInstance().queryGroupMessageByMsgId(msgIds);
+	}
 
-    @Override
-    public List queryMessageFile(String siteUserId) throws SQLException {
-        List u2FileList = SQLiteU2MessageDao.getInstance().queryMessageFile(siteUserId);
-        List groupFileList = SQLiteGroupMessageDao.getInstance().queryMessageFile(siteUserId);
-        ArrayList<String> msgList = new ArrayList<>();
-        msgList.addAll(u2FileList);
-        msgList.addAll(groupFileList);
-        return msgList;
-    }
+	@Override
+	public int queryU2MessagePerDay(long now, int day) throws SQLException {
+		int u2Count = SQLiteU2MessageDao.getInstance().queryNumMessagePerDay(now, day);
+		return u2Count;
+	}
+
+	@Override
+	public boolean delUserMessage(String siteUserId) throws SQLException {
+		boolean U2 = SQLiteU2MessageDao.getInstance().delUserMessage(siteUserId);
+		boolean group = SQLiteGroupMessageDao.getInstance().delUserMessage(siteUserId);
+		return U2 == group == true ? true : false;
+	}
+
+	@Override
+	public List<String> queryMessageFile(String siteUserId) throws SQLException {
+		List<String> u2FileList = SQLiteU2MessageDao.getInstance().queryMessageFile(siteUserId);
+		List<String> groupFileList = SQLiteGroupMessageDao.getInstance().queryMessageFile(siteUserId);
+		ArrayList<String> msgList = new ArrayList<>();
+		msgList.addAll(u2FileList);
+		msgList.addAll(groupFileList);
+		return msgList;
+	}
 }

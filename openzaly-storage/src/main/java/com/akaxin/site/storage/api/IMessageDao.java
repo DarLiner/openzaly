@@ -13,37 +13,41 @@ import com.akaxin.site.storage.bean.U2MessageBean;
  * @since 2017-11-20 12:49:15
  */
 public interface IMessageDao {
-    // u2 message
-    public boolean saveU2Message(U2MessageBean u2Bean) throws SQLException;
+	// u2 message
+	public boolean saveU2Message(U2MessageBean u2Bean) throws SQLException;
 
-    public List<U2MessageBean> queryU2Message(String id, String deviceId, long start, long limit) throws SQLException;
+	public List<U2MessageBean> queryU2Message(String id, String deviceId, long start, long limit) throws SQLException;
 
-    public boolean updateU2Pointer(String id, String deviceId, long finish) throws SQLException;
+	public boolean updateU2Pointer(String id, String deviceId, long finish) throws SQLException;
 
-    long queryU2Pointer(String userId, String deviceId) throws SQLException;
+	long queryU2Pointer(String userId, String deviceId) throws SQLException;
 
-    long queryMaxU2Pointer(String userId) throws SQLException;
+	long queryMaxU2Pointer(String userId) throws SQLException;
 
-    long queryMaxU2MessageId(String userId) throws SQLException;
+	long queryMaxU2MessageId(String userId) throws SQLException;
 
-    // group message
-    public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException;
+	List<U2MessageBean> queryU2MessageByMsgId(List<String> msgIds) throws SQLException;
 
-    public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
-                                                    int limit) throws SQLException;
+	// group message
+	public boolean saveGroupMessage(GroupMessageBean gmsgBean) throws SQLException;
 
-    public long queryGroupMessagePointer(String groupId, String siteUserId, String deviceId) throws SQLException;
+	public List<GroupMessageBean> queryGroupMessage(String groupId, String userId, String deviceId, long start,
+			int limit) throws SQLException;
 
-    public boolean updateGroupPointer(String gid, String userId, String deviceId, long finish) throws SQLException;
+	public long queryGroupMessagePointer(String groupId, String siteUserId, String deviceId) throws SQLException;
 
-    public long queryMaxGroupPointer(String groupId) throws SQLException;
+	public boolean updateGroupPointer(String gid, String userId, String deviceId, long finish) throws SQLException;
 
-    public long queryMaxUserGroupPointer(String groupId, String siteUserId) throws SQLException;
+	public long queryMaxGroupPointer(String groupId) throws SQLException;
 
+	public long queryMaxUserGroupPointer(String groupId, String siteUserId) throws SQLException;
 
-    public int queryU2MessagePerDay(long now,int day) throws SQLException;
+	List<GroupMessageBean> queryGroupMesageByMsgId(List<String> msgIds) throws SQLException;
 
-    boolean delUserMessage(String siteUserId)throws SQLException;
+	// manager
+	public int queryU2MessagePerDay(long now, int day) throws SQLException;
 
-    List<String> queryMessageFile(String siteUserId) throws SQLException;
+	boolean delUserMessage(String siteUserId) throws SQLException;
+
+	List<String> queryMessageFile(String siteUserId) throws SQLException;
 }
