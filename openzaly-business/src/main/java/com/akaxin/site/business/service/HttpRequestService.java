@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
+import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.HttpUriAction;
 import com.akaxin.site.business.api.IRequest;
 import com.akaxin.site.business.impl.hai.HttpFriendService;
@@ -74,13 +75,13 @@ public class HttpRequestService implements IRequest {
 				break;
 			default:
 				logger.error("error http request command={}", command.toString());
-				break;
+				throw new Exception("http request with error url=" + command.getUri());
 			}
 		} catch (Exception e) {
 			logger.error("http request service error.", e);
 		}
 		if (response == null) {
-			response = new CommandResponse();
+			response = new CommandResponse().setErrCode(ErrorCode2.ERROR2_HTTP_URL);
 		}
 		return response.setVersion(CommandConst.PROTOCOL_VERSION).setAction(CommandConst.ACTION_RES);
 	}
