@@ -14,6 +14,12 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.site.boot.config.ConfigHelper;
+import com.akaxin.site.boot.config.ConfigKey;
+import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.exception.UpgradeDatabaseException;
+import com.akaxin.site.storage.sqlite.manager.DBConfig;
+
 public class Helper {
 	private static final Logger logger = LoggerFactory.getLogger(Helper.class);
 
@@ -43,8 +49,7 @@ public class Helper {
 				printHelperMessage(pw);
 				return true;
 			} else if (commandLine.hasOption("upgrade")) {
-				// 升级
-
+				upgrade();
 				return true;
 			}
 			return false;
@@ -55,7 +60,6 @@ public class Helper {
 				pw.close();
 			}
 		}
-
 		return true;
 	}
 
@@ -130,4 +134,17 @@ public class Helper {
 		pw.println();
 		pw.flush();
 	}
+
+	private static void upgrade() {
+		try {
+			String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+			DBConfig config = new DBConfig();
+			config.setDbDir(dbDir);
+			// 升级
+			DataSourceManager.upgrade(config);
+		} catch (UpgradeDatabaseException e) {
+			logger.error("upgrade database error", e);
+		}
+	}
+
 }

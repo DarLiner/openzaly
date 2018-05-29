@@ -13,6 +13,10 @@ public class UpgradeDatabaseException extends Throwable {
 		super(message);
 	}
 
+	public UpgradeDatabaseException(String message, Throwable t) {
+		super(message, t);
+	}
+
 	public UpgradeDatabaseException(String messagePattern, Object... objects) {
 		this(StringHelper.format(messagePattern, objects));
 	}

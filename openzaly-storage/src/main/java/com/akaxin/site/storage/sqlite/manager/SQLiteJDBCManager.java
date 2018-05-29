@@ -76,21 +76,7 @@ public class SQLiteJDBCManager {
 		initAdminUic(config.getAdminUic());
 	}
 
-	// upgrade db
-	public static void upgradeSqliteDB(DBConfig config) throws SQLException {
-		loadDatabaseDriver(config.getDbDir());
-
-		int dbVersion = getDbVersion();
-		switch (dbVersion) {
-		case 0:
-			upgrade0_9();
-		case 9:
-			break;
-		}
-
-	}
-
-	private static void loadDatabaseDriver(String dbDir) {
+	public static void loadDatabaseDriver(String dbDir) {
 		try {
 			Class.forName(sqliteDriverName);
 			String dbUrl = "jdbc:sqlite:";
@@ -136,7 +122,7 @@ public class SQLiteJDBCManager {
 		// checkDatabaseVersion();
 	}
 
-	private static int getDbVersion() throws SQLException {
+	public static int getDbVersion() throws SQLException {
 		PreparedStatement pst = sqlitConnection.prepareStatement("PRAGMA user_version");
 		ResultSet rs = pst.executeQuery();
 		if (rs.next()) {
@@ -145,7 +131,7 @@ public class SQLiteJDBCManager {
 		return 0;
 	}
 
-	private static void setDbVersion(int version) throws SQLException {
+	public static void setDbVersion(int version) throws SQLException {
 		String sql = "PRAGMA user_version=" + version;
 		PreparedStatement pst = sqlitConnection.prepareStatement(sql);
 		pst.executeUpdate();
@@ -342,7 +328,4 @@ public class SQLiteJDBCManager {
 		return sqlitConnection;
 	}
 
-	private static void upgrade0_9() {
-		
-	}
 }

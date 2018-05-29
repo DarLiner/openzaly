@@ -38,7 +38,7 @@ public interface SQLConst {
 			+ "site_login_id VARCHAR(50) UNIQUE,"// 用户登陆账号 login_id_lowercase
 			+ "login_id_lowercase VARCHAR(50) UNIQUE,"// login_id_lowercase
 			+ "user_password VARCHAR(50),"// 用户登陆站点的密码
-			+ "user_name VARCHAR(50),"// 用户昵称
+			+ "user_name VARCHAR(50) NOT NULL,"// 用户昵称
 			+ "user_name_in_latin VARCHAR(50),"// 用户昵称
 			+ "user_photo TEXT,"// 用户头像
 			+ "phone_id VARCHAR(20),"// 手机号码 +86_15271868205
