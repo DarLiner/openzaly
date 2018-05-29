@@ -24,14 +24,19 @@ public class SQLiteUpgrade {
 		int dbVersion = SQLiteJDBCManager.getDbVersion();
 		switch (dbVersion) {
 		case 0:
-			upgrade0_9();
+			if (upgrade0_9()) {
+				SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION);
+			} else {
+				logger.error("upgrade user-version {} -> {} error.", dbVersion, SQLConst.SITE_DB_VERSION);
+			}
+			break;
 		case 9:
 			break;
 		}
 
 	}
 
-	private static void upgrade0_9() {
+	private static boolean upgrade0_9() {
 		String sql1 = "alter table " + SQLConst.SITE_USER_PROFILE + " add site_login_id VARCHAR(50) UNIQUE;";
 		String sql2 = "alter table " + SQLConst.SITE_USER_PROFILE + " add login_id_lowercase VARCHAR(50) UNIQUE;";
 		String sql3 = "alter table " + SQLConst.SITE_USER_PROFILE + " add user_name_in_latin VARCHAR(50);";
@@ -39,6 +44,7 @@ public class SQLiteUpgrade {
 		String sql4 = "alter table " + SQLConst.CREATE_SITE_USER_FRIEND_TABLE + "add alias_name VARCHAR(50);";
 		String sql5 = "alter table " + SQLConst.CREATE_SITE_USER_FRIEND_TABLE + "add alias_name_in_latin VARCHAR(50);";
 
+		boolean result = false;
 		List<String> upgradeSqls = Arrays.asList(sql1, sql2, sql3, sql4, sql5);
 		try {
 			Connection conn = SQLiteJDBCManager.getConnection();
@@ -46,9 +52,10 @@ public class SQLiteUpgrade {
 			try {
 				for (String sql : upgradeSqls) {
 					PreparedStatement pst = conn.prepareStatement(sql);
-					boolean result = pst.execute(sql);
-					logger.info("upgrade database result={} sql:{}", result, sql);
+					boolean res = pst.execute(sql);
+					logger.info("upgrade database result={} sql:{}", res, sql);
 				}
+				result = true;// 兼容失败情况，这里不能使用成功个数
 			} catch (Exception e) {
 				logger.error("upgrade to execute sql error", e);
 			}
@@ -57,6 +64,6 @@ public class SQLiteUpgrade {
 		} catch (SQLException e) {
 			logger.error("upgrade user-version from 0 to 9 error.", e);
 		}
-
+		return result;
 	}
 }
