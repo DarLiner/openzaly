@@ -49,7 +49,8 @@ public class Helper {
 				printHelperMessage(pw);
 				return true;
 			} else if (commandLine.hasOption("upgrade")) {
-				upgrade();
+				pw = new PrintWriter(System.out);
+				upgrade(pw);
 				return true;
 			}
 			return false;
@@ -135,16 +136,25 @@ public class Helper {
 		pw.flush();
 	}
 
-	private static void upgrade() {
+	private static void upgrade(PrintWriter pw) {
+		pw.println();
+		pw.println("[INFO] start to upgrade openzaly-server...");
 		try {
 			String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+			String siteVersion = ConfigHelper.getStringConfig(ConfigKey.SITE_VERSION);
 			DBConfig config = new DBConfig();
 			config.setDbDir(dbDir);
 			// 升级
-			DataSourceManager.upgrade(config);
+			int dbUserVersion = DataSourceManager.upgrade(config);
+			pw.println("[INFO] upgrade openzaly-server version : " + siteVersion);
+			pw.println("[OK] upgrade database user-version : " + dbUserVersion);
+			pw.println("[OK] upgrade openzaly-server finish ...");
 		} catch (UpgradeDatabaseException e) {
+			pw.println("[ERROR] upgrade openzaly-server error");
 			logger.error("upgrade database error", e);
 		}
+		pw.println();
+		pw.flush();
 	}
 
 }

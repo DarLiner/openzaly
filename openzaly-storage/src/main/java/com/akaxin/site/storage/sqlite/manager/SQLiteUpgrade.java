@@ -17,8 +17,8 @@ public class SQLiteUpgrade {
 	private SQLiteUpgrade() {
 	}
 
-	// upgrade db
-	public static void upgradeSqliteDB(DBConfig config) throws SQLException {
+	// upgrade db,return current db user-version
+	public static int upgradeSqliteDB(DBConfig config) throws SQLException {
 		SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
 
 		int dbVersion = SQLiteJDBCManager.getDbVersion();
@@ -34,6 +34,7 @@ public class SQLiteUpgrade {
 			break;
 		}
 
+		return SQLiteJDBCManager.getDbVersion();
 	}
 
 	private static boolean upgrade0_9() {

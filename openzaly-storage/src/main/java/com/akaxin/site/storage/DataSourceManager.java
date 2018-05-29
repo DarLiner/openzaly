@@ -43,9 +43,9 @@ public class DataSourceManager {
 		}
 	}
 
-	public static void upgrade(DBConfig config) throws UpgradeDatabaseException {
+	public static int upgrade(DBConfig config) throws UpgradeDatabaseException {
 		try {
-			SQLiteUpgrade.upgradeSqliteDB(config);
+			return SQLiteUpgrade.upgradeSqliteDB(config);
 		} catch (SQLException e) {
 			throw new UpgradeDatabaseException("upgrade database error", e);
 		}

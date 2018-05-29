@@ -23,7 +23,6 @@ echo "
             \ /  
   
 Akaxin is an open source and free proprietary IM software，you can build private openzaly-server for everyone in any server.
-openzaly-version : 0.5.4
 
 "
 fi

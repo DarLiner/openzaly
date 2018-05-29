@@ -216,12 +216,12 @@ public class Bootstrap {
 		Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
 
 		DBConfig config = new DBConfig();
+		config.setConfigMap(siteConfigMap);
 		config.setDbDir(dbDir);
 		config.setAdminAddress(adminHost);
 		config.setAdminPort(adminPort);
 		config.setAdminUic(adminUic);
 		config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
-		config.setConfigMap(siteConfigMap);
 		config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
 		config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
 		logger.info("{} init datasource config={}", AkxProject.PLN, config.toString());
