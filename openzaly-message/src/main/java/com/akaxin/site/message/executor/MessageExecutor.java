@@ -34,6 +34,7 @@ import com.akaxin.site.message.notice.handler.NoticeHandler;
 import com.akaxin.site.message.notice.handler.NoticePushHandler;
 import com.akaxin.site.message.sync.handler.SyncFinishHandler;
 import com.akaxin.site.message.sync.handler.SyncGroupMessageHandler;
+import com.akaxin.site.message.sync.handler.SyncMsgStatusHandler;
 import com.akaxin.site.message.sync.handler.SyncU2MessageHandler;
 import com.akaxin.site.message.user2.handler.U2MessageImageHandler;
 import com.akaxin.site.message.user2.handler.U2MessageImageSecretHandler;
@@ -99,7 +100,7 @@ public class MessageExecutor {
 		// "im.sync.finish"
 		executor.addChain(RequestAction.IM_SYNC_FINISH.getName(), new SyncFinishHandler());
 		// "im.sync.msgStatus"
-		executor.addChain(RequestAction.IM_SYNC_MSGSTATUS.getName(), new SyncFinishHandler());
+		executor.addChain(RequestAction.IM_SYNC_MSGSTATUS.getName(), new SyncMsgStatusHandler());
 		// "im.stc.notice"
 		executor.addChain(RequestAction.IM_STC_NOTICE.getName(), noticeChain);
 	}

@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.common.utils.TimeFormats;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
@@ -120,23 +121,28 @@ public class SQLiteGroupMessageDao {
 	public List<GroupMessageBean> queryGroupMessageByMsgId(List<String> msgIds) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT id,site_group_id,msg_id,send_user_id,msg_type,msg_time FROM " + GROUP_MESSAGE_TABLE
-				+ " WHERE msg_id=? LIMIT 1;";
+				+ " WHERE msg_id in ({});";
 		List<GroupMessageBean> msgList = new ArrayList<GroupMessageBean>();
 		StringBuilder msgIdBuider = new StringBuilder();
 		for (int i = 0; i < msgIds.size(); i++) {
 			if (i == 0) {
+				msgIdBuider.append("'");
 				msgIdBuider.append(msgIds.get(i));
+				msgIdBuider.append("'");
 			} else {
 				msgIdBuider.append(",");
+				msgIdBuider.append("'");
 				msgIdBuider.append(msgIds.get(i));
+				msgIdBuider.append("'");
 			}
 		}
 
+		sql = StringHelper.format(sql, msgIdBuider.toString());
 		PreparedStatement statement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		statement.setString(1, msgIdBuider.toString());
+		// statement.setString(1, msgIdBuider.toString());
 
 		ResultSet rs = statement.executeQuery();
-		if (rs.next()) {
+		while (rs.next()) {
 			GroupMessageBean bean = new GroupMessageBean();
 			bean.setId(rs.getInt(1));
 			bean.setSiteGroupId(rs.getString(2));
