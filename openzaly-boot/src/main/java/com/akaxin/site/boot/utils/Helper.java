@@ -19,6 +19,7 @@ import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
+import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
 public class Helper {
 	private static final Logger logger = LoggerFactory.getLogger(Helper.class);
@@ -91,7 +92,7 @@ public class Helper {
 
 	public static void buildEnvToSystemOut(PrintWriter pwriter) {
 		pwriter.println();
-		pwriter.println("openzaly-version : 0.5.4");
+		pwriter.println("openzaly-version : 0.9.5");
 		pwriter.println("java-version : JDK 1.8+");
 		pwriter.println("maven-version : 3.0+");
 		pwriter.println();
@@ -113,6 +114,14 @@ public class Helper {
 	public static void startFailWithError(PrintWriter pwriter, String errMessage) {
 		pwriter.println("[Error] error message:" + errMessage);
 		pwriter.println("[Error] start openzaly-server failed, server exit...");
+		pwriter.println();
+		pwriter.flush();
+	}
+
+	public static void printUpgradeWarn(PrintWriter pwriter) {
+		pwriter.println("[Error] openzaly-server is an old version, you can execute following command to upgrade:");
+		pwriter.println();
+		pwriter.println("\t java -jar openzaly-server.jar -upgrade");
 		pwriter.println();
 		pwriter.flush();
 	}
@@ -146,9 +155,15 @@ public class Helper {
 			config.setDbDir(dbDir);
 			// 升级
 			int dbUserVersion = DataSourceManager.upgrade(config);
+			int needVersion = SQLConst.SITE_DB_VERSION;
 			pw.println("[INFO] upgrade openzaly-server version : " + siteVersion);
-			pw.println("[OK] upgrade database user-version : " + dbUserVersion);
-			pw.println("[OK] upgrade openzaly-server finish ...");
+			if (needVersion == dbUserVersion) {
+				pw.println("[OK] upgrade database user-version : " + dbUserVersion);
+				pw.println("[OK] upgrade openzaly-server finish ...");
+			} else {
+				pw.println("[ERROR] upgrade database user-version : " + dbUserVersion);
+				pw.println("[ERROR] upgrade openzaly-server fail ...");
+			}
 		} catch (UpgradeDatabaseException e) {
 			pw.println("[ERROR] upgrade openzaly-server error");
 			logger.error("upgrade database error", e);

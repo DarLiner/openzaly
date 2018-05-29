@@ -180,8 +180,8 @@ public class Bootstrap {
 			logger.error("Openzaly-server exit...");
 			System.exit(-4);// system exit
 		} catch (UpgradeDatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Helper.printUpgradeWarn(pwriter);
+			logger.error("Openzaly-server current is an old version ,we need to upgrade.", e);
 		} finally {
 			if (pwriter != null) {
 				pwriter.close();

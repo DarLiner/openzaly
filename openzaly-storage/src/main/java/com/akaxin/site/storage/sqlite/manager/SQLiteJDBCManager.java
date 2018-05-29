@@ -137,7 +137,7 @@ public class SQLiteJDBCManager {
 		pst.executeUpdate();
 	}
 
-	private static int checkDatabaseTable() {
+	public static int checkDatabaseTable() {
 		int num = 0;
 		for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
 			int result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
@@ -328,4 +328,7 @@ public class SQLiteJDBCManager {
 		return sqlitConnection;
 	}
 
+	public static String getDbFileName() {
+		return DB_FILE_PATH;
+	}
 }
