@@ -268,13 +268,17 @@ public class SQLiteUserDeviceDao {
 
 	private int deleteDeviceAsLimit(String siteUserId, int limit) {
 		long startTime = System.currentTimeMillis();
+		// String sql = "DELETE FROM " + USER_DEVICE_TABLE + " WHERE site_user_id='?'
+		// ORDER BY active_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_DEVICE_TABLE
-				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?,10000;";
+				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT device_id FROM " + USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?)";
 		int num = 0;
 		try {
 			PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, siteUserId);
-			preparedStatement.setInt(2, limit);
+			preparedStatement.setString(2, siteUserId);
+			preparedStatement.setInt(3, limit);
 			num = preparedStatement.executeUpdate();
 		} catch (Exception e) {
 			logger.error("delete device as limit error", e);
@@ -286,13 +290,17 @@ public class SQLiteUserDeviceDao {
 	private int deleteSessionAsLimit(String siteUserId, int limit) {
 		long startTime = System.currentTimeMillis();
 		// 删除site_user_session中设备
+		// String sql = "DELETE FROM " + USER_SESSION_TABLE + " WHERE site_user_id='?'
+		// ORDER BY login_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_SESSION_TABLE
-				+ " WHERE site_user_id=? ORDER BY login_time DESC LIMIT ?,10000;";
+				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT device_id FROM " + USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?)";
 		int num = 0;
 		try {
 			PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, siteUserId);
-			preparedStatement.setInt(2, limit);
+			preparedStatement.setString(2, siteUserId);
+			preparedStatement.setInt(3, limit);
 			num = preparedStatement.executeUpdate();
 		} catch (Exception e) {
 			logger.error("delete session device as limit error", e);
@@ -304,8 +312,7 @@ public class SQLiteUserDeviceDao {
 
 	public boolean delDevice(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "DELETE from " + SQLConst.SITE_USER_DEVICE
-				+ " WHERE site_user_id=? ";
+		String sql = "DELETE from " + SQLConst.SITE_USER_DEVICE + " WHERE site_user_id=? ";
 		PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
 		preparedStatement.setString(1, siteUserId);
 		int i = preparedStatement.executeUpdate();

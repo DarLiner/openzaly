@@ -98,9 +98,11 @@ public class SQLiteUpgrade {
 				+ getTempTable(oldVersion, SQLConst.SITE_USER_PROFILE);
 		String sql2 = "alter table " + SQLConst.SITE_USER_FRIEND + " RENAME TO "
 				+ getTempTable(oldVersion, SQLConst.SITE_USER_FRIEND);
+		String sql3 = "alter table " + SQLConst.SITE_USER_DEVICE + " RENAME TO "
+				+ getTempTable(oldVersion, SQLConst.SITE_USER_DEVICE);
 
 		boolean result = false;
-		List<String> upgradeSqls = Arrays.asList(sql1, sql2);
+		List<String> upgradeSqls = Arrays.asList(sql1, sql2, sql3);
 		try {
 			Connection conn = SQLiteJDBCManager.getConnection();
 			conn.setAutoCommit(false);
@@ -122,6 +124,10 @@ public class SQLiteUpgrade {
 				String migSql2 = "INSERT INTO " + SQLConst.SITE_USER_FRIEND
 						+ "(id,site_user_id,site_friend_id,relation,mute,add_time) select id,site_user_id,site_friend_id,relation,mute,add_time from "
 						+ getTempTable(oldVersion, SQLConst.SITE_USER_FRIEND);
+
+				String migSql3 = "INSERT INTO " + SQLConst.SITE_USER_DEVICE
+						+ "(id,site_user_id,device_id,user_device_pubk,user_token,device_name,active_time,add_time) SELECT id,site_user_id,device_id,user_device_pubk,user_token,device_name,active_time,add_time FROM "
+						+ getTempTable(oldVersion, SQLConst.SITE_USER_DEVICE);
 				Map<Integer, String> sqlMap = new HashMap<Integer, String>() {
 					/**
 					 * 
@@ -131,6 +137,7 @@ public class SQLiteUpgrade {
 					{
 						put(1, migSql1);
 						put(2, migSql2);
+						put(3, migSql3);
 					}
 				};
 				for (int sqlIndex : sqlMap.keySet()) {

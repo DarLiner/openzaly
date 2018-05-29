@@ -82,8 +82,17 @@ public interface SQLConst {
 	String CREATE_SITE_GROUP_MESSAGE_POINTER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE_POINTER
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
 
-	String CREATE_SITE_USER_DEVICE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_DEVICE
-			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, device_id VARCHAR(50), user_device_pubk TEXT, device_name TEXT, device_ip VARCHAR(50), user_token VARCHAR(50),active_time LONG, add_time LONG);";
+	String CREATE_SITE_USER_DEVICE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_DEVICE // 用户设备
+			+ "(id INTEGER PRIMARY KEY NOT NULL," // 主键
+			+ "site_user_id VARCHAR(50) NOT NULL," // 站点用户
+			+ "device_id VARCHAR(50) UNIQUE NOT NULL," // 设备ID
+			+ "user_device_pubk TEXT NOT NULL,"// 设备公钥
+			+ "device_uuid VARCHAR(50) UNIQUE,"// 设备识别码,设备序列码
+			+ "user_token VARCHAR(50),"// 用户的usertoken
+			+ "device_name VARCHAR(60), " // 设备名称
+			+ "device_ip VARCHAR(50), " // 设备ip
+			+ "active_time LONG," // 活跃时间
+			+ "add_time LONG);";// add时间
 
 	String CREATE_SITE_PLUGIN_MANAGER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_PLUGIN_MANAGER
 			+ "(id INTEGER PRIMARY KEY NOT NULL,"// 主键
