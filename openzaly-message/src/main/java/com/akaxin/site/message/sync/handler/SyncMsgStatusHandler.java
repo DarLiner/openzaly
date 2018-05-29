@@ -51,6 +51,8 @@ public class SyncMsgStatusHandler extends AbstractSyncHandler<Command> {
 				if (u2msgList != null) {
 					for (U2MessageBean bean : u2msgList) {
 						if (siteUserId.equals(bean.getSendUserId())) {
+							logger.info("im.sync.msgStatus siteUserId={} sendUserId={} deviceId={} msgId={}",
+									siteUserId, bean.getSendUserId(), command.getDeviceId(), bean.getMsgId());
 							msgStatusResponse(command, bean.getMsgId(), bean.getMsgTime(), true);
 						}
 					}
@@ -62,6 +64,8 @@ public class SyncMsgStatusHandler extends AbstractSyncHandler<Command> {
 				if (gmsgList != null) {
 					for (GroupMessageBean bean : gmsgList) {
 						if (siteUserId.equals(bean.getSendUserId())) {
+							logger.info("im.sync.msgStatus siteUserId={} sendUserId={} deviceId={} msgId={}",
+									siteUserId, bean.getSendUserId(), command.getDeviceId(), bean.getMsgId());
 							msgStatusResponse(command, bean.getMsgId(), bean.getMsgTime(), true);
 						}
 					}
