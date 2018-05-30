@@ -72,7 +72,7 @@ public class ApiPluginService extends AbstractRequest {
 
 			pageNumber = Math.max(pageNumber, 1);// 从第一页开始
 			// 先做首帧扩展
-			if (PluginProto.PluginPosition.HOME_PAGE == position) {
+			if (PluginProto.PluginPosition.HOME_PAGE == position || PluginProto.PluginPosition.MSG_PAGE == position) {
 				List<PluginBean> pluginList = null;
 				if (StringUtils.isNotBlank(siteUserId) && SiteConfig.isSiteManager(siteUserId)) {
 					pluginList = SitePluginDao.getInstance().getAdminPluginPageList(pageNumber, pageSize,
@@ -158,7 +158,7 @@ public class ApiPluginService extends AbstractRequest {
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, httpContent);
 					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
 							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
-					
+
 					commandResponse.setParams(response.toByteArray());
 					errCode = ErrorCode2.SUCCESS;
 				}
