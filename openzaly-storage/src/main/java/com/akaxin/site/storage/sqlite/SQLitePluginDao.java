@@ -200,6 +200,7 @@ public class SQLitePluginDao {
 				+ "api_url,"//
 				+ "sort,"//
 				+ "position,"//
+				+ "display_mode,"//
 				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " WHERE "//
 				+ "position=? AND " + "permission_status=? " + "ORDER BY sort LIMIT ?,?;";
@@ -220,7 +221,8 @@ public class SQLitePluginDao {
 			bean.setApiUrl(rs.getString(5));
 			bean.setSort(rs.getInt(6));
 			bean.setPosition(rs.getInt(7));
-			bean.setPermissionStatus(rs.getInt(8));
+			bean.setDisplayMode(rs.getInt(8));
+			bean.setPermissionStatus(rs.getInt(9));
 			pluginList.add(bean);
 		}
 
@@ -247,8 +249,8 @@ public class SQLitePluginDao {
 				+ "api_url,"//
 				+ "sort,"//
 				+ "position,"//
-				+ "permission_status,"//
-				+ "display_mode"// NewPage or FloatingPage
+				+ "display_mode,"// NewPage or FloatingPage
+				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " WHERE "//
 				+ "position=? ORDER BY sort LIMIT ?,?;";
 
@@ -267,8 +269,8 @@ public class SQLitePluginDao {
 			bean.setApiUrl(rs.getString(5));
 			bean.setSort(rs.getInt(6));
 			bean.setPosition(rs.getInt(7));
-			bean.setPermissionStatus(rs.getInt(8));
-			bean.setDisplayMode(rs.getInt(9));
+			bean.setDisplayMode(rs.getInt(8));
+			bean.setPermissionStatus(rs.getInt(9));
 			pluginList.add(bean);
 		}
 
@@ -294,6 +296,7 @@ public class SQLitePluginDao {
 				+ "api_url,"//
 				+ "sort,"//
 				+ "position,"//
+				+ "display_mode,"//
 				+ "permission_status"//
 				+ " FROM " + PLUGIN_TABLE + " ORDER BY sort LIMIT ?,?;";
 
@@ -311,7 +314,8 @@ public class SQLitePluginDao {
 			bean.setApiUrl(rs.getString(5));
 			bean.setSort(rs.getInt(6));
 			bean.setPosition(rs.getInt(7));
-			bean.setPermissionStatus(rs.getInt(8));
+			bean.setDisplayMode(rs.getInt(8));
+			bean.setPermissionStatus(rs.getInt(9));
 			pluginList.add(bean);
 		}
 
