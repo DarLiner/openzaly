@@ -86,9 +86,9 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, ConfigProto.RealNameConfig.REALNAME_NO_VALUE + "");
 		// 默认开启邀请码
 		configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, ConfigProto.InviteCodeConfig.UIC_YES_VALUE + "");
-		// 默认Push状态：显示push内容
+		// 默认Push状态：不显示push内容
 		configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE,
-				ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT_VALUE + "");
+				String.valueOf(ConfigProto.PushClientStatus.PUSH_HIDDEN_TEXT_VALUE));
 		return configMap;
 	}
 }
