@@ -93,6 +93,8 @@ public enum ErrorCode2 implements IErrorCode {
 
 	ERROR2_SECRETCHAT_CLOSE("error.alter", "站点服务不支持绝密聊天"), //
 
+	ERROR2_HTTP_URL("error.alter", "请求使用的url错误"), //
+
 	ERROR("error.alter", "请求失败"); // 默认未知错误
 
 	private String code;

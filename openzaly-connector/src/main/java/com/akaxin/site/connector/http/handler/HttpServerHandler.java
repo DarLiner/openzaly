@@ -87,7 +87,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				}
 
 				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
-				httpClientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
+				// httpClientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
 
 				if (StringUtils.isEmpty(sitePluginId)) {
 					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, httpClientIp,

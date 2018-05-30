@@ -2346,11 +2346,3118 @@ public final class PushProto {
 
   }
 
+  public interface NotificationsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:core.Notifications)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     *站点服务地址eg-&gt;127.0.0.1:2021
+     * </pre>
+     *
+     * <code>optional string site_server = 1;</code>
+     */
+    java.lang.String getSiteServer();
+    /**
+     * <pre>
+     *站点服务地址eg-&gt;127.0.0.1:2021
+     * </pre>
+     *
+     * <code>optional string site_server = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getSiteServerBytes();
+
+    /**
+     * <pre>
+     *站点服务名称
+     * </pre>
+     *
+     * <code>optional string push_title = 2;</code>
+     */
+    java.lang.String getPushTitle();
+    /**
+     * <pre>
+     *站点服务名称
+     * </pre>
+     *
+     * <code>optional string push_title = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getPushTitleBytes();
+
+    /**
+     * <pre>
+     *push的副标题
+     * </pre>
+     *
+     * <code>optional string push_subtitle = 3;</code>
+     */
+    java.lang.String getPushSubtitle();
+    /**
+     * <pre>
+     *push的副标题
+     * </pre>
+     *
+     * <code>optional string push_subtitle = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getPushSubtitleBytes();
+
+    /**
+     * <pre>
+     *展示的内容
+     * </pre>
+     *
+     * <code>optional string push_alert = 4;</code>
+     */
+    java.lang.String getPushAlert();
+    /**
+     * <pre>
+     *展示的内容
+     * </pre>
+     *
+     * <code>optional string push_alert = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getPushAlertBytes();
+
+    /**
+     * <pre>
+     *Push跳转位置
+     * </pre>
+     *
+     * <code>optional string push_goto = 5;</code>
+     */
+    java.lang.String getPushGoto();
+    /**
+     * <pre>
+     *Push跳转位置
+     * </pre>
+     *
+     * <code>optional string push_goto = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getPushGotoBytes();
+
+    /**
+     * <pre>
+     *气泡展示个数，默认气泡数1
+     * </pre>
+     *
+     * <code>optional int32 push_badge = 6;</code>
+     */
+    int getPushBadge();
+
+    /**
+     * <pre>
+     *声音
+     * </pre>
+     *
+     * <code>optional string push_sound = 7;</code>
+     */
+    java.lang.String getPushSound();
+    /**
+     * <pre>
+     *声音
+     * </pre>
+     *
+     * <code>optional string push_sound = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getPushSoundBytes();
+  }
+  /**
+   * <pre>
+   *支持站点批量发送push的功能
+   * </pre>
+   *
+   * Protobuf type {@code core.Notifications}
+   */
+  public  static final class Notifications extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:core.Notifications)
+      NotificationsOrBuilder {
+    // Use Notifications.newBuilder() to construct.
+    private Notifications(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Notifications() {
+      siteServer_ = "";
+      pushTitle_ = "";
+      pushSubtitle_ = "";
+      pushAlert_ = "";
+      pushGoto_ = "";
+      pushBadge_ = 0;
+      pushSound_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private Notifications(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              siteServer_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pushTitle_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pushSubtitle_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pushAlert_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pushGoto_ = s;
+              break;
+            }
+            case 48: {
+
+              pushBadge_ = input.readInt32();
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pushSound_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.PushProto.internal_static_core_Notifications_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.akaxin.proto.core.PushProto.internal_static_core_Notifications_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.akaxin.proto.core.PushProto.Notifications.class, com.akaxin.proto.core.PushProto.Notifications.Builder.class);
+    }
+
+    public static final int SITE_SERVER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object siteServer_;
+    /**
+     * <pre>
+     *站点服务地址eg-&gt;127.0.0.1:2021
+     * </pre>
+     *
+     * <code>optional string site_server = 1;</code>
+     */
+    public java.lang.String getSiteServer() {
+      java.lang.Object ref = siteServer_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteServer_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *站点服务地址eg-&gt;127.0.0.1:2021
+     * </pre>
+     *
+     * <code>optional string site_server = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSiteServerBytes() {
+      java.lang.Object ref = siteServer_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteServer_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUSH_TITLE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object pushTitle_;
+    /**
+     * <pre>
+     *站点服务名称
+     * </pre>
+     *
+     * <code>optional string push_title = 2;</code>
+     */
+    public java.lang.String getPushTitle() {
+      java.lang.Object ref = pushTitle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pushTitle_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *站点服务名称
+     * </pre>
+     *
+     * <code>optional string push_title = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPushTitleBytes() {
+      java.lang.Object ref = pushTitle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pushTitle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUSH_SUBTITLE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object pushSubtitle_;
+    /**
+     * <pre>
+     *push的副标题
+     * </pre>
+     *
+     * <code>optional string push_subtitle = 3;</code>
+     */
+    public java.lang.String getPushSubtitle() {
+      java.lang.Object ref = pushSubtitle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pushSubtitle_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *push的副标题
+     * </pre>
+     *
+     * <code>optional string push_subtitle = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPushSubtitleBytes() {
+      java.lang.Object ref = pushSubtitle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pushSubtitle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUSH_ALERT_FIELD_NUMBER = 4;
+    private volatile java.lang.Object pushAlert_;
+    /**
+     * <pre>
+     *展示的内容
+     * </pre>
+     *
+     * <code>optional string push_alert = 4;</code>
+     */
+    public java.lang.String getPushAlert() {
+      java.lang.Object ref = pushAlert_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pushAlert_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *展示的内容
+     * </pre>
+     *
+     * <code>optional string push_alert = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPushAlertBytes() {
+      java.lang.Object ref = pushAlert_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pushAlert_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUSH_GOTO_FIELD_NUMBER = 5;
+    private volatile java.lang.Object pushGoto_;
+    /**
+     * <pre>
+     *Push跳转位置
+     * </pre>
+     *
+     * <code>optional string push_goto = 5;</code>
+     */
+    public java.lang.String getPushGoto() {
+      java.lang.Object ref = pushGoto_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pushGoto_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *Push跳转位置
+     * </pre>
+     *
+     * <code>optional string push_goto = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPushGotoBytes() {
+      java.lang.Object ref = pushGoto_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pushGoto_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUSH_BADGE_FIELD_NUMBER = 6;
+    private int pushBadge_;
+    /**
+     * <pre>
+     *气泡展示个数，默认气泡数1
+     * </pre>
+     *
+     * <code>optional int32 push_badge = 6;</code>
+     */
+    public int getPushBadge() {
+      return pushBadge_;
+    }
+
+    public static final int PUSH_SOUND_FIELD_NUMBER = 7;
+    private volatile java.lang.Object pushSound_;
+    /**
+     * <pre>
+     *声音
+     * </pre>
+     *
+     * <code>optional string push_sound = 7;</code>
+     */
+    public java.lang.String getPushSound() {
+      java.lang.Object ref = pushSound_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pushSound_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *声音
+     * </pre>
+     *
+     * <code>optional string push_sound = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPushSoundBytes() {
+      java.lang.Object ref = pushSound_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pushSound_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getSiteServerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteServer_);
+      }
+      if (!getPushTitleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, pushTitle_);
+      }
+      if (!getPushSubtitleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pushSubtitle_);
+      }
+      if (!getPushAlertBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, pushAlert_);
+      }
+      if (!getPushGotoBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, pushGoto_);
+      }
+      if (pushBadge_ != 0) {
+        output.writeInt32(6, pushBadge_);
+      }
+      if (!getPushSoundBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, pushSound_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getSiteServerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteServer_);
+      }
+      if (!getPushTitleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, pushTitle_);
+      }
+      if (!getPushSubtitleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, pushSubtitle_);
+      }
+      if (!getPushAlertBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, pushAlert_);
+      }
+      if (!getPushGotoBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, pushGoto_);
+      }
+      if (pushBadge_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, pushBadge_);
+      }
+      if (!getPushSoundBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, pushSound_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.akaxin.proto.core.PushProto.Notifications)) {
+        return super.equals(obj);
+      }
+      com.akaxin.proto.core.PushProto.Notifications other = (com.akaxin.proto.core.PushProto.Notifications) obj;
+
+      boolean result = true;
+      result = result && getSiteServer()
+          .equals(other.getSiteServer());
+      result = result && getPushTitle()
+          .equals(other.getPushTitle());
+      result = result && getPushSubtitle()
+          .equals(other.getPushSubtitle());
+      result = result && getPushAlert()
+          .equals(other.getPushAlert());
+      result = result && getPushGoto()
+          .equals(other.getPushGoto());
+      result = result && (getPushBadge()
+          == other.getPushBadge());
+      result = result && getPushSound()
+          .equals(other.getPushSound());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + SITE_SERVER_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteServer().hashCode();
+      hash = (37 * hash) + PUSH_TITLE_FIELD_NUMBER;
+      hash = (53 * hash) + getPushTitle().hashCode();
+      hash = (37 * hash) + PUSH_SUBTITLE_FIELD_NUMBER;
+      hash = (53 * hash) + getPushSubtitle().hashCode();
+      hash = (37 * hash) + PUSH_ALERT_FIELD_NUMBER;
+      hash = (53 * hash) + getPushAlert().hashCode();
+      hash = (37 * hash) + PUSH_GOTO_FIELD_NUMBER;
+      hash = (53 * hash) + getPushGoto().hashCode();
+      hash = (37 * hash) + PUSH_BADGE_FIELD_NUMBER;
+      hash = (53 * hash) + getPushBadge();
+      hash = (37 * hash) + PUSH_SOUND_FIELD_NUMBER;
+      hash = (53 * hash) + getPushSound().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.Notifications parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.akaxin.proto.core.PushProto.Notifications prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     *支持站点批量发送push的功能
+     * </pre>
+     *
+     * Protobuf type {@code core.Notifications}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:core.Notifications)
+        com.akaxin.proto.core.PushProto.NotificationsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_Notifications_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_Notifications_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.akaxin.proto.core.PushProto.Notifications.class, com.akaxin.proto.core.PushProto.Notifications.Builder.class);
+      }
+
+      // Construct using com.akaxin.proto.core.PushProto.Notifications.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        siteServer_ = "";
+
+        pushTitle_ = "";
+
+        pushSubtitle_ = "";
+
+        pushAlert_ = "";
+
+        pushGoto_ = "";
+
+        pushBadge_ = 0;
+
+        pushSound_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_Notifications_descriptor;
+      }
+
+      public com.akaxin.proto.core.PushProto.Notifications getDefaultInstanceForType() {
+        return com.akaxin.proto.core.PushProto.Notifications.getDefaultInstance();
+      }
+
+      public com.akaxin.proto.core.PushProto.Notifications build() {
+        com.akaxin.proto.core.PushProto.Notifications result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.akaxin.proto.core.PushProto.Notifications buildPartial() {
+        com.akaxin.proto.core.PushProto.Notifications result = new com.akaxin.proto.core.PushProto.Notifications(this);
+        result.siteServer_ = siteServer_;
+        result.pushTitle_ = pushTitle_;
+        result.pushSubtitle_ = pushSubtitle_;
+        result.pushAlert_ = pushAlert_;
+        result.pushGoto_ = pushGoto_;
+        result.pushBadge_ = pushBadge_;
+        result.pushSound_ = pushSound_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.akaxin.proto.core.PushProto.Notifications) {
+          return mergeFrom((com.akaxin.proto.core.PushProto.Notifications)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.akaxin.proto.core.PushProto.Notifications other) {
+        if (other == com.akaxin.proto.core.PushProto.Notifications.getDefaultInstance()) return this;
+        if (!other.getSiteServer().isEmpty()) {
+          siteServer_ = other.siteServer_;
+          onChanged();
+        }
+        if (!other.getPushTitle().isEmpty()) {
+          pushTitle_ = other.pushTitle_;
+          onChanged();
+        }
+        if (!other.getPushSubtitle().isEmpty()) {
+          pushSubtitle_ = other.pushSubtitle_;
+          onChanged();
+        }
+        if (!other.getPushAlert().isEmpty()) {
+          pushAlert_ = other.pushAlert_;
+          onChanged();
+        }
+        if (!other.getPushGoto().isEmpty()) {
+          pushGoto_ = other.pushGoto_;
+          onChanged();
+        }
+        if (other.getPushBadge() != 0) {
+          setPushBadge(other.getPushBadge());
+        }
+        if (!other.getPushSound().isEmpty()) {
+          pushSound_ = other.pushSound_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.akaxin.proto.core.PushProto.Notifications parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.akaxin.proto.core.PushProto.Notifications) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object siteServer_ = "";
+      /**
+       * <pre>
+       *站点服务地址eg-&gt;127.0.0.1:2021
+       * </pre>
+       *
+       * <code>optional string site_server = 1;</code>
+       */
+      public java.lang.String getSiteServer() {
+        java.lang.Object ref = siteServer_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteServer_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *站点服务地址eg-&gt;127.0.0.1:2021
+       * </pre>
+       *
+       * <code>optional string site_server = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteServerBytes() {
+        java.lang.Object ref = siteServer_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteServer_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *站点服务地址eg-&gt;127.0.0.1:2021
+       * </pre>
+       *
+       * <code>optional string site_server = 1;</code>
+       */
+      public Builder setSiteServer(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteServer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点服务地址eg-&gt;127.0.0.1:2021
+       * </pre>
+       *
+       * <code>optional string site_server = 1;</code>
+       */
+      public Builder clearSiteServer() {
+        
+        siteServer_ = getDefaultInstance().getSiteServer();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点服务地址eg-&gt;127.0.0.1:2021
+       * </pre>
+       *
+       * <code>optional string site_server = 1;</code>
+       */
+      public Builder setSiteServerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteServer_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pushTitle_ = "";
+      /**
+       * <pre>
+       *站点服务名称
+       * </pre>
+       *
+       * <code>optional string push_title = 2;</code>
+       */
+      public java.lang.String getPushTitle() {
+        java.lang.Object ref = pushTitle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pushTitle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *站点服务名称
+       * </pre>
+       *
+       * <code>optional string push_title = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPushTitleBytes() {
+        java.lang.Object ref = pushTitle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pushTitle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *站点服务名称
+       * </pre>
+       *
+       * <code>optional string push_title = 2;</code>
+       */
+      public Builder setPushTitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pushTitle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点服务名称
+       * </pre>
+       *
+       * <code>optional string push_title = 2;</code>
+       */
+      public Builder clearPushTitle() {
+        
+        pushTitle_ = getDefaultInstance().getPushTitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *站点服务名称
+       * </pre>
+       *
+       * <code>optional string push_title = 2;</code>
+       */
+      public Builder setPushTitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pushTitle_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pushSubtitle_ = "";
+      /**
+       * <pre>
+       *push的副标题
+       * </pre>
+       *
+       * <code>optional string push_subtitle = 3;</code>
+       */
+      public java.lang.String getPushSubtitle() {
+        java.lang.Object ref = pushSubtitle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pushSubtitle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *push的副标题
+       * </pre>
+       *
+       * <code>optional string push_subtitle = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPushSubtitleBytes() {
+        java.lang.Object ref = pushSubtitle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pushSubtitle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *push的副标题
+       * </pre>
+       *
+       * <code>optional string push_subtitle = 3;</code>
+       */
+      public Builder setPushSubtitle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pushSubtitle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *push的副标题
+       * </pre>
+       *
+       * <code>optional string push_subtitle = 3;</code>
+       */
+      public Builder clearPushSubtitle() {
+        
+        pushSubtitle_ = getDefaultInstance().getPushSubtitle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *push的副标题
+       * </pre>
+       *
+       * <code>optional string push_subtitle = 3;</code>
+       */
+      public Builder setPushSubtitleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pushSubtitle_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pushAlert_ = "";
+      /**
+       * <pre>
+       *展示的内容
+       * </pre>
+       *
+       * <code>optional string push_alert = 4;</code>
+       */
+      public java.lang.String getPushAlert() {
+        java.lang.Object ref = pushAlert_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pushAlert_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *展示的内容
+       * </pre>
+       *
+       * <code>optional string push_alert = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPushAlertBytes() {
+        java.lang.Object ref = pushAlert_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pushAlert_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *展示的内容
+       * </pre>
+       *
+       * <code>optional string push_alert = 4;</code>
+       */
+      public Builder setPushAlert(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pushAlert_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *展示的内容
+       * </pre>
+       *
+       * <code>optional string push_alert = 4;</code>
+       */
+      public Builder clearPushAlert() {
+        
+        pushAlert_ = getDefaultInstance().getPushAlert();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *展示的内容
+       * </pre>
+       *
+       * <code>optional string push_alert = 4;</code>
+       */
+      public Builder setPushAlertBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pushAlert_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pushGoto_ = "";
+      /**
+       * <pre>
+       *Push跳转位置
+       * </pre>
+       *
+       * <code>optional string push_goto = 5;</code>
+       */
+      public java.lang.String getPushGoto() {
+        java.lang.Object ref = pushGoto_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pushGoto_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *Push跳转位置
+       * </pre>
+       *
+       * <code>optional string push_goto = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPushGotoBytes() {
+        java.lang.Object ref = pushGoto_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pushGoto_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *Push跳转位置
+       * </pre>
+       *
+       * <code>optional string push_goto = 5;</code>
+       */
+      public Builder setPushGoto(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pushGoto_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *Push跳转位置
+       * </pre>
+       *
+       * <code>optional string push_goto = 5;</code>
+       */
+      public Builder clearPushGoto() {
+        
+        pushGoto_ = getDefaultInstance().getPushGoto();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *Push跳转位置
+       * </pre>
+       *
+       * <code>optional string push_goto = 5;</code>
+       */
+      public Builder setPushGotoBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pushGoto_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int pushBadge_ ;
+      /**
+       * <pre>
+       *气泡展示个数，默认气泡数1
+       * </pre>
+       *
+       * <code>optional int32 push_badge = 6;</code>
+       */
+      public int getPushBadge() {
+        return pushBadge_;
+      }
+      /**
+       * <pre>
+       *气泡展示个数，默认气泡数1
+       * </pre>
+       *
+       * <code>optional int32 push_badge = 6;</code>
+       */
+      public Builder setPushBadge(int value) {
+        
+        pushBadge_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *气泡展示个数，默认气泡数1
+       * </pre>
+       *
+       * <code>optional int32 push_badge = 6;</code>
+       */
+      public Builder clearPushBadge() {
+        
+        pushBadge_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pushSound_ = "";
+      /**
+       * <pre>
+       *声音
+       * </pre>
+       *
+       * <code>optional string push_sound = 7;</code>
+       */
+      public java.lang.String getPushSound() {
+        java.lang.Object ref = pushSound_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pushSound_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *声音
+       * </pre>
+       *
+       * <code>optional string push_sound = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPushSoundBytes() {
+        java.lang.Object ref = pushSound_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pushSound_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *声音
+       * </pre>
+       *
+       * <code>optional string push_sound = 7;</code>
+       */
+      public Builder setPushSound(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pushSound_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *声音
+       * </pre>
+       *
+       * <code>optional string push_sound = 7;</code>
+       */
+      public Builder clearPushSound() {
+        
+        pushSound_ = getDefaultInstance().getPushSound();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *声音
+       * </pre>
+       *
+       * <code>optional string push_sound = 7;</code>
+       */
+      public Builder setPushSoundBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pushSound_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:core.Notifications)
+    }
+
+    // @@protoc_insertion_point(class_scope:core.Notifications)
+    private static final com.akaxin.proto.core.PushProto.Notifications DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.akaxin.proto.core.PushProto.Notifications();
+    }
+
+    public static com.akaxin.proto.core.PushProto.Notifications getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Notifications>
+        PARSER = new com.google.protobuf.AbstractParser<Notifications>() {
+      public Notifications parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Notifications(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Notifications> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Notifications> getParserForType() {
+      return PARSER;
+    }
+
+    public com.akaxin.proto.core.PushProto.Notifications getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PushFromUserOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:core.PushFromUser)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     *push发送者的globalUserId
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    java.lang.String getGlobalUserId();
+    /**
+     * <pre>
+     *push发送者的globalUserId
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getGlobalUserIdBytes();
+
+    /**
+     * <pre>
+     *push消息发送者或者群ID，这里使用站点siteUserId
+     * </pre>
+     *
+     * <code>optional string site_user_id = 2;</code>
+     */
+    java.lang.String getSiteUserId();
+    /**
+     * <pre>
+     *push消息发送者或者群ID，这里使用站点siteUserId
+     * </pre>
+     *
+     * <code>optional string site_user_id = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSiteUserIdBytes();
+
+    /**
+     * <pre>
+     *发送着用户名称，文案展示的一部分
+     * </pre>
+     *
+     * <code>optional string push_from_name = 3;</code>
+     */
+    java.lang.String getPushFromName();
+    /**
+     * <pre>
+     *发送着用户名称，文案展示的一部分
+     * </pre>
+     *
+     * <code>optional string push_from_name = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getPushFromNameBytes();
+  }
+  /**
+   * Protobuf type {@code core.PushFromUser}
+   */
+  public  static final class PushFromUser extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:core.PushFromUser)
+      PushFromUserOrBuilder {
+    // Use PushFromUser.newBuilder() to construct.
+    private PushFromUser(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private PushFromUser() {
+      globalUserId_ = "";
+      siteUserId_ = "";
+      pushFromName_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private PushFromUser(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              globalUserId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              siteUserId_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pushFromName_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.PushProto.internal_static_core_PushFromUser_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.akaxin.proto.core.PushProto.internal_static_core_PushFromUser_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.akaxin.proto.core.PushProto.PushFromUser.class, com.akaxin.proto.core.PushProto.PushFromUser.Builder.class);
+    }
+
+    public static final int GLOBAL_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object globalUserId_;
+    /**
+     * <pre>
+     *push发送者的globalUserId
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    public java.lang.String getGlobalUserId() {
+      java.lang.Object ref = globalUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        globalUserId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *push发送者的globalUserId
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGlobalUserIdBytes() {
+      java.lang.Object ref = globalUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        globalUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SITE_USER_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object siteUserId_;
+    /**
+     * <pre>
+     *push消息发送者或者群ID，这里使用站点siteUserId
+     * </pre>
+     *
+     * <code>optional string site_user_id = 2;</code>
+     */
+    public java.lang.String getSiteUserId() {
+      java.lang.Object ref = siteUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteUserId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *push消息发送者或者群ID，这里使用站点siteUserId
+     * </pre>
+     *
+     * <code>optional string site_user_id = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSiteUserIdBytes() {
+      java.lang.Object ref = siteUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUSH_FROM_NAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object pushFromName_;
+    /**
+     * <pre>
+     *发送着用户名称，文案展示的一部分
+     * </pre>
+     *
+     * <code>optional string push_from_name = 3;</code>
+     */
+    public java.lang.String getPushFromName() {
+      java.lang.Object ref = pushFromName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pushFromName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *发送着用户名称，文案展示的一部分
+     * </pre>
+     *
+     * <code>optional string push_from_name = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPushFromNameBytes() {
+      java.lang.Object ref = pushFromName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pushFromName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getGlobalUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, globalUserId_);
+      }
+      if (!getSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, siteUserId_);
+      }
+      if (!getPushFromNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, pushFromName_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getGlobalUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, globalUserId_);
+      }
+      if (!getSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, siteUserId_);
+      }
+      if (!getPushFromNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, pushFromName_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.akaxin.proto.core.PushProto.PushFromUser)) {
+        return super.equals(obj);
+      }
+      com.akaxin.proto.core.PushProto.PushFromUser other = (com.akaxin.proto.core.PushProto.PushFromUser) obj;
+
+      boolean result = true;
+      result = result && getGlobalUserId()
+          .equals(other.getGlobalUserId());
+      result = result && getSiteUserId()
+          .equals(other.getSiteUserId());
+      result = result && getPushFromName()
+          .equals(other.getPushFromName());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + GLOBAL_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getGlobalUserId().hashCode();
+      hash = (37 * hash) + SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteUserId().hashCode();
+      hash = (37 * hash) + PUSH_FROM_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getPushFromName().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.PushFromUser parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.akaxin.proto.core.PushProto.PushFromUser prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code core.PushFromUser}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:core.PushFromUser)
+        com.akaxin.proto.core.PushProto.PushFromUserOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_PushFromUser_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_PushFromUser_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.akaxin.proto.core.PushProto.PushFromUser.class, com.akaxin.proto.core.PushProto.PushFromUser.Builder.class);
+      }
+
+      // Construct using com.akaxin.proto.core.PushProto.PushFromUser.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        globalUserId_ = "";
+
+        siteUserId_ = "";
+
+        pushFromName_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_PushFromUser_descriptor;
+      }
+
+      public com.akaxin.proto.core.PushProto.PushFromUser getDefaultInstanceForType() {
+        return com.akaxin.proto.core.PushProto.PushFromUser.getDefaultInstance();
+      }
+
+      public com.akaxin.proto.core.PushProto.PushFromUser build() {
+        com.akaxin.proto.core.PushProto.PushFromUser result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.akaxin.proto.core.PushProto.PushFromUser buildPartial() {
+        com.akaxin.proto.core.PushProto.PushFromUser result = new com.akaxin.proto.core.PushProto.PushFromUser(this);
+        result.globalUserId_ = globalUserId_;
+        result.siteUserId_ = siteUserId_;
+        result.pushFromName_ = pushFromName_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.akaxin.proto.core.PushProto.PushFromUser) {
+          return mergeFrom((com.akaxin.proto.core.PushProto.PushFromUser)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.akaxin.proto.core.PushProto.PushFromUser other) {
+        if (other == com.akaxin.proto.core.PushProto.PushFromUser.getDefaultInstance()) return this;
+        if (!other.getGlobalUserId().isEmpty()) {
+          globalUserId_ = other.globalUserId_;
+          onChanged();
+        }
+        if (!other.getSiteUserId().isEmpty()) {
+          siteUserId_ = other.siteUserId_;
+          onChanged();
+        }
+        if (!other.getPushFromName().isEmpty()) {
+          pushFromName_ = other.pushFromName_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.akaxin.proto.core.PushProto.PushFromUser parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.akaxin.proto.core.PushProto.PushFromUser) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object globalUserId_ = "";
+      /**
+       * <pre>
+       *push发送者的globalUserId
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public java.lang.String getGlobalUserId() {
+        java.lang.Object ref = globalUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          globalUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *push发送者的globalUserId
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGlobalUserIdBytes() {
+        java.lang.Object ref = globalUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          globalUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *push发送者的globalUserId
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public Builder setGlobalUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        globalUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *push发送者的globalUserId
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public Builder clearGlobalUserId() {
+        
+        globalUserId_ = getDefaultInstance().getGlobalUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *push发送者的globalUserId
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public Builder setGlobalUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        globalUserId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object siteUserId_ = "";
+      /**
+       * <pre>
+       *push消息发送者或者群ID，这里使用站点siteUserId
+       * </pre>
+       *
+       * <code>optional string site_user_id = 2;</code>
+       */
+      public java.lang.String getSiteUserId() {
+        java.lang.Object ref = siteUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *push消息发送者或者群ID，这里使用站点siteUserId
+       * </pre>
+       *
+       * <code>optional string site_user_id = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteUserIdBytes() {
+        java.lang.Object ref = siteUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *push消息发送者或者群ID，这里使用站点siteUserId
+       * </pre>
+       *
+       * <code>optional string site_user_id = 2;</code>
+       */
+      public Builder setSiteUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *push消息发送者或者群ID，这里使用站点siteUserId
+       * </pre>
+       *
+       * <code>optional string site_user_id = 2;</code>
+       */
+      public Builder clearSiteUserId() {
+        
+        siteUserId_ = getDefaultInstance().getSiteUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *push消息发送者或者群ID，这里使用站点siteUserId
+       * </pre>
+       *
+       * <code>optional string site_user_id = 2;</code>
+       */
+      public Builder setSiteUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pushFromName_ = "";
+      /**
+       * <pre>
+       *发送着用户名称，文案展示的一部分
+       * </pre>
+       *
+       * <code>optional string push_from_name = 3;</code>
+       */
+      public java.lang.String getPushFromName() {
+        java.lang.Object ref = pushFromName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pushFromName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *发送着用户名称，文案展示的一部分
+       * </pre>
+       *
+       * <code>optional string push_from_name = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPushFromNameBytes() {
+        java.lang.Object ref = pushFromName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pushFromName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *发送着用户名称，文案展示的一部分
+       * </pre>
+       *
+       * <code>optional string push_from_name = 3;</code>
+       */
+      public Builder setPushFromName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pushFromName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *发送着用户名称，文案展示的一部分
+       * </pre>
+       *
+       * <code>optional string push_from_name = 3;</code>
+       */
+      public Builder clearPushFromName() {
+        
+        pushFromName_ = getDefaultInstance().getPushFromName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *发送着用户名称，文案展示的一部分
+       * </pre>
+       *
+       * <code>optional string push_from_name = 3;</code>
+       */
+      public Builder setPushFromNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pushFromName_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:core.PushFromUser)
+    }
+
+    // @@protoc_insertion_point(class_scope:core.PushFromUser)
+    private static final com.akaxin.proto.core.PushProto.PushFromUser DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.akaxin.proto.core.PushProto.PushFromUser();
+    }
+
+    public static com.akaxin.proto.core.PushProto.PushFromUser getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<PushFromUser>
+        PARSER = new com.google.protobuf.AbstractParser<PushFromUser>() {
+      public PushFromUser parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new PushFromUser(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<PushFromUser> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PushFromUser> getParserForType() {
+      return PARSER;
+    }
+
+    public com.akaxin.proto.core.PushProto.PushFromUser getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PushToUserOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:core.PushToUser)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     *接受者：globalUserID,
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    java.lang.String getGlobalUserId();
+    /**
+     * <pre>
+     *接受者：globalUserID,
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getGlobalUserIdBytes();
+
+    /**
+     * <pre>
+     *接受者：用户的token
+     * </pre>
+     *
+     * <code>optional string user_token = 2;</code>
+     */
+    java.lang.String getUserToken();
+    /**
+     * <pre>
+     *接受者：用户的token
+     * </pre>
+     *
+     * <code>optional string user_token = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserTokenBytes();
+  }
+  /**
+   * Protobuf type {@code core.PushToUser}
+   */
+  public  static final class PushToUser extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:core.PushToUser)
+      PushToUserOrBuilder {
+    // Use PushToUser.newBuilder() to construct.
+    private PushToUser(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private PushToUser() {
+      globalUserId_ = "";
+      userToken_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private PushToUser(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              globalUserId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              userToken_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.PushProto.internal_static_core_PushToUser_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.akaxin.proto.core.PushProto.internal_static_core_PushToUser_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.akaxin.proto.core.PushProto.PushToUser.class, com.akaxin.proto.core.PushProto.PushToUser.Builder.class);
+    }
+
+    public static final int GLOBAL_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object globalUserId_;
+    /**
+     * <pre>
+     *接受者：globalUserID,
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    public java.lang.String getGlobalUserId() {
+      java.lang.Object ref = globalUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        globalUserId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *接受者：globalUserID,
+     * </pre>
+     *
+     * <code>optional string global_user_id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGlobalUserIdBytes() {
+      java.lang.Object ref = globalUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        globalUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_TOKEN_FIELD_NUMBER = 2;
+    private volatile java.lang.Object userToken_;
+    /**
+     * <pre>
+     *接受者：用户的token
+     * </pre>
+     *
+     * <code>optional string user_token = 2;</code>
+     */
+    public java.lang.String getUserToken() {
+      java.lang.Object ref = userToken_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userToken_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *接受者：用户的token
+     * </pre>
+     *
+     * <code>optional string user_token = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserTokenBytes() {
+      java.lang.Object ref = userToken_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userToken_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getGlobalUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, globalUserId_);
+      }
+      if (!getUserTokenBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, userToken_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getGlobalUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, globalUserId_);
+      }
+      if (!getUserTokenBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, userToken_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.akaxin.proto.core.PushProto.PushToUser)) {
+        return super.equals(obj);
+      }
+      com.akaxin.proto.core.PushProto.PushToUser other = (com.akaxin.proto.core.PushProto.PushToUser) obj;
+
+      boolean result = true;
+      result = result && getGlobalUserId()
+          .equals(other.getGlobalUserId());
+      result = result && getUserToken()
+          .equals(other.getUserToken());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + GLOBAL_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getGlobalUserId().hashCode();
+      hash = (37 * hash) + USER_TOKEN_FIELD_NUMBER;
+      hash = (53 * hash) + getUserToken().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.core.PushProto.PushToUser parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.akaxin.proto.core.PushProto.PushToUser prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code core.PushToUser}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:core.PushToUser)
+        com.akaxin.proto.core.PushProto.PushToUserOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_PushToUser_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_PushToUser_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.akaxin.proto.core.PushProto.PushToUser.class, com.akaxin.proto.core.PushProto.PushToUser.Builder.class);
+      }
+
+      // Construct using com.akaxin.proto.core.PushProto.PushToUser.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        globalUserId_ = "";
+
+        userToken_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.akaxin.proto.core.PushProto.internal_static_core_PushToUser_descriptor;
+      }
+
+      public com.akaxin.proto.core.PushProto.PushToUser getDefaultInstanceForType() {
+        return com.akaxin.proto.core.PushProto.PushToUser.getDefaultInstance();
+      }
+
+      public com.akaxin.proto.core.PushProto.PushToUser build() {
+        com.akaxin.proto.core.PushProto.PushToUser result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.akaxin.proto.core.PushProto.PushToUser buildPartial() {
+        com.akaxin.proto.core.PushProto.PushToUser result = new com.akaxin.proto.core.PushProto.PushToUser(this);
+        result.globalUserId_ = globalUserId_;
+        result.userToken_ = userToken_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.akaxin.proto.core.PushProto.PushToUser) {
+          return mergeFrom((com.akaxin.proto.core.PushProto.PushToUser)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.akaxin.proto.core.PushProto.PushToUser other) {
+        if (other == com.akaxin.proto.core.PushProto.PushToUser.getDefaultInstance()) return this;
+        if (!other.getGlobalUserId().isEmpty()) {
+          globalUserId_ = other.globalUserId_;
+          onChanged();
+        }
+        if (!other.getUserToken().isEmpty()) {
+          userToken_ = other.userToken_;
+          onChanged();
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.akaxin.proto.core.PushProto.PushToUser parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.akaxin.proto.core.PushProto.PushToUser) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object globalUserId_ = "";
+      /**
+       * <pre>
+       *接受者：globalUserID,
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public java.lang.String getGlobalUserId() {
+        java.lang.Object ref = globalUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          globalUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *接受者：globalUserID,
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGlobalUserIdBytes() {
+        java.lang.Object ref = globalUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          globalUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *接受者：globalUserID,
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public Builder setGlobalUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        globalUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者：globalUserID,
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public Builder clearGlobalUserId() {
+        
+        globalUserId_ = getDefaultInstance().getGlobalUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者：globalUserID,
+       * </pre>
+       *
+       * <code>optional string global_user_id = 1;</code>
+       */
+      public Builder setGlobalUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        globalUserId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object userToken_ = "";
+      /**
+       * <pre>
+       *接受者：用户的token
+       * </pre>
+       *
+       * <code>optional string user_token = 2;</code>
+       */
+      public java.lang.String getUserToken() {
+        java.lang.Object ref = userToken_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          userToken_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *接受者：用户的token
+       * </pre>
+       *
+       * <code>optional string user_token = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserTokenBytes() {
+        java.lang.Object ref = userToken_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userToken_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *接受者：用户的token
+       * </pre>
+       *
+       * <code>optional string user_token = 2;</code>
+       */
+      public Builder setUserToken(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        userToken_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者：用户的token
+       * </pre>
+       *
+       * <code>optional string user_token = 2;</code>
+       */
+      public Builder clearUserToken() {
+        
+        userToken_ = getDefaultInstance().getUserToken();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者：用户的token
+       * </pre>
+       *
+       * <code>optional string user_token = 2;</code>
+       */
+      public Builder setUserTokenBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        userToken_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:core.PushToUser)
+    }
+
+    // @@protoc_insertion_point(class_scope:core.PushToUser)
+    private static final com.akaxin.proto.core.PushProto.PushToUser DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.akaxin.proto.core.PushProto.PushToUser();
+    }
+
+    public static com.akaxin.proto.core.PushProto.PushToUser getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<PushToUser>
+        PARSER = new com.google.protobuf.AbstractParser<PushToUser>() {
+      public PushToUser parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new PushToUser(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<PushToUser> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PushToUser> getParserForType() {
+      return PARSER;
+    }
+
+    public com.akaxin.proto.core.PushProto.PushToUser getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_core_Notification_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_core_Notification_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_core_Notifications_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_core_Notifications_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_core_PushFromUser_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_core_PushFromUser_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_core_PushToUser_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_core_PushToUser_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2366,20 +5473,28 @@ public final class PushProto {
       "\022\022\n\npush_badge\030\005 \001(\005\022\022\n\npush_sound\030\006 \001(\t" +
       "\022\017\n\007user_id\030\007 \001(\t\022\022\n\nuser_token\030\010 \001(\t\022\024\n" +
       "\014push_from_id\030\t \001(\t\022\026\n\016push_from_name\030\n " +
-      "\001(\t*\352\003\n\010PushType\022\017\n\013PUSH_NOTICE\020\000\022\023\n\017PUS" +
-      "H_MSG_STATUS\020\001\022\023\n\017PUSH_MSG_FINISH\020\002\022\r\n\tP" +
-      "USH_TEXT\020\003\022\024\n\020PUSH_SECRET_TEXT\020\004\022\023\n\017PUSH" +
-      "_GROUP_TEXT\020\005\022\032\n\026PUSH_GROUP_SECRET_TEXT\020",
-      "\006\022\016\n\nPUSH_IMAGE\020\007\022\025\n\021PUSH_SECRET_IMAGE\020\010" +
-      "\022\024\n\020PUSH_GROUP_IMAGE\020\t\022\033\n\027PUSH_GROUP_SEC" +
-      "RET_IMAGE\020\n\022\016\n\nPUSH_VOICE\020\013\022\025\n\021PUSH_SECR" +
-      "ET_VOICE\020\014\022\024\n\020PUSH_GROUP_VOICE\020\r\022\033\n\027PUSH" +
-      "_GROUP_SECRET_VOICE\020\016\022\014\n\010PUSH_MAP\020\017\022\023\n\017P" +
-      "USH_SECRET_MAP\020\020\022\022\n\016PUSH_GROUP_MAP\020\021\022\031\n\025" +
-      "PUSH_GROUP_SECRET_MAP\020\022\022\022\n\016PUSH_U2_NOTIC" +
-      "E\020\023\022\025\n\021PUSH_GROUP_NOTICE\020\024\022\034\n\030PUSH_APPLY" +
-      "_FRIEND_NOTICE\020dB\"\n\025com.akaxin.proto.cor" +
-      "eB\tPushProtob\006proto3"
+      "\001(\t\"\236\001\n\rNotifications\022\023\n\013site_server\030\001 \001" +
+      "(\t\022\022\n\npush_title\030\002 \001(\t\022\025\n\rpush_subtitle\030" +
+      "\003 \001(\t\022\022\n\npush_alert\030\004 \001(\t\022\021\n\tpush_goto\030\005" +
+      " \001(\t\022\022\n\npush_badge\030\006 \001(\005\022\022\n\npush_sound\030\007",
+      " \001(\t\"T\n\014PushFromUser\022\026\n\016global_user_id\030\001" +
+      " \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016push_from_" +
+      "name\030\003 \001(\t\"8\n\nPushToUser\022\026\n\016global_user_" +
+      "id\030\001 \001(\t\022\022\n\nuser_token\030\002 \001(\t*\352\003\n\010PushTyp" +
+      "e\022\017\n\013PUSH_NOTICE\020\000\022\023\n\017PUSH_MSG_STATUS\020\001\022" +
+      "\023\n\017PUSH_MSG_FINISH\020\002\022\r\n\tPUSH_TEXT\020\003\022\024\n\020P" +
+      "USH_SECRET_TEXT\020\004\022\023\n\017PUSH_GROUP_TEXT\020\005\022\032" +
+      "\n\026PUSH_GROUP_SECRET_TEXT\020\006\022\016\n\nPUSH_IMAGE" +
+      "\020\007\022\025\n\021PUSH_SECRET_IMAGE\020\010\022\024\n\020PUSH_GROUP_" +
+      "IMAGE\020\t\022\033\n\027PUSH_GROUP_SECRET_IMAGE\020\n\022\016\n\n",
+      "PUSH_VOICE\020\013\022\025\n\021PUSH_SECRET_VOICE\020\014\022\024\n\020P" +
+      "USH_GROUP_VOICE\020\r\022\033\n\027PUSH_GROUP_SECRET_V" +
+      "OICE\020\016\022\014\n\010PUSH_MAP\020\017\022\023\n\017PUSH_SECRET_MAP\020" +
+      "\020\022\022\n\016PUSH_GROUP_MAP\020\021\022\031\n\025PUSH_GROUP_SECR" +
+      "ET_MAP\020\022\022\022\n\016PUSH_U2_NOTICE\020\023\022\025\n\021PUSH_GRO" +
+      "UP_NOTICE\020\024\022\034\n\030PUSH_APPLY_FRIEND_NOTICE\020" +
+      "dB\"\n\025com.akaxin.proto.coreB\tPushProtob\006p" +
+      "roto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2399,6 +5514,24 @@ public final class PushProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_Notification_descriptor,
         new java.lang.String[] { "SiteServer", "PushTitle", "PushAlert", "PushGoto", "PushBadge", "PushSound", "UserId", "UserToken", "PushFromId", "PushFromName", });
+    internal_static_core_Notifications_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_core_Notifications_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_core_Notifications_descriptor,
+        new java.lang.String[] { "SiteServer", "PushTitle", "PushSubtitle", "PushAlert", "PushGoto", "PushBadge", "PushSound", });
+    internal_static_core_PushFromUser_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_core_PushFromUser_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_core_PushFromUser_descriptor,
+        new java.lang.String[] { "GlobalUserId", "SiteUserId", "PushFromName", });
+    internal_static_core_PushToUser_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_core_PushToUser_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_core_PushToUser_descriptor,
+        new java.lang.String[] { "GlobalUserId", "UserToken", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
