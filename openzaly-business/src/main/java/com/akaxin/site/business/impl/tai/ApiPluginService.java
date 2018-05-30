@@ -278,6 +278,7 @@ public class ApiPluginService extends AbstractRequest {
 		pluginBuilder.setOrder(bean.getSort());
 		pluginBuilder.setPositionValue(bean.getPosition());
 		pluginBuilder.setPermissionStatusValue(bean.getPermissionStatus());
+		pluginBuilder.setDisplayModeValue(bean.getDisplayMode());
 
 		return pluginBuilder.build();
 	}
