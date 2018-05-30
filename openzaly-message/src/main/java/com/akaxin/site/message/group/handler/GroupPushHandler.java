@@ -133,7 +133,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					logger.debug("client={} siteUserId={} push to groupId={} siteFriend={} content={}",
 							command.getClientIp(), command.getSiteUserId(), command.getSiteGroupId(),
 							command.getSiteFriendId(), requestBuilder.toString());
-					WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
+					WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATIONS,
 							requestBuilder.build().toByteArray());
 
 				} catch (Exception e) {

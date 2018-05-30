@@ -38,6 +38,7 @@ public interface CommandConst {
 	public String IM_NOTICE = "im.stc.notice";
 
 	public String API_PUSH_NOTIFICATION = "api.push.notification";
+	public String API_PUSH_NOTIFICATIONS = "api.push.notifications";
 
 	public String API_PHONE_CONFIRETOKEN = "api.phone.confirmToken";
 
