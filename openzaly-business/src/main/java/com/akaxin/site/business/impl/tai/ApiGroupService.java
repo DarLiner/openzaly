@@ -82,7 +82,7 @@ public class ApiGroupService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(siteUserId)) {
-				List<SimpleGroupBean> groupBeanList = UserGroupDao.getInstance().getUserGroups(siteUserId);
+				List<SimpleGroupBean> groupBeanList = UserGroupDao.getInstance().getUserGroupList(siteUserId);
 				ApiGroupListProto.ApiGroupListResponse.Builder responseBuilder = ApiGroupListProto.ApiGroupListResponse
 						.newBuilder();
 				for (SimpleGroupBean groupBean : groupBeanList) {

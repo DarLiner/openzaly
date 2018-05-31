@@ -115,7 +115,7 @@ public class UserManageService implements IUserService {
             logger.error("del user friend error", e);
         }
         try {
-            List<SimpleGroupBean> userGroups = groupDao.getUserGroups(siteUserId);
+            List<SimpleGroupBean> userGroups = groupDao.getUserGroupList(siteUserId);
             for (SimpleGroupBean userGroup : userGroups) {
                 String groupMasterId = UserGroupDao.getInstance().getGroupMaster(userGroup.getGroupId());
                 if (groupMasterId.equals(siteUserId)) {

@@ -49,10 +49,29 @@ public class UserFriendDao {
 		return instance;
 	}
 
+	public int getUserFriendNum(String siteUserId) {
+		try {
+			return userFriendDao.getUserFriendNum(siteUserId);
+		} catch (SQLException e) {
+			logger.error("get user friend num error", e);
+		}
+		return -1;
+	}
+
 	public List<SimpleUserBean> getUserFriends(String userId) {
 		List<SimpleUserBean> friendList = new ArrayList<SimpleUserBean>();
 		try {
 			friendList = userFriendDao.getUserFriends(userId);
+		} catch (SQLException e) {
+			logger.error("get user friend list error", e);
+		}
+		return friendList;
+	}
+
+	public List<SimpleUserBean> getUserFriendsByPage(String siteUserId, int pageNum, int pageSize) {
+		List<SimpleUserBean> friendList = null;
+		try {
+			friendList = userFriendDao.getUserFriendsByPage(siteUserId, pageNum, pageSize);
 		} catch (SQLException e) {
 			logger.error("get user friend list error", e);
 		}

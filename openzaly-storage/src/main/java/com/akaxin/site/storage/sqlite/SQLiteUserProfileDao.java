@@ -405,32 +405,6 @@ public class SQLiteUserProfileDao {
 		return result;
 	}
 
-	// siteUserId -> Friends
-	public List<SimpleUserBean> queryUserFriends(String siteUserId) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
-		String sql = "SELECT a.site_friend_id,a.alias_name,a.alias_name_in_latin,b.user_name,b.user_name_in_latin,b.user_photo FROM "
-				+ USER_FRIEND_TABLE + " AS a LEFT JOIN " + USER_PROFILE_TABLE
-				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
-
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, siteUserId);
-		ResultSet rs = preStatement.executeQuery();
-		while (rs.next()) {
-			SimpleUserBean bean = new SimpleUserBean();
-			bean.setUserId(rs.getString(1));
-			bean.setAliasName(rs.getString(2));
-			bean.setAliasNameInLatin(rs.getString(3));
-			bean.setUserName(rs.getString(4));
-			bean.setUserNameInLatin(rs.getString(5));
-			bean.setUserPhoto(rs.getString(6));
-			userFriendList.add(bean);
-		}
-
-		LogUtils.dbDebugLog(logger, startTime, userFriendList.size(), sql, siteUserId);
-		return userFriendList;
-	}
-
 	/**
 	 * 分页获取用户列表，这个列表包含用户与查询的用户之间的关系,扩展中使用
 	 *

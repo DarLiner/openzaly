@@ -27,12 +27,9 @@ import com.akaxin.site.business.api.IRequest;
 import com.akaxin.site.business.impl.hai.HttpFriendService;
 import com.akaxin.site.business.impl.hai.HttpGroupService;
 import com.akaxin.site.business.impl.hai.HttpMessageService;
-import com.akaxin.site.business.impl.hai.HttpPluginService;
 import com.akaxin.site.business.impl.hai.HttpPushService;
 import com.akaxin.site.business.impl.hai.HttpSiteConfigService;
-import com.akaxin.site.business.impl.hai.HttpUICService;
 import com.akaxin.site.business.impl.hai.HttpUserService;
-import com.akaxin.site.business.impl.site.SiteConfig;
 
 /**
  * Http处理业务逻辑,部分功能需要先验证管理员权限
@@ -45,6 +42,7 @@ public class HttpRequestService implements IRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpRequestService.class);
 
 	public CommandResponse process(Command command) {
+		// 路由分发
 		HttpUriAction huaEnum = HttpUriAction.getUriActionEnum(command.getRety(), command.getService());
 		CommandResponse response = null;
 		try {
@@ -67,12 +65,6 @@ public class HttpRequestService implements IRequest {
 			case HAI_PUSH_SERVICE:
 				response = new HttpPushService().execute(command);
 				break;
-			case HAI_PLUGIN_SERVICE:
-				response = new HttpPluginService().execute(command);
-				break;
-			case HAI_UIC_SERVICE:
-				response = new HttpUICService().execute(command);
-				break;
 			default:
 				logger.error("error http request command={}", command.toString());
 				throw new Exception("http request with error url=" + command.getUri());
@@ -86,9 +78,4 @@ public class HttpRequestService implements IRequest {
 		return response.setVersion(CommandConst.PROTOCOL_VERSION).setAction(CommandConst.ACTION_RES);
 	}
 
-	private boolean checkPermissions(String siteUserId) {
-		boolean result = SiteConfig.isSiteManager(siteUserId);
-		logger.debug("check plugin permission result={}", result);
-		return result;
-	}
 }

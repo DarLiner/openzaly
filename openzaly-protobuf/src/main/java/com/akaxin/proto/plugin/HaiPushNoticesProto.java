@@ -56,7 +56,7 @@ public final class HaiPushNoticesProto {
 
     /**
      * <pre>
-     *通知的跳转
+     *通知的跳转，可以为空。
      * </pre>
      *
      * <code>optional string push_goto = 3;</code>
@@ -64,7 +64,7 @@ public final class HaiPushNoticesProto {
     java.lang.String getPushGoto();
     /**
      * <pre>
-     *通知的跳转
+     *通知的跳转，可以为空。
      * </pre>
      *
      * <code>optional string push_goto = 3;</code>
@@ -74,7 +74,16 @@ public final class HaiPushNoticesProto {
   }
   /**
    * <pre>
-   *全员发送通知
+   **
+   *向全员推送消息通知
+   *----
+   *接口名
+   *----
+   * /hai/push/notices
+   *错误码
+   *----
+   * success
+   * error.alert
    * </pre>
    *
    * Protobuf type {@code plugin.HaiPushNoticesRequest}
@@ -247,7 +256,7 @@ public final class HaiPushNoticesProto {
     private volatile java.lang.Object pushGoto_;
     /**
      * <pre>
-     *通知的跳转
+     *通知的跳转，可以为空。
      * </pre>
      *
      * <code>optional string push_goto = 3;</code>
@@ -266,7 +275,7 @@ public final class HaiPushNoticesProto {
     }
     /**
      * <pre>
-     *通知的跳转
+     *通知的跳转，可以为空。
      * </pre>
      *
      * <code>optional string push_goto = 3;</code>
@@ -444,7 +453,16 @@ public final class HaiPushNoticesProto {
     }
     /**
      * <pre>
-     *全员发送通知
+     **
+     *向全员推送消息通知
+     *----
+     *接口名
+     *----
+     * /hai/push/notices
+     *错误码
+     *----
+     * success
+     * error.alert
      * </pre>
      *
      * Protobuf type {@code plugin.HaiPushNoticesRequest}
@@ -773,7 +791,7 @@ public final class HaiPushNoticesProto {
       private java.lang.Object pushGoto_ = "";
       /**
        * <pre>
-       *通知的跳转
+       *通知的跳转，可以为空。
        * </pre>
        *
        * <code>optional string push_goto = 3;</code>
@@ -792,7 +810,7 @@ public final class HaiPushNoticesProto {
       }
       /**
        * <pre>
-       *通知的跳转
+       *通知的跳转，可以为空。
        * </pre>
        *
        * <code>optional string push_goto = 3;</code>
@@ -812,7 +830,7 @@ public final class HaiPushNoticesProto {
       }
       /**
        * <pre>
-       *通知的跳转
+       *通知的跳转，可以为空。
        * </pre>
        *
        * <code>optional string push_goto = 3;</code>
@@ -829,7 +847,7 @@ public final class HaiPushNoticesProto {
       }
       /**
        * <pre>
-       *通知的跳转
+       *通知的跳转，可以为空。
        * </pre>
        *
        * <code>optional string push_goto = 3;</code>
@@ -842,7 +860,7 @@ public final class HaiPushNoticesProto {
       }
       /**
        * <pre>
-       *通知的跳转
+       *通知的跳转，可以为空。
        * </pre>
        *
        * <code>optional string push_goto = 3;</code>

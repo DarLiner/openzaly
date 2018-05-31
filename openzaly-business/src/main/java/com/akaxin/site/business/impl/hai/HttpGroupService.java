@@ -24,17 +24,20 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.plugin.HaiGroupAddMemberProto;
+import com.akaxin.proto.plugin.HaiGroupCheckMemberProto;
 import com.akaxin.proto.plugin.HaiGroupDeleteProto;
 import com.akaxin.proto.plugin.HaiGroupListProto;
 import com.akaxin.proto.plugin.HaiGroupMembersProto;
 import com.akaxin.proto.plugin.HaiGroupNonmembersProto;
 import com.akaxin.proto.plugin.HaiGroupProfileProto;
 import com.akaxin.proto.plugin.HaiGroupRemoveMemberProto;
-import com.akaxin.proto.plugin.HaiGroupUpdateProfileProto;
+import com.akaxin.proto.plugin.HaiGroupUpdateProto;
 import com.akaxin.site.business.constant.GroupConfig;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.impl.AbstractRequest;
@@ -44,8 +47,20 @@ import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.google.protobuf.ProtocolStringList;
 
 /**
- * 扩展功能，群组管理功能
- * 
+ * <pre>
+ * 	群组相关的扩展功能实现
+ * 		/ hai / group / profile 
+ * 		/ hai / group / list 
+ * 		/ hai / group / update 
+ * 		/ hai / group / delete 
+ * 		/ hai / group / addMember 
+ * 		/ hai / group / checkMember 	
+ * 		/ hai / group / removeMember 
+ * 		/ hai / group / members 
+ * 		/ hai / group / nonmembers
+ * </pre>
+ */
+/**
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-13 16:46:01
  */
@@ -53,7 +68,41 @@ public class HttpGroupService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpGroupService.class);
 
 	/**
-	 * 分页获取站点群列表
+	 * /hai/group/profile : 获取群组资料
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse profile(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			HaiGroupProfileProto.HaiGroupProfileRequest request = HaiGroupProfileProto.HaiGroupProfileRequest
+					.parseFrom(command.getParams());
+			String groupId = request.getGroupId();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
+
+			if (groupBean != null && StringUtils.isNotBlank(groupBean.getGroupId())) {
+				GroupProto.GroupProfile groupProfile = GroupProto.GroupProfile.newBuilder()
+						.setId(groupBean.getGroupId()).setName(String.valueOf(groupBean.getGroupName()))
+						.setIcon(String.valueOf(groupBean.getGroupPhoto())).build();
+				HaiGroupProfileProto.HaiGroupProfileResponse.Builder responseBuilder = HaiGroupProfileProto.HaiGroupProfileResponse
+						.newBuilder();
+				responseBuilder.setProfile(groupProfile);
+				commandResponse.setParams(responseBuilder.build().toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			}
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * /hai/group/list
 	 * 
 	 * @param command
 	 * @return
@@ -86,32 +135,172 @@ public class HttpGroupService extends AbstractRequest {
 	}
 
 	/**
-	 * 获取群资料
+	 * /hai/group/update : 更新群资料
 	 * 
 	 * @param command
 	 * @return
 	 */
-	public CommandResponse profile(Command command) {
+	public CommandResponse update(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			HaiGroupUpdateProto.HaiGroupUpdateRequest request = HaiGroupUpdateProto.HaiGroupUpdateRequest
+					.parseFrom(command.getParams());
+			String groupId = request.getProfile().getId();
+			String photoId = request.getProfile().getIcon();
+			String groupName = request.getProfile().getName();
+			String groupNotice = request.getProfile().getGroupNotice();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isEmpty(groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			GroupProfileBean gprofileBean = new GroupProfileBean();
+			gprofileBean.setGroupId(groupId);
+			gprofileBean.setGroupName(groupName);
+			gprofileBean.setGroupPhoto(photoId);
+			gprofileBean.setGroupNotice(groupNotice);
+			if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+			}
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode(errCode);
+	}
+
+	/**
+	 * /hai/group/delete : 删除群组
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse delete(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			HaiGroupDeleteProto.HaiGroupDeleteRequest request = HaiGroupDeleteProto.HaiGroupDeleteRequest
+					.parseFrom(command.getParams());
+			String siteGroupId = request.getGroupId();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isNotEmpty(siteGroupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (UserGroupDao.getInstance().deleteGroup(siteGroupId)) {
+				errCode = ErrorCode2.SUCCESS;
+			}
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse.setErrCode(errCode);
+	}
+
+	/**
+	 * /hai/group/addMember : 添加群成员
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse addMember(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			HaiGroupAddMemberProto.HaiGroupAddMemberRequest request = HaiGroupAddMemberProto.HaiGroupAddMemberRequest
+					.parseFrom(command.getParams());
+			String siteGroupId = request.getGroupId();
+			ProtocolStringList memberUserList = request.getMemberSiteUserIdList();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isEmpty(siteGroupId) || memberUserList == null) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (UserGroupDao.getInstance().addGroupMember(null, siteGroupId, memberUserList)) {
+				errCode = ErrorCode2.SUCCESS;
+			}
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode(errCode);
+	}
+
+	/**
+	 * /hai/group/removeMember : 删除群成员
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse removeMember(Command command) {
 		CommandResponse commandResponse = new CommandResponse();
 		ErrorCode2 errCode = ErrorCode2.ERROR;
 		try {
-			HaiGroupProfileProto.HaiGroupProfileRequest request = HaiGroupProfileProto.HaiGroupProfileRequest
+			HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest request = HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
+			ProtocolStringList deleteMemberIds = request.getGroupMemberList();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			GroupProfileBean groupBean = UserGroupDao.getInstance().getGroupProfile(groupId);
-
-			if (groupBean != null && StringUtils.isNotBlank(groupBean.getGroupId())) {
-				GroupProto.GroupProfile groupProfile = GroupProto.GroupProfile.newBuilder()
-						.setId(groupBean.getGroupId()).setName(String.valueOf(groupBean.getGroupName()))
-						.setIcon(String.valueOf(groupBean.getGroupPhoto())).build();
-				HaiGroupProfileProto.HaiGroupProfileResponse.Builder responseBuilder = HaiGroupProfileProto.HaiGroupProfileResponse
-						.newBuilder();
-				responseBuilder.setProfile(groupProfile);
-				commandResponse.setParams(responseBuilder.build().toByteArray());
-				errCode = ErrorCode2.SUCCESS;
+			if (StringUtils.isNotBlank(groupId)) {
+				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
+					errCode = ErrorCode2.SUCCESS;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_PARAMETER;
 			}
+
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode2(errCode);
+	}
+
+	/**
+	 * /hai/group/checkMember : 检测用户是否在群聊中
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse checkMember(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		ErrorCode2 errCode = ErrorCode2.ERROR;
+		try {
+			HaiGroupCheckMemberProto.HaiGroupCheckMemberRequest request = HaiGroupCheckMemberProto.HaiGroupCheckMemberRequest
+					.parseFrom(command.getParams());
+			String groupId = request.getGroupId();
+			ProtocolStringList checkUserIds = request.getSiteUserIdList();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isNotBlank(groupId) || checkUserIds == null) {
+				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+
+			List<String> checkedUserList = UserGroupDao.getInstance().checkGroupMember(groupId, checkUserIds);
+			if (checkedUserList != null) {
+				HaiGroupCheckMemberProto.HaiGroupCheckMemberResponse response = HaiGroupCheckMemberProto.HaiGroupCheckMemberResponse
+						.newBuilder().addAllMembersSiteUserId(checkedUserList).build();
+				commandResponse.setParams(response.toByteArray());
+			}
+
+			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
@@ -191,134 +380,6 @@ public class HttpGroupService extends AbstractRequest {
 			commandResponse.setParams(responseBuilder.build().toByteArray());
 			errCode = ErrorCode2.SUCCESS;
 
-		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.requestErrorLog(logger, command, e);
-		}
-		return commandResponse.setErrCode2(errCode);
-	}
-
-	/**
-	 * 删除群成员
-	 * 
-	 * @param command
-	 * @return
-	 */
-	public CommandResponse removeMember(Command command) {
-		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errCode = ErrorCode2.ERROR;
-		try {
-			HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest request = HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest
-					.parseFrom(command.getParams());
-			String groupId = request.getGroupId();
-			ProtocolStringList deleteMemberIds = request.getGroupMemberList();
-			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isNotBlank(groupId)) {
-				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
-					errCode = ErrorCode2.SUCCESS;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
-			}
-
-		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.requestErrorLog(logger, command, e);
-		}
-		return commandResponse.setErrCode2(errCode);
-	}
-
-	/**
-	 * 更新群资料
-	 * 
-	 * @param command
-	 * @return
-	 */
-	public CommandResponse updateProfile(Command command) {
-		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errCode = ErrorCode2.ERROR;
-		try {
-			HaiGroupUpdateProfileProto.HaiGroupUpdateProfileRequest request = HaiGroupUpdateProfileProto.HaiGroupUpdateProfileRequest
-					.parseFrom(command.getParams());
-			String groupId = request.getProfile().getId();
-			String photoId = request.getProfile().getIcon();
-			String groupName = request.getProfile().getName();
-			String groupNotice = request.getProfile().getGroupNotice();
-			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isNotBlank(groupId)) {
-				GroupProfileBean gprofileBean = new GroupProfileBean();
-				gprofileBean.setGroupId(groupId);
-				gprofileBean.setGroupName(groupName);
-				gprofileBean.setGroupPhoto(photoId);
-				gprofileBean.setGroupNotice(groupNotice);
-				if (UserGroupDao.getInstance().updateGroupProfile(gprofileBean)) {
-					errCode = ErrorCode2.SUCCESS;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
-			}
-		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.requestErrorLog(logger, command, e);
-		}
-		return commandResponse.setErrCode2(errCode);
-	}
-
-	/**
-	 * 删除群组
-	 * 
-	 * @param command
-	 * @return
-	 */
-	public CommandResponse delete(Command command) {
-		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errCode = ErrorCode2.ERROR;
-		try {
-			HaiGroupDeleteProto.HaiGroupDeleteRequest request = HaiGroupDeleteProto.HaiGroupDeleteRequest
-					.parseFrom(command.getParams());
-			String groupId = request.getGroupId();
-			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isNotBlank(groupId)) {
-				if (UserGroupDao.getInstance().deleteGroup(groupId)) {
-					errCode = ErrorCode2.SUCCESS;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
-			}
-		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.requestErrorLog(logger, command, e);
-		}
-		return commandResponse.setErrCode2(errCode);
-	}
-
-	/**
-	 * 添加群成员
-	 * 
-	 * @param command
-	 * @return
-	 */
-	public CommandResponse addMember(Command command) {
-		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errCode = ErrorCode2.ERROR;
-		try {
-			HaiGroupAddMemberProto.HaiGroupAddMemberRequest request = HaiGroupAddMemberProto.HaiGroupAddMemberRequest
-					.parseFrom(command.getParams());
-			String siteUserId = command.getSiteUserId();
-			String groupId = request.getGroupId();
-			ProtocolStringList addMemberList = request.getGroupMemberList();
-			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isNotBlank(siteUserId) && StringUtils.isNoneBlank(groupId) && addMemberList != null) {
-				if (UserGroupDao.getInstance().addGroupMember(siteUserId, groupId, addMemberList)) {
-					errCode = ErrorCode2.SUCCESS;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
-			}
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);

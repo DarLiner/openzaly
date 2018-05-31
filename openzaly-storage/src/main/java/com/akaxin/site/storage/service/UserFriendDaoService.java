@@ -22,7 +22,6 @@ import com.akaxin.site.storage.api.IUserFriendDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.sqlite.SQLiteUserFriendDao;
-import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
 
 /**
  * 
@@ -30,6 +29,21 @@ import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
  * @since 2018-01-31 12:11:10
  */
 public class UserFriendDaoService implements IUserFriendDao {
+
+	@Override
+	public int getUserFriendNum(String siteUserId) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().queryUserFriendNum(siteUserId);
+	}
+
+	@Override
+	public List<SimpleUserBean> getUserFriends(String siteUserId) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().queryUserFriends(siteUserId);
+	}
+
+	@Override
+	public List<SimpleUserBean> getUserFriendsByPage(String siteUserId, int pageNum, int pageSize) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().queryUserFriendsByPage(siteUserId, pageNum, pageSize);
+	}
 
 	@Override
 	public boolean saveRelation(String siteUserId, String siteFriendId, int relation) throws SQLException {
@@ -49,11 +63,6 @@ public class UserFriendDaoService implements IUserFriendDao {
 	@Override
 	public boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException {
 		return SQLiteUserFriendDao.getInstance().deleteRelation(siteUserId, siteFriendId);
-	}
-
-	@Override
-	public List<SimpleUserBean> getUserFriends(String userId) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().queryUserFriends(userId);
 	}
 
 	@Override

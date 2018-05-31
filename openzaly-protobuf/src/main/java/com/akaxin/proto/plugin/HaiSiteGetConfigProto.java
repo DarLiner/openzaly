@@ -19,6 +19,19 @@ public final class HaiSiteGetConfigProto {
       com.google.protobuf.MessageOrBuilder {
   }
   /**
+   * <pre>
+   **
+   *获取站点的配置
+   *----
+   *接口名
+   *----
+   * /hai/site/getConfig
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiSiteGetConfigRequest}
    */
   public  static final class HaiSiteGetConfigRequest extends
@@ -207,6 +220,19 @@ public final class HaiSiteGetConfigProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *获取站点的配置
+     *----
+     *接口名
+     *----
+     * /hai/site/getConfig
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiSiteGetConfigRequest}
      */
     public static final class Builder extends

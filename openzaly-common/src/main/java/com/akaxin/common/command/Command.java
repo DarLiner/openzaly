@@ -116,10 +116,7 @@ public class Command {
 
 	public void setUri(String uri) {
 		String[] splitStr = uri.split("/");
-		int index = 0;
-		if (4 == splitStr.length) {
-			index++;
-		}
+		int index = uri.length() - 3;
 		this.rety = splitStr[index];
 		this.service = splitStr[index + 1];
 		this.method = splitStr[index + 2];

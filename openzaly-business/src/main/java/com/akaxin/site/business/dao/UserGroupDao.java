@@ -63,6 +63,7 @@ public class UserGroupDao {
 		return SingletonHolder.instance;
 	}
 
+	// 获取群主
 	public String getGroupMaster(String groupId) {
 		try {
 			return groupDao.getGroupOwner(groupId);
@@ -72,12 +73,31 @@ public class UserGroupDao {
 		return null;
 	}
 
-	public List<SimpleGroupBean> getUserGroups(String siteUserId) {
+	public int getUserGroupCount(String siteUserId) {
+		try {
+			return groupDao.getUserGroupCount(siteUserId);
+		} catch (Exception e) {
+			logger.error("get user group num error.", e);
+		}
+		return -1;
+	}
+
+	public List<SimpleGroupBean> getUserGroupList(String siteUserId) {
 		List<SimpleGroupBean> goupList = new ArrayList<SimpleGroupBean>();
 		try {
-			goupList = groupDao.getUserGroups(siteUserId);
+			goupList = groupDao.getUserGroupList(siteUserId);
 		} catch (Exception e) {
 			logger.error("get user group list error.", e);
+		}
+		return goupList;
+	}
+
+	public List<SimpleGroupBean> getUserGroupList(String siteUserId, int pageNum, int pageSize) {
+		List<SimpleGroupBean> goupList = null;
+		try {
+			goupList = groupDao.getUserGroupList(siteUserId, pageNum, pageSize);
+		} catch (Exception e) {
+			logger.error("get user group list by page error.", e);
 		}
 		return goupList;
 	}
@@ -227,6 +247,10 @@ public class UserGroupDao {
 
 	public boolean deleteGroupMember(String groupId, List<String> userIds) {
 		return groupDao.deleteGroupMember(groupId, userIds);
+	}
+
+	public List<String> checkGroupMember(String siteGroupId, List<String> userIds) throws SQLException {
+		return userGroupDao.checkGroupMember(siteGroupId, userIds);
 	}
 
 	public boolean quitGroup(String groupId, String userId) {

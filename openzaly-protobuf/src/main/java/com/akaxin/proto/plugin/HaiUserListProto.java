@@ -37,6 +37,19 @@ public final class HaiUserListProto {
     int getPageSize();
   }
   /**
+   * <pre>
+   **
+   *获取站点上用户
+   *----
+   *接口名
+   *----
+   * /hai/user/list
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiUserListRequest}
    */
   public  static final class HaiUserListRequest extends
@@ -286,6 +299,19 @@ public final class HaiUserListProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *获取站点上用户
+     *----
+     *接口名
+     *----
+     * /hai/user/list
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiUserListRequest}
      */
     public static final class Builder extends
@@ -593,6 +619,11 @@ public final class HaiUserListProto {
      */
     com.akaxin.proto.core.UserProto.SimpleUserProfileOrBuilder getUserProfileOrBuilder(
         int index);
+
+    /**
+     * <code>optional int32 page_total_num = 2;</code>
+     */
+    int getPageTotalNum();
   }
   /**
    * Protobuf type {@code plugin.HaiUserListResponse}
@@ -607,6 +638,7 @@ public final class HaiUserListProto {
     }
     private HaiUserListResponse() {
       userProfile_ = java.util.Collections.emptyList();
+      pageTotalNum_ = 0;
     }
 
     @java.lang.Override
@@ -643,6 +675,11 @@ public final class HaiUserListProto {
                   input.readMessage(com.akaxin.proto.core.UserProto.SimpleUserProfile.parser(), extensionRegistry));
               break;
             }
+            case 16: {
+
+              pageTotalNum_ = input.readInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -669,6 +706,7 @@ public final class HaiUserListProto {
               com.akaxin.proto.plugin.HaiUserListProto.HaiUserListResponse.class, com.akaxin.proto.plugin.HaiUserListProto.HaiUserListResponse.Builder.class);
     }
 
+    private int bitField0_;
     public static final int USER_PROFILE_FIELD_NUMBER = 1;
     private java.util.List<com.akaxin.proto.core.UserProto.SimpleUserProfile> userProfile_;
     /**
@@ -724,6 +762,15 @@ public final class HaiUserListProto {
       return userProfile_.get(index);
     }
 
+    public static final int PAGE_TOTAL_NUM_FIELD_NUMBER = 2;
+    private int pageTotalNum_;
+    /**
+     * <code>optional int32 page_total_num = 2;</code>
+     */
+    public int getPageTotalNum() {
+      return pageTotalNum_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -739,6 +786,9 @@ public final class HaiUserListProto {
       for (int i = 0; i < userProfile_.size(); i++) {
         output.writeMessage(1, userProfile_.get(i));
       }
+      if (pageTotalNum_ != 0) {
+        output.writeInt32(2, pageTotalNum_);
+      }
     }
 
     public int getSerializedSize() {
@@ -749,6 +799,10 @@ public final class HaiUserListProto {
       for (int i = 0; i < userProfile_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, userProfile_.get(i));
+      }
+      if (pageTotalNum_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, pageTotalNum_);
       }
       memoizedSize = size;
       return size;
@@ -768,6 +822,8 @@ public final class HaiUserListProto {
       boolean result = true;
       result = result && getUserProfileList()
           .equals(other.getUserProfileList());
+      result = result && (getPageTotalNum()
+          == other.getPageTotalNum());
       return result;
     }
 
@@ -782,6 +838,8 @@ public final class HaiUserListProto {
         hash = (37 * hash) + USER_PROFILE_FIELD_NUMBER;
         hash = (53 * hash) + getUserProfileList().hashCode();
       }
+      hash = (37 * hash) + PAGE_TOTAL_NUM_FIELD_NUMBER;
+      hash = (53 * hash) + getPageTotalNum();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -907,6 +965,8 @@ public final class HaiUserListProto {
         } else {
           userProfileBuilder_.clear();
         }
+        pageTotalNum_ = 0;
+
         return this;
       }
 
@@ -930,6 +990,7 @@ public final class HaiUserListProto {
       public com.akaxin.proto.plugin.HaiUserListProto.HaiUserListResponse buildPartial() {
         com.akaxin.proto.plugin.HaiUserListProto.HaiUserListResponse result = new com.akaxin.proto.plugin.HaiUserListProto.HaiUserListResponse(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (userProfileBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             userProfile_ = java.util.Collections.unmodifiableList(userProfile_);
@@ -939,6 +1000,8 @@ public final class HaiUserListProto {
         } else {
           result.userProfile_ = userProfileBuilder_.build();
         }
+        result.pageTotalNum_ = pageTotalNum_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1005,6 +1068,9 @@ public final class HaiUserListProto {
               userProfileBuilder_.addAllMessages(other.userProfile_);
             }
           }
+        }
+        if (other.getPageTotalNum() != 0) {
+          setPageTotalNum(other.getPageTotalNum());
         }
         onChanged();
         return this;
@@ -1344,6 +1410,32 @@ public final class HaiUserListProto {
         }
         return userProfileBuilder_;
       }
+
+      private int pageTotalNum_ ;
+      /**
+       * <code>optional int32 page_total_num = 2;</code>
+       */
+      public int getPageTotalNum() {
+        return pageTotalNum_;
+      }
+      /**
+       * <code>optional int32 page_total_num = 2;</code>
+       */
+      public Builder setPageTotalNum(int value) {
+        
+        pageTotalNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 page_total_num = 2;</code>
+       */
+      public Builder clearPageTotalNum() {
+        
+        pageTotalNum_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -1414,13 +1506,13 @@ public final class HaiUserListProto {
     java.lang.String[] descriptorData = {
       "\n\032plugin/hai_user_list.proto\022\006plugin\032\017co" +
       "re/user.proto\"<\n\022HaiUserListRequest\022\023\n\013p" +
-      "age_number\030\001 \001(\005\022\021\n\tpage_size\030\002 \001(\005\"D\n\023H" +
+      "age_number\030\001 \001(\005\022\021\n\tpage_size\030\002 \001(\005\"\\\n\023H" +
       "aiUserListResponse\022-\n\014user_profile\030\001 \003(\013" +
-      "2\027.core.SimpleUserProfile2U\n\022HaiUserList" +
-      "Service\022?\n\004list\022\032.plugin.HaiUserListRequ" +
-      "est\032\033.plugin.HaiUserListResponseB+\n\027com." +
-      "akaxin.proto.pluginB\020HaiUserListProtob\006p" +
-      "roto3"
+      "2\027.core.SimpleUserProfile\022\026\n\016page_total_" +
+      "num\030\002 \001(\0052U\n\022HaiUserListService\022?\n\004list\022" +
+      "\032.plugin.HaiUserListRequest\032\033.plugin.Hai" +
+      "UserListResponseB+\n\027com.akaxin.proto.plu" +
+      "ginB\020HaiUserListProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1446,7 +1538,7 @@ public final class HaiUserListProto {
     internal_static_plugin_HaiUserListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiUserListResponse_descriptor,
-        new java.lang.String[] { "UserProfile", });
+        new java.lang.String[] { "UserProfile", "PageTotalNum", });
     com.akaxin.proto.core.UserProto.getDescriptor();
   }
 

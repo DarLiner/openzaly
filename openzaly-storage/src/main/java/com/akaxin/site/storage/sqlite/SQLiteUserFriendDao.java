@@ -18,6 +18,8 @@ package com.akaxin.site.storage.sqlite;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.TimeFormats;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
@@ -36,10 +39,86 @@ import com.akaxin.site.storage.sqlite.sql.SQLConst;
 public class SQLiteUserFriendDao {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteUserFriendDao.class);
 	private static final String USER_FRIEND_TABLE = SQLConst.SITE_USER_FRIEND;
+	private static final String USER_PROFILE_TABLE = SQLConst.SITE_USER_PROFILE;
 	private static SQLiteUserFriendDao instance = new SQLiteUserFriendDao();
 
 	public static SQLiteUserFriendDao getInstance() {
 		return instance;
+	}
+
+	// siteUserId -> Friends
+	public int queryUserFriendNum(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT COUNT(*) FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=?;";
+		int result = 0;
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			result = rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId);
+		return result;
+	}
+
+	// siteUserId -> Friends
+	public List<SimpleUserBean> queryUserFriends(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
+		String sql = "SELECT a.site_friend_id,a.alias_name,a.alias_name_in_latin,b.user_name,b.user_name_in_latin,b.user_photo FROM "
+				+ USER_FRIEND_TABLE + " AS a LEFT JOIN " + USER_PROFILE_TABLE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		ResultSet rs = preStatement.executeQuery();
+		while (rs.next()) {
+			SimpleUserBean bean = new SimpleUserBean();
+			bean.setUserId(rs.getString(1));
+			bean.setAliasName(rs.getString(2));
+			bean.setAliasNameInLatin(rs.getString(3));
+			bean.setUserName(rs.getString(4));
+			bean.setUserNameInLatin(rs.getString(5));
+			bean.setUserPhoto(rs.getString(6));
+			userFriendList.add(bean);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, userFriendList.size(), sql, siteUserId);
+		return userFriendList;
+	}
+
+	// 分页获取用户好友
+	public List<SimpleUserBean> queryUserFriendsByPage(String siteUserId, int pageNum, int pageSize)
+			throws SQLException {
+		long startTime = System.currentTimeMillis();
+		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
+		String sql = "SELECT a.site_friend_id,a.alias_name,a.alias_name_in_latin,b.user_name,b.user_name_in_latin,b.user_photo FROM "
+				+ USER_FRIEND_TABLE + " AS a LEFT JOIN " + USER_PROFILE_TABLE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=? LIMIT ?,?;";
+
+		int startNum = (pageNum - 1) * pageSize;
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setInt(2, startNum);
+		preStatement.setInt(3, pageSize);
+
+		ResultSet rs = preStatement.executeQuery();
+		while (rs.next()) {
+			SimpleUserBean bean = new SimpleUserBean();
+			bean.setUserId(rs.getString(1));
+			bean.setAliasName(rs.getString(2));
+			bean.setAliasNameInLatin(rs.getString(3));
+			bean.setUserName(rs.getString(4));
+			bean.setUserNameInLatin(rs.getString(5));
+			bean.setUserPhoto(rs.getString(6));
+			userFriendList.add(bean);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, userFriendList.size(), sql, siteUserId);
+		return userFriendList;
 	}
 
 	public boolean saveRelation(String siteUserId, String siteFriendId, int relation) throws SQLException {
@@ -154,7 +233,6 @@ public class SQLiteUserFriendDao {
 			return rs.getBoolean(1);
 		}
 
-		long endTime = System.currentTimeMillis();
 		LogUtils.dbDebugLog(logger, startTime, bean, sql + siteUserId + "," + siteFriendId);
 
 		return true;

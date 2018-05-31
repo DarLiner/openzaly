@@ -56,11 +56,15 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_USER_NOUSER("error.alter", "无该用户信息"), //
 	ERROR2_USER_SAVE_PUSHTOKEN("error.alter", "保存数据失败"), //
 	ERROR2_USER_UPDATE_PROFILE("error.alter", "更新数据库用户身份失败"), //
+	ERROR2_USER_NOLIST("error.alert", "暂无用户"), //
+
+	ERROR2_USER_NO_FRIEND("error.no.friends", "用户暂无好友"), //
+	ERROR2_USER_NO_GROUP("error.no.groups", "用户暂无群组"), //
 
 	ERROR2_FRIEND_IS("error.alter", "用户已经是你的好友"), //
 	ERROR2_FRIEND_APPLYSELF("error.alter", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alter", "添加好友最多为5次"), //
-	ERROR2_FRIEND_sealUped("error.alter", "你已经被封禁,无法执行操作"),
+	ERROR2_FRIEND_sealUped("error.alter", "你已经被封禁,无法执行操作"), //
 
 	ERROR_GROUP_DELETED("error.group.deleted", "该群聊不存在"), //
 	ERROR_GROUP_WHEN_CREATE("error.alter", "创建群聊出错，请稍后重试"), //
@@ -88,6 +92,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_PHONE_VERIFYCODE("error.alter", "验证码验证失败"), //
 	ERROR2_PHONE_GETVERIFYCODE("error.alter", "获取验证码失败"), //
 	ERROR2_PHONE_FORMATTING("error.alter", "不支持的手机号"), //
+	ERROR2_PHONE_HAVE_NO("error.alert", "手机号不存在"), //
 
 	ERROR2_PLUGIN_STATUS("error.alter", "扩展状态错误"), //
 

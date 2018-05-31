@@ -20,41 +20,72 @@ public final class HaiFriendApplyProto {
 
     /**
      * <pre>
-     *被添加好友的用户ID
+     * 发起好友请求的用户
      * </pre>
      *
-     * <code>optional string site_friend_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
-    java.lang.String getSiteFriendId();
+    java.lang.String getSiteUserId();
     /**
      * <pre>
-     *被添加好友的用户ID
+     * 发起好友请求的用户
      * </pre>
      *
-     * <code>optional string site_friend_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getSiteFriendIdBytes();
+        getSiteUserIdBytes();
 
     /**
      * <pre>
-     *申请添加的原因说明
+     * 目标用户
      * </pre>
      *
-     * <code>optional string apply_reason = 2;</code>
+     * <code>optional string friend_site_user_id = 2;</code>
+     */
+    java.lang.String getFriendSiteUserId();
+    /**
+     * <pre>
+     * 目标用户
+     * </pre>
+     *
+     * <code>optional string friend_site_user_id = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getFriendSiteUserIdBytes();
+
+    /**
+     * <pre>
+     * 申请理由
+     * </pre>
+     *
+     * <code>optional string apply_reason = 3;</code>
      */
     java.lang.String getApplyReason();
     /**
      * <pre>
-     *申请添加的原因说明
+     * 申请理由
      * </pre>
      *
-     * <code>optional string apply_reason = 2;</code>
+     * <code>optional string apply_reason = 3;</code>
      */
     com.google.protobuf.ByteString
         getApplyReasonBytes();
   }
   /**
+   * <pre>
+   **
+   *A-&gt;B 发送好友请求
+   *----
+   *接口名
+   *----
+   * /hai/friend/apply
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiFriendApplyRequest}
    */
   public  static final class HaiFriendApplyRequest extends
@@ -66,7 +97,8 @@ public final class HaiFriendApplyProto {
       super(builder);
     }
     private HaiFriendApplyRequest() {
-      siteFriendId_ = "";
+      siteUserId_ = "";
+      friendSiteUserId_ = "";
       applyReason_ = "";
     }
 
@@ -98,10 +130,16 @@ public final class HaiFriendApplyProto {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              siteFriendId_ = s;
+              siteUserId_ = s;
               break;
             }
             case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              friendSiteUserId_ = s;
+              break;
+            }
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               applyReason_ = s;
@@ -130,56 +168,98 @@ public final class HaiFriendApplyProto {
               com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest.class, com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest.Builder.class);
     }
 
-    public static final int SITE_FRIEND_ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object siteFriendId_;
+    public static final int SITE_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object siteUserId_;
     /**
      * <pre>
-     *被添加好友的用户ID
+     * 发起好友请求的用户
      * </pre>
      *
-     * <code>optional string site_friend_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
-    public java.lang.String getSiteFriendId() {
-      java.lang.Object ref = siteFriendId_;
+    public java.lang.String getSiteUserId() {
+      java.lang.Object ref = siteUserId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        siteFriendId_ = s;
+        siteUserId_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *被添加好友的用户ID
+     * 发起好友请求的用户
      * </pre>
      *
-     * <code>optional string site_friend_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getSiteFriendIdBytes() {
-      java.lang.Object ref = siteFriendId_;
+        getSiteUserIdBytes() {
+      java.lang.Object ref = siteUserId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        siteFriendId_ = b;
+        siteUserId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int APPLY_REASON_FIELD_NUMBER = 2;
+    public static final int FRIEND_SITE_USER_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object friendSiteUserId_;
+    /**
+     * <pre>
+     * 目标用户
+     * </pre>
+     *
+     * <code>optional string friend_site_user_id = 2;</code>
+     */
+    public java.lang.String getFriendSiteUserId() {
+      java.lang.Object ref = friendSiteUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        friendSiteUserId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 目标用户
+     * </pre>
+     *
+     * <code>optional string friend_site_user_id = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getFriendSiteUserIdBytes() {
+      java.lang.Object ref = friendSiteUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        friendSiteUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int APPLY_REASON_FIELD_NUMBER = 3;
     private volatile java.lang.Object applyReason_;
     /**
      * <pre>
-     *申请添加的原因说明
+     * 申请理由
      * </pre>
      *
-     * <code>optional string apply_reason = 2;</code>
+     * <code>optional string apply_reason = 3;</code>
      */
     public java.lang.String getApplyReason() {
       java.lang.Object ref = applyReason_;
@@ -195,10 +275,10 @@ public final class HaiFriendApplyProto {
     }
     /**
      * <pre>
-     *申请添加的原因说明
+     * 申请理由
      * </pre>
      *
-     * <code>optional string apply_reason = 2;</code>
+     * <code>optional string apply_reason = 3;</code>
      */
     public com.google.protobuf.ByteString
         getApplyReasonBytes() {
@@ -226,11 +306,14 @@ public final class HaiFriendApplyProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getSiteFriendIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteFriendId_);
+      if (!getSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteUserId_);
+      }
+      if (!getFriendSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, friendSiteUserId_);
       }
       if (!getApplyReasonBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, applyReason_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, applyReason_);
       }
     }
 
@@ -239,11 +322,14 @@ public final class HaiFriendApplyProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getSiteFriendIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteFriendId_);
+      if (!getSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteUserId_);
+      }
+      if (!getFriendSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, friendSiteUserId_);
       }
       if (!getApplyReasonBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, applyReason_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, applyReason_);
       }
       memoizedSize = size;
       return size;
@@ -261,8 +347,10 @@ public final class HaiFriendApplyProto {
       com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest other = (com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest) obj;
 
       boolean result = true;
-      result = result && getSiteFriendId()
-          .equals(other.getSiteFriendId());
+      result = result && getSiteUserId()
+          .equals(other.getSiteUserId());
+      result = result && getFriendSiteUserId()
+          .equals(other.getFriendSiteUserId());
       result = result && getApplyReason()
           .equals(other.getApplyReason());
       return result;
@@ -275,8 +363,10 @@ public final class HaiFriendApplyProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + SITE_FRIEND_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getSiteFriendId().hashCode();
+      hash = (37 * hash) + SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteUserId().hashCode();
+      hash = (37 * hash) + FRIEND_SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getFriendSiteUserId().hashCode();
       hash = (37 * hash) + APPLY_REASON_FIELD_NUMBER;
       hash = (53 * hash) + getApplyReason().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -362,6 +452,19 @@ public final class HaiFriendApplyProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *A-&gt;B 发送好友请求
+     *----
+     *接口名
+     *----
+     * /hai/friend/apply
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiFriendApplyRequest}
      */
     public static final class Builder extends
@@ -397,7 +500,9 @@ public final class HaiFriendApplyProto {
       }
       public Builder clear() {
         super.clear();
-        siteFriendId_ = "";
+        siteUserId_ = "";
+
+        friendSiteUserId_ = "";
 
         applyReason_ = "";
 
@@ -423,7 +528,8 @@ public final class HaiFriendApplyProto {
 
       public com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest buildPartial() {
         com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest result = new com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest(this);
-        result.siteFriendId_ = siteFriendId_;
+        result.siteUserId_ = siteUserId_;
+        result.friendSiteUserId_ = friendSiteUserId_;
         result.applyReason_ = applyReason_;
         onBuilt();
         return result;
@@ -466,8 +572,12 @@ public final class HaiFriendApplyProto {
 
       public Builder mergeFrom(com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest other) {
         if (other == com.akaxin.proto.plugin.HaiFriendApplyProto.HaiFriendApplyRequest.getDefaultInstance()) return this;
-        if (!other.getSiteFriendId().isEmpty()) {
-          siteFriendId_ = other.siteFriendId_;
+        if (!other.getSiteUserId().isEmpty()) {
+          siteUserId_ = other.siteUserId_;
+          onChanged();
+        }
+        if (!other.getFriendSiteUserId().isEmpty()) {
+          friendSiteUserId_ = other.friendSiteUserId_;
           onChanged();
         }
         if (!other.getApplyReason().isEmpty()) {
@@ -500,21 +610,21 @@ public final class HaiFriendApplyProto {
         return this;
       }
 
-      private java.lang.Object siteFriendId_ = "";
+      private java.lang.Object siteUserId_ = "";
       /**
        * <pre>
-       *被添加好友的用户ID
+       * 发起好友请求的用户
        * </pre>
        *
-       * <code>optional string site_friend_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public java.lang.String getSiteFriendId() {
-        java.lang.Object ref = siteFriendId_;
+      public java.lang.String getSiteUserId() {
+        java.lang.Object ref = siteUserId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          siteFriendId_ = s;
+          siteUserId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -522,19 +632,19 @@ public final class HaiFriendApplyProto {
       }
       /**
        * <pre>
-       *被添加好友的用户ID
+       * 发起好友请求的用户
        * </pre>
        *
-       * <code>optional string site_friend_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getSiteFriendIdBytes() {
-        java.lang.Object ref = siteFriendId_;
+          getSiteUserIdBytes() {
+        java.lang.Object ref = siteUserId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          siteFriendId_ = b;
+          siteUserId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -542,49 +652,138 @@ public final class HaiFriendApplyProto {
       }
       /**
        * <pre>
-       *被添加好友的用户ID
+       * 发起好友请求的用户
        * </pre>
        *
-       * <code>optional string site_friend_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public Builder setSiteFriendId(
+      public Builder setSiteUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        siteFriendId_ = value;
+        siteUserId_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *被添加好友的用户ID
+       * 发起好友请求的用户
        * </pre>
        *
-       * <code>optional string site_friend_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public Builder clearSiteFriendId() {
+      public Builder clearSiteUserId() {
         
-        siteFriendId_ = getDefaultInstance().getSiteFriendId();
+        siteUserId_ = getDefaultInstance().getSiteUserId();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *被添加好友的用户ID
+       * 发起好友请求的用户
        * </pre>
        *
-       * <code>optional string site_friend_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public Builder setSiteFriendIdBytes(
+      public Builder setSiteUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        siteFriendId_ = value;
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object friendSiteUserId_ = "";
+      /**
+       * <pre>
+       * 目标用户
+       * </pre>
+       *
+       * <code>optional string friend_site_user_id = 2;</code>
+       */
+      public java.lang.String getFriendSiteUserId() {
+        java.lang.Object ref = friendSiteUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          friendSiteUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 目标用户
+       * </pre>
+       *
+       * <code>optional string friend_site_user_id = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getFriendSiteUserIdBytes() {
+        java.lang.Object ref = friendSiteUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          friendSiteUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 目标用户
+       * </pre>
+       *
+       * <code>optional string friend_site_user_id = 2;</code>
+       */
+      public Builder setFriendSiteUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        friendSiteUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 目标用户
+       * </pre>
+       *
+       * <code>optional string friend_site_user_id = 2;</code>
+       */
+      public Builder clearFriendSiteUserId() {
+        
+        friendSiteUserId_ = getDefaultInstance().getFriendSiteUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 目标用户
+       * </pre>
+       *
+       * <code>optional string friend_site_user_id = 2;</code>
+       */
+      public Builder setFriendSiteUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        friendSiteUserId_ = value;
         onChanged();
         return this;
       }
@@ -592,10 +791,10 @@ public final class HaiFriendApplyProto {
       private java.lang.Object applyReason_ = "";
       /**
        * <pre>
-       *申请添加的原因说明
+       * 申请理由
        * </pre>
        *
-       * <code>optional string apply_reason = 2;</code>
+       * <code>optional string apply_reason = 3;</code>
        */
       public java.lang.String getApplyReason() {
         java.lang.Object ref = applyReason_;
@@ -611,10 +810,10 @@ public final class HaiFriendApplyProto {
       }
       /**
        * <pre>
-       *申请添加的原因说明
+       * 申请理由
        * </pre>
        *
-       * <code>optional string apply_reason = 2;</code>
+       * <code>optional string apply_reason = 3;</code>
        */
       public com.google.protobuf.ByteString
           getApplyReasonBytes() {
@@ -631,10 +830,10 @@ public final class HaiFriendApplyProto {
       }
       /**
        * <pre>
-       *申请添加的原因说明
+       * 申请理由
        * </pre>
        *
-       * <code>optional string apply_reason = 2;</code>
+       * <code>optional string apply_reason = 3;</code>
        */
       public Builder setApplyReason(
           java.lang.String value) {
@@ -648,10 +847,10 @@ public final class HaiFriendApplyProto {
       }
       /**
        * <pre>
-       *申请添加的原因说明
+       * 申请理由
        * </pre>
        *
-       * <code>optional string apply_reason = 2;</code>
+       * <code>optional string apply_reason = 3;</code>
        */
       public Builder clearApplyReason() {
         
@@ -661,10 +860,10 @@ public final class HaiFriendApplyProto {
       }
       /**
        * <pre>
-       *申请添加的原因说明
+       * 申请理由
        * </pre>
        *
-       * <code>optional string apply_reason = 2;</code>
+       * <code>optional string apply_reason = 3;</code>
        */
       public Builder setApplyReasonBytes(
           com.google.protobuf.ByteString value) {
@@ -1111,13 +1310,13 @@ public final class HaiFriendApplyProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\035plugin/hai_friend_apply.proto\022\006plugin\"" +
-      "E\n\025HaiFriendApplyRequest\022\026\n\016site_friend_" +
-      "id\030\001 \001(\t\022\024\n\014apply_reason\030\002 \001(\t\"\030\n\026HaiFri" +
-      "endApplyResponse2_\n\025HaiFriendApplyServic" +
-      "e\022F\n\005apply\022\035.plugin.HaiFriendApplyReques" +
-      "t\032\036.plugin.HaiFriendApplyResponseB.\n\027com" +
-      ".akaxin.proto.pluginB\023HaiFriendApplyProt" +
-      "ob\006proto3"
+      "`\n\025HaiFriendApplyRequest\022\024\n\014site_user_id" +
+      "\030\001 \001(\t\022\033\n\023friend_site_user_id\030\002 \001(\t\022\024\n\014a" +
+      "pply_reason\030\003 \001(\t\"\030\n\026HaiFriendApplyRespo" +
+      "nse2_\n\025HaiFriendApplyService\022F\n\005apply\022\035." +
+      "plugin.HaiFriendApplyRequest\032\036.plugin.Ha" +
+      "iFriendApplyResponseB.\n\027com.akaxin.proto" +
+      ".pluginB\023HaiFriendApplyProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1136,7 +1335,7 @@ public final class HaiFriendApplyProto {
     internal_static_plugin_HaiFriendApplyRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiFriendApplyRequest_descriptor,
-        new java.lang.String[] { "SiteFriendId", "ApplyReason", });
+        new java.lang.String[] { "SiteUserId", "FriendSiteUserId", "ApplyReason", });
     internal_static_plugin_HaiFriendApplyResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiFriendApplyResponse_fieldAccessorTable = new
