@@ -18,6 +18,7 @@ package com.akaxin.site.business.impl.tai;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,7 @@ public class ApiPluginService extends AbstractRequest {
 			ApiPluginListProto.ApiPluginListRequest request = ApiPluginListProto.ApiPluginListRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
+			String sessionId = command.getHeader().get(CoreProto.HeaderKey.CLIENT_SOCKET_PLATFORM_SESSION_ID_VALUE);
 			int pageNumber = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			PluginProto.PluginPosition position = request.getPosition();
@@ -92,7 +94,15 @@ public class ApiPluginService extends AbstractRequest {
 				ApiPluginListProto.ApiPluginListResponse.Builder responseBuilder = ApiPluginListProto.ApiPluginListResponse
 						.newBuilder();
 				for (PluginBean bean : pluginList) {
-					responseBuilder.addPlugin(getPluginProfile(bean));
+					PluginProto.Plugin.Builder pluginBuilder = getPluginProtoBuilder(bean);
+
+					String authKey = bean.getAuthKey();
+					if (StringUtils.isNotEmpty(authKey)) {
+						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
+						byte[] encryptedSessionId = AESCrypto.encrypt(tsk, sessionId.getBytes());
+						pluginBuilder.setEncryptedSessionIdBase64(Base64.encodeBase64String(encryptedSessionId));
+					}
+					responseBuilder.addPlugin(pluginBuilder.build());
 				}
 				commandResponse.setParams(responseBuilder.build().toByteArray());
 				errCode = ErrorCode2.SUCCESS;
@@ -254,7 +264,7 @@ public class ApiPluginService extends AbstractRequest {
 		return commandResponse.setErrCode2(errCode);
 	}
 
-	private PluginProto.Plugin getPluginProfile(PluginBean bean) {
+	private PluginProto.Plugin.Builder getPluginProtoBuilder(PluginBean bean) {
 		PluginProto.Plugin.Builder pluginBuilder = PluginProto.Plugin.newBuilder();
 		pluginBuilder.setId(String.valueOf(bean.getId()));
 		if (StringUtils.isNotBlank(bean.getName())) {
@@ -279,8 +289,8 @@ public class ApiPluginService extends AbstractRequest {
 		pluginBuilder.setPositionValue(bean.getPosition());
 		pluginBuilder.setPermissionStatusValue(bean.getPermissionStatus());
 		pluginBuilder.setDisplayModeValue(bean.getDisplayMode());
-
-		return pluginBuilder.build();
+		// pluginBuilder.setEncryptedSessionIdBase64(value)
+		return pluginBuilder;
 	}
 
 	private String buildUrl(String apiUrl, String apiName, String defaultPage) {

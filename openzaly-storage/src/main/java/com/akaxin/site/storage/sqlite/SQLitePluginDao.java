@@ -198,6 +198,7 @@ public class SQLitePluginDao {
 				+ "icon,"//
 				+ "url_page,"//
 				+ "api_url,"//
+				+ "auth_key,"//
 				+ "sort,"//
 				+ "position,"//
 				+ "display_mode,"//
@@ -219,10 +220,11 @@ public class SQLitePluginDao {
 			bean.setIcon(rs.getString(3));
 			bean.setUrlPage(rs.getString(4));
 			bean.setApiUrl(rs.getString(5));
-			bean.setSort(rs.getInt(6));
-			bean.setPosition(rs.getInt(7));
-			bean.setDisplayMode(rs.getInt(8));
-			bean.setPermissionStatus(rs.getInt(9));
+			bean.setAuthKey(rs.getString(6));
+			bean.setSort(rs.getInt(7));
+			bean.setPosition(rs.getInt(8));
+			bean.setDisplayMode(rs.getInt(9));
+			bean.setPermissionStatus(rs.getInt(10));
 			pluginList.add(bean);
 		}
 
@@ -247,6 +249,7 @@ public class SQLitePluginDao {
 				+ "icon,"//
 				+ "url_page,"//
 				+ "api_url,"//
+				+ "auth_key,"//
 				+ "sort,"//
 				+ "position,"//
 				+ "display_mode,"// NewPage or FloatingPage
@@ -267,10 +270,11 @@ public class SQLitePluginDao {
 			bean.setIcon(rs.getString(3));
 			bean.setUrlPage(rs.getString(4));
 			bean.setApiUrl(rs.getString(5));
-			bean.setSort(rs.getInt(6));
-			bean.setPosition(rs.getInt(7));
-			bean.setDisplayMode(rs.getInt(8));
-			bean.setPermissionStatus(rs.getInt(9));
+			bean.setAuthKey(rs.getString(6));
+			bean.setSort(rs.getInt(7));
+			bean.setPosition(rs.getInt(8));
+			bean.setDisplayMode(rs.getInt(9));
+			bean.setPermissionStatus(rs.getInt(10));
 			pluginList.add(bean);
 		}
 
