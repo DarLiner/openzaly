@@ -10,6 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.constant.CharsetCoding;
+
 public class AESCrypto {
 	private static final Logger logger = LoggerFactory.getLogger(AESCrypto.class);
 	public static final String ALGORITHM = "AES/ECB/PKCS5Padding";
@@ -41,7 +43,7 @@ public class AESCrypto {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
 			SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-			secureRandom.setSeed(key.getBytes());
+			secureRandom.setSeed(key.getBytes(CharsetCoding.ISO_8859_1));
 			kgen.init(128, secureRandom);
 			SecretKey secretKey = kgen.generateKey();
 			return secretKey.getEncoded();
