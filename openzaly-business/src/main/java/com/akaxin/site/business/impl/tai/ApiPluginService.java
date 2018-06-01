@@ -68,7 +68,7 @@ public class ApiPluginService extends AbstractRequest {
 			ApiPluginListProto.ApiPluginListRequest request = ApiPluginListProto.ApiPluginListRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
-			String sessionId = command.getHeader().get(CoreProto.HeaderKey.CLIENT_SOCKET_PLATFORM_SESSION_ID_VALUE);
+			String sessionId = command.getHeader().get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
 			int pageNumber = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			PluginProto.PluginPosition position = request.getPosition();
@@ -99,8 +99,7 @@ public class ApiPluginService extends AbstractRequest {
 					String authKey = bean.getAuthKey();
 					if (StringUtils.isNotEmpty(authKey)) {
 						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
-						byte[] encryptedSessionId = AESCrypto.encrypt(tsk,
-								sessionId.getBytes(CharsetCoding.ISO_8859_1));
+						byte[] encryptedSessionId = AESCrypto.encrypt(tsk, sessionId.getBytes());
 						pluginBuilder.setEncryptedSessionIdBase64(Base64.encodeBase64String(encryptedSessionId));
 					}
 					responseBuilder.addPlugin(pluginBuilder.build());
