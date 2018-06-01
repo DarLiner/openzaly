@@ -15,9 +15,12 @@
  */
 package com.akaxin.site.business.utils;
 
+/**
+ * byte数组与字符串之间转换
+ */
 public class HexUtils {
 
-	public static String printHexString(byte[] b) {
+	public static String bytesToHexString(byte[] b) {
 		StringBuffer returnValue = new StringBuffer();
 		for (int i = 0; i < b.length; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
@@ -27,6 +30,13 @@ public class HexUtils {
 			returnValue.append(hex.toUpperCase() + " ");
 		}
 
-		return "[" + returnValue.toString() + "]";
+		return returnValue.toString();
+	}
+
+	public static void main(String[] args) {
+		String test = "你好，我是中国人";
+
+		System.out.println(bytesToHexString(test.getBytes()));
+
 	}
 }

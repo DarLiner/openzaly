@@ -100,7 +100,8 @@ public class ApiPluginService extends AbstractRequest {
 					if (StringUtils.isNotEmpty(authKey)) {
 						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
 						byte[] encryptedSessionId = AESCrypto.encrypt(tsk, sessionId.getBytes());
-						pluginBuilder.setEncryptedSessionIdBase64(Base64.encodeBase64String(encryptedSessionId));
+						String base64UrlSafeSessionId = Base64.encodeBase64URLSafeString(encryptedSessionId);
+						pluginBuilder.setEncryptedSessionIdBase64(base64UrlSafeSessionId);
 					}
 					responseBuilder.addPlugin(pluginBuilder.build());
 				}

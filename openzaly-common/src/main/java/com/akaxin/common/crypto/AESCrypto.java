@@ -14,6 +14,16 @@ import com.akaxin.common.constant.CharsetCoding;
 
 public class AESCrypto {
 	private static final Logger logger = LoggerFactory.getLogger(AESCrypto.class);
+
+	/**
+	 * <pre>
+	 * AES四种加密模式：
+	 * 	ECB模式：有利于并行计算
+	 * 	CBC模式：不容易攻击，安全性高于ECB模式，适合传输长度长的报文，是SSL，IPSec的标准，不利于并行计算
+	 * 	CFB模式：不利于并行计算
+	 * 	OFB模式：不利于并行计算
+	 * </pre>
+	 */
 	public static final String ALGORITHM = "AES/ECB/PKCS5Padding";
 
 	/**
