@@ -295,7 +295,7 @@ public class UserManageController extends AbstractController {
 			}
 
 			if (StringUtils.isNotEmpty(siteLoginId)) {
-				Matcher match = Pattern.compile("^[A-Za-z][A-Za-z0-9]{2,15}$").matcher(siteLoginId);
+				Matcher match = Pattern.compile("^[A-Za-z][A-Za-z0-9]{0,15}$").matcher(siteLoginId);
 				if (!match.matches()) {
 					throw new ManagerException("user's siteLoginId formatting error");
 				}
