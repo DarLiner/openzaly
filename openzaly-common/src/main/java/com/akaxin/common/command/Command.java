@@ -115,6 +115,7 @@ public class Command {
 	}
 
 	public void setUri(String uri) {
+		uri = StringHelper.clearRepeated(uri, "/");
 		String[] splitStr = uri.split("/");
 		int index = splitStr.length - 3;
 		this.rety = splitStr[index];

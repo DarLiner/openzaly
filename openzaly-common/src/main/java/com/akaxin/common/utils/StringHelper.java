@@ -1,6 +1,8 @@
 package com.akaxin.common.utils;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -106,4 +108,16 @@ public class StringHelper {
 		}
 		return result.toString();
 	}
+
+	public static String clearRepeated(String message, String replace) {
+		Pattern pattern = Pattern.compile("(" + replace + ")\\1+");
+		Matcher matcher = pattern.matcher(message);
+		StringBuffer result = new StringBuffer();
+		while (matcher.find()) {
+			matcher.appendReplacement(result, replace);
+		}
+		matcher.appendTail(result);
+		return result.toString();
+	}
+
 }
