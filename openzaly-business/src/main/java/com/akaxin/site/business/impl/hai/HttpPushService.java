@@ -59,7 +59,7 @@ public class HttpPushService extends AbstractRequest {
 			int pageSize = 200;
 
 			while (true) {
-				List<String> userList = SiteUserDao.getInstance().getSiteUsersByPage(pageNum, pageSize);
+				List<String> userList = SiteUserDao.getInstance().getSiteUsersByPage(pageNum++, pageSize);
 
 				if (userList != null) {
 					for (String userId : userList) {

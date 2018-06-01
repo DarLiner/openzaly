@@ -15,10 +15,11 @@
  */
 package com.akaxin.site.business.impl.tai;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Base64;
+//import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,8 +100,9 @@ public class ApiPluginService extends AbstractRequest {
 					String authKey = bean.getAuthKey();
 					if (StringUtils.isNotEmpty(authKey)) {
 						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
-						byte[] encryptedSessionId = AESCrypto.encrypt(tsk, sessionId.getBytes());
-						String base64UrlSafeSessionId = Base64.encodeBase64URLSafeString(encryptedSessionId);
+						byte[] encryptedSessionId = AESCrypto.encrypt(tsk,
+								sessionId.getBytes(CharsetCoding.ISO_8859_1));
+						String base64UrlSafeSessionId = Base64.getUrlEncoder().encodeToString(encryptedSessionId);
 						pluginBuilder.setEncryptedSessionIdBase64(base64UrlSafeSessionId);
 					}
 					responseBuilder.addPlugin(pluginBuilder.build());

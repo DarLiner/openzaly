@@ -28,14 +28,15 @@ import com.akaxin.site.business.impl.hai.HttpFriendService;
 import com.akaxin.site.business.impl.hai.HttpGroupService;
 import com.akaxin.site.business.impl.hai.HttpMessageService;
 import com.akaxin.site.business.impl.hai.HttpPushService;
+import com.akaxin.site.business.impl.hai.HttpSessionService;
 import com.akaxin.site.business.impl.hai.HttpSiteConfigService;
 import com.akaxin.site.business.impl.hai.HttpUserService;
 
 /**
- * Http处理业务逻辑,部分功能需要先验证管理员权限
+ * Http请求服务分发
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
- * @since 2017.11.28
+ * @since 2018.1.1
  *
  */
 public class HttpRequestService implements IRequest {
@@ -64,6 +65,9 @@ public class HttpRequestService implements IRequest {
 				break;
 			case HAI_PUSH_SERVICE:
 				response = new HttpPushService().execute(command);
+				break;
+			case HAI_SESSION_SERVICE:
+				response = new HttpSessionService().execute(command);
 				break;
 			default:
 				logger.error("error http request command={}", command.toString());

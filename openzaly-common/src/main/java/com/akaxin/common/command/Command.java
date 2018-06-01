@@ -186,6 +186,24 @@ public class Command {
 		return this.getField(CommandConst.CLIENT_IP, String.class);
 	}
 
+	public Command setPluginId(String pluginId) {
+		this.fields.put(CommandConst.PLUGIN_ID, pluginId);
+		return this;
+	}
+
+	public String getPluginId() {
+		return this.getField(CommandConst.PLUGIN_ID, String.class);
+	}
+
+	public Command setPluginAuthKey(String authKey) {
+		this.fields.put(CommandConst.PLUGIN_AUTH_KEY, authKey);
+		return this;
+	}
+
+	public String getPluginAuthKey() {
+		return this.getField(CommandConst.PLUGIN_AUTH_KEY, String.class);
+	}
+
 	public Command setMsgType(int msgType) {
 		this.fields.put(CommandConst.MSG_TYPE, msgType);
 		return this;

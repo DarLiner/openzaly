@@ -180,6 +180,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					command.setParams(Base64.getDecoder().decode(pluginPackage.getData()));
 					command.setClientIp(httpClientIp);
 					command.setStartTime(System.currentTimeMillis());
+					command.setPluginId(sitePluginId);
+					command.setPluginAuthKey(authKey);
 
 					logger.info("{} client={} uri={} http server handler command={}", AkxProject.PLN, httpClientIp,
 							request.uri(), command.toString());

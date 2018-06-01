@@ -36,7 +36,9 @@ public enum HttpUriAction {
 
 	HAI_UIC_SERVICE("hai", "uic"), // 邀请码服务
 
-	HAI_PLUGIN_SERVICE("hai", "plugin");// 扩展服务
+	HAI_PLUGIN_SERVICE("hai", "plugin"), // 扩展服务
+
+	HAI_SESSION_SERVICE("hai", "session");// Session服务
 
 	private String rety;
 	private String service;

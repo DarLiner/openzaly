@@ -28,6 +28,10 @@ public interface CommandConst {
 	public String START_TIME = "start_time";
 	public String END_TIME = "end_time";
 
+	// plugin
+	public String PLUGIN_AUTH_KEY = "plugin_auth_key";
+	public String PLUGIN_ID = "plugin_id";
+
 	public String IM_MSG_TOCLIENT = "im.stc.message";
 	public String IM_MSG_TOSITE = "im.cts.message";
 
