@@ -146,6 +146,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 				// 查询扩展的auth——key
 				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
+				logger.debug("http request ip={} pluginId={} authKey={}", httpClientIp, sitePluginId, authKey);
 				if (StringUtils.isNotEmpty(authKey)) {
 					// byte[] tsk = AESCrypto.generateTSKey(authKey);
 					byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
