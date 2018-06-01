@@ -18,6 +18,8 @@ package com.akaxin.common.command;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.akaxin.common.channel.ChannelSession;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.utils.StringHelper;
@@ -158,6 +160,26 @@ public class Command {
 	public Command setField(String k, Object v) {
 		this.fields.put(k, v);
 		return this;
+	}
+
+	public Command setClientVersion(String version) {
+		this.fields.put(CommandConst.CLIENT_VERSION, version);
+		return this;
+	}
+
+	public String getClientVersion() {
+		return this.getField(CommandConst.CLIENT_VERSION, String.class);
+	}
+
+	public int getProtoVersion() {
+		String v = this.getField(CommandConst.CLIENT_VERSION, String.class);
+		if (StringUtils.isNotEmpty(v)) {
+			String[] vstr = v.split("\\.");
+			if (vstr.length == 3) {
+				return Integer.parseInt(vstr[2]);
+			}
+		}
+		return 0;
 	}
 
 	public Command setSiteFriendId(String siteFriendId) {

@@ -55,9 +55,9 @@ public class LogUtils extends LogCreater {
 
 	public static void requestResultLog(Logger logger, Command command, CommandResponse response) {
 		try {
-			logger.info("client={} siteUserId={} action={} uri={} cost={}ms result=[{}]", command.getClientIp(),
-					command.getSiteUserId(), command.getAction(), command.getUri(),
-					System.currentTimeMillis() - command.getStartTime(), response.getErrorCodeInfo());
+			logger.info("client={} clientVersion={} siteUserId={} action={} uri={} cost={}ms result=[{}]",
+					command.getClientIp(), command.getClientVersion(), command.getSiteUserId(), command.getAction(),
+					command.getUri(), System.currentTimeMillis() - command.getStartTime(), response.getErrorCodeInfo());
 		} catch (Exception e) {
 			logger.error(StringHelper.format("request result log error command={} response={}", command, response), e);
 		}
