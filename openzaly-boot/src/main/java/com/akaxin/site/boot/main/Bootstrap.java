@@ -211,7 +211,7 @@ public class Bootstrap {
 				file.mkdirs();
 			}
 			System.setProperty("user.dir", file.getCanonicalPath());
-//			BootLog.info("openzaly set base dir:{}", file.getCanonicalPath());
+			// BootLog.info("openzaly set base dir:{}", file.getCanonicalPath());
 		}
 	}
 

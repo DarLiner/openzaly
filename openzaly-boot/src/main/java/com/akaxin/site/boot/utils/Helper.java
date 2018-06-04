@@ -148,7 +148,7 @@ public class Helper {
 		// pw.println("\t-Dsite.admin.address \topenzaly AdminSystem address default:
 		// 127.0.0.1");
 		// pw.println("\t-Dsite.admin.port \topenzaly AdminSystem port default: 8288");
-		pw.println("\t-Dsite.admin.uic \topenzaly first uic for admin port default: \" 000000\"");
+		pw.println("\t-Dsite.admin.uic \topenzaly first uic for admin port default: \"000000\"");
 		pw.println("\t-Dsite.baseDir \t\topenzaly openzaly-server root dir default:./");
 		// pw.println("\t-Dgroup.members.count \topenzaly Max group member size
 		// default:100");

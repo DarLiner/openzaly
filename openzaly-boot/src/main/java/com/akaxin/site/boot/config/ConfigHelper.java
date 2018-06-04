@@ -75,7 +75,7 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_ADDRESS_VALUE, getStringConfig(PLUGIN_API_ADDRESS));
 		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_PORT_VALUE, getStringConfig(PLUGIN_API_PORT));
 		String basePath = System.getProperty("user.dir");
-		configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, basePath);
+		configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, basePath);//存放资源的位置
 		configMap.put(ConfigProto.ConfigKey.DB_PATH_VALUE, basePath);
 		configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, getStringConfig(GROUP_MEMBERS_COUNT));
 		// 默认二人绝密聊天状态：开启二人绝密聊天功能

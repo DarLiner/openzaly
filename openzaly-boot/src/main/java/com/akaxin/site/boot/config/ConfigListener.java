@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.akaxin.common.logs.LogCreater;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.message.utils.SiteConfigHelper;
 
@@ -18,7 +19,8 @@ import com.akaxin.site.message.utils.SiteConfigHelper;
  * @since 2018-02-01 14:52:50
  */
 public class ConfigListener {
-	private static final Logger logger = LogCreater.createTimeLogger("config");
+	private static String logPath;
+	private static Logger logger;
 
 	static {
 		Executors.newSingleThreadScheduledExecutor().scheduleWithFixedDelay(new Runnable() {
@@ -32,13 +34,23 @@ public class ConfigListener {
 	}
 
 	public static void startListenning() {
-		LogUtils.info(logger, "start config listenning");
+		LogUtils.info(getLogger(), "start config listenning");
 	}
 
 	public static void doListenning() {
 		Map<Integer, String> apiConfigMap = SiteConfigHelper.updateConfig();
-		LogUtils.info(logger, "update api site config={}", apiConfigMap);
+		LogUtils.info(getLogger(), "update api site config={}", apiConfigMap);
 		Map<Integer, String> imConfigMap = SiteConfig.updateConfig();
-		LogUtils.info(logger, "update im site config={}", imConfigMap);
+		LogUtils.info(getLogger(), "update im site config={}", imConfigMap);
 	}
+
+	private static Logger getLogger() {
+		String currentPath = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.PIC_PATH);
+		if (logger == null || !currentPath.equals(logPath)) {
+			logger = LogCreater.createTimeLogger("config", logPath);
+		}
+
+		return logger;
+	}
+
 }
