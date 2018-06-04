@@ -45,8 +45,9 @@ public class ConfigListener {
 	}
 
 	private static Logger getLogger() {
-		String currentPath = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.PIC_PATH);
+		String currentPath = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.DB_PATH);
 		if (logger == null || !currentPath.equals(logPath)) {
+			logPath = currentPath;
 			logger = LogCreater.createTimeLogger("config", logPath);
 		}
 
