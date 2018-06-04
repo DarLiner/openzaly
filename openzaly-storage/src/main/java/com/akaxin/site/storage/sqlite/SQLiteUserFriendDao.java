@@ -173,6 +173,24 @@ public class SQLiteUserFriendDao {
 		return relation;
 	}
 
+	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		boolean relation = false;
+		String sql = "SELECT a.relation,b.relation FROM " + USER_FRIEND_TABLE + " AS a INNER JOIN " + USER_FRIEND_TABLE
+				+ " AS b ON a.site_user_id=b.site_friend_id AND b.site_user_id=a.site_friend_id where a.site_user_id=? AND a.site_friend_id=?;";
+
+		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preState.setString(1, siteUserId);
+		preState.setString(2, siteFriendId);
+		ResultSet rs = preState.executeQuery();
+		if (rs.next()) {
+			relation = (rs.getInt(1) >= 1 && rs.getInt(2) >= 1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, relation, sql, siteUserId, siteFriendId);
+		return relation;
+	}
+
 	public boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "DELETE FROM " + USER_FRIEND_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";

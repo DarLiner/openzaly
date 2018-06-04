@@ -9,14 +9,16 @@ import com.akaxin.site.storage.bean.UserFriendBean;
 public interface IUserFriendDao {
 
 	public int getUserFriendNum(String siteUserId) throws SQLException;
-	
+
 	public List<SimpleUserBean> getUserFriends(String userId) throws SQLException;
-	
+
 	public List<SimpleUserBean> getUserFriendsByPage(String siteUserId, int pageNum, int pageSize) throws SQLException;
-	
+
 	boolean saveRelation(String siteUserId, String siteFriendId, int relation) throws SQLException;
 
 	int queryRelation(String siteUserId, String siteFriendId) throws SQLException;
+
+	boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException;
 
 	boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException;
 
@@ -36,4 +38,5 @@ public interface IUserFriendDao {
 	public int friendNum(long now, int day) throws SQLException;
 
 	boolean delUserFriend(String siteUserId) throws SQLException;
+
 }

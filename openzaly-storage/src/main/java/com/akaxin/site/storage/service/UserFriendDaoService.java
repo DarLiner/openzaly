@@ -56,6 +56,11 @@ public class UserFriendDaoService implements IUserFriendDao {
 	}
 
 	@Override
+	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException {
+		return SQLiteUserFriendDao.getInstance().queryIsFriendRelation(siteUserId, siteFriendId);
+	}
+
+	@Override
 	public boolean updateRelation(String siteUserId, String siteFriendId, int relation) throws SQLException {
 		return SQLiteUserFriendDao.getInstance().updateRelation(siteUserId, siteFriendId, relation);
 	}

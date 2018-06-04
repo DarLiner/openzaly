@@ -117,16 +117,19 @@ public class HttpGroupService extends AbstractRequest {
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
+			int totalNum = UserGroupDao.getInstance().getTotalGroupNum();
 			List<SimpleGroupBean> groupList = UserGroupDao.getInstance().getGroupList(pageNum, pageSize);
+
+			HaiGroupListProto.HaiGroupListResponse.Builder responseBuilder = HaiGroupListProto.HaiGroupListResponse
+					.newBuilder();
+			responseBuilder.setPageTotalNum(totalNum);
 			if (groupList != null) {
-				HaiGroupListProto.HaiGroupListResponse.Builder responseBuilder = HaiGroupListProto.HaiGroupListResponse
-						.newBuilder();
 				for (SimpleGroupBean bean : groupList) {
 					responseBuilder.addGroupProfile(getSimpleGroupProfile(bean));
 				}
-				commandResponse.setParams(responseBuilder.build().toByteArray());
-				errCode = ErrorCode2.SUCCESS;
 			}
+			commandResponse.setParams(responseBuilder.build().toByteArray());
+			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
@@ -191,7 +194,7 @@ public class HttpGroupService extends AbstractRequest {
 			String siteGroupId = request.getGroupId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNotEmpty(siteGroupId)) {
+			if (StringUtils.isEmpty(siteGroupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -316,7 +319,7 @@ public class HttpGroupService extends AbstractRequest {
 	 */
 	public CommandResponse members(Command command) {
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupMembersProto.HaiGroupMembersRequest request = HaiGroupMembersProto.HaiGroupMembersRequest
 					.parseFrom(command.getParams());
@@ -329,19 +332,27 @@ public class HttpGroupService extends AbstractRequest {
 			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
+			if (StringUtils.isEmpty(groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			int memberSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
 			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(groupId, pageNum,
 					pageSize);
 
 			HaiGroupMembersProto.HaiGroupMembersResponse.Builder responseBuilder = HaiGroupMembersProto.HaiGroupMembersResponse
 					.newBuilder();
-			for (GroupMemberBean member : memberList) {
-				GroupProto.GroupMemberRole memberRole = GroupProto.GroupMemberRole.forNumber(member.getUserRole());
-				UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
-						.setSiteUserId(member.getUserId()).setUserName(String.valueOf(member.getUserName()))
-						.setUserPhoto(String.valueOf(member.getUserPhoto())).build();
-				GroupProto.GroupMemberProfile groupMember = GroupProto.GroupMemberProfile.newBuilder()
-						.setRole(memberRole).setProfile(memberProfile).build();
-				responseBuilder.addGroupMember(groupMember);
+			responseBuilder.setPageTotalNum(memberSize);
+			if (memberList != null) {
+				for (GroupMemberBean member : memberList) {
+					GroupProto.GroupMemberRole memberRole = GroupProto.GroupMemberRole.forNumber(member.getUserRole());
+					UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
+							.setSiteUserId(member.getUserId()).setUserName(String.valueOf(member.getUserName()))
+							.setUserPhoto(String.valueOf(member.getUserPhoto())).build();
+					GroupProto.GroupMemberProfile groupMember = GroupProto.GroupMemberProfile.newBuilder()
+							.setRole(memberRole).setProfile(memberProfile).build();
+					responseBuilder.addGroupMember(groupMember);
+				}
 			}
 			commandResponse.setParams(responseBuilder.build().toByteArray());
 			errCode = ErrorCode2.SUCCESS;
@@ -349,42 +360,62 @@ public class HttpGroupService extends AbstractRequest {
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
+	/**
+	 * /hai/group/nonmembers
+	 * 
+	 * @param command
+	 * @return
+	 */
 	public CommandResponse nonmembers(Command command) {
 		CommandResponse commandResponse = new CommandResponse();
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			HaiGroupNonmembersProto.HaiGroupNonmembersRequest request = HaiGroupNonmembersProto.HaiGroupNonmembersRequest
 					.parseFrom(command.getParams());
+			String siteUserId = request.getSiteUserId();
 			String groupId = request.getGroupId();
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
+			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			int totalNonMembersSize = UserGroupDao.getInstance().getUserFriendNonGroupMemberNum(siteUserId, groupId);
 			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getNonGroupMemberList(groupId, pageNum,
 					pageSize);
 			HaiGroupNonmembersProto.HaiGroupNonmembersResponse.Builder responseBuilder = HaiGroupNonmembersProto.HaiGroupNonmembersResponse
 					.newBuilder();
-			for (GroupMemberBean member : memberList) {
-				GroupProto.GroupMemberRole memberRole = GroupProto.GroupMemberRole.NONMEMBER;
-				UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
-						.setSiteUserId(member.getUserId()).setUserName(String.valueOf(member.getUserName()))
-						.setUserPhoto(String.valueOf(member.getUserPhoto())).build();
-				GroupProto.GroupMemberProfile groupMember = GroupProto.GroupMemberProfile.newBuilder()
-						.setRole(memberRole).setProfile(memberProfile).build();
-				responseBuilder.addGroupMember(groupMember);
+			responseBuilder.setPageTotalNum(totalNonMembersSize);
+			if (memberList != null) {
+				for (GroupMemberBean member : memberList) {
+					GroupProto.GroupMemberRole memberRole = GroupProto.GroupMemberRole.NONMEMBER;
+					UserProto.UserProfile memberProfile = UserProto.UserProfile.newBuilder()
+							.setSiteUserId(member.getUserId()).setUserName(String.valueOf(member.getUserName()))
+							.setUserPhoto(String.valueOf(member.getUserPhoto())).build();
+					GroupProto.GroupMemberProfile groupMember = GroupProto.GroupMemberProfile.newBuilder()
+							.setRole(memberRole).setProfile(memberProfile).build();
+					responseBuilder.addGroupMember(groupMember);
+				}
 			}
 			commandResponse.setParams(responseBuilder.build().toByteArray());
 			errCode = ErrorCode2.SUCCESS;
-
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	private GroupProto.SimpleGroupProfile getSimpleGroupProfile(SimpleGroupBean bean) {

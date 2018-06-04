@@ -48,12 +48,18 @@ public interface IGroupDao {
 
 	public boolean deleteGroupMember(String groupId, List<String> userIds);
 
+	public int getNonGroupMemberNum(String groupId) throws SQLException;
+
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException;
+
+	int getUserFriendNonGroupMemberNum(String siteUserId, String groupId) throws SQLException;
 
 	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
 			int pageSize) throws SQLException;
 
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException;
+
+	int getTotalGroupNum() throws SQLException;
 
 	int getGroupNum(long now, int day) throws SQLException;
 

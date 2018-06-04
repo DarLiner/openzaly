@@ -61,7 +61,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_USER_NO_FRIEND("error.no.friends", "用户暂无好友"), //
 	ERROR2_USER_NO_GROUP("error.no.groups", "用户暂无群组"), //
 
-	ERROR2_FRIEND_IS("error.alert", "用户已经是你的好友"), //
+	ERROR2_FRIEND_IS("error.alert", "用户已经为好友关系"), //
 	ERROR2_FRIEND_APPLYSELF("error.alert", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alert", "添加好友最多为5次"), //
 	ERROR2_FRIEND_sealUped("error.alert", "你已经被封禁,无法执行操作"), //

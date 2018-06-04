@@ -43,6 +43,8 @@ public interface IUserProfileDao {
 	public List<SimpleUserRelationBean> getUserRelationPageList(String siteUserId, int pageNum, int pageSize)
 			throws SQLException;
 
+	int getTotalUserNum() throws SQLException;
+
 	public List<SimpleUserBean> getUserPageList(int pageNum, int pageSize) throws SQLException;
 
 	public boolean isMute(String userId) throws SQLException;

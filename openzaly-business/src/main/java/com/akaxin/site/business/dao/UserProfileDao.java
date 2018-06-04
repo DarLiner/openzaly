@@ -174,6 +174,15 @@ public class UserProfileDao {
 		return pageList;
 	}
 
+	public int getTotalUserNum() {
+		try {
+			return userProfileDao.getTotalUserNum();
+		} catch (SQLException e) {
+			logger.error("get total user num error.", e);
+		}
+		return 0;
+	}
+
 	public List<SimpleUserBean> getUserPageList(int pageNum, int pageSize) {
 		List<SimpleUserBean> pageList = null;
 		try {

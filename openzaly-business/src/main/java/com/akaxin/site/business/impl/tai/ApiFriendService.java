@@ -206,8 +206,7 @@ public class ApiFriendService extends AbstractRequest {
 	 */
 	public CommandResponse apply(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
-		int applyTimes = 0;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiFriendApplyProto.ApiFriendApplyRequest request = ApiFriendApplyProto.ApiFriendApplyRequest
 					.parseFrom(command.getParams());
@@ -216,24 +215,24 @@ public class ApiFriendService extends AbstractRequest {
 			String applyReason = request.getApplyReason();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(siteUserId)) {
-				errCode = ErrorCode2.ERROR_PARAMETER;
-			} else if (siteUserId.equals(siteFriendId)) {
-				errCode = ErrorCode2.ERROR2_FRIEND_APPLYSELF;
-			} else if (StringUtils.isNotBlank(siteUserId) && !siteUserId.equals(siteFriendId)) {
-				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
-						siteFriendId);
-				if (UserProto.UserRelation.RELATION_FRIEND == userRelation) {
-					errCode = ErrorCode2.ERROR2_FRIEND_IS;
-				} else {
-					applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
-					if (applyTimes >= 5) {
-						errCode = ErrorCode2.ERROR2_FRIEND_APPLYCOUNT;
-					} else {
-						if (UserFriendDao.getInstance().saveFriendApply(siteUserId, siteFriendId, applyReason)) {
-							errCode = ErrorCode2.SUCCESS;
-						}
-					}
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (siteUserId.equals(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_APPLYSELF);
+			}
+
+			if (UserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_IS);
+			}
+
+			int applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
+			if (applyTimes >= 5) {
+				errCode = ErrorCode2.ERROR2_FRIEND_APPLYCOUNT;
+			} else {
+				if (UserFriendDao.getInstance().saveFriendApply(siteUserId, siteFriendId, applyReason)) {
+					errCode = ErrorCode2.SUCCESS;
 				}
 			}
 
@@ -248,8 +247,11 @@ public class ApiFriendService extends AbstractRequest {
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**

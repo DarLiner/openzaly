@@ -69,8 +69,17 @@ public class HttpFriendService extends AbstractRequest {
 			String applyReason = request.getApplyReason();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId) || siteUserId.equals(siteFriendId)) {
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId, applyReason)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (siteUserId.equals(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_APPLYSELF);
+			}
+
+			// 先检测一次二者之间关系
+			if (UserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_IS);
 			}
 
 			int applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
@@ -109,10 +118,15 @@ public class HttpFriendService extends AbstractRequest {
 			String siteUserId = request.getSiteUserId();
 			String siteFriendId = request.getFriendSiteUserId();
 
-			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId) || siteUserId.equals(siteFriendId)) {
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
+			if (siteUserId.equals(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_APPLYSELF);
+			}
+
+			// 同意添加好友
 			if (UserFriendDao.getInstance().agreeApply(siteUserId, siteFriendId, true)) {
 				errCode = ErrorCode2.SUCCESS;
 			}

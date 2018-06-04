@@ -448,6 +448,17 @@ public class SQLiteUserProfileDao {
 		return userPageList;
 	}
 
+	public int queryTotalUserNum() throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT COUNT(*) FROM " + USER_PROFILE_TABLE + ";";
+		PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		int UserNum = resultSet.getInt(1);
+		LogUtils.dbDebugLog(logger, startTime, UserNum, sql);
+		return UserNum;
+
+	}
+
 	/**
 	 * 分页获取站点上所有用户
 	 *

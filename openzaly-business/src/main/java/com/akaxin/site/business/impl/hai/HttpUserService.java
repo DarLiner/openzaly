@@ -25,7 +25,6 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.IErrorCode;
-import com.akaxin.common.exceptions.ZalyException;
 import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
@@ -47,10 +46,11 @@ import com.akaxin.site.storage.bean.UserProfileBean;
 /**
  * <pre>
  * 	个人相关的扩展功能实现
+ * 		hai/user/list
  * 		hai/user/profile
  * 		hai/user/update
- * 		hai/user/list
  * 		hai/user/phone
+ * 		hai/user/friends
  * 		hai/user/groups
  * </pre>
  * 
@@ -59,6 +59,59 @@ import com.akaxin.site.storage.bean.UserProfileBean;
  */
 public class HttpUserService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(HttpUserService.class);
+
+	/**
+	 * 获取站点上的所有用户列表
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse list(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			HaiUserListProto.HaiUserListRequest request = HaiUserListProto.HaiUserListRequest
+					.parseFrom(command.getParams());
+			int pageNum = request.getPageNumber();
+			int pageSize = request.getPageSize();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (pageNum == 0 && pageSize == 0) {
+				pageNum = 1;
+				pageSize = 100;
+			}
+
+			int totalUserNum = UserProfileDao.getInstance().getTotalUserNum();
+			List<SimpleUserBean> userPageList = UserProfileDao.getInstance().getUserPageList(pageNum, pageSize);
+
+			HaiUserListProto.HaiUserListResponse.Builder responseBuilder = HaiUserListProto.HaiUserListResponse
+					.newBuilder();
+			responseBuilder.setPageTotalNum(totalUserNum);
+			if (userPageList != null) {
+				for (SimpleUserBean bean : userPageList) {
+					UserProto.SimpleUserProfile.Builder userProfileBuilder = UserProto.SimpleUserProfile.newBuilder();
+					userProfileBuilder.setSiteUserId(bean.getUserId());
+					if (StringUtils.isNotBlank(bean.getUserName())) {
+						userProfileBuilder.setUserName(bean.getUserName());
+					}
+					if (StringUtils.isNotBlank(bean.getUserPhoto())) {
+						userProfileBuilder.setUserPhoto(bean.getUserPhoto());
+					}
+					userProfileBuilder.setUserStatusValue(bean.getUserStatus());
+					responseBuilder.addUserProfile(userProfileBuilder.build());
+				}
+			}
+			responseBuilder.setPageTotalNum(totalUserNum);
+			commandResponse.setParams(responseBuilder.build().toByteArray());
+			errCode = ErrorCode2.SUCCESS;
+
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse.setErrCode(errCode);
+	}
 
 	// 个人profile
 	public CommandResponse profile(Command command) {
@@ -134,56 +187,6 @@ public class HttpUserService extends AbstractRequest {
 		return commandResponse.setErrCode(errCode);
 	}
 
-	// 获取站点上的所有用户列表
-	public CommandResponse list(Command command) {
-		CommandResponse commandResponse = new CommandResponse();
-		IErrorCode errCode = ErrorCode2.ERROR;
-		try {
-			HaiUserListProto.HaiUserListRequest request = HaiUserListProto.HaiUserListRequest
-					.parseFrom(command.getParams());
-			int pageNum = request.getPageNumber();
-			int pageSize = request.getPageSize();
-			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (pageSize == 0) {
-				pageSize = 100;
-			}
-
-			List<SimpleUserBean> userPageList = UserProfileDao.getInstance().getUserPageList(pageNum, pageSize);
-			if (userPageList == null) {
-				throw new ZalyException2(ErrorCode2.ERROR2_USER_NOLIST);
-			}
-
-			HaiUserListProto.HaiUserListResponse.Builder responseBuilder = HaiUserListProto.HaiUserListResponse
-					.newBuilder();
-			for (SimpleUserBean bean : userPageList) {
-				UserProto.SimpleUserProfile.Builder userProfileBuilder = UserProto.SimpleUserProfile.newBuilder();
-				userProfileBuilder.setSiteUserId(bean.getUserId());
-				if (StringUtils.isNotBlank(bean.getUserName())) {
-					userProfileBuilder.setUserName(bean.getUserName());
-				}
-				if (StringUtils.isNotBlank(bean.getUserPhoto())) {
-					userProfileBuilder.setUserPhoto(bean.getUserPhoto());
-				}
-				userProfileBuilder.setUserStatusValue(bean.getUserStatus());
-
-				userProfileBuilder.setUserStatusValue(bean.getUserStatus());
-				responseBuilder.addUserProfile(userProfileBuilder.build());
-			}
-			commandResponse.setParams(responseBuilder.build().toByteArray());
-			errCode = ErrorCode2.SUCCESS;
-
-		} catch (Exception e) {
-			errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			LogUtils.requestErrorLog(logger, command, e);
-		} catch (ZalyException2 e) {
-			errCode = e.getErrCode();
-			LogUtils.requestErrorLog(logger, command, e);
-		}
-
-		return commandResponse.setErrCode(errCode);
-	}
-
 	// * 获取用户手机号码
 	public CommandResponse phone(Command command) {
 		CommandResponse commandResponse = new CommandResponse();
@@ -194,12 +197,12 @@ public class HttpUserService extends AbstractRequest {
 			String siteUserId = request.getSiteUserId();
 
 			if (StringUtils.isAnyEmpty(siteUserId)) {
-				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
 			if (userBean == null || StringUtils.isEmpty(userBean.getPhoneId())) {
-				throw new ZalyException(ErrorCode2.ERROR2_PHONE_HAVE_NO);
+				throw new ZalyException2(ErrorCode2.ERROR2_PHONE_HAVE_NO);
 			}
 
 			String phoneIdWithCountryCode = userBean.getPhoneId();
@@ -218,11 +221,10 @@ public class HttpUserService extends AbstractRequest {
 			errCode = ErrorCode2.SUCCESS;
 
 		} catch (Exception e) {
-			if (e instanceof ZalyException) {
-				errCode = ((ZalyException) e).getErrCode();
-			} else {
-				errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			}
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 
@@ -249,34 +251,28 @@ public class HttpUserService extends AbstractRequest {
 				pageSize = 100;
 			}
 
+			// 从第一页开始，才给pageNum
+			int totalNum = UserFriendDao.getInstance().getUserFriendNum(siteUserId);
 			List<SimpleUserBean> friendList = UserFriendDao.getInstance().getUserFriendsByPage(siteUserId, pageNum,
 					pageSize);
-			if (friendList == null || friendList.isEmpty()) {
-				throw new ZalyException2(ErrorCode2.ERROR2_USER_NO_FRIEND);
-			}
 
 			HaiUserFriendsProto.HaiUserFriendsResponse.Builder resBuilder = HaiUserFriendsProto.HaiUserFriendsResponse
 					.newBuilder();
-			// 从第一页开始，才给pageNum
-			if (pageSize == 1) {
-				int totalNum = UserFriendDao.getInstance().getUserFriendNum(siteUserId);
-				resBuilder.setPageTotalNum(totalNum);
-			}
-
-			for (SimpleUserBean bean : friendList) {
-				UserProto.SimpleUserProfile.Builder supBuilder = UserProto.SimpleUserProfile.newBuilder();
-				supBuilder.setSiteUserId(bean.getSiteUserId());
-				if (StringUtils.isNotEmpty(bean.getAliasName())) {
-					supBuilder.setUserName(bean.getAliasName());
-				} else {
-					supBuilder.setUserName(bean.getUserName());
+			resBuilder.setPageTotalNum(totalNum);
+			if (friendList != null) {
+				for (SimpleUserBean bean : friendList) {
+					UserProto.SimpleUserProfile.Builder supBuilder = UserProto.SimpleUserProfile.newBuilder();
+					supBuilder.setSiteUserId(bean.getSiteUserId());
+					if (StringUtils.isNotEmpty(bean.getAliasName())) {
+						supBuilder.setUserName(bean.getAliasName());
+					} else {
+						supBuilder.setUserName(bean.getUserName());
+					}
+					supBuilder.setNickName(bean.getUserName());
+					supBuilder.setUserPhoto(bean.getUserPhoto());
+					resBuilder.addProfile(supBuilder.build());
 				}
-				supBuilder.setNickName(bean.getUserName());
-				supBuilder.setUserPhoto(bean.getUserPhoto());
-
-				resBuilder.addProfile(supBuilder.build());
 			}
-
 			commandResponse.setParams(resBuilder.build().toByteArray());
 			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {
@@ -312,33 +308,26 @@ public class HttpUserService extends AbstractRequest {
 			}
 
 			//
+			int pageTotal = UserGroupDao.getInstance().getUserGroupCount(siteUserId);
 			List<SimpleGroupBean> groupList = UserGroupDao.getInstance().getUserGroupList(siteUserId, pageNum,
 					pageSize);
 
-			if (groupList == null || groupList.isEmpty()) {
-				throw new ZalyException2(ErrorCode2.ERROR2_USER_NO_GROUP);
-			}
-
 			HaiUserGroupsProto.HaiUserGroupsResponse.Builder resBuilder = HaiUserGroupsProto.HaiUserGroupsResponse
 					.newBuilder();
-
-			if (pageNum == 1) {
-				int pageTotal = UserGroupDao.getInstance().getUserGroupCount(siteUserId);
-				resBuilder.setPageTotalNum(pageTotal);
-			}
-
-			for (SimpleGroupBean bean : groupList) {
-				GroupProto.GroupProfile.Builder sgpBuilder = GroupProto.GroupProfile.newBuilder();
-				sgpBuilder.setId(bean.getGroupId());
-				if (StringUtils.isNotEmpty(bean.getGroupName())) {
-					sgpBuilder.setName(bean.getGroupName());
+			resBuilder.setPageTotalNum(pageTotal);
+			if (groupList != null) {
+				for (SimpleGroupBean bean : groupList) {
+					GroupProto.GroupProfile.Builder sgpBuilder = GroupProto.GroupProfile.newBuilder();
+					sgpBuilder.setId(bean.getGroupId());
+					if (StringUtils.isNotEmpty(bean.getGroupName())) {
+						sgpBuilder.setName(bean.getGroupName());
+					}
+					if (StringUtils.isNotEmpty(bean.getGroupPhoto())) {
+						sgpBuilder.setIcon(bean.getGroupPhoto());
+					}
+					resBuilder.addProfile(sgpBuilder.build());
 				}
-				if (StringUtils.isNotEmpty(bean.getGroupPhoto())) {
-					sgpBuilder.setIcon(bean.getGroupPhoto());
-				}
-				resBuilder.addProfile(sgpBuilder.build());
 			}
-
 			commandResponse.setParams(resBuilder.build().toByteArray());
 			errCode = ErrorCode2.SUCCESS;
 		} catch (Exception e) {

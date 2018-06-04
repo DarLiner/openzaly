@@ -29,7 +29,7 @@ import com.akaxin.site.business.impl.hai.HttpGroupService;
 import com.akaxin.site.business.impl.hai.HttpMessageService;
 import com.akaxin.site.business.impl.hai.HttpPushService;
 import com.akaxin.site.business.impl.hai.HttpSessionService;
-import com.akaxin.site.business.impl.hai.HttpSiteConfigService;
+import com.akaxin.site.business.impl.hai.HttpSiteService;
 import com.akaxin.site.business.impl.hai.HttpUserService;
 
 /**
@@ -49,7 +49,7 @@ public class HttpRequestService implements IRequest {
 		try {
 			switch (huaEnum) {
 			case HAI_SITE_SERVICE:
-				response = new HttpSiteConfigService().execute(command);
+				response = new HttpSiteService().execute(command);
 				break;
 			case HAI_USER_SERVICE:
 				response = new HttpUserService().execute(command);

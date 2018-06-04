@@ -237,12 +237,30 @@ public class SQLiteUserGroupDao {
 		return membersList;
 	}
 
+	public int queryNonGroupMemberNum(String groupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int num = 0;
+		String sql = "SELECT COUNT(site_user_id) FROM " + SQLConst.SITE_USER_PROFILE
+				+ " WHERE site_user_id NOT IN (SELECT DISTINCT site_user_id FROM " + SQLConst.SITE_USER_GROUP
+				+ " WHERE site_group_id=?);";
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, groupId);
+
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, num, sql, groupId);
+		return num;
+	}
+
 	public List<GroupMemberBean> queryNonGroupMemberList(String groupId, int pageNum, int pageSize)
 			throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<GroupMemberBean> membersList = new ArrayList<GroupMemberBean>();
 		int startNum = (pageNum - 1) * pageSize;
-		String sql = "SELECT site_user_id,user_name,user_photo,user_status " + SQLConst.SITE_USER_PROFILE
+		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + SQLConst.SITE_USER_PROFILE
 				+ " WHERE site_user_id NOT IN (SELECT DISTINCT site_user_id FROM " + SQLConst.SITE_USER_GROUP
 				+ " WHERE site_group_id=?) LIMIT ?,?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -263,6 +281,27 @@ public class SQLiteUserGroupDao {
 
 		LogUtils.dbDebugLog(logger, startTime, membersList.toString(), sql, groupId, startNum, pageSize);
 		return membersList;
+	}
+
+	public int queryUserFriendNonGroupMemberNum(String siteUserId, String groupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + SQLConst.SITE_USER_FRIEND
+				+ " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=? AND a.site_friend_id NOT IN (SELECT DISTINCT site_user_id FROM "
+				+ SQLConst.SITE_USER_GROUP + " WHERE site_group_id=?);";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setString(2, groupId);
+
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			result = rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, groupId);
+		return result;
 	}
 
 	/**

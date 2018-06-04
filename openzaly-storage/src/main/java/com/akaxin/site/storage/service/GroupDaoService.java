@@ -74,8 +74,18 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public int getNonGroupMemberNum(String groupId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberNum(groupId);
+	}
+
+	@Override
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberList(groupId, pageNum, pageSize);
+	}
+
+	@Override
+	public int getUserFriendNonGroupMemberNum(String siteUserId, String groupId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberNum(siteUserId, groupId);
 	}
 
 	@Override
@@ -108,6 +118,11 @@ public class GroupDaoService implements IGroupDao {
 	@Override
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException {
 		return SQLiteGroupProfileDao.getInstance().updateGroupIGC(bean);
+	}
+
+	@Override
+	public int getTotalGroupNum() throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().getTotalGroupNum();
 	}
 
 	@Override

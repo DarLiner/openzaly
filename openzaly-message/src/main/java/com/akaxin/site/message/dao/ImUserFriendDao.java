@@ -40,11 +40,9 @@ public class ImUserFriendDao {
 
 	public boolean isFriend(String siteUserId, String siteFriendId) {
 		try {
-			int userRel = userFriendDao.queryRelation(siteUserId, siteFriendId);
-			int friendRel = userFriendDao.queryRelation(siteFriendId, siteUserId);
-			return userRel == 1 && friendRel == 1;
+			return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId);
 		} catch (SQLException e) {
-			logger.error("query friend relation error.", e);
+			logger.error("query is friend relation error.", e);
 		}
 		return false;
 	}

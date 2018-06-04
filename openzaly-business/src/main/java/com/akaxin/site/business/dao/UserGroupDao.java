@@ -39,7 +39,7 @@ import com.akaxin.site.storage.service.MessageDaoService;
 import com.akaxin.site.storage.service.UserGroupDaoService;
 
 /**
- * 群组相关数据源操作
+ * 用户群组群组相关数据源操作
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2017-10-20 17:30:14
@@ -112,6 +112,17 @@ public class UserGroupDao {
 		return membersList;
 	}
 
+	// 管理后台使用
+	public int getNonGroupMemberNum(String groupId) {
+		try {
+			return groupDao.getNonGroupMemberNum(groupId);
+		} catch (Exception e) {
+			logger.error("get non group members error.", e);
+		}
+		return 0;
+	}
+
+	// 管理后台使用
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) {
 		List<GroupMemberBean> membersList = new ArrayList<GroupMemberBean>();
 		try {
@@ -120,6 +131,15 @@ public class UserGroupDao {
 			logger.error("get non group members error.", e);
 		}
 		return membersList;
+	}
+
+	public int getUserFriendNonGroupMemberNum(String siteUserId, String groupId) {
+		try {
+			return groupDao.getUserFriendNonGroupMemberNum(siteUserId, groupId);
+		} catch (Exception e) {
+			logger.error("get user friend non group member number error.", e);
+		}
+		return 0;
 	}
 
 	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
@@ -133,6 +153,7 @@ public class UserGroupDao {
 		return userList;
 	}
 
+	// 获取群成员人数
 	public int getGroupMemberCount(String groupId) {
 		try {
 			return groupDao.getGroupMembersCount(groupId);
@@ -316,4 +337,14 @@ public class UserGroupDao {
 		}
 		return false;
 	}
+
+	public int getTotalGroupNum() {
+		try {
+			return groupDao.getTotalGroupNum();
+		} catch (SQLException e) {
+			logger.error("get total group num error", e);
+		}
+		return 0;
+	}
+
 }

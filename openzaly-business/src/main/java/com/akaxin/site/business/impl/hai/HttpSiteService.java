@@ -35,8 +35,8 @@ import com.akaxin.site.business.impl.site.SiteConfig;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-08 14:22:52
  */
-public class HttpSiteConfigService extends AbstractRequest {
-	private static final Logger logger = LoggerFactory.getLogger(HttpSiteConfigService.class);
+public class HttpSiteService extends AbstractRequest {
+	private static final Logger logger = LoggerFactory.getLogger(HttpSiteService.class);
 
 	/**
 	 * 获取站点配置信息

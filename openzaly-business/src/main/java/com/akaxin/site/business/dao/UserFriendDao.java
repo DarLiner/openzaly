@@ -87,6 +87,15 @@ public class UserFriendDao {
 		return false;
 	}
 
+	// 查询二者是否为好友
+	public boolean isFriend(String siteUserId, String siteFriendId) throws SQLException {
+		return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId);
+	}
+
+	public boolean isNotFriend(String siteUserId, String siteFriendId) throws SQLException {
+		return !isFriend(siteUserId, siteFriendId);
+	}
+
 	public boolean agreeApply(String siteUserId, String siteFriendId, boolean agree) {
 		boolean result = true;
 		try {
