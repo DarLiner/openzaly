@@ -15,10 +15,13 @@
  */
 package com.akaxin.site.boot.main;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Base64;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +113,15 @@ public class Bootstrap {
 
 	public static void main(String[] args) {
 
+		// set root dir
+		try {
+			setBaseDir();
+		} catch (IOException ioe) {
+			// TODO Auto-generated catch block
+			ioe.printStackTrace();
+			System.exit(-100);
+		}
+
 		// 增加 -h|-help 启动参数 输出帮助文档
 		// use java -jar -h|-help ,get more help message
 		if (Helper.startHelper(args)) {
@@ -130,12 +142,13 @@ public class Bootstrap {
 			// init and set default log level by openzaly.properties
 			setSystemLogLevel();
 
-			// tcp address from openzaly.properties
+			// client tcp address from openzaly.properties
 			nettyTcpHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
 			nettyTcpPort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
-			// http address from openzaly.properties
-			nettyHttpHost = ConfigHelper.getStringConfig(ConfigKey.HTTP_ADDRESS);
-			nettyHttpPort = ConfigHelper.getIntConfig(ConfigKey.HTTP_PORT);
+
+			// plugin http address from openzaly.properties
+			nettyHttpHost = ConfigHelper.getStringConfig(ConfigKey.PLUGIN_API_ADDRESS);
+			nettyHttpPort = ConfigHelper.getIntConfig(ConfigKey.PLUGIN_API_PORT);
 
 			// add site config to database
 			initDataSource();
@@ -189,6 +202,19 @@ public class Bootstrap {
 		}
 	}
 
+	private static void setBaseDir() throws IOException {
+		String baseDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+
+		if (StringUtils.isNotBlank(baseDir)) {
+			File file = new File(baseDir);
+			if (!file.isDirectory()) {
+				file.mkdirs();
+			}
+			logger.info("openzaly set base dir:{}", file.getCanonicalPath());
+			System.setProperty("user.dir", file.getCanonicalPath());
+		}
+	}
+
 	private static void setSystemLogLevel() {
 		// 先获取站点的项目环境 site.project.env
 		String projectEvn = ConfigHelper.getStringConfig(ConfigKey.SITE_PROJECT_ENV);
@@ -211,7 +237,7 @@ public class Bootstrap {
 		String adminHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
 		int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
 
-		String dbDir = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+		String dbDir = System.getProperty("user.dir");
 		String adminUic = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_UIC);
 		Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
 
@@ -292,7 +318,7 @@ public class Bootstrap {
 	// get pic by base64
 	private static String getDefaultIcon(String base64Str) {
 		try {
-			String fileBasePath = ConfigHelper.getStringConfig(ConfigKey.SITE_BASE_DIR);
+			String fileBasePath = System.getProperty("user.dir");
 			byte[] iconBytes = Base64.getDecoder().decode(base64Str);
 			String fileId = FileServerUtils.saveFile(iconBytes, FilePathUtils.getPicPath(fileBasePath),
 					FileType.SITE_PLUGIN, null);

@@ -92,9 +92,17 @@ public class Helper {
 
 	public static void buildEnvToSystemOut(PrintWriter pwriter) {
 		pwriter.println();
-		pwriter.println("openzaly-version : 0.9.5");
-		pwriter.println("java-version : JDK 1.8+");
-		pwriter.println("maven-version : 3.0+");
+		// openzaly version
+		String ozVersion = ConfigHelper.getStringConfig(ConfigKey.SITE_VERSION);
+		pwriter.println("openzaly-version : " + ozVersion);
+		// os
+		String osName = System.getProperty("os.name");
+		String dataModel = System.getProperty("sun.arch.data.model"); // 32位 or 64位
+		pwriter.println("OS Name : " + osName + " " + dataModel + "位");
+		// java version
+		String javaVersion = System.getProperty("java.version"); // 获取JDK版本
+		pwriter.println("java-version : " + javaVersion);
+
 		pwriter.println();
 		pwriter.println("[OK] openzaly-server is starting...");
 		pwriter.flush();
@@ -130,17 +138,20 @@ public class Helper {
 		pw.println();
 		pw.println("example:java -Dsite.port=2021 -jar openzaly-server.jar ");
 		pw.println();
-		pw.println("\t-Dsite.project.env \topenzaly server environment default:ONLINE");
-		pw.println("\t-Dsite.version \t\topenzaly server version default:0.3.2");
+		// pw.println("\t-Dsite.project.env \topenzaly server environment
+		// default:ONLINE");
+		// pw.println("\t-Dsite.version \t\topenzaly server version default:0.3.2");
 		pw.println("\t-Dsite.address \t\topenzaly Netty address default:0.0.0.0");
 		pw.println("\t-Dsite.port \t\topenzaly Netty port default:2021");
-		pw.println("\t-Dhttp.address \t\topenzaly Http address default:0.0.0.0");
-		pw.println("\t-Dhttp.port \t\topenzaly Http port default:8080");
-		pw.println("\t-Dsite.admin.address \topenzaly AdminSystem address default:127.0.0.1");
-		pw.println("\t-Dsite.admin.port \topenzaly AdminSystem port default:8081");
-		pw.println("\t-Dsite.admin.uic \topenzaly first uic for admin port default:000000");
+		pw.println("\t-Dpluginapi.address \topenzaly Http address default: 0.0.0.0");
+		pw.println("\t-Dpluginapi.port \topenzaly Http port default:8280");
+		// pw.println("\t-Dsite.admin.address \topenzaly AdminSystem address default:
+		// 127.0.0.1");
+		// pw.println("\t-Dsite.admin.port \topenzaly AdminSystem port default: 8288");
+		pw.println("\t-Dsite.admin.uic \topenzaly first uic for admin port default: \" 000000\"");
 		pw.println("\t-Dsite.baseDir \t\topenzaly openzaly-server root dir default:./");
-		pw.println("\t-Dgroup.members.count \topenzaly Max group member size default:100");
+		// pw.println("\t-Dgroup.members.count \topenzaly Max group member size
+		// default:100");
 		pw.println();
 		pw.flush();
 	}

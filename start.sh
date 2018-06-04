@@ -34,7 +34,7 @@ fi
 	
 ##set http port
 if [ -n $PORT2 ]; then
-	PORT2=8080 
+	PORT2=8280 
 fi
 
 #### echo server is starting
