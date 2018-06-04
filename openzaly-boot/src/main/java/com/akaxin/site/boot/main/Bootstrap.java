@@ -23,8 +23,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
@@ -39,6 +37,7 @@ import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.boot.config.ConfigListener;
 import com.akaxin.site.boot.config.SiteDefaultIcon;
+import com.akaxin.site.boot.utils.BootLog;
 import com.akaxin.site.boot.utils.Helper;
 import com.akaxin.site.business.utils.FilePathUtils;
 import com.akaxin.site.business.utils.FileServerUtils;
@@ -109,7 +108,8 @@ import com.akaxin.site.web.OpenzalyAdminApplication;
  * @since 2018.01.01 11:23:42
  */
 public class Bootstrap {
-	private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(Bootstrap.class);
 
 	public static void main(String[] args) {
 
@@ -166,35 +166,35 @@ public class Bootstrap {
 			initSpringBoot(args);
 
 			Helper.startSuccess(pwriter);
-			logger.info("start openzaly-server successfully");
+			BootLog.info("start openzaly-server successfully");
 		} catch (Exception e) {
 			Helper.startFail(pwriter);
-			logger.error("start Openzaly-server error", e);
-			logger.error("Openzaly-server exit...");
+			BootLog.error("start Openzaly-server error", e);
+			BootLog.error("Openzaly-server exit...");
 			System.exit(-1);// system exit
 		} catch (TcpServerException e) {
 			String errMessage = StringHelper.format("openzaly tcp-server {}:{} {}", nettyTcpHost, nettyTcpPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
-			logger.error("start Openzaly with tcp server error", e);
-			logger.error("Openzaly-server exit...");
+			BootLog.error("start Openzaly with tcp server error", e);
+			BootLog.error("Openzaly-server exit...");
 			System.exit(-2);// system exit
 		} catch (HttpServerException e) {
 			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", nettyHttpHost, nettyHttpPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
-			logger.error("start Openzaly with http server error", e);
-			logger.error("Openzaly-server exit...");
+			BootLog.error("start Openzaly with http server error", e);
+			BootLog.error("Openzaly-server exit...");
 			System.exit(-3);// system exit
 		} catch (InitDatabaseException e) {
 			String errMessage = StringHelper.format("openzaly init database error {}", e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
-			logger.error("start Openzaly with init database error", e);
-			logger.error("Openzaly-server exit...");
+			BootLog.error("start Openzaly with init database error", e);
+			BootLog.error("Openzaly-server exit...");
 			System.exit(-4);// system exit
 		} catch (UpgradeDatabaseException e) {
 			Helper.printUpgradeWarn(pwriter);
-			logger.error("Openzaly-server current is an old version ,we need to upgrade.", e);
+			BootLog.error("Openzaly-server current is an old version ,we need to upgrade.", e);
 		} finally {
 			if (pwriter != null) {
 				pwriter.close();
@@ -210,8 +210,8 @@ public class Bootstrap {
 			if (!file.isDirectory()) {
 				file.mkdirs();
 			}
-			logger.info("openzaly set base dir:{}", file.getCanonicalPath());
 			System.setProperty("user.dir", file.getCanonicalPath());
+//			BootLog.info("openzaly set base dir:{}", file.getCanonicalPath());
 		}
 	}
 
@@ -224,7 +224,7 @@ public class Bootstrap {
 		}
 		// 更新日志级别
 		AkxLog4jManager.setLogLevel(level);
-		logger.info("{} set system log level={}", AkxProject.PLN, level);
+		BootLog.info("{} set system log level={}", AkxProject.PLN, level);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class Bootstrap {
 		config.setAdminServerName(PluginArgs.SITE_ADMIN_NAME);
 		config.setAdminIcon(getDefaultIcon(SiteDefaultIcon.DEFAULT_SITE_ADMIN_ICON));
 		config.setParam(PluginArgs.FRIEND_SQUARE, getDefaultIcon(SiteDefaultIcon.DEFAULT_FRIEND_SQUARE_ICON));
-		logger.info("{} init datasource config={}", AkxProject.PLN, config.toString());
+		BootLog.info("{} init datasource config={}", AkxProject.PLN, config.toString());
 		DataSourceManager.init(config);
 	}
 
@@ -268,7 +268,7 @@ public class Bootstrap {
 			}
 
 		}.start(address, port);
-		logger.info("{} start http server {}:{} ok.", AkxProject.PLN, address, port);
+		BootLog.info("{} start http server {}:{} ok.", AkxProject.PLN, address, port);
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class Bootstrap {
 			}
 
 		}.start(address, port);
-		logger.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
+		BootLog.info("{} start netty server {}:{} ok.", AkxProject.PLN, address, port);
 	}
 
 	// websocket for web-im
@@ -312,7 +312,7 @@ public class Bootstrap {
 	// add config listener,timing to update cached config value
 	private static void addConfigListener() {
 		ConfigListener.startListenning();
-		logger.info("{} start listener to site-config", AkxProject.PLN);
+		BootLog.info("{} start listener to site-config", AkxProject.PLN);
 	}
 
 	// get pic by base64
@@ -324,7 +324,7 @@ public class Bootstrap {
 					FileType.SITE_PLUGIN, null);
 			return fileId;
 		} catch (Exception e) {
-			logger.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
+			BootLog.error(StringHelper.format("{} set openzaly-admin default icon error", AkxProject.PLN), e);
 		}
 		return "";
 	}
