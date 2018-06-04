@@ -47,6 +47,7 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
+				String proxySiteUserId = request.getText().getSiteUserId();
 				String siteFriendId = request.getText().getSiteFriendId();
 				String msgId = request.getText().getMsgId();
 				ByteString byteStr = request.getText().getText();
@@ -57,7 +58,7 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(msgText);
 				u2Bean.setMsgTime(msgTime);

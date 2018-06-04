@@ -44,14 +44,15 @@ public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
-				String siteFriendId = command.getSiteFriendId();
+				String proxySiteUserId = request.getImage().getSiteUserId();
+				String siteFriendId = request.getImage().getSiteFriendId();
 				String msgId = request.getImage().getMsgId();
 				String imageId = request.getImage().getImageId();
 
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
+				u2Bean.setSiteUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(imageId);
 				long msgTime = System.currentTimeMillis();

@@ -38,6 +38,7 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
+				String proxySiteUserId = request.getU2WebNotice().getSiteUserId();
 				String siteFriendId = request.getU2WebNotice().getSiteFriendId();
 				String msgId = request.getU2WebNotice().getMsgId();
 				String webCode = request.getU2WebNotice().getWebCode();
@@ -46,7 +47,8 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 				U2MessageBean bean = new U2MessageBean();
 				bean.setMsgId(msgId);
 				bean.setMsgType(type);
-				bean.setSendUserId(siteUserId);
+				// bean.setSendUserId(siteUserId);
+				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSiteUserId(siteFriendId);
 				bean.setContent(webCode);
 				bean.setMsgTime(msgTime);

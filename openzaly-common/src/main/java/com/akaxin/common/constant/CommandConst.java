@@ -25,10 +25,12 @@ public interface CommandConst {
 	public String CHANNEL_CONTEXT = "channel_context";
 	public String CLIENT_IP = "client_ip";
 	public String CLIENT_VERSION = "client_version";
-	
+
 	public String MSG_TYPE = "msg_type";
 	public String START_TIME = "start_time";
 	public String END_TIME = "end_time";
+
+	public String IS_PROXY = "is_proxy";
 
 	// plugin
 	public String PLUGIN_AUTH_KEY = "plugin_auth_key";

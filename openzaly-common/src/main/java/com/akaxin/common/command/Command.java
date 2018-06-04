@@ -43,6 +43,8 @@ public class Command {
 	private byte[] params;
 	private CommandResponse response; // response
 
+	private boolean proxy;// 是否为代理请求
+
 	private Map<String, Object> fields = new HashMap<String, Object>();
 
 	public void setAction(String splitStrs) {
@@ -254,6 +256,14 @@ public class Command {
 	public long getEndTime() {
 		Long time = this.getField(CommandConst.END_TIME, Long.class);
 		return time == null ? 0 : time;
+	}
+
+	public boolean isProxy() {
+		return proxy;
+	}
+
+	public void setProxy(boolean proxy) {
+		this.proxy = proxy;
 	}
 
 	public Command setChannelSession(ChannelSession channelSession) {

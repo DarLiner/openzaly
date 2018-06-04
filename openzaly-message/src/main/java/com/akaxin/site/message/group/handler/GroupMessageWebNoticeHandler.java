@@ -45,6 +45,7 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String deviceId = command.getDeviceId();
+				String proxySiteUserId = request.getGroupWebNotice().getSiteUserId();
 				String gmsgId = request.getGroupWebNotice().getMsgId();
 				String groupId = request.getGroupWebNotice().getSiteGroupId();
 				String webCode = request.getGroupWebNotice().getWebCode();
@@ -52,7 +53,8 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 				long msgTime = System.currentTimeMillis();
 				GroupMessageBean bean = new GroupMessageBean();
 				bean.setMsgId(gmsgId);
-				bean.setSendUserId(siteUserId);
+				// bean.setSendUserId(siteUserId);
+				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSendDeviceId(deviceId);
 				bean.setSiteGroupId(groupId);
 				bean.setContent(webCode);
@@ -72,29 +74,5 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 
 		return false;
 	}
-
-	// private void msgResponse(Channel channel, Command command, String from,
-	// String to, String msgId, long msgTime) {
-	// CoreProto.MsgStatus status =
-	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
-	// .setMsgStatus(1).build();
-	//
-	// ImStcMessageProto.MsgWithPointer statusMsg =
-	// ImStcMessageProto.MsgWithPointer.newBuilder()
-	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
-	//
-	// ImStcMessageProto.ImStcMessageRequest request =
-	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
-	// .addList(statusMsg).build();
-	//
-	// CoreProto.TransportPackageData data =
-	// CoreProto.TransportPackageData.newBuilder()
-	// .setData(request.toByteString()).build();
-	//
-	// channel.writeAndFlush(new
-	// RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
-	// .add(data.toByteArray()));
-	//
-	// }
 
 }
