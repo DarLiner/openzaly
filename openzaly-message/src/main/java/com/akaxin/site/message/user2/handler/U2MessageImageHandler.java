@@ -52,7 +52,7 @@ public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSiteUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(imageId);
 				long msgTime = System.currentTimeMillis();
