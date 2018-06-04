@@ -19,7 +19,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +34,7 @@ import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
+import com.akaxin.site.storage.util.SqlUtils;
 
 public class SQLiteGroupProfileDao {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteGroupProfileDao.class);
@@ -164,17 +167,25 @@ public class SQLiteGroupProfileDao {
 
 	public int updateGroupProfile(GroupProfileBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "UPDATE " + GROUP_PROFILE_TABLE
-				+ " SET group_name=?, group_photo=?, group_notice=? WHERE site_group_id=?;";
+		String sql = "UPDATE " + GROUP_PROFILE_TABLE + " {} WHERE site_group_id=?;";
 		int result = 0;
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, bean.getGroupName());
-		preStatement.setString(2, bean.getGroupPhoto());
-		preStatement.setString(3, bean.getGroupNotice());
-		preStatement.setString(4, bean.getGroupId());
+
+		Map<String, String> sqlMap = new HashMap<String, String>();
+		sqlMap.put("group_name", bean.getGroupName());
+		sqlMap.put("group_photo", bean.getGroupPhoto());
+		sqlMap.put("group_notice", bean.getGroupNotice());
+
+		SqlUtils.SqlBean sqlBean = SqlUtils.buildUpdateSql(sql, sqlMap);
+		String realSql = sqlBean.getSql();
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(realSql);
+		for (Integer index : sqlBean.getParams().keySet()) {
+			preStatement.setString(index, sqlBean.getParams().get(index));
+		}
+		preStatement.setString(sqlBean.getParams().size() + 1, bean.getGroupId());
 		result = preStatement.executeUpdate();
 
-		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getGroupName(), bean.getGroupPhoto(),
+		LogUtils.dbDebugLog(logger, startTime, result, realSql, bean.getGroupName(), bean.getGroupPhoto(),
 				bean.getGroupNotice(), bean.getGroupId());
 		return result;
 	}
