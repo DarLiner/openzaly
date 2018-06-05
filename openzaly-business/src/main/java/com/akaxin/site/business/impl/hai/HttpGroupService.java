@@ -17,6 +17,7 @@ package com.akaxin.site.business.impl.hai;
 
 import java.util.List;
 
+import com.akaxin.site.business.impl.site.SiteConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -232,6 +233,16 @@ public class HttpGroupService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
+			if (!checkGroupId(siteGroupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			for (String memberId : memberUserList) {
+				if (!checkUserId(memberId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+				}
+			}
+
 			if (UserGroupDao.getInstance().addGroupMember(null, siteGroupId, memberUserList)) {
 				errCode = ErrorCode2.SUCCESS;
 			}
@@ -262,6 +273,12 @@ public class HttpGroupService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(groupId)) {
+				//无法删除admin
+				for (String deleteMemberId : deleteMemberIds) {
+					if (SiteConfig.isSiteSuperAdmin(deleteMemberId)) {
+						throw new ZalyException2(ErrorCode2.ERROR_NOPERMISSION);
+					}
+				}
 				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
 					errCode = ErrorCode2.SUCCESS;
 				}
@@ -272,6 +289,9 @@ public class HttpGroupService extends AbstractRequest {
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 zalyException2) {
+			errCode = (ErrorCode2) zalyException2.getErrCode();
+			LogUtils.requestErrorLog(logger, command, zalyException2);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -336,6 +356,10 @@ public class HttpGroupService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
+			if (!checkGroupId(groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			int memberSize = UserGroupDao.getInstance().getGroupMemberCount(groupId);
 			List<GroupMemberBean> memberList = UserGroupDao.getInstance().getGroupMemberList(groupId, pageNum,
 					pageSize);
@@ -386,6 +410,10 @@ public class HttpGroupService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkUserId(siteUserId) || !checkGroupId(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 

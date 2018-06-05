@@ -239,6 +239,11 @@ public class HttpUserService extends AbstractRequest {
 			HaiUserFriendsProto.HaiUserFriendsRequest request = HaiUserFriendsProto.HaiUserFriendsRequest
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
+
+			if (!checkUserId(siteUserId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 
@@ -294,6 +299,11 @@ public class HttpUserService extends AbstractRequest {
 			HaiUserGroupsProto.HaiUserGroupsRequest request = HaiUserGroupsProto.HaiUserGroupsRequest
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
+
+			if (!checkUserId(siteUserId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());

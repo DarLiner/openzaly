@@ -77,6 +77,10 @@ public class HttpFriendService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_APPLYSELF);
 			}
 
+			if (!checkUserId(siteUserId) || !checkUserId(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			// 先检测一次二者之间关系
 			if (UserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_IS);
@@ -126,6 +130,10 @@ public class HttpFriendService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_APPLYSELF);
 			}
 
+			if (!checkUserId(siteUserId) || !checkUserId(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			// 同意添加好友
 			if (UserFriendDao.getInstance().agreeApply(siteUserId, siteFriendId, true)) {
 				errCode = ErrorCode2.SUCCESS;
@@ -160,6 +168,15 @@ public class HttpFriendService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
+			if (!checkUserId(siteUserId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			for (String id : userIdList) {
+				if (!checkUserId(id)) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+				}
+			}
 			HaiFriendRelationsResponse.Builder resBuilder = HaiFriendRelationsResponse.newBuilder();
 			for (String siteFriendId : userIdList) {
 				SimpleUserBean userBean = UserProfileDao.getInstance().getSimpleProfileById(siteFriendId);
