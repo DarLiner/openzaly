@@ -13,25 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
 */
-package com.akaxin.site.web;
+package com.akaxin.site.boot.spring;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * springboot的支持，放在openzaly-boot中
+ * <pre>
+ * 	openzaly支持springboot框架，在启动main中会同样启动springboot
+ * 
+ * 	在maven modules中，springboot会存在启动main中扫描不到其他modules中的package，两种方法解决：
+ * 		其一：@SpringBootApplication(scanBasePackages={"com.akaxin.site.*"})
+ * 		其二：SpringApplication.run(Class<?>...clazzs ,args),clazzs 把需要加载的主类添加上
+ * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
- * @since 2018-06-05 19:31:16
+ * @since 2018-06-05 19:25:55
  */
-@Deprecated
-@SpringBootApplication
-public class OpenzalyAdminApplication {
+@SpringBootApplication(scanBasePackages = { "com.akaxin.site.*" })
+public class OpenzalySpringBoot {
 
 	public static void main(String[] args) {
-		SpringApplication application = new SpringApplication(OpenzalyAdminApplication.class);
+
+		SpringApplication application = new SpringApplication(OpenzalySpringBoot.class);
 		application.setBannerMode(Banner.Mode.OFF);
+		// application.setDefaultProperties(properties);
 		application.run(args);
 	}
+
 }

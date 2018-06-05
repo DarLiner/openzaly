@@ -37,6 +37,7 @@ import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.boot.config.ConfigListener;
 import com.akaxin.site.boot.config.SiteDefaultIcon;
+import com.akaxin.site.boot.spring.OpenzalySpringBoot;
 import com.akaxin.site.boot.utils.BootLog;
 import com.akaxin.site.boot.utils.Helper;
 import com.akaxin.site.business.utils.FilePathUtils;
@@ -56,7 +57,6 @@ import com.akaxin.site.storage.exception.InitDatabaseException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 import com.akaxin.site.storage.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.sqlite.manager.PluginArgs;
-import com.akaxin.site.web.OpenzalyAdminApplication;
 
 /**
  * <pre>
@@ -306,7 +306,7 @@ public class Bootstrap {
 
 	// springboot for openzaly web
 	private static void initSpringBoot(String[] args) {
-		OpenzalyAdminApplication.main(args);
+		OpenzalySpringBoot.main(args);
 	}
 
 	// add config listener,timing to update cached config value

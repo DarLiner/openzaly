@@ -5,5 +5,5 @@ public interface PluginArgs {
 
 	public String FRIEND_SQUARE = "friendSquare";
 	public String FRIEND_SQUARE_NAME = "用户广场";
-	public String FRIEND_SQUARE_API = "/site_member/index";
+	public String FRIEND_SQUARE_API = "/akaxin/site_member/index";
 }

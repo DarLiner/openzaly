@@ -32,7 +32,7 @@ public class DBConfig {
 	private int adminPort;
 	private String adminIcon;
 	private String adminUic;
-	private String adminApi = "/manage/index";
+	private String adminApi = "/akaxin/manage/index";
 	private Map<Integer, String> configMap;
 	// 扩展参数
 	private Map<String, Object> params = new HashMap<String, Object>();
