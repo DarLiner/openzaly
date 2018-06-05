@@ -60,8 +60,8 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 				try {
 					ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 							.parseFrom(command.getParams());
-					String siteUserId = command.getSiteUserId();
-					String siteFromId = siteUserId;
+					// String siteUserId = command.getSiteUserId();
+					String fromSiteUserId = command.isProxy() ? command.getSiteUserId() : command.getSiteFriendId();
 					String siteGroupId = command.getSiteGroupId();
 
 					GroupProfileBean groupBean = ImUserGroupDao.getInstance().getSimpleGroupProfile(siteGroupId);
@@ -70,7 +70,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 						return;
 					}
 
-					String fromGlobalUserId = ImUserProfileDao.getInstance().getGlobalUserId(siteFromId);
+					String fromGlobalUserId = ImUserProfileDao.getInstance().getGlobalUserId(fromSiteUserId);
 					// Push Request
 					ApiPushNotificationsProto.ApiPushNotificationsRequest.Builder requestBuilder = ApiPushNotificationsProto.ApiPushNotificationsRequest
 							.newBuilder();
@@ -96,7 +96,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					requestBuilder.setNotifications(notifications.build());
 					// 3.set pushFromUser
 					PushProto.PushFromUser pushFromUser = PushProto.PushFromUser.newBuilder()
-							.setGlobalUserId(fromGlobalUserId).setSiteUserId(siteFromId)
+							.setGlobalUserId(fromGlobalUserId).setSiteUserId(fromSiteUserId)
 							.setPushFromName(groupBean.getGroupName()).build();
 					requestBuilder.setPushFromUser(pushFromUser);
 
@@ -104,7 +104,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					List<String> groupMembers = groupDao.getGroupMembersId(siteGroupId);
 					for (String memberUserId : groupMembers) {
 
-						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(siteUserId)) {
+						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(fromSiteUserId)) {
 							// 一、用户是否对站点消息免打扰
 							// 二、用户是否对该群消息免打扰
 							if (ImUserProfileDao.getInstance().isMute(memberUserId)

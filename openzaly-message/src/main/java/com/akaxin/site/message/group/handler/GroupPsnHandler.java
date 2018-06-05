@@ -44,8 +44,8 @@ public class GroupPsnHandler extends AbstractGroupHandler<Command> {
 			String siteFriendId = command.getSiteFriendId();
 
 			List<String> groupMembers = groupDao.getGroupMembersId(siteGroupId);
-			for (String userId : groupMembers) {
-				List<String> deivceIds = ImUserSessionDao.getInstance().getSessionDevices(userId);
+			for (String groupMemberUserId : groupMembers) {
+				List<String> deivceIds = ImUserSessionDao.getInstance().getSessionDevices(groupMemberUserId);
 				for (String deviceId : deivceIds) {
 					if (StringUtils.isNotEmpty(deviceId) && !deviceId.equals(siteDeviceId)) {
 						writePSN(deviceId);

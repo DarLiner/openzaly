@@ -50,41 +50,58 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 					.parseFrom(command.getParams());
 			int type = request.getType().getNumber();
 			command.setMsgType(type);
-			String siteUserId = null;
+
+			String siteUserId = command.getSiteUserId();
 			String siteGroupId = null;
 			String gmsgId = null;
+
 			switch (type) {
 			case CoreProto.MsgType.GROUP_TEXT_VALUE:
-				siteUserId = request.getGroupText().getSiteUserId();
+				if (command.isProxy()) {
+					siteUserId = request.getGroupText().getSiteUserId();
+				}
 				gmsgId = request.getGroupText().getMsgId();
 				siteGroupId = request.getGroupText().getSiteGroupId();
 			case CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE:
 				break;
 			case CoreProto.MsgType.GROUP_IMAGE_VALUE:
-				siteUserId = request.getGroupImage().getSiteUserId();
+				if (command.isProxy()) {
+					siteUserId = request.getGroupImage().getSiteUserId();
+				}
 				gmsgId = request.getGroupImage().getMsgId();
 				siteGroupId = request.getGroupImage().getSiteGroupId();
 				break;
 			case CoreProto.MsgType.GROUP_SECRET_IMAGE_VALUE:
 				break;
 			case CoreProto.MsgType.GROUP_VOICE_VALUE:
-				siteUserId = request.getGroupVoice().getSiteUserId();
+				if (command.isProxy()) {
+					siteUserId = request.getGroupVoice().getSiteUserId();
+				}
 				gmsgId = request.getGroupVoice().getMsgId();
 				siteGroupId = request.getGroupVoice().getSiteGroupId();
 				break;
 			case CoreProto.MsgType.GROUP_SECRET_VOICE_VALUE:
 				break;
 			case CoreProto.MsgType.GROUP_NOTICE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getGroupMsgNotice().getSiteUserId();
+				}
 				siteGroupId = request.getGroupMsgNotice().getSiteGroupId();
 				command.setSiteGroupId(siteGroupId);
 				// 系统下发的消息，直接return true；
 				return true;
 			case CoreProto.MsgType.GROUP_WEB_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getGroupWeb().getSiteUserId();
+				}
 				siteGroupId = request.getGroupWeb().getSiteGroupId();
 				command.setSiteGroupId(siteGroupId);
 				// 系统下发的消息，直接return true；
 				return true;
 			case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getGroupWebNotice().getSiteUserId();
+				}
 				siteGroupId = request.getGroupWebNotice().getSiteGroupId();
 				command.setSiteGroupId(siteGroupId);
 				// 系统下发的消息，直接return true；
@@ -92,13 +109,17 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 			default:
 				break;
 			}
+
+			command.setProxySiteUserId(siteUserId);
 			// 群消息设置siteGroupId
 			command.setSiteGroupId(siteGroupId);
-			
-			if (StringUtils.isAnyEmpty(command.getSiteUserId(), command.getSiteGroupId())) {
+
+			// check parameters
+			if (StringUtils.isAnyEmpty(siteUserId, siteGroupId)) {
 				return false;
 			}
 
+			// check is member of group
 			if (check(siteUserId, siteGroupId)) {
 				return true;
 			} else {

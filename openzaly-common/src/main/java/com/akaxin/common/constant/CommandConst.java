@@ -19,6 +19,7 @@ public interface CommandConst {
 	public String PROTOCOL_VERSION = "1.0";// 网络协议版本
 	public String SITE_VERSION = "0.9.5";// 站点版本（特指proto版本）
 
+	public String PROXY_SITE_USER_ID = "proxy_site_user_id";
 	public String SITE_FRIEND_ID = "site_friend_id";
 	public String SITE_GROUP_ID = "site_group_id";
 	public String CHAHHEL_SESSION = "channel_session";

@@ -108,7 +108,8 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 				logger.error("error message type cmd={} request={}", command.toString(), request.toString());
 				return false;
 			}
-
+			// command.isProxy()==false,think of proxy self
+			command.setProxySiteUserId(siteUserId);
 			command.setSiteFriendId(siteFriendId);
 
 			if (checkUser(siteUserId, siteFriendId)) {

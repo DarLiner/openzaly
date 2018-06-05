@@ -33,7 +33,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @since 2017.09.30
  */
 public class Command {
-	private String siteUserId;
+	private String siteUserId;// 执行者
 	private String deviceId;
 	private String globalUserId;
 	private String rety; // request type，im/api/hai
@@ -191,6 +191,15 @@ public class Command {
 
 	public String getSiteFriendId() {
 		return this.getField(CommandConst.SITE_FRIEND_ID, String.class);
+	}
+
+	public Command setProxySiteUserId(String proxySiteUserId) {
+		this.fields.put(CommandConst.PROXY_SITE_USER_ID, proxySiteUserId);
+		return this;
+	}
+
+	public String getProxySiteUserId() {
+		return this.getField(CommandConst.PROXY_SITE_USER_ID, String.class);
 	}
 
 	public Command setSiteGroupId(String siteGroupId) {
