@@ -66,25 +66,27 @@ public abstract class AbstractRequest implements IRequestService {
 		}
 		return response;
 	}
-    //检查请求的参数中的siteUserId是否是存在的
-    public boolean checkUserIdIegal(String siteUserId) throws SQLException {
-        if (StringUtils.isNotEmpty(siteUserId)) {
-            SimpleUserBean userProfile = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
-            if (userProfile != null&& StringUtils.isNotEmpty(userProfile.getSiteUserId())) {
-                return true;
-            }
-        }
-        return false;
+
+	//检查请求的参数中的siteUserId是否是存在的
+	public boolean checkUserIdIegal(String siteUserId) {
+		if (StringUtils.isNotEmpty(siteUserId)) {
+			SimpleUserBean userProfile = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
+			if (userProfile != null && StringUtils.isNotEmpty(userProfile.getSiteUserId())) {
+				return true;
+			}
+		}
+		return false;
 	}
-    //检查请求的参数中的groupId是否是存在的
-    public boolean checkGroupIdIegal(String groupId) {
-        if (StringUtils.isNotEmpty(groupId)) {
-            GroupProfileBean groupProfile = ImUserGroupDao.getInstance().getSimpleGroupProfile(groupId);
-            if (groupProfile != null) {
-                return true;
-            }
-        }
-        return false;
-    }
+
+	//检查请求的参数中的groupId是否是存在的
+	public boolean checkGroupIdIegal(String groupId) {
+		if (StringUtils.isNotEmpty(groupId)) {
+			GroupProfileBean groupProfile = ImUserGroupDao.getInstance().getSimpleGroupProfile(groupId);
+			if (groupProfile != null) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
