@@ -176,11 +176,15 @@ public class ApiPluginService extends AbstractRequest {
 					}
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, httpContent);
-					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
-							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
+					if (httpResponse != null) {
+						ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
+								.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
 
-					commandResponse.setParams(response.toByteArray());
-					errCode = ErrorCode2.SUCCESS;
+						commandResponse.setParams(response.toByteArray());
+						errCode = ErrorCode2.SUCCESS;
+					} else {
+						logger.error("http request uri={} response={}", pageUrl, httpResponse);
+					}
 				}
 			} else {
 				errCode = ErrorCode2.ERROR_PARAMETER;
