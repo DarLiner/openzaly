@@ -347,4 +347,13 @@ public class UserGroupDao {
 		return 0;
 	}
 
+	public GroupProfileBean getSimpleGroupBeanById(String groupId) {
+		try {
+			return groupDao.querySimpleGroupProfile(groupId);
+		} catch (SQLException e) {
+			logger.error("get SimpleGroupBean error", e);
+		}
+		return null;
+	}
+
 }

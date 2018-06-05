@@ -69,7 +69,11 @@ public class HttpFriendService extends AbstractRequest {
 			String applyReason = request.getApplyReason();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId, applyReason)) {
+			if (StringUtils.isEmpty(applyReason)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkUserIdLegal(siteUserId) || !checkUserIdLegal(siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -118,7 +122,7 @@ public class HttpFriendService extends AbstractRequest {
 			String siteUserId = request.getSiteUserId();
 			String siteFriendId = request.getFriendSiteUserId();
 
-			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
+			if (!checkUserIdLegal(siteUserId) || !checkUserIdLegal(siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -156,8 +160,18 @@ public class HttpFriendService extends AbstractRequest {
 			String siteUserId = request.getSiteUserId();
 			List<String> userIdList = request.getTargetSiteUserIdList();
 
-			if (StringUtils.isEmpty(siteUserId) || userIdList == null) {
+			if (userIdList == null) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkUserIdLegal(siteUserId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			for (String id : userIdList) {
+				if (!checkUserIdLegal(id)) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+				}
 			}
 
 			HaiFriendRelationsResponse.Builder resBuilder = HaiFriendRelationsResponse.newBuilder();

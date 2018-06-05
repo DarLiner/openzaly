@@ -17,6 +17,7 @@ package com.akaxin.site.business.impl.hai;
 
 import java.util.List;
 
+import com.akaxin.site.business.impl.site.SiteConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -228,8 +229,18 @@ public class HttpGroupService extends AbstractRequest {
 			ProtocolStringList memberUserList = request.getMemberSiteUserIdList();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(siteGroupId) || memberUserList == null) {
+			if (memberUserList == null) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!checkGroupIdLegal(siteGroupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			for (String memberId : memberUserList) {
+				if (!checkUserIdLegal(memberId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+				}
 			}
 
 			if (UserGroupDao.getInstance().addGroupMember(null, siteGroupId, memberUserList)) {
@@ -258,20 +269,32 @@ public class HttpGroupService extends AbstractRequest {
 			HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest request = HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
+			if (!checkGroupIdLegal(groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			ProtocolStringList deleteMemberIds = request.getGroupMemberList();
 			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isNotBlank(groupId)) {
-				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
-					errCode = ErrorCode2.SUCCESS;
+			//无法删除群主
+			String groupMaster = UserGroupDao.getInstance().getGroupMaster(groupId);
+			for (String deleteMemberId : deleteMemberIds) {
+				if (!checkUserIdLegal(deleteMemberId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+				if (groupMaster.equals(deleteMemberId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_NOPERMISSION);
+				}
+			}
+			if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
+				errCode = ErrorCode2.SUCCESS;
 			}
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 zalyException2) {
+			errCode = (ErrorCode2) zalyException2.getErrCode();
+			LogUtils.requestErrorLog(logger, command, zalyException2);
 		}
 		return commandResponse.setErrCode2(errCode);
 	}
@@ -332,7 +355,7 @@ public class HttpGroupService extends AbstractRequest {
 			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(groupId)) {
+			if (!checkGroupIdLegal(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -385,7 +408,7 @@ public class HttpGroupService extends AbstractRequest {
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
+			if (!checkUserIdLegal(siteUserId) || !checkGroupIdLegal(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
