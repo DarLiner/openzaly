@@ -240,7 +240,7 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 
-			if (!checkUserIdIegal(siteUserId)) {
+			if (!checkUserIdLegal(siteUserId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -296,7 +296,7 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 
-			if (!checkUserIdIegal(siteUserId)) {
+			if (!checkUserIdLegal(siteUserId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 

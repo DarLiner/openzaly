@@ -73,7 +73,7 @@ public class HttpFriendService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
-			if (!checkUserIdIegal(siteUserId) || !checkUserIdIegal(siteFriendId)) {
+			if (!checkUserIdLegal(siteUserId) || !checkUserIdLegal(siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -122,7 +122,7 @@ public class HttpFriendService extends AbstractRequest {
 			String siteUserId = request.getSiteUserId();
 			String siteFriendId = request.getFriendSiteUserId();
 
-			if (!checkUserIdIegal(siteUserId) || !checkUserIdIegal(siteFriendId)) {
+			if (!checkUserIdLegal(siteUserId) || !checkUserIdLegal(siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -164,12 +164,12 @@ public class HttpFriendService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
-			if (!checkUserIdIegal(siteUserId)) {
+			if (!checkUserIdLegal(siteUserId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			for (String id : userIdList) {
-				if (!checkUserIdIegal(id)) {
+				if (!checkUserIdLegal(id)) {
 					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 				}
 			}

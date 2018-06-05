@@ -233,12 +233,12 @@ public class HttpGroupService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
-			if (!checkGroupIdIegal(siteGroupId)) {
+			if (!checkGroupIdLegal(siteGroupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			for (String memberId : memberUserList) {
-				if (!checkUserIdIegal(memberId)) {
+				if (!checkUserIdLegal(memberId)) {
 					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 				}
 			}
@@ -269,21 +269,24 @@ public class HttpGroupService extends AbstractRequest {
 			HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest request = HaiGroupRemoveMemberProto.HaiGroupRemoveMemberRequest
 					.parseFrom(command.getParams());
 			String groupId = request.getGroupId();
+			if (!checkGroupIdLegal(groupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
 			ProtocolStringList deleteMemberIds = request.getGroupMemberList();
 			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isNotBlank(groupId)) {
-				//无法删除admin
-				for (String deleteMemberId : deleteMemberIds) {
-					if (SiteConfig.isSiteSuperAdmin(deleteMemberId)) {
-						throw new ZalyException2(ErrorCode2.ERROR_NOPERMISSION);
-					}
+			//无法删除群主
+			String groupMaster = UserGroupDao.getInstance().getGroupMaster(groupId);
+			for (String deleteMemberId : deleteMemberIds) {
+				if (!checkUserIdLegal(deleteMemberId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 				}
-				if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
-					errCode = ErrorCode2.SUCCESS;
+				if (groupMaster.equals(deleteMemberId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_NOPERMISSION);
 				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+			}
+			if (UserGroupDao.getInstance().deleteGroupMember(groupId, deleteMemberIds)) {
+				errCode = ErrorCode2.SUCCESS;
 			}
 
 		} catch (Exception e) {
@@ -352,7 +355,7 @@ public class HttpGroupService extends AbstractRequest {
 			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (!checkGroupIdIegal(groupId)) {
+			if (!checkGroupIdLegal(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -405,7 +408,7 @@ public class HttpGroupService extends AbstractRequest {
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (!checkUserIdIegal(siteUserId) || !checkGroupIdIegal(groupId)) {
+			if (!checkUserIdLegal(siteUserId) || !checkGroupIdLegal(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 

@@ -18,6 +18,7 @@ package com.akaxin.site.business.impl;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
+import com.akaxin.site.business.dao.SiteUserDao;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.message.dao.ImUserGroupDao;
@@ -68,9 +69,9 @@ public abstract class AbstractRequest implements IRequestService {
 	}
 
 	//检查请求的参数中的siteUserId是否是存在的
-	public boolean checkUserIdIegal(String siteUserId) {
+	public boolean checkUserIdLegal(String siteUserId) {
 		if (StringUtils.isNotEmpty(siteUserId)) {
-			SimpleUserBean userProfile = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
+			SimpleUserBean userProfile = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
 			if (userProfile != null && StringUtils.isNotEmpty(userProfile.getSiteUserId())) {
 				return true;
 			}
@@ -79,9 +80,9 @@ public abstract class AbstractRequest implements IRequestService {
 	}
 
 	//检查请求的参数中的groupId是否是存在的
-	public boolean checkGroupIdIegal(String groupId) {
+	public boolean checkGroupIdLegal(String groupId) {
 		if (StringUtils.isNotEmpty(groupId)) {
-			GroupProfileBean groupProfile = ImUserGroupDao.getInstance().getSimpleGroupProfile(groupId);
+			GroupProfileBean groupProfile = UserGroupDao.getInstance().getSimpleGroupBeanById(groupId);
 			if (groupProfile != null) {
 				return true;
 			}
