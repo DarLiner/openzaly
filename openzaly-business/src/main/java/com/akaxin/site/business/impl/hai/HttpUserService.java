@@ -240,16 +240,12 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 
-			if (!checkUserId(siteUserId)) {
+			if (!checkUserIdIegal(siteUserId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
-
-			if (StringUtils.isEmpty(siteUserId)) {
-				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
-			}
 
 			if (pageNum == 0 && pageSize == 0) {
 				pageNum = 1;
@@ -300,17 +296,13 @@ public class HttpUserService extends AbstractRequest {
 					.parseFrom(command.getParams());
 			String siteUserId = request.getSiteUserId();
 
-			if (!checkUserId(siteUserId)) {
+			if (!checkUserIdIegal(siteUserId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
-
-			if (StringUtils.isEmpty(siteUserId)) {
-				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
-			}
 
 			if (pageNum == 0 && pageSize == 0) {
 				pageNum = 1;

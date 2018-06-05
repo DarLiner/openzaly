@@ -16,11 +16,18 @@
 package com.akaxin.site.business.impl;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
+import com.akaxin.site.message.dao.ImUserGroupDao;
+import com.akaxin.site.message.dao.ImUserProfileDao;
+import com.akaxin.site.storage.api.IUserProfileDao;
 import com.akaxin.site.storage.bean.GroupProfileBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
+import com.akaxin.site.storage.service.UserProfileDaoService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,18 +67,22 @@ public abstract class AbstractRequest implements IRequestService {
 		return response;
 	}
     //检查请求的参数中的siteUserId是否是存在的
-	public boolean checkUserId(String siteUserId) {
-		UserProfileBean userProfile = UserProfileDao.getInstance().getUserProfileById(siteUserId);
-		if (userProfile != null) {
-			return true;
-		}
-		return false;
+    public boolean checkUserIdIegal(String siteUserId) throws SQLException {
+        if (StringUtils.isNotEmpty(siteUserId)) {
+            SimpleUserBean userProfile = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
+            if (userProfile != null&& StringUtils.isNotEmpty(userProfile.getSiteUserId())) {
+                return true;
+            }
+        }
+        return false;
 	}
     //检查请求的参数中的groupId是否是存在的
-    public boolean checkGroupId(String groupId) {
-        GroupProfileBean groupProfile = UserGroupDao.getInstance().getGroupProfile(groupId);
-        if (groupProfile != null) {
-            return true;
+    public boolean checkGroupIdIegal(String groupId) {
+        if (StringUtils.isNotEmpty(groupId)) {
+            GroupProfileBean groupProfile = ImUserGroupDao.getInstance().getSimpleGroupProfile(groupId);
+            if (groupProfile != null) {
+                return true;
+            }
         }
         return false;
     }

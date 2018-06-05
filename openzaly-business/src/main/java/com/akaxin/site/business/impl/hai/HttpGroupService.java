@@ -229,16 +229,16 @@ public class HttpGroupService extends AbstractRequest {
 			ProtocolStringList memberUserList = request.getMemberSiteUserIdList();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(siteGroupId) || memberUserList == null) {
+			if (memberUserList == null) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
-			if (!checkGroupId(siteGroupId)) {
+			if (!checkGroupIdIegal(siteGroupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			for (String memberId : memberUserList) {
-				if (!checkUserId(memberId)) {
+				if (!checkUserIdIegal(memberId)) {
 					throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 				}
 			}
@@ -352,11 +352,7 @@ public class HttpGroupService extends AbstractRequest {
 			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(groupId)) {
-				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
-			}
-
-			if (!checkGroupId(groupId)) {
+			if (!checkGroupIdIegal(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
@@ -409,11 +405,7 @@ public class HttpGroupService extends AbstractRequest {
 			int pageSize = request.getPageSize();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
-				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
-			}
-
-			if (!checkUserId(siteUserId) || !checkGroupId(groupId)) {
+			if (!checkUserIdIegal(siteUserId) || !checkGroupIdIegal(groupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
