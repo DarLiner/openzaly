@@ -74,7 +74,7 @@ public class WebMessageController extends AbstractController {
 		if (!isManager(getRequestSiteUserId(pluginPackage))) {
 			return NO_PERMISSION;
 		}
-		String siteAdmin = SiteConfig.getSiteSuperAdmin();
+		
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
 		List<SimpleUserBean> userFriends = UserFriendDao.getInstance().getUserFriendsByPage(siteUserId, 1, 1);
@@ -86,9 +86,9 @@ public class WebMessageController extends AbstractController {
 		String fromSiteUserId = userFriends.get(0).getSiteUserId();
 
 		WebMessageBean bean = new WebMessageBean();
-		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
-		bean.setHeight(200);
+		bean.setMsgId(MsgUtils.buildU2MsgId(siteUserId));
 		bean.setWidth(100);
+		bean.setHeight(200);
 		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(fromSiteUserId);
 		bean.setSiteFriendId(siteUserId);
@@ -108,7 +108,7 @@ public class WebMessageController extends AbstractController {
 		if (!isManager(getRequestSiteUserId(pluginPackage))) {
 			return NO_PERMISSION;
 		}
-		String siteAdmin = SiteConfig.getSiteSuperAdmin();
+//		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
 		List<SimpleUserBean> userFriends = UserFriendDao.getInstance().getUserFriendsByPage(siteUserId, 1, 1);
@@ -120,7 +120,7 @@ public class WebMessageController extends AbstractController {
 		String fromSiteUserId = userFriends.get(0).getSiteUserId();
 
 		WebMessageBean bean = new WebMessageBean();
-		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
+		bean.setMsgId(MsgUtils.buildU2MsgId(fromSiteUserId));
 		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(fromSiteUserId);
 		bean.setSiteFriendId(siteUserId);
