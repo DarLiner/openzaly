@@ -22,6 +22,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
+import com.akaxin.site.message.bean.WebBean;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
@@ -42,6 +43,11 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 				String siteFriendId = request.getU2WebNotice().getSiteFriendId();
 				String msgId = request.getU2WebNotice().getMsgId();
 				String webCode = request.getU2WebNotice().getWebCode();
+				String hrefUrl = request.getU2WebNotice().getHrefUrl();
+
+				WebBean webBean = new WebBean();
+				webBean.setWebCode(webCode);
+				webBean.setHrefUrl(hrefUrl);
 
 				long msgTime = System.currentTimeMillis();
 				U2MessageBean bean = new U2MessageBean();
@@ -50,7 +56,7 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 				// bean.setSendUserId(siteUserId);
 				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSiteUserId(siteFriendId);
-				bean.setContent(webCode);
+				bean.setContent(webBean.toString());
 				bean.setMsgTime(msgTime);
 
 				LogUtils.requestDebugLog(logger, command, bean.toString());

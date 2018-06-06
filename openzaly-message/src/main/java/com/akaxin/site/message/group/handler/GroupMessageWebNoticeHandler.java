@@ -22,6 +22,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
+import com.akaxin.site.message.bean.WebBean;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
@@ -49,6 +50,11 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 				String gmsgId = request.getGroupWebNotice().getMsgId();
 				String groupId = request.getGroupWebNotice().getSiteGroupId();
 				String webCode = request.getGroupWebNotice().getWebCode();
+				String hrefUrl = request.getGroupWebNotice().getHrefUrl();
+
+				WebBean webBean = new WebBean();
+				webBean.setWebCode(webCode);
+				webBean.setHrefUrl(hrefUrl);
 
 				long msgTime = System.currentTimeMillis();
 				GroupMessageBean bean = new GroupMessageBean();
@@ -57,7 +63,7 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSendDeviceId(deviceId);
 				bean.setSiteGroupId(groupId);
-				bean.setContent(webCode);
+				bean.setContent(webBean.toString());
 				bean.setMsgType(type);
 				bean.setMsgTime(msgTime);
 

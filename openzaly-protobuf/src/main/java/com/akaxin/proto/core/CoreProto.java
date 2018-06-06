@@ -41,7 +41,7 @@ public final class CoreProto {
     CLIENT_SOCKET_DEVICE_ID(3),
     /**
      * <pre>
-     * 客户端正在使用的语言, cn/en
+     *客户端正在使用的语言, cn/en
      * </pre>
      *
      * <code>CLIENT_SOCKET_LANGUAGE = 4;</code>
@@ -49,7 +49,7 @@ public final class CoreProto {
     CLIENT_SOCKET_LANGUAGE(4),
     /**
      * <pre>
-     * 客户端类型，见client.proto中的ClientType
+     *客户端类型，见client.proto中的ClientType
      * </pre>
      *
      * <code>CLIENT_SOCKET_TYPE = 5;</code>
@@ -136,7 +136,7 @@ public final class CoreProto {
     public static final int CLIENT_SOCKET_DEVICE_ID_VALUE = 3;
     /**
      * <pre>
-     * 客户端正在使用的语言, cn/en
+     *客户端正在使用的语言, cn/en
      * </pre>
      *
      * <code>CLIENT_SOCKET_LANGUAGE = 4;</code>
@@ -144,7 +144,7 @@ public final class CoreProto {
     public static final int CLIENT_SOCKET_LANGUAGE_VALUE = 4;
     /**
      * <pre>
-     * 客户端类型，见client.proto中的ClientType
+     *客户端类型，见client.proto中的ClientType
      * </pre>
      *
      * <code>CLIENT_SOCKET_TYPE = 5;</code>
@@ -1853,999 +1853,6 @@ public final class CoreProto {
 
   }
 
-  public interface TransportPackageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:core.TransportPackage)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     *传输消息的《网络协议》版本
-     * </pre>
-     *
-     * <code>optional string net_protocol_version = 1;</code>
-     */
-    java.lang.String getNetProtocolVersion();
-    /**
-     * <pre>
-     *传输消息的《网络协议》版本
-     * </pre>
-     *
-     * <code>optional string net_protocol_version = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getNetProtocolVersionBytes();
-
-    /**
-     * <pre>
-     *要执行的动作，如api.site.login/im.sync.message等
-     *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-     * </pre>
-     *
-     * <code>optional string action = 2;</code>
-     */
-    java.lang.String getAction();
-    /**
-     * <pre>
-     *要执行的动作，如api.site.login/im.sync.message等
-     *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-     * </pre>
-     *
-     * <code>optional string action = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getActionBytes();
-
-    /**
-     * <pre>
-     *具体的数据。有package接收者根据action来决定怎样解读data
-     * </pre>
-     *
-     * <code>optional .core.TransportPackageData data = 3;</code>
-     */
-    boolean hasData();
-    /**
-     * <pre>
-     *具体的数据。有package接收者根据action来决定怎样解读data
-     * </pre>
-     *
-     * <code>optional .core.TransportPackageData data = 3;</code>
-     */
-    com.akaxin.proto.core.CoreProto.TransportPackageData getData();
-    /**
-     * <pre>
-     *具体的数据。有package接收者根据action来决定怎样解读data
-     * </pre>
-     *
-     * <code>optional .core.TransportPackageData data = 3;</code>
-     */
-    com.akaxin.proto.core.CoreProto.TransportPackageDataOrBuilder getDataOrBuilder();
-  }
-  /**
-   * <pre>
-   * 《网络传输层协议》采用redis的resp协议中的array结构
-   * 1. 协议版本（采用字符串形式的数字）
-   * 2. action
-   * 3. 数据（TransportPackage）
-   *使用protobuf描述最基础的协议
-   *&lt;!--- 本结构只用作说明，没有实际用处（重要） ---&gt;
-   * </pre>
-   *
-   * Protobuf type {@code core.TransportPackage}
-   */
-  public  static final class TransportPackage extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:core.TransportPackage)
-      TransportPackageOrBuilder {
-    // Use TransportPackage.newBuilder() to construct.
-    private TransportPackage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private TransportPackage() {
-      netProtocolVersion_ = "";
-      action_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
-    }
-    private TransportPackage(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              netProtocolVersion_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              action_ = s;
-              break;
-            }
-            case 26: {
-              com.akaxin.proto.core.CoreProto.TransportPackageData.Builder subBuilder = null;
-              if (data_ != null) {
-                subBuilder = data_.toBuilder();
-              }
-              data_ = input.readMessage(com.akaxin.proto.core.CoreProto.TransportPackageData.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(data_);
-                data_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.akaxin.proto.core.CoreProto.internal_static_core_TransportPackage_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.akaxin.proto.core.CoreProto.internal_static_core_TransportPackage_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.akaxin.proto.core.CoreProto.TransportPackage.class, com.akaxin.proto.core.CoreProto.TransportPackage.Builder.class);
-    }
-
-    public static final int NET_PROTOCOL_VERSION_FIELD_NUMBER = 1;
-    private volatile java.lang.Object netProtocolVersion_;
-    /**
-     * <pre>
-     *传输消息的《网络协议》版本
-     * </pre>
-     *
-     * <code>optional string net_protocol_version = 1;</code>
-     */
-    public java.lang.String getNetProtocolVersion() {
-      java.lang.Object ref = netProtocolVersion_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        netProtocolVersion_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *传输消息的《网络协议》版本
-     * </pre>
-     *
-     * <code>optional string net_protocol_version = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getNetProtocolVersionBytes() {
-      java.lang.Object ref = netProtocolVersion_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        netProtocolVersion_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ACTION_FIELD_NUMBER = 2;
-    private volatile java.lang.Object action_;
-    /**
-     * <pre>
-     *要执行的动作，如api.site.login/im.sync.message等
-     *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-     * </pre>
-     *
-     * <code>optional string action = 2;</code>
-     */
-    public java.lang.String getAction() {
-      java.lang.Object ref = action_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        action_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *要执行的动作，如api.site.login/im.sync.message等
-     *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-     * </pre>
-     *
-     * <code>optional string action = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getActionBytes() {
-      java.lang.Object ref = action_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        action_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int DATA_FIELD_NUMBER = 3;
-    private com.akaxin.proto.core.CoreProto.TransportPackageData data_;
-    /**
-     * <pre>
-     *具体的数据。有package接收者根据action来决定怎样解读data
-     * </pre>
-     *
-     * <code>optional .core.TransportPackageData data = 3;</code>
-     */
-    public boolean hasData() {
-      return data_ != null;
-    }
-    /**
-     * <pre>
-     *具体的数据。有package接收者根据action来决定怎样解读data
-     * </pre>
-     *
-     * <code>optional .core.TransportPackageData data = 3;</code>
-     */
-    public com.akaxin.proto.core.CoreProto.TransportPackageData getData() {
-      return data_ == null ? com.akaxin.proto.core.CoreProto.TransportPackageData.getDefaultInstance() : data_;
-    }
-    /**
-     * <pre>
-     *具体的数据。有package接收者根据action来决定怎样解读data
-     * </pre>
-     *
-     * <code>optional .core.TransportPackageData data = 3;</code>
-     */
-    public com.akaxin.proto.core.CoreProto.TransportPackageDataOrBuilder getDataOrBuilder() {
-      return getData();
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getNetProtocolVersionBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, netProtocolVersion_);
-      }
-      if (!getActionBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, action_);
-      }
-      if (data_ != null) {
-        output.writeMessage(3, getData());
-      }
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getNetProtocolVersionBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, netProtocolVersion_);
-      }
-      if (!getActionBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, action_);
-      }
-      if (data_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getData());
-      }
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.akaxin.proto.core.CoreProto.TransportPackage)) {
-        return super.equals(obj);
-      }
-      com.akaxin.proto.core.CoreProto.TransportPackage other = (com.akaxin.proto.core.CoreProto.TransportPackage) obj;
-
-      boolean result = true;
-      result = result && getNetProtocolVersion()
-          .equals(other.getNetProtocolVersion());
-      result = result && getAction()
-          .equals(other.getAction());
-      result = result && (hasData() == other.hasData());
-      if (hasData()) {
-        result = result && getData()
-            .equals(other.getData());
-      }
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + NET_PROTOCOL_VERSION_FIELD_NUMBER;
-      hash = (53 * hash) + getNetProtocolVersion().hashCode();
-      hash = (37 * hash) + ACTION_FIELD_NUMBER;
-      hash = (53 * hash) + getAction().hashCode();
-      if (hasData()) {
-        hash = (37 * hash) + DATA_FIELD_NUMBER;
-        hash = (53 * hash) + getData().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.akaxin.proto.core.CoreProto.TransportPackage parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.akaxin.proto.core.CoreProto.TransportPackage prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * 《网络传输层协议》采用redis的resp协议中的array结构
-     * 1. 协议版本（采用字符串形式的数字）
-     * 2. action
-     * 3. 数据（TransportPackage）
-     *使用protobuf描述最基础的协议
-     *&lt;!--- 本结构只用作说明，没有实际用处（重要） ---&gt;
-     * </pre>
-     *
-     * Protobuf type {@code core.TransportPackage}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:core.TransportPackage)
-        com.akaxin.proto.core.CoreProto.TransportPackageOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.akaxin.proto.core.CoreProto.internal_static_core_TransportPackage_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.akaxin.proto.core.CoreProto.internal_static_core_TransportPackage_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.akaxin.proto.core.CoreProto.TransportPackage.class, com.akaxin.proto.core.CoreProto.TransportPackage.Builder.class);
-      }
-
-      // Construct using com.akaxin.proto.core.CoreProto.TransportPackage.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        netProtocolVersion_ = "";
-
-        action_ = "";
-
-        if (dataBuilder_ == null) {
-          data_ = null;
-        } else {
-          data_ = null;
-          dataBuilder_ = null;
-        }
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.akaxin.proto.core.CoreProto.internal_static_core_TransportPackage_descriptor;
-      }
-
-      public com.akaxin.proto.core.CoreProto.TransportPackage getDefaultInstanceForType() {
-        return com.akaxin.proto.core.CoreProto.TransportPackage.getDefaultInstance();
-      }
-
-      public com.akaxin.proto.core.CoreProto.TransportPackage build() {
-        com.akaxin.proto.core.CoreProto.TransportPackage result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.akaxin.proto.core.CoreProto.TransportPackage buildPartial() {
-        com.akaxin.proto.core.CoreProto.TransportPackage result = new com.akaxin.proto.core.CoreProto.TransportPackage(this);
-        result.netProtocolVersion_ = netProtocolVersion_;
-        result.action_ = action_;
-        if (dataBuilder_ == null) {
-          result.data_ = data_;
-        } else {
-          result.data_ = dataBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.akaxin.proto.core.CoreProto.TransportPackage) {
-          return mergeFrom((com.akaxin.proto.core.CoreProto.TransportPackage)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.akaxin.proto.core.CoreProto.TransportPackage other) {
-        if (other == com.akaxin.proto.core.CoreProto.TransportPackage.getDefaultInstance()) return this;
-        if (!other.getNetProtocolVersion().isEmpty()) {
-          netProtocolVersion_ = other.netProtocolVersion_;
-          onChanged();
-        }
-        if (!other.getAction().isEmpty()) {
-          action_ = other.action_;
-          onChanged();
-        }
-        if (other.hasData()) {
-          mergeData(other.getData());
-        }
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.akaxin.proto.core.CoreProto.TransportPackage parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.akaxin.proto.core.CoreProto.TransportPackage) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object netProtocolVersion_ = "";
-      /**
-       * <pre>
-       *传输消息的《网络协议》版本
-       * </pre>
-       *
-       * <code>optional string net_protocol_version = 1;</code>
-       */
-      public java.lang.String getNetProtocolVersion() {
-        java.lang.Object ref = netProtocolVersion_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          netProtocolVersion_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       *传输消息的《网络协议》版本
-       * </pre>
-       *
-       * <code>optional string net_protocol_version = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getNetProtocolVersionBytes() {
-        java.lang.Object ref = netProtocolVersion_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          netProtocolVersion_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *传输消息的《网络协议》版本
-       * </pre>
-       *
-       * <code>optional string net_protocol_version = 1;</code>
-       */
-      public Builder setNetProtocolVersion(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        netProtocolVersion_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *传输消息的《网络协议》版本
-       * </pre>
-       *
-       * <code>optional string net_protocol_version = 1;</code>
-       */
-      public Builder clearNetProtocolVersion() {
-        
-        netProtocolVersion_ = getDefaultInstance().getNetProtocolVersion();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *传输消息的《网络协议》版本
-       * </pre>
-       *
-       * <code>optional string net_protocol_version = 1;</code>
-       */
-      public Builder setNetProtocolVersionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        netProtocolVersion_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object action_ = "";
-      /**
-       * <pre>
-       *要执行的动作，如api.site.login/im.sync.message等
-       *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-       * </pre>
-       *
-       * <code>optional string action = 2;</code>
-       */
-      public java.lang.String getAction() {
-        java.lang.Object ref = action_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          action_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       *要执行的动作，如api.site.login/im.sync.message等
-       *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-       * </pre>
-       *
-       * <code>optional string action = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getActionBytes() {
-        java.lang.Object ref = action_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          action_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *要执行的动作，如api.site.login/im.sync.message等
-       *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-       * </pre>
-       *
-       * <code>optional string action = 2;</code>
-       */
-      public Builder setAction(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        action_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *要执行的动作，如api.site.login/im.sync.message等
-       *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-       * </pre>
-       *
-       * <code>optional string action = 2;</code>
-       */
-      public Builder clearAction() {
-        
-        action_ = getDefaultInstance().getAction();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *要执行的动作，如api.site.login/im.sync.message等
-       *如果action=='_'，代表这是对上一个请求的响应，由调用者来负责解读，一般用在同步调用中。
-       * </pre>
-       *
-       * <code>optional string action = 2;</code>
-       */
-      public Builder setActionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        action_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.akaxin.proto.core.CoreProto.TransportPackageData data_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.TransportPackageData, com.akaxin.proto.core.CoreProto.TransportPackageData.Builder, com.akaxin.proto.core.CoreProto.TransportPackageDataOrBuilder> dataBuilder_;
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public boolean hasData() {
-        return dataBuilder_ != null || data_ != null;
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.TransportPackageData getData() {
-        if (dataBuilder_ == null) {
-          return data_ == null ? com.akaxin.proto.core.CoreProto.TransportPackageData.getDefaultInstance() : data_;
-        } else {
-          return dataBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public Builder setData(com.akaxin.proto.core.CoreProto.TransportPackageData value) {
-        if (dataBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          data_ = value;
-          onChanged();
-        } else {
-          dataBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public Builder setData(
-          com.akaxin.proto.core.CoreProto.TransportPackageData.Builder builderForValue) {
-        if (dataBuilder_ == null) {
-          data_ = builderForValue.build();
-          onChanged();
-        } else {
-          dataBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public Builder mergeData(com.akaxin.proto.core.CoreProto.TransportPackageData value) {
-        if (dataBuilder_ == null) {
-          if (data_ != null) {
-            data_ =
-              com.akaxin.proto.core.CoreProto.TransportPackageData.newBuilder(data_).mergeFrom(value).buildPartial();
-          } else {
-            data_ = value;
-          }
-          onChanged();
-        } else {
-          dataBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public Builder clearData() {
-        if (dataBuilder_ == null) {
-          data_ = null;
-          onChanged();
-        } else {
-          data_ = null;
-          dataBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.TransportPackageData.Builder getDataBuilder() {
-        
-        onChanged();
-        return getDataFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      public com.akaxin.proto.core.CoreProto.TransportPackageDataOrBuilder getDataOrBuilder() {
-        if (dataBuilder_ != null) {
-          return dataBuilder_.getMessageOrBuilder();
-        } else {
-          return data_ == null ?
-              com.akaxin.proto.core.CoreProto.TransportPackageData.getDefaultInstance() : data_;
-        }
-      }
-      /**
-       * <pre>
-       *具体的数据。有package接收者根据action来决定怎样解读data
-       * </pre>
-       *
-       * <code>optional .core.TransportPackageData data = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.akaxin.proto.core.CoreProto.TransportPackageData, com.akaxin.proto.core.CoreProto.TransportPackageData.Builder, com.akaxin.proto.core.CoreProto.TransportPackageDataOrBuilder> 
-          getDataFieldBuilder() {
-        if (dataBuilder_ == null) {
-          dataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.akaxin.proto.core.CoreProto.TransportPackageData, com.akaxin.proto.core.CoreProto.TransportPackageData.Builder, com.akaxin.proto.core.CoreProto.TransportPackageDataOrBuilder>(
-                  getData(),
-                  getParentForChildren(),
-                  isClean());
-          data_ = null;
-        }
-        return dataBuilder_;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:core.TransportPackage)
-    }
-
-    // @@protoc_insertion_point(class_scope:core.TransportPackage)
-    private static final com.akaxin.proto.core.CoreProto.TransportPackage DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.akaxin.proto.core.CoreProto.TransportPackage();
-    }
-
-    public static com.akaxin.proto.core.CoreProto.TransportPackage getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<TransportPackage>
-        PARSER = new com.google.protobuf.AbstractParser<TransportPackage>() {
-      public TransportPackage parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new TransportPackage(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<TransportPackage> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<TransportPackage> getParserForType() {
-      return PARSER;
-    }
-
-    public com.akaxin.proto.core.CoreProto.TransportPackage getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface TransportPackageDataOrBuilder extends
       // @@protoc_insertion_point(interface_extends:core.TransportPackageData)
       com.google.protobuf.MessageOrBuilder {
@@ -2955,10 +1962,7 @@ public final class CoreProto {
   }
   /**
    * <pre>
-   * 传输层协议采用redis的resp协议中的array结构
-   * 1. 协议版本（采用字符串形式的数字）
-   * 2. action
-   * 3. 数据（TransportPackage）如下的数据格式
+   * 数据包中的数据部分
    * </pre>
    *
    * Protobuf type {@code core.TransportPackageData}
@@ -3396,10 +2400,7 @@ public final class CoreProto {
     }
     /**
      * <pre>
-     * 传输层协议采用redis的resp协议中的array结构
-     * 1. 协议版本（采用字符串形式的数字）
-     * 2. action
-     * 3. 数据（TransportPackage）如下的数据格式
+     * 数据包中的数据部分
      * </pre>
      *
      * Protobuf type {@code core.TransportPackageData}
@@ -29047,6 +28048,24 @@ public final class CoreProto {
      * <code>optional int64 time = 7;</code>
      */
     long getTime();
+
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    java.lang.String getHrefUrl();
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getHrefUrlBytes();
   }
   /**
    * <pre>
@@ -29071,6 +28090,7 @@ public final class CoreProto {
       width_ = 0;
       height_ = 0;
       time_ = 0L;
+      hrefUrl_ = "";
     }
 
     @java.lang.Override
@@ -29135,6 +28155,12 @@ public final class CoreProto {
             case 56: {
 
               time_ = input.readInt64();
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              hrefUrl_ = s;
               break;
             }
           }
@@ -29367,6 +28393,48 @@ public final class CoreProto {
       return time_;
     }
 
+    public static final int HREF_URL_FIELD_NUMBER = 8;
+    private volatile java.lang.Object hrefUrl_;
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    public java.lang.String getHrefUrl() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        hrefUrl_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHrefUrlBytes() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        hrefUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -29400,6 +28468,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         output.writeInt64(7, time_);
       }
+      if (!getHrefUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, hrefUrl_);
+      }
     }
 
     public int getSerializedSize() {
@@ -29431,6 +28502,9 @@ public final class CoreProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(7, time_);
       }
+      if (!getHrefUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, hrefUrl_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -29461,6 +28535,8 @@ public final class CoreProto {
           == other.getHeight());
       result = result && (getTime()
           == other.getTime());
+      result = result && getHrefUrl()
+          .equals(other.getHrefUrl());
       return result;
     }
 
@@ -29486,6 +28562,8 @@ public final class CoreProto {
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
+      hash = (37 * hash) + HREF_URL_FIELD_NUMBER;
+      hash = (53 * hash) + getHrefUrl().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -29622,6 +28700,8 @@ public final class CoreProto {
 
         time_ = 0L;
 
+        hrefUrl_ = "";
+
         return this;
       }
 
@@ -29651,6 +28731,7 @@ public final class CoreProto {
         result.width_ = width_;
         result.height_ = height_;
         result.time_ = time_;
+        result.hrefUrl_ = hrefUrl_;
         onBuilt();
         return result;
       }
@@ -29716,6 +28797,10 @@ public final class CoreProto {
         }
         if (other.getTime() != 0L) {
           setTime(other.getTime());
+        }
+        if (!other.getHrefUrl().isEmpty()) {
+          hrefUrl_ = other.hrefUrl_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -30212,6 +29297,95 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object hrefUrl_ = "";
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public java.lang.String getHrefUrl() {
+        java.lang.Object ref = hrefUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          hrefUrl_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHrefUrlBytes() {
+        java.lang.Object ref = hrefUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          hrefUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public Builder setHrefUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public Builder clearHrefUrl() {
+        
+        hrefUrl_ = getDefaultInstance().getHrefUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public Builder setHrefUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -30363,6 +29537,24 @@ public final class CoreProto {
      * <code>optional int64 time = 7;</code>
      */
     long getTime();
+
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    java.lang.String getHrefUrl();
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getHrefUrlBytes();
   }
   /**
    * <pre>
@@ -30387,6 +29579,7 @@ public final class CoreProto {
       width_ = 0;
       height_ = 0;
       time_ = 0L;
+      hrefUrl_ = "";
     }
 
     @java.lang.Override
@@ -30451,6 +29644,12 @@ public final class CoreProto {
             case 56: {
 
               time_ = input.readInt64();
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              hrefUrl_ = s;
               break;
             }
           }
@@ -30683,6 +29882,48 @@ public final class CoreProto {
       return time_;
     }
 
+    public static final int HREF_URL_FIELD_NUMBER = 8;
+    private volatile java.lang.Object hrefUrl_;
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    public java.lang.String getHrefUrl() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        hrefUrl_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHrefUrlBytes() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        hrefUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -30716,6 +29957,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         output.writeInt64(7, time_);
       }
+      if (!getHrefUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, hrefUrl_);
+      }
     }
 
     public int getSerializedSize() {
@@ -30747,6 +29991,9 @@ public final class CoreProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(7, time_);
       }
+      if (!getHrefUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, hrefUrl_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -30777,6 +30024,8 @@ public final class CoreProto {
           == other.getHeight());
       result = result && (getTime()
           == other.getTime());
+      result = result && getHrefUrl()
+          .equals(other.getHrefUrl());
       return result;
     }
 
@@ -30802,6 +30051,8 @@ public final class CoreProto {
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
+      hash = (37 * hash) + HREF_URL_FIELD_NUMBER;
+      hash = (53 * hash) + getHrefUrl().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -30938,6 +30189,8 @@ public final class CoreProto {
 
         time_ = 0L;
 
+        hrefUrl_ = "";
+
         return this;
       }
 
@@ -30967,6 +30220,7 @@ public final class CoreProto {
         result.width_ = width_;
         result.height_ = height_;
         result.time_ = time_;
+        result.hrefUrl_ = hrefUrl_;
         onBuilt();
         return result;
       }
@@ -31032,6 +30286,10 @@ public final class CoreProto {
         }
         if (other.getTime() != 0L) {
           setTime(other.getTime());
+        }
+        if (!other.getHrefUrl().isEmpty()) {
+          hrefUrl_ = other.hrefUrl_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -31528,6 +30786,95 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object hrefUrl_ = "";
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public java.lang.String getHrefUrl() {
+        java.lang.Object ref = hrefUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          hrefUrl_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHrefUrlBytes() {
+        java.lang.Object ref = hrefUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          hrefUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public Builder setHrefUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public Builder clearHrefUrl() {
+        
+        hrefUrl_ = getDefaultInstance().getHrefUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 8;</code>
+       */
+      public Builder setHrefUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -31661,6 +31008,24 @@ public final class CoreProto {
      * <code>optional int64 time = 5;</code>
      */
     long getTime();
+
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    java.lang.String getHrefUrl();
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getHrefUrlBytes();
   }
   /**
    * <pre>
@@ -31683,6 +31048,7 @@ public final class CoreProto {
       siteFriendId_ = "";
       webCode_ = "";
       time_ = 0L;
+      hrefUrl_ = "";
     }
 
     @java.lang.Override
@@ -31737,6 +31103,12 @@ public final class CoreProto {
             case 40: {
 
               time_ = input.readInt64();
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              hrefUrl_ = s;
               break;
             }
           }
@@ -31943,6 +31315,48 @@ public final class CoreProto {
       return time_;
     }
 
+    public static final int HREF_URL_FIELD_NUMBER = 6;
+    private volatile java.lang.Object hrefUrl_;
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    public java.lang.String getHrefUrl() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        hrefUrl_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHrefUrlBytes() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        hrefUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -31970,6 +31384,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         output.writeInt64(5, time_);
       }
+      if (!getHrefUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, hrefUrl_);
+      }
     }
 
     public int getSerializedSize() {
@@ -31992,6 +31409,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(5, time_);
+      }
+      if (!getHrefUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, hrefUrl_);
       }
       memoizedSize = size;
       return size;
@@ -32019,6 +31439,8 @@ public final class CoreProto {
           .equals(other.getWebCode());
       result = result && (getTime()
           == other.getTime());
+      result = result && getHrefUrl()
+          .equals(other.getHrefUrl());
       return result;
     }
 
@@ -32040,6 +31462,8 @@ public final class CoreProto {
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
+      hash = (37 * hash) + HREF_URL_FIELD_NUMBER;
+      hash = (53 * hash) + getHrefUrl().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -32172,6 +31596,8 @@ public final class CoreProto {
 
         time_ = 0L;
 
+        hrefUrl_ = "";
+
         return this;
       }
 
@@ -32199,6 +31625,7 @@ public final class CoreProto {
         result.siteFriendId_ = siteFriendId_;
         result.webCode_ = webCode_;
         result.time_ = time_;
+        result.hrefUrl_ = hrefUrl_;
         onBuilt();
         return result;
       }
@@ -32258,6 +31685,10 @@ public final class CoreProto {
         }
         if (other.getTime() != 0L) {
           setTime(other.getTime());
+        }
+        if (!other.getHrefUrl().isEmpty()) {
+          hrefUrl_ = other.hrefUrl_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -32678,6 +32109,95 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object hrefUrl_ = "";
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public java.lang.String getHrefUrl() {
+        java.lang.Object ref = hrefUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          hrefUrl_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHrefUrlBytes() {
+        java.lang.Object ref = hrefUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          hrefUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public Builder setHrefUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public Builder clearHrefUrl() {
+        
+        hrefUrl_ = getDefaultInstance().getHrefUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public Builder setHrefUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -32811,6 +32331,24 @@ public final class CoreProto {
      * <code>optional int64 time = 5;</code>
      */
     long getTime();
+
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    java.lang.String getHrefUrl();
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getHrefUrlBytes();
   }
   /**
    * <pre>
@@ -32833,6 +32371,7 @@ public final class CoreProto {
       siteGroupId_ = "";
       webCode_ = "";
       time_ = 0L;
+      hrefUrl_ = "";
     }
 
     @java.lang.Override
@@ -32887,6 +32426,12 @@ public final class CoreProto {
             case 40: {
 
               time_ = input.readInt64();
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              hrefUrl_ = s;
               break;
             }
           }
@@ -33093,6 +32638,48 @@ public final class CoreProto {
       return time_;
     }
 
+    public static final int HREF_URL_FIELD_NUMBER = 6;
+    private volatile java.lang.Object hrefUrl_;
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    public java.lang.String getHrefUrl() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        hrefUrl_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *跳转链接；如果为空则不跳转。
+     * </pre>
+     *
+     * <code>optional string href_url = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHrefUrlBytes() {
+      java.lang.Object ref = hrefUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        hrefUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -33120,6 +32707,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         output.writeInt64(5, time_);
       }
+      if (!getHrefUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, hrefUrl_);
+      }
     }
 
     public int getSerializedSize() {
@@ -33142,6 +32732,9 @@ public final class CoreProto {
       if (time_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(5, time_);
+      }
+      if (!getHrefUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, hrefUrl_);
       }
       memoizedSize = size;
       return size;
@@ -33169,6 +32762,8 @@ public final class CoreProto {
           .equals(other.getWebCode());
       result = result && (getTime()
           == other.getTime());
+      result = result && getHrefUrl()
+          .equals(other.getHrefUrl());
       return result;
     }
 
@@ -33190,6 +32785,8 @@ public final class CoreProto {
       hash = (37 * hash) + TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTime());
+      hash = (37 * hash) + HREF_URL_FIELD_NUMBER;
+      hash = (53 * hash) + getHrefUrl().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -33322,6 +32919,8 @@ public final class CoreProto {
 
         time_ = 0L;
 
+        hrefUrl_ = "";
+
         return this;
       }
 
@@ -33349,6 +32948,7 @@ public final class CoreProto {
         result.siteGroupId_ = siteGroupId_;
         result.webCode_ = webCode_;
         result.time_ = time_;
+        result.hrefUrl_ = hrefUrl_;
         onBuilt();
         return result;
       }
@@ -33408,6 +33008,10 @@ public final class CoreProto {
         }
         if (other.getTime() != 0L) {
           setTime(other.getTime());
+        }
+        if (!other.getHrefUrl().isEmpty()) {
+          hrefUrl_ = other.hrefUrl_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -33828,6 +33432,95 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object hrefUrl_ = "";
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public java.lang.String getHrefUrl() {
+        java.lang.Object ref = hrefUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          hrefUrl_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHrefUrlBytes() {
+        java.lang.Object ref = hrefUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          hrefUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public Builder setHrefUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public Builder clearHrefUrl() {
+        
+        hrefUrl_ = getDefaultInstance().getHrefUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *跳转链接；如果为空则不跳转。
+       * </pre>
+       *
+       * <code>optional string href_url = 6;</code>
+       */
+      public Builder setHrefUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        hrefUrl_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -33887,11 +33580,6 @@ public final class CoreProto {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_core_NoneResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_core_TransportPackage_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_core_TransportPackage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_core_TransportPackageData_descriptor;
   private static final 
@@ -34038,115 +33726,114 @@ public final class CoreProto {
     java.lang.String[] descriptorData = {
       "\n\017core/core.proto\022\004core\"\'\n\tErrorInfo\022\014\n\004" +
       "code\030\001 \001(\t\022\014\n\004info\030\002 \001(\t\"\016\n\014NoneResponse" +
-      "\"j\n\020TransportPackage\022\034\n\024net_protocol_ver" +
-      "sion\030\001 \001(\t\022\016\n\006action\030\002 \001(\t\022(\n\004data\030\003 \001(\013" +
-      "2\032.core.TransportPackageData\"\251\001\n\024Transpo" +
-      "rtPackageData\022\034\n\003err\030\001 \001(\0132\017.core.ErrorI" +
-      "nfo\022\014\n\004data\030\002 \001(\014\0226\n\006header\030\003 \003(\0132&.core" +
-      ".TransportPackageData.HeaderEntry\032-\n\013Hea" +
-      "derEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\t:\0028\001" +
-      "\"H\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(\t\022\022\n\nmsg_sta",
-      "tus\030\002 \001(\005\022\027\n\017msg_server_time\030\003 \001(\003\"c\n\007Ms" +
-      "gText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
+      "\"\251\001\n\024TransportPackageData\022\034\n\003err\030\001 \001(\0132\017" +
+      ".core.ErrorInfo\022\014\n\004data\030\002 \001(\014\0226\n\006header\030" +
+      "\003 \003(\0132&.core.TransportPackageData.Header" +
+      "Entry\032-\n\013HeaderEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005val" +
+      "ue\030\002 \001(\t:\0028\001\"H\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(" +
+      "\t\022\022\n\nmsg_status\030\002 \001(\005\022\027\n\017msg_server_time" +
+      "\030\003 \001(\003\"c\n\007MsgText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014sit" +
+      "e_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022",
+      "\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\226\001\n\rMsgSecre" +
+      "tText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
       "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(" +
-      "\014\022\014\n\004time\030\005 \001(\003\"\226\001\n\rMsgSecretText\022\016\n\006msg" +
+      "\014\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id" +
+      "\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"}\n\tGroupText\022\016\n\006msg" +
+      "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_" +
+      "group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001" +
+      "(\003\022\027\n\017at_site_user_id\030\006 \001(\t\"\227\001\n\017GroupSec" +
+      "retText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030" +
+      "\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001",
+      "(\014\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_i" +
+      "d\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg" +
       "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_" +
-      "friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\025\n\rbase64_" +
-      "ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004ti" +
-      "me\030\007 \001(\003\"}\n\tGroupText\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
-      "\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001" +
-      "(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\022\027\n\017at_sit",
-      "e_user_id\030\006 \001(\t\"\227\001\n\017GroupSecretText\022\016\n\006m" +
-      "sg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsit" +
-      "e_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\025\n\rbase64" +
+      "friend_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time" +
+      "\030\007 \001(\003\"\232\001\n\016MsgSecretImage\022\016\n\006msg_id\030\001 \001(" +
+      "\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_i" +
+      "d\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\025\n\rbase64_ts_ke" +
+      "y\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 " +
+      "\001(\003\"h\n\nGroupImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014sit" +
+      "e_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017",
+      "\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupS" +
+      "ecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_" +
+      "id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007image" +
+      "Id\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_de" +
+      "vice_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVoice\022" +
+      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n" +
+      "\016site_friend_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014" +
+      "\n\004time\030\007 \001(\003\"\232\001\n\016MsgSecretVoice\022\016\n\006msg_i" +
+      "d\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_fr" +
+      "iend_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\025\n\rbase64",
       "_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004t" +
-      "ime\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
-      "\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 " +
-      "\001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\232\001\n\016M" +
-      "sgSecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
-      "er_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007i" +
-      "mageId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014t",
-      "o_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroup" +
-      "Image\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 " +
-      "\001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretImage\022\016" +
-      "\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\r" +
-      "site_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\025\n\r" +
-      "base64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(" +
-      "\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVoice\022\016\n\006msg_id\030\001 " +
-      "\001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend" +
-      "_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003",
-      "\"\232\001\n\016MsgSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
-      "ite_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(" +
-      "\t\022\017\n\007voiceId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(" +
-      "\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n" +
-      "\nGroupVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user" +
-      "_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voic" +
-      "eId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretV" +
-      "oice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001" +
-      "(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001" +
-      "(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_i",
-      "d\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2Map\022\016\n\006msg_id" +
-      "\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_fri" +
-      "end_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014" +
-      "\n\004time\030\006 \001(\003\"\256\001\n\013U2SecretMap\022\016\n\006msg_id\030\001" +
-      " \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_frien" +
-      "d_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t\022\022\n\nbase64" +
-      "_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 \001(\t\022\024\n\014to_" +
-      "device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"o\n\010GroupMa" +
-      "p\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
-      "\025\n\rsite_group_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003l",
-      "at\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016GroupSecretMa" +
-      "p\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022" +
-      "\025\n\rsite_group_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001" +
+      "ime\030\007 \001(\003\"h\n\nGroupVoice\022\016\n\006msg_id\030\001 \001(\t\022" +
+      "\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003" +
+      " \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020" +
+      "GroupSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site" +
+      "_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n" +
+      "\007voiceId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n" +
+      "\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2M" +
+      "ap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
+      "\022\026\n\016site_friend_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n",
+      "\003lat\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\256\001\n\013U2SecretMap" +
+      "\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026" +
+      "\n\016site_friend_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001" +
       "(\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030" +
       "\006 \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(" +
-      "\003\"g\n\013U2MsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\026" +
-      "\n\016site_friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004" +
-      "time\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i\n\016GroupMsgNo" +
-      "tice\022\024\n\014site_user_id\030\001 \001(\t\022\025\n\rsite_group" +
-      "_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n",
-      "\006msg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n\006msg_id\030\001 \001(" +
-      "\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_i" +
-      "d\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005" +
-      " \001(\003\"o\n\013GroupRecall\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
-      "ite_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t" +
-      "\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"\204\001" +
-      "\n\005U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030" +
-      "\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_cod" +
-      "e\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014" +
-      "\n\004time\030\007 \001(\003\"\206\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(",
-      "\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id" +
-      "\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022" +
-      "\016\n\006height\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\"k\n\013U2WebNo" +
-      "tice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001" +
-      "(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030\004" +
-      " \001(\t\022\014\n\004time\030\005 \001(\003\"m\n\016GroupWebNotice\022\016\n\006" +
-      "msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsi" +
-      "te_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004t" +
-      "ime\030\005 \001(\003*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SOCKET" +
-      "_VERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION",
-      "_ID\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESSION_" +
-      "ID\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLI" +
-      "ENT_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCKET_T" +
-      "YPE\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CL" +
-      "IENT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_RE" +
-      "QUEST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERS" +
-      "ION\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SE" +
-      "RVER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027" +
-      "*\275\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001" +
-      "\022\010\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEX",
-      "T\020\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n" +
-      "\014SECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROU" +
-      "P_SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VO" +
-      "ICE\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_V" +
-      "OICE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n" +
-      "\tGROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2" +
-      "_NOTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RECALL" +
-      "\020\025\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROU" +
-      "P_WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_" +
-      "NOTICE\020\032B\"\n\025com.akaxin.proto.coreB\tCoreP",
-      "rotob\006proto3"
+      "\003\"o\n\010GroupMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
+      "er_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\013\n\003ln" +
+      "g\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016G" +
+      "roupSecretMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
+      "er_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\022\n\nba",
+      "se64_lng\030\004 \001(\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rba" +
+      "se64_ts_key\030\006 \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022" +
+      "\014\n\004time\030\010 \001(\003\"g\n\013U2MsgNotice\022\024\n\014site_use" +
+      "r_id\030\001 \001(\t\022\026\n\016site_friend_id\030\002 \001(\t\022\014\n\004te" +
+      "xt\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i" +
+      "\n\016GroupMsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\025" +
+      "\n\rsite_group_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004t" +
+      "ime\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n" +
+      "\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016s" +
+      "ite_friend_id\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001",
+      "(\t\022\014\n\004time\030\005 \001(\003\"o\n\013GroupRecall\022\016\n\006msg_i" +
+      "d\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_gr" +
+      "oup_id\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004t" +
+      "ime\030\005 \001(\003\"\226\001\n\005U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
+      "ite_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(" +
+      "\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006he" +
+      "ight\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\022\020\n\010href_url\030\010 \001" +
+      "(\t\"\230\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_" +
+      "user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\020\n\010" +
+      "web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030",
+      "\006 \001(\005\022\014\n\004time\030\007 \001(\003\022\020\n\010href_url\030\010 \001(\t\"}\n" +
+      "\013U2WebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_use" +
+      "r_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010we" +
+      "b_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010href_url\030\006" +
+      " \001(\t\"\177\n\016GroupWebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024" +
+      "\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 " +
+      "\001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010h" +
+      "ref_url\030\006 \001(\t*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SO" +
+      "CKET_VERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SES" +
+      "SION_ID\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESS",
+      "ION_ID\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n" +
+      "\026CLIENT_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCK" +
+      "ET_TYPE\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037" +
+      "\n\032CLIENT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIEN" +
+      "T_REQUEST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_" +
+      "VERSION\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SIT" +
+      "E_SERVER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERE" +
+      "R\020\271\027*\275\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STAT" +
+      "US\020\001\022\010\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP" +
+      "_TEXT\020\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020",
+      "\007\022\020\n\014SECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022" +
+      "GROUP_SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRE" +
+      "T_VOICE\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECR" +
+      "ET_VOICE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020" +
+      "\020\022\r\n\tGROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r" +
+      "\n\tU2_NOTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RE" +
+      "CALL\020\025\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\t" +
+      "GROUP_WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_" +
+      "WEB_NOTICE\020\032B\"\n\025com.akaxin.proto.coreB\tC" +
+      "oreProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34172,14 +33859,8 @@ public final class CoreProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_NoneResponse_descriptor,
         new java.lang.String[] { });
-    internal_static_core_TransportPackage_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_core_TransportPackage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_core_TransportPackage_descriptor,
-        new java.lang.String[] { "NetProtocolVersion", "Action", "Data", });
     internal_static_core_TransportPackageData_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_core_TransportPackageData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_TransportPackageData_descriptor,
@@ -34191,155 +33872,155 @@ public final class CoreProto {
         internal_static_core_TransportPackageData_HeaderEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_core_MsgStatus_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_core_MsgStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgStatus_descriptor,
         new java.lang.String[] { "MsgId", "MsgStatus", "MsgServerTime", });
     internal_static_core_MsgText_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_core_MsgText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Text", "Time", });
     internal_static_core_MsgSecretText_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_core_MsgSecretText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Text", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupText_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_core_GroupText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "Time", "AtSiteUserId", });
     internal_static_core_GroupSecretText_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_core_GroupSecretText_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretText_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Text", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_MsgImage_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_core_MsgImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "ImageId", "Time", });
     internal_static_core_MsgSecretImage_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_core_MsgSecretImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "ImageId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupImage_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_core_GroupImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "ImageId", "Time", });
     internal_static_core_GroupSecretImage_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_core_GroupSecretImage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretImage_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "ImageId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_MsgVoice_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_core_MsgVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "VoiceId", "Time", });
     internal_static_core_MsgSecretVoice_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_core_MsgSecretVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgSecretVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "VoiceId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupVoice_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_core_GroupVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "VoiceId", "Time", });
     internal_static_core_GroupSecretVoice_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_core_GroupSecretVoice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretVoice_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "VoiceId", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_U2Map_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_core_U2Map_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2Map_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Lng", "Lat", "Time", });
     internal_static_core_U2SecretMap_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_core_U2SecretMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2SecretMap_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "Base64Lng", "Base64Lat", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_GroupMap_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_core_GroupMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupMap_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Lng", "Lat", "Time", });
     internal_static_core_GroupSecretMap_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_core_GroupSecretMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupSecretMap_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "Base64Lng", "Base64Lat", "Base64TsKey", "ToDeviceId", "Time", });
     internal_static_core_U2MsgNotice_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_core_U2MsgNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2MsgNotice_descriptor,
         new java.lang.String[] { "SiteUserId", "SiteFriendId", "Text", "Time", "MsgId", });
     internal_static_core_GroupMsgNotice_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_core_GroupMsgNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupMsgNotice_descriptor,
         new java.lang.String[] { "SiteUserId", "SiteGroupId", "Text", "Time", "MsgId", });
     internal_static_core_U2Recall_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_core_U2Recall_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2Recall_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "RecallMsgId", "Time", });
     internal_static_core_GroupRecall_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_core_GroupRecall_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupRecall_descriptor,
         new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "RecallMsgId", "Time", });
     internal_static_core_U2Web_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_core_U2Web_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2Web_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Width", "Height", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Width", "Height", "Time", "HrefUrl", });
     internal_static_core_GroupWeb_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_core_GroupWeb_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupWeb_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Width", "Height", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Width", "Height", "Time", "HrefUrl", });
     internal_static_core_U2WebNotice_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_core_U2WebNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2WebNotice_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Time", "HrefUrl", });
     internal_static_core_GroupWebNotice_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_core_GroupWebNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupWebNotice_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Time", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Time", "HrefUrl", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
