@@ -1,5 +1,7 @@
 package com.akaxin.site.web.admin.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -8,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.impl.site.SiteConfig;
+import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.web.admin.bean.WebMessageBean;
 import com.akaxin.site.web.admin.common.MsgUtils;
 import com.akaxin.site.web.admin.service.IMessageManageService;
@@ -71,7 +74,7 @@ public class WebMessageController extends AbstractController {
 		}
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
-		
+
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
 		bean.setHeight(200);
@@ -80,6 +83,8 @@ public class WebMessageController extends AbstractController {
 		bean.setSiteUserId(siteAdmin);
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
+		String siteAddress = SiteConfig.getSiteAddress();
+		bean.setHrefUrl("zaly://" + siteAddress + "/goto?page=message");
 		messageService.sendU2WebMessage(bean);
 
 		return SUCCESS;
@@ -102,6 +107,8 @@ public class WebMessageController extends AbstractController {
 		bean.setSiteUserId(siteAdmin);
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
+		String siteAddress = SiteConfig.getSiteAddress();
+		bean.setHrefUrl("zaly://" + siteAddress + "/goto?page=message");
 		messageService.sendU2WebNoticeMessage(bean);
 
 		return SUCCESS;
@@ -117,14 +124,24 @@ public class WebMessageController extends AbstractController {
 		}
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
+		List<SimpleGroupBean> groupList = UserGroupDao.getInstance().getUserGroupList(siteUserId, 1, 1);
+
+		if (groupList == null || groupList.size() < 1) {
+			return;
+		}
+
+		String groupId = groupList.get(0).getGroupId();
+
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteUserId));
 		bean.setHeight(200);
 		bean.setWidth(100);
 		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteUserId);
-		bean.setSiteGroupId("10001");
+		bean.setSiteGroupId(groupId);
 		bean.setMsgTime(System.currentTimeMillis());
+		String siteAddress = SiteConfig.getSiteAddress();
+		bean.setHrefUrl("zaly://" + siteAddress + "/goto?page=message");
 		messageService.sendGroupWebMessage(bean);
 	}
 
@@ -136,15 +153,24 @@ public class WebMessageController extends AbstractController {
 		if (!isManager(getRequestSiteUserId(pluginPackage))) {
 			return NO_PERMISSION;
 		}
-		String siteAdmin = SiteConfig.getSiteSuperAdmin();
+		// String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
+
+		List<SimpleGroupBean> groupList = UserGroupDao.getInstance().getUserGroupList(siteUserId, 1, 1);
+		if (groupList == null || groupList.size() < 1) {
+			return ERROR;
+		}
+
+		String groupId = groupList.get(0).getGroupId();
 
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteUserId));
 		bean.setWebCode(WEB_DEMO_CODE);
 		bean.setSiteUserId(siteUserId);
-		bean.setSiteGroupId("10001");
+		bean.setSiteGroupId(groupId);
 		bean.setMsgTime(System.currentTimeMillis());
+		String siteAddress = SiteConfig.getSiteAddress();
+		bean.setHrefUrl("zaly://" + siteAddress + "/goto?page=message");
 		messageService.sendGroupWebNoticeMessage(bean);
 
 		return SUCCESS;

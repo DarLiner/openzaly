@@ -30,7 +30,7 @@ public class MessageManageService implements IMessageManageService {
 		CoreProto.U2Web u2Web = CoreProto.U2Web.newBuilder().setMsgId(bean.getMsgId())
 				.setSiteUserId(bean.getSiteUserId()).setSiteFriendId(bean.getSiteFriendId())
 				.setWebCode(bean.getWebCode()).setHeight(bean.getHeight()).setWidth(bean.getWidth())
-				.setTime(System.currentTimeMillis()).build();
+				.setTime(System.currentTimeMillis()).setHrefUrl(bean.getHrefUrl()).build();
 		ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
 				.setType(MsgType.U2_WEB).setU2Web(u2Web).build();
 
@@ -49,7 +49,8 @@ public class MessageManageService implements IMessageManageService {
 	public boolean sendU2WebNoticeMessage(WebMessageBean bean) {
 		CoreProto.U2WebNotice u2WebNotice = CoreProto.U2WebNotice.newBuilder().setMsgId(bean.getMsgId())
 				.setSiteUserId(bean.getSiteUserId()).setSiteFriendId(bean.getSiteFriendId())
-				.setWebCode(bean.getWebCode()).setTime(System.currentTimeMillis()).build();
+				.setWebCode(bean.getWebCode()).setHrefUrl(bean.getHrefUrl()).setTime(System.currentTimeMillis())
+				.build();
 		ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
 				.setType(MsgType.U2_WEB_NOTICE).setU2WebNotice(u2WebNotice).build();
 
@@ -68,7 +69,8 @@ public class MessageManageService implements IMessageManageService {
 	public boolean sendGroupWebMessage(WebMessageBean bean) {
 		CoreProto.GroupWeb groupWeb = CoreProto.GroupWeb.newBuilder().setMsgId(bean.getMsgId())
 				.setSiteUserId(bean.getSiteUserId()).setSiteGroupId(bean.getSiteGroupId()).setWebCode(bean.getWebCode())
-				.setHeight(bean.getHeight()).setWidth(bean.getWidth()).setTime(System.currentTimeMillis()).build();
+				.setHeight(bean.getHeight()).setHrefUrl(bean.getHrefUrl()).setWidth(bean.getWidth())
+				.setTime(System.currentTimeMillis()).build();
 		ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
 				.setType(MsgType.GROUP_WEB).setGroupWeb(groupWeb).build();
 
@@ -86,7 +88,7 @@ public class MessageManageService implements IMessageManageService {
 	public boolean sendGroupWebNoticeMessage(WebMessageBean bean) {
 		CoreProto.GroupWebNotice groupWebNotice = CoreProto.GroupWebNotice.newBuilder().setMsgId(bean.getMsgId())
 				.setSiteUserId(bean.getSiteUserId()).setSiteGroupId(bean.getSiteGroupId()).setWebCode(bean.getWebCode())
-				.setTime(System.currentTimeMillis()).build();
+				.setTime(System.currentTimeMillis()).setHrefUrl(bean.getHrefUrl()).build();
 		ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
 				.setType(MsgType.GROUP_WEB_NOTICE).setGroupWebNotice(groupWebNotice).build();
 

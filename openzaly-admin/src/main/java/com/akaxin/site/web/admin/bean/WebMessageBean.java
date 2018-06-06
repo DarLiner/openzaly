@@ -10,6 +10,7 @@ public class WebMessageBean {
 	private String webCode;
 	private int width;
 	private int height;
+	private String hrefUrl;
 	private long msgTime;
 
 	public String getSiteUserId() {
@@ -74,6 +75,14 @@ public class WebMessageBean {
 
 	public void setSiteGroupId(String siteGroupId) {
 		this.siteGroupId = siteGroupId;
+	}
+
+	public String getHrefUrl() {
+		return hrefUrl;
+	}
+
+	public void setHrefUrl(String hrefUrl) {
+		this.hrefUrl = hrefUrl;
 	}
 
 	public String toString() {
