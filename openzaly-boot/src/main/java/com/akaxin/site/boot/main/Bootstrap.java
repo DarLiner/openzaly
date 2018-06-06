@@ -221,6 +221,8 @@ public class Bootstrap {
 		Level level = Level.INFO;
 		if ("DEBUG".equalsIgnoreCase(projectEvn)) {
 			level = Level.DEBUG;
+		} else if ("ERROR".equalsIgnoreCase(projectEvn)) {
+			level = Level.ERROR;
 		}
 		// 更新日志级别
 		AkxLog4jManager.setLogLevel(level);

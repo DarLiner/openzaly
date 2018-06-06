@@ -38,10 +38,10 @@ public class ConfigListener {
 	}
 
 	public static void doListenning() {
-		Map<Integer, String> apiConfigMap = SiteConfigHelper.updateConfig();
-		LogUtils.info(getLogger(), "update api site config={}", apiConfigMap);
-		Map<Integer, String> imConfigMap = SiteConfig.updateConfig();
+		Map<Integer, String> imConfigMap = SiteConfigHelper.updateConfig();
 		LogUtils.info(getLogger(), "update im site config={}", imConfigMap);
+		Map<Integer, String> apiConfigMap = SiteConfig.updateConfig();
+		LogUtils.info(getLogger(), "update api site config={}", apiConfigMap);
 	}
 
 	private static Logger getLogger() {
