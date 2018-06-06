@@ -15,15 +15,14 @@
  */
 package com.akaxin.site.web.admin.controller;
 
-import com.akaxin.common.utils.GsonUtils;
-import com.akaxin.proto.core.ConfigProto;
-import com.akaxin.proto.core.ConfigProto.ConfigKey;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.web.admin.exception.UserPermissionException;
-import com.akaxin.site.web.admin.service.IBasicService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +33,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import com.akaxin.common.logs.AkxLog4jManager;
+import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.core.ConfigProto;
+import com.akaxin.proto.core.ConfigProto.ConfigKey;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.impl.site.SiteConfig;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
+import com.akaxin.site.web.admin.service.IBasicService;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * 阿卡信 - 后台管理 - 站点设置
@@ -218,7 +222,16 @@ public class BasicManageController extends AbstractController {
 				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
 			}
 			if (StringUtils.isNotEmpty(dataMap.get("log_level"))) {
-				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, dataMap.get("log_level"));
+				String logLevel = dataMap.get("log_level");
+				configMap.put(ConfigProto.ConfigKey.LOG_LEVEL_VALUE, logLevel);
+				Level level = Level.INFO;
+				if ("DEBUG".equalsIgnoreCase(logLevel)) {
+					level = Level.DEBUG;
+				} else if ("ERROR".equalsIgnoreCase(logLevel)) {
+					level = Level.ERROR;
+				}
+				// 更新日志级别
+				AkxLog4jManager.setLogLevel(level);
 			}
 			// 普通管理员无权限
 			if (isAdmin(siteUserId) && StringUtils.isNotEmpty(trim(dataMap.get("site_manager")))) {
