@@ -46,17 +46,19 @@ public class U2MessageWebHandler extends AbstractU2Handler<Command> {
 				String webCode = request.getU2Web().getWebCode();
 				int webWidth = request.getU2Web().getWidth();
 				int webHeight = request.getU2Web().getHeight();
+				String hrefUrl = request.getU2Web().getHrefUrl();
 				long msgTime = System.currentTimeMillis();
 
 				WebBean webBean = new WebBean();
 				webBean.setWebCode(webCode);
 				webBean.setHeight(webHeight);
 				webBean.setWidth(webWidth);
+				webBean.setHrefUrl(hrefUrl);
 
 				U2MessageBean bean = new U2MessageBean();
 				bean.setMsgId(msgId);
 				bean.setMsgType(type);
-//				bean.setSendUserId(siteUserId);
+				// bean.setSendUserId(siteUserId);
 				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSiteUserId(siteFriendId);
 				bean.setContent(webBean.toString());
