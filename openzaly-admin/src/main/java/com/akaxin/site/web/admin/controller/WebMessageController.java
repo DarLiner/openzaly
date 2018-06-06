@@ -116,18 +116,18 @@ public class WebMessageController extends AbstractController {
 
 	@RequestMapping("/testGroupWeb")
 	@ResponseBody
-	public void groupWebMessage(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
+	public String groupWebMessage(@RequestBody byte[] bodyParam) throws InvalidProtocolBufferException {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 		if (!isManager(getRequestSiteUserId(pluginPackage))) {
-			return;
+			return ERROR;
 		}
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
 		List<SimpleGroupBean> groupList = UserGroupDao.getInstance().getUserGroupList(siteUserId, 1, 1);
 
 		if (groupList == null || groupList.size() < 1) {
-			return;
+			return ERROR;
 		}
 
 		String groupId = groupList.get(0).getGroupId();
@@ -143,6 +143,8 @@ public class WebMessageController extends AbstractController {
 		String siteAddress = SiteConfig.getSiteAddress();
 		bean.setHrefUrl("zaly://" + siteAddress + "/goto?page=message");
 		messageService.sendGroupWebMessage(bean);
+
+		return SUCCESS;
 	}
 
 	@RequestMapping("/testGroupWebNotice")
