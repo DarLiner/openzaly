@@ -183,7 +183,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 							.setSiteGroupId(bean.getSiteGroupId()).setWebCode(webNoticeBean.getWebCode())
 							.setTime(bean.getMsgTime());
 					if (StringUtils.isNotEmpty(webNoticeBean.getHrefUrl())) {
-						groupWebNotice.setHrefUrl(groupWebNotice.getHrefUrl());
+						groupWebNotice.setHrefUrl(webNoticeBean.getHrefUrl());
 					}
 					ImStcMessageProto.MsgWithPointer groupWebNoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.GROUP_WEB_NOTICE)
