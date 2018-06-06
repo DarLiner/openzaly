@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.proto.core.PluginProto;
+import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.web.admin.bean.WebMessageBean;
 import com.akaxin.site.web.admin.common.MsgUtils;
 import com.akaxin.site.web.admin.service.IMessageManageService;
@@ -75,12 +77,20 @@ public class WebMessageController extends AbstractController {
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
+		List<SimpleUserBean> userFriends = UserFriendDao.getInstance().getUserFriendsByPage(siteUserId, 1, 1);
+
+		if (userFriends == null || userFriends.isEmpty()) {
+			return ERROR;
+		}
+
+		String fromSiteUserId = userFriends.get(0).getSiteUserId();
+
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
 		bean.setHeight(200);
 		bean.setWidth(100);
 		bean.setWebCode(WEB_DEMO_CODE);
-		bean.setSiteUserId(siteAdmin);
+		bean.setSiteUserId(fromSiteUserId);
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
 		String siteAddress = SiteConfig.getSiteAddress();
@@ -101,10 +111,18 @@ public class WebMessageController extends AbstractController {
 		String siteAdmin = SiteConfig.getSiteSuperAdmin();
 		String siteUserId = getRequestSiteUserId(pluginPackage);
 
+		List<SimpleUserBean> userFriends = UserFriendDao.getInstance().getUserFriendsByPage(siteUserId, 1, 1);
+
+		if (userFriends == null || userFriends.isEmpty()) {
+			return ERROR;
+		}
+
+		String fromSiteUserId = userFriends.get(0).getSiteUserId();
+
 		WebMessageBean bean = new WebMessageBean();
 		bean.setMsgId(MsgUtils.buildU2MsgId(siteAdmin));
 		bean.setWebCode(WEB_DEMO_CODE);
-		bean.setSiteUserId(siteAdmin);
+		bean.setSiteUserId(fromSiteUserId);
 		bean.setSiteFriendId(siteUserId);
 		bean.setMsgTime(System.currentTimeMillis());
 		String siteAddress = SiteConfig.getSiteAddress();
