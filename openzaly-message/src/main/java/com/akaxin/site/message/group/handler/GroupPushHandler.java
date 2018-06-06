@@ -61,7 +61,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 							.parseFrom(command.getParams());
 					// String siteUserId = command.getSiteUserId();
-					String fromSiteUserId = command.isProxy() ? command.getSiteUserId() : command.getSiteFriendId();
+					String fromSiteUserId = command.isProxy() ? command.getProxySiteUserId() : command.getSiteUserId(); //
 					String siteGroupId = command.getSiteGroupId();
 
 					GroupProfileBean groupBean = ImUserGroupDao.getInstance().getSimpleGroupProfile(siteGroupId);
