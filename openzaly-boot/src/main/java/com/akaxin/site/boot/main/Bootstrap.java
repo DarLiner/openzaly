@@ -53,7 +53,7 @@ import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
-import com.akaxin.site.storage.dao.sqlite.manager.DBConfig;
+import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sqlite.manager.PluginArgs;
 import com.akaxin.site.storage.exception.InitDatabaseException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;

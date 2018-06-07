@@ -17,7 +17,8 @@ package com.akaxin.site.storage;
 
 import java.sql.SQLException;
 
-import com.akaxin.site.storage.dao.sqlite.manager.DBConfig;
+import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.mysql.manager.MysqlManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteUpgrade;
 import com.akaxin.site.storage.exception.InitDatabaseException;
@@ -37,7 +38,16 @@ public class DataSourceManager {
 
 	public static void init(DBConfig config) throws InitDatabaseException, UpgradeDatabaseException {
 		try {
-			SQLiteJDBCManager.initSqliteDB(config);
+			switch (config.getDb()) {
+			case SQLITE:
+				System.setProperty("database", config.getDb().getName());
+				SQLiteJDBCManager.initSqliteDB(config);
+				break;
+			case MYSQL:
+				System.setProperty("database", config.getDb().getName());
+				MysqlManager.initMysqlDB();
+				break;
+			}
 		} catch (SQLException e) {
 			throw new InitDatabaseException("init database error", e);
 		}
@@ -45,9 +55,15 @@ public class DataSourceManager {
 
 	public static int upgrade(DBConfig config) throws UpgradeDatabaseException {
 		try {
-			return SQLiteUpgrade.upgradeSqliteDB(config);
+			switch (config.getDb()) {
+			case SQLITE:
+				return SQLiteUpgrade.upgradeSqliteDB(config);
+			case MYSQL:
+				throw new UpgradeDatabaseException("database upgrade can't support mysql");
+			}
 		} catch (SQLException e) {
 			throw new UpgradeDatabaseException("upgrade database error", e);
 		}
+		return 0;
 	}
 }

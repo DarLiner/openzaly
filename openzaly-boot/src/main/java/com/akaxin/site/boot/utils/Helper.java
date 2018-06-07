@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sqlite.manager.DBConfig;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 public class Helper {

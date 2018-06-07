@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.site.storage.dao.sqlite.manager;
+package com.akaxin.site.storage.dao.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,7 @@ import com.akaxin.common.utils.GsonUtils;
  * @since 2018-01-31 12:13:35
  */
 public class DBConfig {
+	private DBType db;
 	private String dbDir;
 	private String adminServerName;
 	private String adminAddress;
@@ -36,6 +37,14 @@ public class DBConfig {
 	private Map<Integer, String> configMap;
 	// 扩展参数
 	private Map<String, Object> params = new HashMap<String, Object>();
+
+	public DBType getDb() {
+		return db;
+	}
+
+	public void setDb(DBType db) {
+		this.db = db;
+	}
 
 	public String getDbDir() {
 		return dbDir;

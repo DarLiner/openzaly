@@ -11,14 +11,16 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
+import com.akaxin.site.storage.exception.InitDatabaseException;
+
 public class MysqlManager {
 	private static final Logger logger = LoggerFactory.getLogger(MysqlManager.class);
 
 	// 初始化数据库异常，会导致程序终端启动
-	public static void initMysqlDB() throws Exception {
+	public static void initMysqlDB() throws InitDatabaseException {
 		try {
 			// init db && table
-			Connection conn = InitMysql.getInitConnection();
+			Connection conn = InitDatabaseConnection.getInitConnection();
 			String sqlPath = "/Users/anguoyue/git/openzaly/openzaly-storage/src/main/resources/openzaly-mysql.sql";
 			FileSystemResource rc = new FileSystemResource(sqlPath);
 			EncodedResource encodeRes = new EncodedResource(rc, "GBK");
@@ -28,16 +30,20 @@ public class MysqlManager {
 			C3P0PoolManager.initPool();
 		} catch (Exception e) {
 			logger.error("init mysql database error");
-			throw e;
+			throw new InitDatabaseException("init mysql database error", e);
 		} finally {
-			InitMysql.closeInitConnection();
+			InitDatabaseConnection.closeInitConnection();
 		}
 
 	}
-	
-	
-	
-	
+
+	public static Connection getConnection() throws SQLException {
+		return C3P0PoolManager.getConnection();
+	}
+
+	public static void returnConnection(Connection conn) {
+		C3P0PoolManager.returnConnection(conn);
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -63,6 +69,9 @@ public class MysqlManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InitDatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -32,6 +32,7 @@ import com.akaxin.proto.core.UicProto;
 import com.akaxin.site.storage.bean.UicBean;
 import com.akaxin.site.storage.dao.SQLiteSiteConfigDao;
 import com.akaxin.site.storage.dao.SQLiteUICDao;
+import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.dao.sql.SQLIndex;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
