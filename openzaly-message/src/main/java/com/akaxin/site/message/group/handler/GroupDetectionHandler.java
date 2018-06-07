@@ -95,6 +95,7 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 					siteUserId = request.getGroupWeb().getSiteUserId();
 				}
 				siteGroupId = request.getGroupWeb().getSiteGroupId();
+				command.setProxySiteUserId(siteUserId);
 				command.setSiteGroupId(siteGroupId);
 				// 系统下发的消息，直接return true；
 				return true;
@@ -103,6 +104,7 @@ public class GroupDetectionHandler extends AbstractGroupHandler<Command> {
 					siteUserId = request.getGroupWebNotice().getSiteUserId();
 				}
 				siteGroupId = request.getGroupWebNotice().getSiteGroupId();
+				command.setProxySiteUserId(siteUserId);
 				command.setSiteGroupId(siteGroupId);
 				// 系统下发的消息，直接return true；
 				return true;

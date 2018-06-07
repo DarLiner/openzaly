@@ -101,14 +101,25 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 				command.setMsgType(type);
 				return true;
 			case CoreProto.MsgType.U2_WEB_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getU2Web().getSiteUserId();
+				}
+				siteFriendId = request.getU2Web().getSiteFriendId();
+				command.setProxySiteUserId(siteUserId);
+				command.setSiteFriendId(siteFriendId);
 				return true;
 			case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getU2WebNotice().getSiteUserId();
+					siteFriendId = request.getU2WebNotice().getSiteFriendId();
+					command.setProxySiteUserId(siteUserId);
+					command.setSiteFriendId(siteFriendId);
+				}
 				return true;
 			default:
 				logger.error("error message type cmd={} request={}", command.toString(), request.toString());
 				return false;
 			}
-			// command.isProxy()==false,think of proxy self
 			command.setProxySiteUserId(siteUserId);
 			command.setSiteFriendId(siteFriendId);
 
