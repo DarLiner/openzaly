@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IPluginDao;
 import com.akaxin.site.storage.bean.PluginBean;
-import com.akaxin.site.storage.sqlite.SQLitePluginDao;
+import com.akaxin.site.storage.dao.SQLitePluginDao;
 
 /**
  *

@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IUserDeviceDao;
 import com.akaxin.site.storage.bean.UserDeviceBean;
-import com.akaxin.site.storage.sqlite.SQLiteUserDeviceDao;
+import com.akaxin.site.storage.dao.SQLiteUserDeviceDao;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

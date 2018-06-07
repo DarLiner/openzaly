@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.site.storage.sqlite.manager;
+package com.akaxin.site.storage.dao.sqlite.manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,11 +30,11 @@ import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UicProto;
 import com.akaxin.site.storage.bean.UicBean;
+import com.akaxin.site.storage.dao.SQLiteSiteConfigDao;
+import com.akaxin.site.storage.dao.SQLiteUICDao;
+import com.akaxin.site.storage.dao.sql.SQLConst;
+import com.akaxin.site.storage.dao.sql.SQLIndex;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
-import com.akaxin.site.storage.sqlite.SQLiteSiteConfigDao;
-import com.akaxin.site.storage.sqlite.SQLiteUICDao;
-import com.akaxin.site.storage.sqlite.sql.SQLConst;
-import com.akaxin.site.storage.sqlite.sql.SQLIndex;
 
 /**
  * <pre>

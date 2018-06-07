@@ -21,7 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserSessionDao;
 import com.akaxin.site.storage.bean.SimpleAuthBean;
 import com.akaxin.site.storage.bean.UserSessionBean;
-import com.akaxin.site.storage.sqlite.SQLiteUserSessionDao;
+import com.akaxin.site.storage.dao.SQLiteUserSessionDao;
 
 /**
  * 

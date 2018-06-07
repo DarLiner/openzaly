@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.akaxin.site.storage.sqlite;
+package com.akaxin.site.storage.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
-import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
-import com.akaxin.site.storage.sqlite.sql.SQLConst;
+import com.akaxin.site.storage.dao.sql.SQLConst;
+import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * 获取站点所有用户

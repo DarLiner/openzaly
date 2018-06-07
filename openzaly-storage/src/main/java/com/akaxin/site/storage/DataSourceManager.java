@@ -17,11 +17,11 @@ package com.akaxin.site.storage;
 
 import java.sql.SQLException;
 
+import com.akaxin.site.storage.dao.sqlite.manager.DBConfig;
+import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
+import com.akaxin.site.storage.dao.sqlite.manager.SQLiteUpgrade;
 import com.akaxin.site.storage.exception.InitDatabaseException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
-import com.akaxin.site.storage.sqlite.manager.DBConfig;
-import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
-import com.akaxin.site.storage.sqlite.manager.SQLiteUpgrade;
 
 /**
  * 数据源初始化管理，不做具体操作对外提供方法

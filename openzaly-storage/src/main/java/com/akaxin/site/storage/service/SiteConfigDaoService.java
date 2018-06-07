@@ -23,8 +23,8 @@ import com.akaxin.site.storage.api.ISiteConfigDao;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
-import com.akaxin.site.storage.sqlite.SQLiteSiteConfigDao;
-import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
+import com.akaxin.site.storage.dao.SQLiteSiteConfigDao;
+import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

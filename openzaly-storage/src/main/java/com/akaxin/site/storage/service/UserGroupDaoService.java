@@ -20,8 +20,8 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IUserGroupDao;
 import com.akaxin.site.storage.bean.UserGroupBean;
-import com.akaxin.site.storage.sqlite.SQLiteGroupMessageDao;
-import com.akaxin.site.storage.sqlite.SQLiteUserGroupDao;
+import com.akaxin.site.storage.dao.SQLiteGroupMessageDao;
+import com.akaxin.site.storage.dao.SQLiteUserGroupDao;
 
 /**
  * 

@@ -23,7 +23,7 @@ import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.SimpleUserRelationBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
-import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
+import com.akaxin.site.storage.dao.SQLiteUserProfileDao;
 
 /**
  * 

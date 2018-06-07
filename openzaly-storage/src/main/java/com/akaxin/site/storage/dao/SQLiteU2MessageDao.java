@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.akaxin.site.storage.sqlite;
+package com.akaxin.site.storage.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,8 +29,8 @@ import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.common.utils.TimeFormats;
 import com.akaxin.site.storage.bean.U2MessageBean;
-import com.akaxin.site.storage.sqlite.manager.SQLiteJDBCManager;
-import com.akaxin.site.storage.sqlite.sql.SQLConst;
+import com.akaxin.site.storage.dao.sql.SQLConst;
+import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

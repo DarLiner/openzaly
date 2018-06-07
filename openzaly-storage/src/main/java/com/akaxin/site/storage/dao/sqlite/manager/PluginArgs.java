@@ -1,4 +1,4 @@
-package com.akaxin.site.storage.sqlite.manager;
+package com.akaxin.site.storage.dao.sqlite.manager;
 
 public interface PluginArgs {
 	public String SITE_ADMIN_NAME = "管理后台";

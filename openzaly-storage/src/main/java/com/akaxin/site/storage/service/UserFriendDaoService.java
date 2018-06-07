@@ -21,7 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserFriendDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
-import com.akaxin.site.storage.sqlite.SQLiteUserFriendDao;
+import com.akaxin.site.storage.dao.SQLiteUserFriendDao;
 
 /**
  * 

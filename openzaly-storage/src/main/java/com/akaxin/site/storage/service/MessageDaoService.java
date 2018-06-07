@@ -22,8 +22,8 @@ import java.util.List;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.bean.U2MessageBean;
-import com.akaxin.site.storage.sqlite.SQLiteGroupMessageDao;
-import com.akaxin.site.storage.sqlite.SQLiteU2MessageDao;
+import com.akaxin.site.storage.dao.SQLiteGroupMessageDao;
+import com.akaxin.site.storage.dao.SQLiteU2MessageDao;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}

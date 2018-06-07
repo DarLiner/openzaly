@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.akaxin.site.storage.api.ISiteUsersDao;
-import com.akaxin.site.storage.sqlite.SQLiteSiteUsersDao;
+import com.akaxin.site.storage.dao.SQLiteSiteUsersDao;
 
 /**
  * 

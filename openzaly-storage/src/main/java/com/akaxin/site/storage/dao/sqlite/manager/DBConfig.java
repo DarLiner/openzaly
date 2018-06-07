@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.akaxin.site.storage.sqlite.manager;
+package com.akaxin.site.storage.dao.sqlite.manager;
 
 import java.util.HashMap;
 import java.util.Map;

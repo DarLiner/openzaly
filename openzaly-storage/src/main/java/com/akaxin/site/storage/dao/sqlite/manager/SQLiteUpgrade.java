@@ -1,4 +1,4 @@
-package com.akaxin.site.storage.sqlite.manager;
+package com.akaxin.site.storage.dao.sqlite.manager;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -18,8 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
-import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
 public class SQLiteUpgrade {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteUpgrade.class);
