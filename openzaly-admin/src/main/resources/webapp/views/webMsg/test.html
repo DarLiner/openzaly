@@ -96,7 +96,8 @@ footer a {
 		}
 
 		function reqHtml(reqUri, params) {
-			var type = getOsType();
+            reqUri = "/akaxin" + reqUri;
+            var type = getOsType();
 			console.log(type);
 			if (type == 'Android') {
 				Android.requestPage(reqUri, params);

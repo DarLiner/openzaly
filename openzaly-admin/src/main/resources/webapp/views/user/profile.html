@@ -157,7 +157,8 @@ footer a {
 		}
 
 		function reqUrl(reqUri, params, callbackName) {
-			var type = getOsType();
+            reqUri = "/akaxin" + reqUri;
+            var type = getOsType();
 			console.log('utl' + type);
 
 			if (type == 'Android') {
@@ -170,7 +171,8 @@ footer a {
 		}
 
 		function reqHtml(reqUri, params) {
-			var type = getOsType();
+            reqUri = "/akaxin" + reqUri;
+            var type = getOsType();
 			if (type == 'Android') {
 				Android.requestPage(reqUri, params)
 			} else if (type == 'IOS') {
