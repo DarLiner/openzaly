@@ -31026,6 +31026,15 @@ public final class CoreProto {
      */
     com.google.protobuf.ByteString
         getHrefUrlBytes();
+
+    /**
+     * <pre>
+     *web notice消息的高度
+     * </pre>
+     *
+     * <code>optional int32 height = 7;</code>
+     */
+    int getHeight();
   }
   /**
    * <pre>
@@ -31049,6 +31058,7 @@ public final class CoreProto {
       webCode_ = "";
       time_ = 0L;
       hrefUrl_ = "";
+      height_ = 0;
     }
 
     @java.lang.Override
@@ -31109,6 +31119,11 @@ public final class CoreProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               hrefUrl_ = s;
+              break;
+            }
+            case 56: {
+
+              height_ = input.readInt32();
               break;
             }
           }
@@ -31357,6 +31372,19 @@ public final class CoreProto {
       }
     }
 
+    public static final int HEIGHT_FIELD_NUMBER = 7;
+    private int height_;
+    /**
+     * <pre>
+     *web notice消息的高度
+     * </pre>
+     *
+     * <code>optional int32 height = 7;</code>
+     */
+    public int getHeight() {
+      return height_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -31387,6 +31415,9 @@ public final class CoreProto {
       if (!getHrefUrlBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, hrefUrl_);
       }
+      if (height_ != 0) {
+        output.writeInt32(7, height_);
+      }
     }
 
     public int getSerializedSize() {
@@ -31412,6 +31443,10 @@ public final class CoreProto {
       }
       if (!getHrefUrlBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, hrefUrl_);
+      }
+      if (height_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, height_);
       }
       memoizedSize = size;
       return size;
@@ -31441,6 +31476,8 @@ public final class CoreProto {
           == other.getTime());
       result = result && getHrefUrl()
           .equals(other.getHrefUrl());
+      result = result && (getHeight()
+          == other.getHeight());
       return result;
     }
 
@@ -31464,6 +31501,8 @@ public final class CoreProto {
           getTime());
       hash = (37 * hash) + HREF_URL_FIELD_NUMBER;
       hash = (53 * hash) + getHrefUrl().hashCode();
+      hash = (37 * hash) + HEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + getHeight();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -31598,6 +31637,8 @@ public final class CoreProto {
 
         hrefUrl_ = "";
 
+        height_ = 0;
+
         return this;
       }
 
@@ -31626,6 +31667,7 @@ public final class CoreProto {
         result.webCode_ = webCode_;
         result.time_ = time_;
         result.hrefUrl_ = hrefUrl_;
+        result.height_ = height_;
         onBuilt();
         return result;
       }
@@ -31689,6 +31731,9 @@ public final class CoreProto {
         if (!other.getHrefUrl().isEmpty()) {
           hrefUrl_ = other.hrefUrl_;
           onChanged();
+        }
+        if (other.getHeight() != 0) {
+          setHeight(other.getHeight());
         }
         onChanged();
         return this;
@@ -32198,6 +32243,44 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private int height_ ;
+      /**
+       * <pre>
+       *web notice消息的高度
+       * </pre>
+       *
+       * <code>optional int32 height = 7;</code>
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <pre>
+       *web notice消息的高度
+       * </pre>
+       *
+       * <code>optional int32 height = 7;</code>
+       */
+      public Builder setHeight(int value) {
+        
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *web notice消息的高度
+       * </pre>
+       *
+       * <code>optional int32 height = 7;</code>
+       */
+      public Builder clearHeight() {
+        
+        height_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -32349,6 +32432,15 @@ public final class CoreProto {
      */
     com.google.protobuf.ByteString
         getHrefUrlBytes();
+
+    /**
+     * <pre>
+     *web notice消息的高度
+     * </pre>
+     *
+     * <code>optional int32 height = 7;</code>
+     */
+    int getHeight();
   }
   /**
    * <pre>
@@ -32372,6 +32464,7 @@ public final class CoreProto {
       webCode_ = "";
       time_ = 0L;
       hrefUrl_ = "";
+      height_ = 0;
     }
 
     @java.lang.Override
@@ -32432,6 +32525,11 @@ public final class CoreProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               hrefUrl_ = s;
+              break;
+            }
+            case 56: {
+
+              height_ = input.readInt32();
               break;
             }
           }
@@ -32680,6 +32778,19 @@ public final class CoreProto {
       }
     }
 
+    public static final int HEIGHT_FIELD_NUMBER = 7;
+    private int height_;
+    /**
+     * <pre>
+     *web notice消息的高度
+     * </pre>
+     *
+     * <code>optional int32 height = 7;</code>
+     */
+    public int getHeight() {
+      return height_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -32710,6 +32821,9 @@ public final class CoreProto {
       if (!getHrefUrlBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, hrefUrl_);
       }
+      if (height_ != 0) {
+        output.writeInt32(7, height_);
+      }
     }
 
     public int getSerializedSize() {
@@ -32735,6 +32849,10 @@ public final class CoreProto {
       }
       if (!getHrefUrlBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, hrefUrl_);
+      }
+      if (height_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, height_);
       }
       memoizedSize = size;
       return size;
@@ -32764,6 +32882,8 @@ public final class CoreProto {
           == other.getTime());
       result = result && getHrefUrl()
           .equals(other.getHrefUrl());
+      result = result && (getHeight()
+          == other.getHeight());
       return result;
     }
 
@@ -32787,6 +32907,8 @@ public final class CoreProto {
           getTime());
       hash = (37 * hash) + HREF_URL_FIELD_NUMBER;
       hash = (53 * hash) + getHrefUrl().hashCode();
+      hash = (37 * hash) + HEIGHT_FIELD_NUMBER;
+      hash = (53 * hash) + getHeight();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -32921,6 +33043,8 @@ public final class CoreProto {
 
         hrefUrl_ = "";
 
+        height_ = 0;
+
         return this;
       }
 
@@ -32949,6 +33073,7 @@ public final class CoreProto {
         result.webCode_ = webCode_;
         result.time_ = time_;
         result.hrefUrl_ = hrefUrl_;
+        result.height_ = height_;
         onBuilt();
         return result;
       }
@@ -33012,6 +33137,9 @@ public final class CoreProto {
         if (!other.getHrefUrl().isEmpty()) {
           hrefUrl_ = other.hrefUrl_;
           onChanged();
+        }
+        if (other.getHeight() != 0) {
+          setHeight(other.getHeight());
         }
         onChanged();
         return this;
@@ -33521,6 +33649,44 @@ public final class CoreProto {
         onChanged();
         return this;
       }
+
+      private int height_ ;
+      /**
+       * <pre>
+       *web notice消息的高度
+       * </pre>
+       *
+       * <code>optional int32 height = 7;</code>
+       */
+      public int getHeight() {
+        return height_;
+      }
+      /**
+       * <pre>
+       *web notice消息的高度
+       * </pre>
+       *
+       * <code>optional int32 height = 7;</code>
+       */
+      public Builder setHeight(int value) {
+        
+        height_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *web notice消息的高度
+       * </pre>
+       *
+       * <code>optional int32 height = 7;</code>
+       */
+      public Builder clearHeight() {
+        
+        height_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -33804,36 +33970,37 @@ public final class CoreProto {
       "(\t\"\230\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_" +
       "user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\020\n\010" +
       "web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030",
-      "\006 \001(\005\022\014\n\004time\030\007 \001(\003\022\020\n\010href_url\030\010 \001(\t\"}\n" +
-      "\013U2WebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_use" +
-      "r_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010we" +
-      "b_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010href_url\030\006" +
-      " \001(\t\"\177\n\016GroupWebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024" +
-      "\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 " +
-      "\001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010h" +
-      "ref_url\030\006 \001(\t*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SO" +
-      "CKET_VERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SES" +
-      "SION_ID\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESS",
-      "ION_ID\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n" +
-      "\026CLIENT_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCK" +
-      "ET_TYPE\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037" +
-      "\n\032CLIENT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIEN" +
-      "T_REQUEST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_" +
-      "VERSION\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SIT" +
-      "E_SERVER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERE" +
-      "R\020\271\027*\275\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STAT" +
-      "US\020\001\022\010\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP" +
-      "_TEXT\020\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020",
-      "\007\022\020\n\014SECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022" +
-      "GROUP_SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRE" +
-      "T_VOICE\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECR" +
-      "ET_VOICE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020" +
-      "\020\022\r\n\tGROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r" +
-      "\n\tU2_NOTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RE" +
-      "CALL\020\025\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\t" +
-      "GROUP_WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_" +
-      "WEB_NOTICE\020\032B\"\n\025com.akaxin.proto.coreB\tC" +
-      "oreProtob\006proto3"
+      "\006 \001(\005\022\014\n\004time\030\007 \001(\003\022\020\n\010href_url\030\010 \001(\t\"\215\001" +
+      "\n\013U2WebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
+      "er_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010w" +
+      "eb_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010href_url\030" +
+      "\006 \001(\t\022\016\n\006height\030\007 \001(\005\"\217\001\n\016GroupWebNotice" +
+      "\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025" +
+      "\n\rsite_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022" +
+      "\014\n\004time\030\005 \001(\003\022\020\n\010href_url\030\006 \001(\t\022\016\n\006heigh" +
+      "t\030\007 \001(\005*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SOCKET_V" +
+      "ERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION_I",
+      "D\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESSION_ID" +
+      "\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLIEN" +
+      "T_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCKET_TYP" +
+      "E\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CLIE" +
+      "NT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_REQU" +
+      "EST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERSIO" +
+      "N\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SERV" +
+      "ER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027*\275" +
+      "\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001\022\010" +
+      "\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEXT\020",
+      "\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014S" +
+      "ECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROUP_" +
+      "SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VOIC" +
+      "E\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_VOI" +
+      "CE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n\tG" +
+      "ROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2_N" +
+      "OTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RECALL\020\025" +
+      "\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROUP_" +
+      "WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_NO" +
+      "TICE\020\032B\"\n\025com.akaxin.proto.coreB\tCorePro",
+      "tob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34014,13 +34181,13 @@ public final class CoreProto {
     internal_static_core_U2WebNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_U2WebNotice_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Time", "HrefUrl", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteFriendId", "WebCode", "Time", "HrefUrl", "Height", });
     internal_static_core_GroupWebNotice_descriptor =
       getDescriptor().getMessageTypes().get(27);
     internal_static_core_GroupWebNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_GroupWebNotice_descriptor,
-        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Time", "HrefUrl", });
+        new java.lang.String[] { "MsgId", "SiteUserId", "SiteGroupId", "WebCode", "Time", "HrefUrl", "Height", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

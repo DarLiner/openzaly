@@ -181,7 +181,7 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 					CoreProto.GroupWebNotice.Builder groupWebNotice = CoreProto.GroupWebNotice.newBuilder();
 					groupWebNotice.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
 							.setSiteGroupId(bean.getSiteGroupId()).setWebCode(webNoticeBean.getWebCode())
-							.setTime(bean.getMsgTime());
+							.setHeight(webNoticeBean.getHeight()).setTime(bean.getMsgTime());
 					if (StringUtils.isNotEmpty(webNoticeBean.getHrefUrl())) {
 						groupWebNotice.setHrefUrl(webNoticeBean.getHrefUrl());
 					}
