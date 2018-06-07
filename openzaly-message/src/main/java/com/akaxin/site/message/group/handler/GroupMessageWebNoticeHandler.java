@@ -49,12 +49,11 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 				String proxySiteUserId = request.getGroupWebNotice().getSiteUserId();
 				String gmsgId = request.getGroupWebNotice().getMsgId();
 				String groupId = request.getGroupWebNotice().getSiteGroupId();
-				String webCode = request.getGroupWebNotice().getWebCode();
-				String hrefUrl = request.getGroupWebNotice().getHrefUrl();
 
 				WebBean webBean = new WebBean();
-				webBean.setWebCode(webCode);
-				webBean.setHrefUrl(hrefUrl);
+				webBean.setWebCode(request.getGroupWebNotice().getWebCode());
+				webBean.setHrefUrl(request.getGroupWebNotice().getHrefUrl());
+				webBean.setHeight(request.getGroupWebNotice().getHeight());
 
 				long msgTime = System.currentTimeMillis();
 				GroupMessageBean bean = new GroupMessageBean();

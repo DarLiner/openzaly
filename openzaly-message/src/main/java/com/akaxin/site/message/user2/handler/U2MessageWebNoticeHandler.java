@@ -42,12 +42,11 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 				String proxySiteUserId = request.getU2WebNotice().getSiteUserId();
 				String siteFriendId = request.getU2WebNotice().getSiteFriendId();
 				String msgId = request.getU2WebNotice().getMsgId();
-				String webCode = request.getU2WebNotice().getWebCode();
-				String hrefUrl = request.getU2WebNotice().getHrefUrl();
 
 				WebBean webBean = new WebBean();
-				webBean.setWebCode(webCode);
-				webBean.setHrefUrl(hrefUrl);
+				webBean.setWebCode(request.getU2WebNotice().getWebCode());
+				webBean.setHrefUrl(request.getU2WebNotice().getHrefUrl());
+				webBean.setHeight(request.getU2WebNotice().getHeight());
 
 				long msgTime = System.currentTimeMillis();
 				U2MessageBean bean = new U2MessageBean();

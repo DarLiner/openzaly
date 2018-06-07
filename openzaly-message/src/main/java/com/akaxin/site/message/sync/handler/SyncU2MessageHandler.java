@@ -184,7 +184,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					CoreProto.U2WebNotice.Builder u2WebNotice = CoreProto.U2WebNotice.newBuilder();
 					u2WebNotice.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
 							.setSiteFriendId(bean.getSiteUserId()).setWebCode(webNoticeBean.getWebCode())
-							.setTime(bean.getMsgTime());
+							.setHeight(webNoticeBean.getHeight()).setTime(bean.getMsgTime());
 					if (StringUtils.isNotEmpty(webNoticeBean.getHrefUrl())) {
 						u2WebNotice.setHrefUrl(webNoticeBean.getHrefUrl());
 					}
