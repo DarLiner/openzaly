@@ -27,6 +27,8 @@ import com.akaxin.site.connector.exception.HttpServerException;
 import com.akaxin.site.connector.http.handler.HttpServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -58,7 +60,16 @@ public abstract class HttpServer {
 			// 接受连接的可连接队列大小
 			bootstrap.option(ChannelOption.SO_BACKLOG, 120);
 			bootstrap.option(ChannelOption.SO_REUSEADDR, true);
+			//设置缓存大小
+			bootstrap.option(ChannelOption.SO_RCVBUF, 256 * 1024);
+			bootstrap.option(ChannelOption.SO_SNDBUF, 256 * 1024);// 256 KB/字节
+			
 			bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+			bootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+			/**
+			 * 接受缓存区，动态内存分配端的算法
+			 */
+			bootstrap.childOption(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT);
 			bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
