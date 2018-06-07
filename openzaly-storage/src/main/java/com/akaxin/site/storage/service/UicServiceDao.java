@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IUicDao;
 import com.akaxin.site.storage.bean.UicBean;
-import com.akaxin.site.storage.dao.SQLiteUICDao;
+import com.akaxin.site.storage.dao.SiteUICDao;
 
 /**
  * 
@@ -31,32 +31,32 @@ public class UicServiceDao implements IUicDao {
 
 	@Override
 	public boolean addUic(UicBean bean) throws SQLException {
-		return SQLiteUICDao.getInstance().addUIC(bean);
+		return SiteUICDao.getInstance().addUIC(bean);
 	}
 
 	@Override
 	public boolean batchAddUic(UicBean bean, int num, int length) throws SQLException {
-		return SQLiteUICDao.getInstance().batchAddUIC(bean, num, length);
+		return SiteUICDao.getInstance().batchAddUIC(bean, num, length);
 	}
 
 	@Override
 	public boolean updateUic(UicBean bean) throws SQLException {
-		return SQLiteUICDao.getInstance().updateUIC(bean);
+		return SiteUICDao.getInstance().updateUIC(bean);
 	}
 
 	@Override
 	public UicBean getUicInfo(String uic) throws SQLException {
-		return SQLiteUICDao.getInstance().queryUIC(uic);
+		return SiteUICDao.getInstance().queryUIC(uic);
 	}
 
 	@Override
 	public List<UicBean> getUicPageList(int pageNum, int pageSize, int status) throws SQLException {
-		return SQLiteUICDao.getInstance().queryUicList(pageNum, pageSize, status);
+		return SiteUICDao.getInstance().queryUicList(pageNum, pageSize, status);
 	}
 
 	@Override
 	public List<UicBean> getAllUicPageList(int pageNum, int pageSize) throws SQLException {
-		return SQLiteUICDao.getInstance().queryAllUicList(pageNum, pageSize);
+		return SiteUICDao.getInstance().queryAllUicList(pageNum, pageSize);
 	}
 
 }

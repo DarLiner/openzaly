@@ -11,13 +11,16 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
+import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.config.PrepareSiteConfigData;
 import com.akaxin.site.storage.exception.InitDatabaseException;
 
 public class MysqlManager {
 	private static final Logger logger = LoggerFactory.getLogger(MysqlManager.class);
 
 	// 初始化数据库异常，会导致程序终端启动
-	public static void initMysqlDB() throws InitDatabaseException {
+	public static void initMysqlDB(DBConfig config) throws InitDatabaseException {
 		try {
 			// init db && table
 			Connection conn = InitDatabaseConnection.getInitConnection();
@@ -28,8 +31,9 @@ public class MysqlManager {
 
 			// init c3p0 pool
 			C3P0PoolManager.initPool();
+
+			PrepareSiteConfigData.init(config);
 		} catch (Exception e) {
-			logger.error("init mysql database error");
 			throw new InitDatabaseException("init mysql database error", e);
 		} finally {
 			InitDatabaseConnection.closeInitConnection();
@@ -45,10 +49,10 @@ public class MysqlManager {
 		C3P0PoolManager.returnConnection(conn);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InitDatabaseException {
 		try {
 			// init mysqldb
-			initMysqlDB();
+			initMysqlDB(null);
 
 			// do action
 			for (int i = 0; i < 5; i++) {
@@ -69,9 +73,6 @@ public class MysqlManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InitDatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

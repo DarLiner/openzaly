@@ -54,6 +54,7 @@ import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.config.DBType;
 import com.akaxin.site.storage.dao.sqlite.manager.PluginArgs;
 import com.akaxin.site.storage.exception.InitDatabaseException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
@@ -244,6 +245,7 @@ public class Bootstrap {
 		Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
 
 		DBConfig config = new DBConfig();
+		config.setDb(DBType.MYSQL);
 		config.setConfigMap(siteConfigMap);
 		config.setDbDir(dbDir);
 		config.setAdminAddress(adminHost);

@@ -45,7 +45,7 @@ public class DataSourceManager {
 				break;
 			case MYSQL:
 				System.setProperty("database", config.getDb().getName());
-				MysqlManager.initMysqlDB();
+				MysqlManager.initMysqlDB(config);
 				break;
 			}
 		} catch (SQLException e) {

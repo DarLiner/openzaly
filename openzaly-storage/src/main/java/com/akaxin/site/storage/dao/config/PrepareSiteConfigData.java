@@ -13,8 +13,8 @@ import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UicProto;
 import com.akaxin.site.storage.bean.UicBean;
 import com.akaxin.site.storage.connection.DatabaseConnection;
-import com.akaxin.site.storage.dao.SQLiteSiteConfigDao;
-import com.akaxin.site.storage.dao.SQLiteUICDao;
+import com.akaxin.site.storage.dao.SiteConfigDao;
+import com.akaxin.site.storage.dao.SiteUICDao;
 import com.akaxin.site.storage.dao.sqlite.manager.PluginArgs;
 
 /**
@@ -37,7 +37,7 @@ public class PrepareSiteConfigData {
 
 	private static void initSiteConfig(Map<Integer, String> configMap) {
 		try {
-			Map<Integer, String> oldMap = SQLiteSiteConfigDao.getInstance().querySiteConfig();
+			Map<Integer, String> oldMap = SiteConfigDao.getInstance().querySiteConfig();
 			if (oldMap != null) {
 				if (oldMap.get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE) != null) {
 					configMap.remove(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
@@ -61,7 +61,7 @@ public class PrepareSiteConfigData {
 					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
 				}
 			}
-			SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap, true);
+			SiteConfigDao.getInstance().updateSiteConfig(configMap, true);
 		} catch (SQLException e) {
 			logger.error("init site config error.");
 		}
@@ -152,7 +152,7 @@ public class PrepareSiteConfigData {
 			bean.setUic(uic);
 			bean.setStatus(UicProto.UicStatus.UNUSED_VALUE);
 			bean.setCreateTime(System.currentTimeMillis());
-			result = SQLiteUICDao.getInstance().addUIC(bean);
+			result = SiteUICDao.getInstance().addUIC(bean);
 		} catch (SQLException e) {
 			logger.warn("add new uic to db error,you can ignore it");
 		}

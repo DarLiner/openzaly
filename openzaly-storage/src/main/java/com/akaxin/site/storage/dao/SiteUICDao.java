@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.storage.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.site.storage.bean.UicBean;
+import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
@@ -36,17 +38,17 @@ import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-11 17:26:52
  */
-public class SQLiteUICDao {
-	private static final Logger logger = LoggerFactory.getLogger(SQLiteUICDao.class);
+public class SiteUICDao {
+	private static final Logger logger = LoggerFactory.getLogger(SiteUICDao.class);
 	private final String UIC_TABLE = SQLConst.SITE_USER_UIC;
 	private final String USER_PROFILE_TABLE = SQLConst.SITE_USER_PROFILE;
 
-	public static SQLiteUICDao getInstance() {
+	public static SiteUICDao getInstance() {
 		return SingletonHolder.instance;
 	}
 
 	static class SingletonHolder {
-		private static SQLiteUICDao instance = new SQLiteUICDao();
+		private static SiteUICDao instance = new SiteUICDao();
 	}
 
 	/**
@@ -60,14 +62,22 @@ public class SQLiteUICDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + UIC_TABLE + "(uic,status,create_time) VALUES(?,?,?);";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, bean.getUic());
-		preStatement.setInt(2, bean.getStatus());
-		long currentTime = System.currentTimeMillis();
-		preStatement.setLong(3, currentTime);
-		int result = preStatement.executeUpdate();
+		Connection conn = null;
+		int result;
+		try {
+			conn = DatabaseConnection.getConnection();
+			PreparedStatement preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, bean.getUic());
+			preStatement.setInt(2, bean.getStatus());
+			preStatement.setLong(3, System.currentTimeMillis());
+			result = preStatement.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn);
+		}
 
-		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getUic(), bean.getStatus(), currentTime);
+		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getUic(), bean.getStatus(), startTime);
 		return result > 0;
 	}
 
@@ -84,13 +94,14 @@ public class SQLiteUICDao {
 		String sql = "INSERT INTO " + UIC_TABLE + "(uic,status,create_time) VALUES(?,?,?);";
 		int successCount = 0;
 		length = length < 6 ? 6 : length;// 最短6位
+		Connection conn = null;
 		try {
-			SQLiteJDBCManager.getConnection().setAutoCommit(false);
+			conn = DatabaseConnection.getConnection();
+			conn.setAutoCommit(false);
 			for (int i = 0; i < num; i++) {
 				try {
-					// int uic = (int) ((Math.random() * 9 + 1) * 100000);
 					String uicValue = StringHelper.generateRandomNumber(length);
-					PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+					PreparedStatement preStatement = conn.prepareStatement(sql);
 					preStatement.setString(1, uicValue);
 					preStatement.setInt(2, bean.getStatus());
 					preStatement.setLong(3, System.currentTimeMillis());
@@ -100,11 +111,14 @@ public class SQLiteUICDao {
 					logger.error("execute uic sql error ", e);
 				}
 			}
-			SQLiteJDBCManager.getConnection().commit();
-			SQLiteJDBCManager.getConnection().setAutoCommit(true);
+			conn.commit();
+			conn.setAutoCommit(true);
 		} catch (Exception e) {
-			SQLiteJDBCManager.getConnection().rollback();
+			conn.rollback();
 			logger.error(StringHelper.format("batch add uic error bean={} num={}", bean.toString(), num), e);
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, successCount, sql, "randomUic", bean.getStatus(),

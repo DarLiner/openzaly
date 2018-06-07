@@ -20,11 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.akaxin.site.storage.api.ISiteConfigDao;
-import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
-import com.akaxin.site.storage.dao.SQLiteSiteConfigDao;
-import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
+import com.akaxin.site.storage.dao.SiteConfigDao;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -34,57 +30,57 @@ public class SiteConfigDaoService implements ISiteConfigDao {
 
     @Override
     public int updateSiteConfig(Map<Integer, String> configMap, boolean isAdmin) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().updateSiteConfig(configMap, isAdmin);
+        return SiteConfigDao.getInstance().updateSiteConfig(configMap, isAdmin);
     }
 
     @Override
     public Map<Integer, String> getSiteConfig() throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().querySiteConfig();
+        return SiteConfigDao.getInstance().querySiteConfig();
     }
 
     @Override
     public int updateSiteConfig(int key, String value) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().updateSiteConfig(key, value);
+        return SiteConfigDao.getInstance().updateSiteConfig(key, value);
     }
 
     @Override
     public boolean setUserDefault(String site_user_id) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().setUserDefault(site_user_id);
+        return SiteConfigDao.getInstance().setUserDefault(site_user_id);
     }
 
     @Override
     public List<String> getUserDefault() throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().getUserDefault();
+        return SiteConfigDao.getInstance().getUserDefault();
     }
 
     @Override
     public boolean updateUserDefault(String site_user_id) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().updateUserDefault(site_user_id);
+        return SiteConfigDao.getInstance().updateUserDefault(site_user_id);
     }
 
     @Override
     public boolean delUserDefault(String s) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().delUserDefault(s);
+        return SiteConfigDao.getInstance().delUserDefault(s);
     }
 
     @Override
     public List<String> getGroupDefault() throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().getGroupDefault();
+        return SiteConfigDao.getInstance().getGroupDefault();
     }
 
     @Override
     public boolean updateGroupDefault(String siteGroupId) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().updateGroupDefault(siteGroupId);
+        return SiteConfigDao.getInstance().updateGroupDefault(siteGroupId);
     }
 
     @Override
     public boolean setGroupDefault(String siteGroupId) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().setGroupDefault(siteGroupId);
+        return SiteConfigDao.getInstance().setGroupDefault(siteGroupId);
     }
 
     @Override
     public boolean delGroupDefault(String del) throws SQLException {
-        return SQLiteSiteConfigDao.getInstance().delGroupDefault(del);
+        return SiteConfigDao.getInstance().delGroupDefault(del);
     }
 
 }
