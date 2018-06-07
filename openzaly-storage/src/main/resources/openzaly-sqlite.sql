@@ -1,7 +1,3 @@
-CREATE DATABASE IF NOT EXISTS openzaly;
-
-use openzaly;
-
 CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL, config_key INTEGER UNIQUE NOT NULL, config_value TEXT);
 
 CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL,
