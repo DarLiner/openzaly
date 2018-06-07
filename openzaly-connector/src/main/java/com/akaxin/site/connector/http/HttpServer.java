@@ -54,9 +54,12 @@ public abstract class HttpServer {
 		try {
 			executor = new SimpleExecutor<Command, CommandResponse>();
 			loadExecutor(executor);
+			int needThreadNum = Runtime.getRuntime().availableProcessors() + 1;
+			int parentNum = 5;// accept from channel socket
+			int childNum = needThreadNum * 2 + 5;// give to business handler
 			bootstrap = new ServerBootstrap();
-			parentGroup = new NioEventLoopGroup();
-			childGroup = new NioEventLoopGroup();
+			parentGroup = new NioEventLoopGroup(parentNum);
+			childGroup = new NioEventLoopGroup(childNum);
 			bootstrap.group(parentGroup, childGroup);
 			bootstrap.channel(NioServerSocketChannel.class);
 			// 接受连接的可连接队列大小
