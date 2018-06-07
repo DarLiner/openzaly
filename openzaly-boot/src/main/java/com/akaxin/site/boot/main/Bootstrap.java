@@ -109,8 +109,6 @@ import com.akaxin.site.storage.exception.UpgradeDatabaseException;
  * @since 2018.01.01 11:23:42
  */
 public class Bootstrap {
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(Bootstrap.class);
 
 	public static void main(String[] args) {
 
@@ -118,8 +116,7 @@ public class Bootstrap {
 		try {
 			setBaseDir();
 		} catch (IOException ioe) {
-			// TODO Auto-generated catch block
-			ioe.printStackTrace();
+			BootLog.error("openzaly set base dir error");
 			System.exit(-100);
 		}
 
@@ -136,7 +133,7 @@ public class Bootstrap {
 		String nettyTcpHost = "0.0.0.0";
 		int nettyTcpPort = 2021;
 
-		String nettyHttpHost = "0.0.0.0";
+		String pluginAPiAddress = "0.0.0.0";
 		int nettyHttpPort = 8280;
 
 		try {
@@ -148,7 +145,7 @@ public class Bootstrap {
 			nettyTcpPort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
 
 			// plugin http address from openzaly.properties
-			nettyHttpHost = ConfigHelper.getStringConfig(ConfigKey.PLUGIN_API_ADDRESS);
+			pluginAPiAddress = ConfigHelper.getStringConfig(ConfigKey.PLUGIN_API_ADDRESS);
 			nettyHttpPort = ConfigHelper.getIntConfig(ConfigKey.PLUGIN_API_PORT);
 
 			// add site config to database
@@ -157,7 +154,7 @@ public class Bootstrap {
 			addConfigListener();
 
 			// start server
-			startNettyHttpServer(nettyHttpHost, nettyHttpPort);// 0.0.0.0:8280
+			startNettyHttpServer(pluginAPiAddress, nettyHttpPort);// 0.0.0.0:8280
 			startNettyTcpServer(nettyTcpHost, nettyTcpPort);// 0.0.0.0:2021
 
 			// disable websocket server
@@ -181,7 +178,7 @@ public class Bootstrap {
 			BootLog.error("Openzaly-server exit...");
 			System.exit(-2);// system exit
 		} catch (HttpServerException e) {
-			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", nettyHttpHost, nettyHttpPort,
+			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", pluginAPiAddress, nettyHttpPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
 			BootLog.error("start Openzaly with http server error", e);
@@ -212,7 +209,6 @@ public class Bootstrap {
 				file.mkdirs();
 			}
 			System.setProperty("user.dir", file.getCanonicalPath());
-			// BootLog.info("openzaly set base dir:{}", file.getCanonicalPath());
 		}
 	}
 
