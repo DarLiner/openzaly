@@ -112,11 +112,11 @@ footer a {
 				id="update_user_info">确定</a> <a
 				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
 				url-data="/user/setUserDefault" href="javascript:" id="user_default"
-				th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为默认添加用户</a>
+				th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为默认好友</a>
 			<a
 				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
 				url-data="/user/delUserDefault" href="javascript:" id="user_default"
-				th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">设为普通用户</a>
+				th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">取消默认好友</a>
 
 			<a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
 				class="sealup-site-user weui-btn weui-btn_warn "
@@ -332,11 +332,11 @@ footer a {
 				if (attr == '0') {
 					$('.user_default').attr('defaultState', '1');
 					$('.user_default').attr('url-data', '/user/delUserDefault');
-					$('.user_default').html('设为普通用户');
+					$('.user_default').html('取消默认好友');
 				} else {
 					$('.user_default').attr('defaultState', '0');
 					$('.user_default').attr('url-data', '/user/setUserDefault');
-					$('.user_default').html('设为默认添加用户');
+					$('.user_default').html('设为默认好友');
 				}
 			} else {
 				$.toast("操作失败", "forbidden");
