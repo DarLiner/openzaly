@@ -138,20 +138,12 @@ public class Helper {
 		pw.println();
 		pw.println("example:java -Dsite.port=2021 -jar openzaly-server.jar ");
 		pw.println();
-		// pw.println("\t-Dsite.project.env \topenzaly server environment
-		// default:ONLINE");
-		// pw.println("\t-Dsite.version \t\topenzaly server version default:0.3.2");
 		pw.println("\t-Dsite.address \t\topenzaly Netty address default:0.0.0.0");
 		pw.println("\t-Dsite.port \t\topenzaly Netty port default:2021");
 		pw.println("\t-Dpluginapi.address \topenzaly Http address default: 0.0.0.0");
 		pw.println("\t-Dpluginapi.port \topenzaly Http port default:8280");
-		// pw.println("\t-Dsite.admin.address \topenzaly AdminSystem address default:
-		// 127.0.0.1");
-		// pw.println("\t-Dsite.admin.port \topenzaly AdminSystem port default: 8288");
 		pw.println("\t-Dsite.admin.uic \topenzaly first uic for admin port default: \"000000\"");
 		pw.println("\t-Dsite.baseDir \t\topenzaly openzaly-server root dir default:./");
-		// pw.println("\t-Dgroup.members.count \topenzaly Max group member size
-		// default:100");
 		pw.println();
 		pw.flush();
 	}
