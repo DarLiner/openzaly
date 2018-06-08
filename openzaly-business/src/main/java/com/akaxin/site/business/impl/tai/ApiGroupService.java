@@ -53,7 +53,6 @@ import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserGroupBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ProtocolStringList;
 
@@ -83,7 +82,7 @@ public class ApiGroupService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(siteUserId)) {
-				List<SimpleGroupBean> groupBeanList = UserGroupDao.getInstance().getUserGroups(siteUserId);
+				List<SimpleGroupBean> groupBeanList = UserGroupDao.getInstance().getUserGroupList(siteUserId);
 				ApiGroupListProto.ApiGroupListResponse.Builder responseBuilder = ApiGroupListProto.ApiGroupListResponse
 						.newBuilder();
 				for (SimpleGroupBean groupBean : groupBeanList) {
@@ -136,7 +135,7 @@ public class ApiGroupService extends AbstractRequest {
 
 			// 检查用户是否被封禁，或者不存在
 			for (String groupMemberId : groupMemberIds) {
-				UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(groupMemberId);
+				SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(groupMemberId);
 				if (bean == null || bean.getUserStatus() == 1) {
 					groupMemberIds.remove(groupMemberId);
 				}
@@ -408,7 +407,7 @@ public class ApiGroupService extends AbstractRequest {
 
 			// 校验用户,删除禁封的用户
 			for (String groupMemberId : addMemberList) {
-				UserProfileBean bean = UserProfileDao.getInstance().getUserProfileById(groupMemberId);
+				SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(groupMemberId);
 				if (bean == null || bean.getUserStatus() == 1) {
 					addMemberList.remove(groupMemberId);
 				}

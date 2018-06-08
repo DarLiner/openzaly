@@ -16,6 +16,7 @@
 package com.akaxin.site.storage.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.akaxin.site.storage.api.IUserGroupDao;
 import com.akaxin.site.storage.bean.UserGroupBean;
@@ -28,6 +29,11 @@ import com.akaxin.site.storage.sqlite.SQLiteUserGroupDao;
  * @since 2018-03-03 15:04:47
  */
 public class UserGroupDaoService implements IUserGroupDao {
+
+	@Override
+	public List<String> checkGroupMember(String siteGroupId, List<String> userIds) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().checkGroupMember(siteGroupId, userIds);
+	}
 
 	@Override
 	public UserGroupBean getUserGroupSetting(String siteUserId, String siteGroupId) throws SQLException {
@@ -49,10 +55,9 @@ public class UserGroupDaoService implements IUserGroupDao {
 		return SQLiteUserGroupDao.getInstance().updateMute(siteUserId, siteGroupId, mute);
 	}
 
-
 	@Override
-	public int queryGroupMessagePerDay(long now,int day) throws SQLException {
-		int groupCount = SQLiteGroupMessageDao.getInstance().queryNumMessagePerDay(now,day);
+	public int queryGroupMessagePerDay(long now, int day) throws SQLException {
+		int groupCount = SQLiteGroupMessageDao.getInstance().queryNumMessagePerDay(now, day);
 		return groupCount;
 	}
 

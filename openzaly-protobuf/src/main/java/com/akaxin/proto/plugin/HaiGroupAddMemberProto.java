@@ -41,37 +41,51 @@ public final class HaiGroupAddMemberProto {
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
     java.util.List<java.lang.String>
-        getGroupMemberList();
+        getMemberSiteUserIdList();
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
-    int getGroupMemberCount();
+    int getMemberSiteUserIdCount();
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
-    java.lang.String getGroupMember(int index);
+    java.lang.String getMemberSiteUserId(int index);
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
     com.google.protobuf.ByteString
-        getGroupMemberBytes(int index);
+        getMemberSiteUserIdBytes(int index);
   }
   /**
+   * <pre>
+   **
+   *向群里添加群成员
+   *----
+   *&gt; 如果此人已在群里，返回成功而不是失败
+   *接口名
+   *----
+   * /hai/group/addMember
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiGroupAddMemberRequest}
    */
   public  static final class HaiGroupAddMemberRequest extends
@@ -84,7 +98,7 @@ public final class HaiGroupAddMemberProto {
     }
     private HaiGroupAddMemberRequest() {
       groupId_ = "";
-      groupMember_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      memberSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -121,10 +135,10 @@ public final class HaiGroupAddMemberProto {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                groupMember_ = new com.google.protobuf.LazyStringArrayList();
+                memberSiteUserId_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000002;
               }
-              groupMember_.add(s);
+              memberSiteUserId_.add(s);
               break;
             }
           }
@@ -136,7 +150,7 @@ public final class HaiGroupAddMemberProto {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          groupMember_ = groupMember_.getUnmodifiableView();
+          memberSiteUserId_ = memberSiteUserId_.getUnmodifiableView();
         }
         makeExtensionsImmutable();
       }
@@ -196,49 +210,49 @@ public final class HaiGroupAddMemberProto {
       }
     }
 
-    public static final int GROUP_MEMBER_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList groupMember_;
+    public static final int MEMBER_SITE_USER_ID_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList memberSiteUserId_;
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
     public com.google.protobuf.ProtocolStringList
-        getGroupMemberList() {
-      return groupMember_;
+        getMemberSiteUserIdList() {
+      return memberSiteUserId_;
     }
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
-    public int getGroupMemberCount() {
-      return groupMember_.size();
+    public int getMemberSiteUserIdCount() {
+      return memberSiteUserId_.size();
     }
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
-    public java.lang.String getGroupMember(int index) {
-      return groupMember_.get(index);
+    public java.lang.String getMemberSiteUserId(int index) {
+      return memberSiteUserId_.get(index);
     }
     /**
      * <pre>
      *群组中需要增加的用户ID
      * </pre>
      *
-     * <code>repeated string group_member = 2;</code>
+     * <code>repeated string member_site_user_id = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getGroupMemberBytes(int index) {
-      return groupMember_.getByteString(index);
+        getMemberSiteUserIdBytes(int index) {
+      return memberSiteUserId_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -256,8 +270,8 @@ public final class HaiGroupAddMemberProto {
       if (!getGroupIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, groupId_);
       }
-      for (int i = 0; i < groupMember_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, groupMember_.getRaw(i));
+      for (int i = 0; i < memberSiteUserId_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, memberSiteUserId_.getRaw(i));
       }
     }
 
@@ -271,11 +285,11 @@ public final class HaiGroupAddMemberProto {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < groupMember_.size(); i++) {
-          dataSize += computeStringSizeNoTag(groupMember_.getRaw(i));
+        for (int i = 0; i < memberSiteUserId_.size(); i++) {
+          dataSize += computeStringSizeNoTag(memberSiteUserId_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getGroupMemberList().size();
+        size += 1 * getMemberSiteUserIdList().size();
       }
       memoizedSize = size;
       return size;
@@ -295,8 +309,8 @@ public final class HaiGroupAddMemberProto {
       boolean result = true;
       result = result && getGroupId()
           .equals(other.getGroupId());
-      result = result && getGroupMemberList()
-          .equals(other.getGroupMemberList());
+      result = result && getMemberSiteUserIdList()
+          .equals(other.getMemberSiteUserIdList());
       return result;
     }
 
@@ -309,9 +323,9 @@ public final class HaiGroupAddMemberProto {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + GROUP_ID_FIELD_NUMBER;
       hash = (53 * hash) + getGroupId().hashCode();
-      if (getGroupMemberCount() > 0) {
-        hash = (37 * hash) + GROUP_MEMBER_FIELD_NUMBER;
-        hash = (53 * hash) + getGroupMemberList().hashCode();
+      if (getMemberSiteUserIdCount() > 0) {
+        hash = (37 * hash) + MEMBER_SITE_USER_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getMemberSiteUserIdList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -396,6 +410,20 @@ public final class HaiGroupAddMemberProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *向群里添加群成员
+     *----
+     *&gt; 如果此人已在群里，返回成功而不是失败
+     *接口名
+     *----
+     * /hai/group/addMember
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiGroupAddMemberRequest}
      */
     public static final class Builder extends
@@ -433,7 +461,7 @@ public final class HaiGroupAddMemberProto {
         super.clear();
         groupId_ = "";
 
-        groupMember_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        memberSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -461,10 +489,10 @@ public final class HaiGroupAddMemberProto {
         int to_bitField0_ = 0;
         result.groupId_ = groupId_;
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          groupMember_ = groupMember_.getUnmodifiableView();
+          memberSiteUserId_ = memberSiteUserId_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.groupMember_ = groupMember_;
+        result.memberSiteUserId_ = memberSiteUserId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -511,13 +539,13 @@ public final class HaiGroupAddMemberProto {
           groupId_ = other.groupId_;
           onChanged();
         }
-        if (!other.groupMember_.isEmpty()) {
-          if (groupMember_.isEmpty()) {
-            groupMember_ = other.groupMember_;
+        if (!other.memberSiteUserId_.isEmpty()) {
+          if (memberSiteUserId_.isEmpty()) {
+            memberSiteUserId_ = other.memberSiteUserId_;
             bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureGroupMemberIsMutable();
-            groupMember_.addAll(other.groupMember_);
+            ensureMemberSiteUserIdIsMutable();
+            memberSiteUserId_.addAll(other.memberSiteUserId_);
           }
           onChanged();
         }
@@ -637,10 +665,10 @@ public final class HaiGroupAddMemberProto {
         return this;
       }
 
-      private com.google.protobuf.LazyStringList groupMember_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureGroupMemberIsMutable() {
+      private com.google.protobuf.LazyStringList memberSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureMemberSiteUserIdIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          groupMember_ = new com.google.protobuf.LazyStringArrayList(groupMember_);
+          memberSiteUserId_ = new com.google.protobuf.LazyStringArrayList(memberSiteUserId_);
           bitField0_ |= 0x00000002;
          }
       }
@@ -649,57 +677,57 @@ public final class HaiGroupAddMemberProto {
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
       public com.google.protobuf.ProtocolStringList
-          getGroupMemberList() {
-        return groupMember_.getUnmodifiableView();
+          getMemberSiteUserIdList() {
+        return memberSiteUserId_.getUnmodifiableView();
       }
       /**
        * <pre>
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public int getGroupMemberCount() {
-        return groupMember_.size();
+      public int getMemberSiteUserIdCount() {
+        return memberSiteUserId_.size();
       }
       /**
        * <pre>
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public java.lang.String getGroupMember(int index) {
-        return groupMember_.get(index);
+      public java.lang.String getMemberSiteUserId(int index) {
+        return memberSiteUserId_.get(index);
       }
       /**
        * <pre>
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getGroupMemberBytes(int index) {
-        return groupMember_.getByteString(index);
+          getMemberSiteUserIdBytes(int index) {
+        return memberSiteUserId_.getByteString(index);
       }
       /**
        * <pre>
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public Builder setGroupMember(
+      public Builder setMemberSiteUserId(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureGroupMemberIsMutable();
-        groupMember_.set(index, value);
+  ensureMemberSiteUserIdIsMutable();
+        memberSiteUserId_.set(index, value);
         onChanged();
         return this;
       }
@@ -708,15 +736,15 @@ public final class HaiGroupAddMemberProto {
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public Builder addGroupMember(
+      public Builder addMemberSiteUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureGroupMemberIsMutable();
-        groupMember_.add(value);
+  ensureMemberSiteUserIdIsMutable();
+        memberSiteUserId_.add(value);
         onChanged();
         return this;
       }
@@ -725,13 +753,13 @@ public final class HaiGroupAddMemberProto {
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public Builder addAllGroupMember(
+      public Builder addAllMemberSiteUserId(
           java.lang.Iterable<java.lang.String> values) {
-        ensureGroupMemberIsMutable();
+        ensureMemberSiteUserIdIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, groupMember_);
+            values, memberSiteUserId_);
         onChanged();
         return this;
       }
@@ -740,10 +768,10 @@ public final class HaiGroupAddMemberProto {
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public Builder clearGroupMember() {
-        groupMember_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearMemberSiteUserId() {
+        memberSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
@@ -753,16 +781,16 @@ public final class HaiGroupAddMemberProto {
        *群组中需要增加的用户ID
        * </pre>
        *
-       * <code>repeated string group_member = 2;</code>
+       * <code>repeated string member_site_user_id = 2;</code>
        */
-      public Builder addGroupMemberBytes(
+      public Builder addMemberSiteUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        ensureGroupMemberIsMutable();
-        groupMember_.add(value);
+        ensureMemberSiteUserIdIsMutable();
+        memberSiteUserId_.add(value);
         onChanged();
         return this;
       }
@@ -1200,13 +1228,13 @@ public final class HaiGroupAddMemberProto {
   static {
     java.lang.String[] descriptorData = {
       "\n plugin/hai_group_addMember.proto\022\006plug" +
-      "in\"B\n\030HaiGroupAddMemberRequest\022\020\n\010group_" +
-      "id\030\001 \001(\t\022\024\n\014group_member\030\002 \003(\t\"\033\n\031HaiGro" +
-      "upAddMemberResponse2l\n\030HaiGroupAddMember" +
-      "Service\022P\n\taddMember\022 .plugin.HaiGroupAd" +
-      "dMemberRequest\032!.plugin.HaiGroupAddMembe" +
-      "rResponseB1\n\027com.akaxin.proto.pluginB\026Ha" +
-      "iGroupAddMemberProtob\006proto3"
+      "in\"I\n\030HaiGroupAddMemberRequest\022\020\n\010group_" +
+      "id\030\001 \001(\t\022\033\n\023member_site_user_id\030\002 \003(\t\"\033\n" +
+      "\031HaiGroupAddMemberResponse2l\n\030HaiGroupAd" +
+      "dMemberService\022P\n\taddMember\022 .plugin.Hai" +
+      "GroupAddMemberRequest\032!.plugin.HaiGroupA" +
+      "ddMemberResponseB1\n\027com.akaxin.proto.plu" +
+      "ginB\026HaiGroupAddMemberProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1225,7 +1253,7 @@ public final class HaiGroupAddMemberProto {
     internal_static_plugin_HaiGroupAddMemberRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiGroupAddMemberRequest_descriptor,
-        new java.lang.String[] { "GroupId", "GroupMember", });
+        new java.lang.String[] { "GroupId", "MemberSiteUserId", });
     internal_static_plugin_HaiGroupAddMemberResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiGroupAddMemberResponse_fieldAccessorTable = new

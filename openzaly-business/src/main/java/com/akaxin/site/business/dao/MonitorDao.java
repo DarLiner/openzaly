@@ -57,7 +57,7 @@ public class MonitorDao {
     //监控查询状态(注册人数)
     public int queryNumRegisterPerDay(long now,int day) {
         try {
-            return userProfileDao.queryNumRegisterPerDay(now,day);
+            return userProfileDao.queryRegisterNumPerDay(now,day);
         } catch (SQLException e) {
             logger.error("query Num of Register Per Day error.", e);
         }

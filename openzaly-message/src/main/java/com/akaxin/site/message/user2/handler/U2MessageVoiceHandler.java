@@ -44,14 +44,15 @@ public class U2MessageVoiceHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
-				String siteFriendId = command.getSiteFriendId();
+				String proxySiteUserId = request.getVoice().getSiteUserId();
+				String siteFriendId = request.getVoice().getSiteFriendId();
 				String msgId = request.getVoice().getMsgId();
 				String voiceId = request.getVoice().getVoiceId();
 
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(voiceId);
 				long msgTime = System.currentTimeMillis();

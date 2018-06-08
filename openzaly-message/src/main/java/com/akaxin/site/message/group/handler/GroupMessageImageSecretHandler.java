@@ -35,6 +35,7 @@ import io.netty.channel.Channel;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-04-26 15:12:59
  */
+@Deprecated
 public class GroupMessageImageSecretHandler extends AbstractGroupHandler<Command> {
 
 	private IMessageDao messageDao = new MessageDaoService();

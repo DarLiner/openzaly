@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright 2018-2028 Akaxin Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,12 +11,24 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 package com.akaxin.site.business.impl;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 
+import com.akaxin.site.business.dao.SiteUserDao;
+import com.akaxin.site.business.dao.UserGroupDao;
+import com.akaxin.site.business.dao.UserProfileDao;
+import com.akaxin.site.message.dao.ImUserGroupDao;
+import com.akaxin.site.message.dao.ImUserProfileDao;
+import com.akaxin.site.storage.api.IUserProfileDao;
+import com.akaxin.site.storage.bean.GroupProfileBean;
+import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
+import com.akaxin.site.storage.service.UserProfileDaoService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +39,7 @@ import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.logs.LogUtils;
 
 /**
- * 
+ *
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-31 12:20:14
  */
@@ -54,6 +66,28 @@ public abstract class AbstractRequest implements IRequestService {
 					.setAction(CommandConst.ACTION_RES).setErrCode2(errCode);
 		}
 		return response;
+	}
+
+	//检查请求的参数中的siteUserId是否是存在的
+	public boolean checkUserIdLegal(String siteUserId) {
+		if (StringUtils.isNotEmpty(siteUserId)) {
+			SimpleUserBean userProfile = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
+			if (userProfile != null && StringUtils.isNotEmpty(userProfile.getSiteUserId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//检查请求的参数中的groupId是否是存在的
+	public boolean checkGroupIdLegal(String groupId) {
+		if (StringUtils.isNotEmpty(groupId)) {
+			GroupProfileBean groupProfile = UserGroupDao.getInstance().getSimpleGroupBeanById(groupId);
+			if (groupProfile != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

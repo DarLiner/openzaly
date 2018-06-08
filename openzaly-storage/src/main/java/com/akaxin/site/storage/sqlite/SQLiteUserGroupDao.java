@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
@@ -100,7 +101,7 @@ public class SQLiteUserGroupDao {
 		return result > 0;
 	}
 
-	public List<SimpleGroupBean> queryUserGroups(String userId) throws SQLException {
+	public List<SimpleGroupBean> queryUserGroupList(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<SimpleGroupBean> groupList = new ArrayList<SimpleGroupBean>();
 
@@ -109,7 +110,7 @@ public class SQLiteUserGroupDao {
 				+ " AS b WHERE a.site_group_id=b.site_group_id AND b.group_status>0 AND a.site_user_id=?;";
 
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, userId);
+		preStatement.setString(1, siteUserId);
 
 		ResultSet rs = preStatement.executeQuery();
 
@@ -121,8 +122,56 @@ public class SQLiteUserGroupDao {
 			groupList.add(bean);
 		}
 
-		LogUtils.dbDebugLog(logger, startTime, groupList, sql, userId);
+		LogUtils.dbDebugLog(logger, startTime, groupList, sql, siteUserId);
 		return groupList;
+	}
+
+	public List<SimpleGroupBean> queryUserGroupList(String siteUserId, int pageNum, int pageSize) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		List<SimpleGroupBean> groupList = new ArrayList<SimpleGroupBean>();
+
+		String sql = "SELECT a.site_group_id,b.group_name,b.group_photo FROM " + USER_GROUP_TABLE + " AS a LEFT JOIN "
+				+ SQLConst.SITE_GROUP_PROFILE
+				+ " AS b WHERE a.site_group_id=b.site_group_id AND b.group_status>0 AND a.site_user_id=? LIMIT ?,?;";
+
+		int startNum = (pageNum - 1) * pageSize;
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setInt(2, startNum);
+		preStatement.setInt(3, pageSize);
+
+		ResultSet rs = preStatement.executeQuery();
+
+		while (rs.next()) {
+			SimpleGroupBean bean = new SimpleGroupBean();
+			bean.setGroupId(rs.getString(1));
+			bean.setGroupName(rs.getString(2));
+			bean.setGroupPhoto(rs.getString(3));
+			groupList.add(bean);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, groupList, sql, siteUserId);
+		return groupList;
+	}
+
+	public int queryUserGroupCount(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "SELECT COUNT(*) FROM " + USER_GROUP_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_GROUP_PROFILE
+				+ " AS b WHERE a.site_group_id=b.site_group_id AND b.group_status>0 AND a.site_user_id=?;";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+
+		ResultSet rs = preStatement.executeQuery();
+
+		if (rs.next()) {
+			result = rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId);
+		return result;
 	}
 
 	public List<String> queryUserGroupsId(String userId) throws SQLException {
@@ -188,12 +237,30 @@ public class SQLiteUserGroupDao {
 		return membersList;
 	}
 
+	public int queryNonGroupMemberNum(String groupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int num = 0;
+		String sql = "SELECT COUNT(site_user_id) FROM " + SQLConst.SITE_USER_PROFILE
+				+ " WHERE site_user_id NOT IN (SELECT DISTINCT site_user_id FROM " + SQLConst.SITE_USER_GROUP
+				+ " WHERE site_group_id=?);";
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, groupId);
+
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, num, sql, groupId);
+		return num;
+	}
+
 	public List<GroupMemberBean> queryNonGroupMemberList(String groupId, int pageNum, int pageSize)
 			throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<GroupMemberBean> membersList = new ArrayList<GroupMemberBean>();
 		int startNum = (pageNum - 1) * pageSize;
-		String sql = "SELECT site_user_id,user_name,user_photo,user_status " + SQLConst.SITE_USER_PROFILE
+		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + SQLConst.SITE_USER_PROFILE
 				+ " WHERE site_user_id NOT IN (SELECT DISTINCT site_user_id FROM " + SQLConst.SITE_USER_GROUP
 				+ " WHERE site_group_id=?) LIMIT ?,?;";
 		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
@@ -214,6 +281,27 @@ public class SQLiteUserGroupDao {
 
 		LogUtils.dbDebugLog(logger, startTime, membersList.toString(), sql, groupId, startNum, pageSize);
 		return membersList;
+	}
+
+	public int queryUserFriendNonGroupMemberNum(String siteUserId, String groupId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		int result = 0;
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + SQLConst.SITE_USER_FRIEND
+				+ " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=? AND a.site_friend_id NOT IN (SELECT DISTINCT site_user_id FROM "
+				+ SQLConst.SITE_USER_GROUP + " WHERE site_group_id=?);";
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteUserId);
+		preStatement.setString(2, groupId);
+
+		ResultSet rs = preStatement.executeQuery();
+		if (rs.next()) {
+			result = rs.getInt(1);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, groupId);
+		return result;
 	}
 
 	/**
@@ -271,6 +359,40 @@ public class SQLiteUserGroupDao {
 
 		LogUtils.dbDebugLog(logger, startTime, member.toString(), sql, siteUserId, groupId);
 		return member;
+	}
+
+	public List<String> checkGroupMember(String siteGroupId, List<String> userIds) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT site_user_id FROM " + USER_GROUP_TABLE
+				+ " WHERE site_group_id=? AND site_user_id IN ({});";
+
+		StringBuilder userIdBuider = new StringBuilder();
+		for (int i = 0; i < userIds.size(); i++) {
+			if (i == 0) {
+				userIdBuider.append("'");
+				userIdBuider.append(userIds.get(i));
+				userIdBuider.append("'");
+			} else {
+				userIdBuider.append(",");
+				userIdBuider.append("'");
+				userIdBuider.append(userIds.get(i));
+				userIdBuider.append("'");
+			}
+		}
+		sql = StringHelper.format(sql, userIdBuider.toString());
+		logger.debug("check group member sql: {}", sql);
+
+		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preStatement.setString(1, siteGroupId);
+		ResultSet rs = preStatement.executeQuery();
+
+		List<String> userList = new ArrayList<String>();
+		while (rs.next()) {
+			userList.add(rs.getString(1));
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, userList, sql, siteGroupId);
+		return userList;
 	}
 
 	public boolean deleteGroupMember(String groupId, List<String> userIds) {

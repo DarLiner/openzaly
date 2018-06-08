@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.boot.utils.PropertiesUtils;
@@ -32,8 +30,6 @@ import com.akaxin.site.boot.utils.PropertiesUtils;
  * @since 2018-01-24 12:50:20
  */
 public class ConfigHelper implements ConfigKey {
-	private static final Logger logger = LoggerFactory.getLogger(ConfigHelper.class);
-	private static final String CONFIG_PROPERTIES = "openzaly.properties";
 	private static Properties prop;
 
 	private ConfigHelper() {
@@ -56,7 +52,8 @@ public class ConfigHelper implements ConfigKey {
 	public static String getStringConfig(String configName) {
 		String configValue = System.getProperty(configName);
 		if (StringUtils.isEmpty(configValue)) {
-			return String.valueOf(getProperties().get(configName));
+			Object obj = getProperties().get(configName);
+			return obj != null ? obj.toString() : null;
 		}
 		return configValue;
 	}
@@ -74,10 +71,12 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.SITE_VERSION_VALUE, getStringConfig(SITE_VERSION));
 		configMap.put(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE, getStringConfig(SITE_ADDRESS));
 		configMap.put(ConfigProto.ConfigKey.SITE_PORT_VALUE, getStringConfig(SITE_PORT));
-		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_ADDRESS_VALUE, getStringConfig(HTTP_ADDRESS));
-		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_PORT_VALUE, getStringConfig(HTTP_PORT));
-		configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, getStringConfig(SITE_BASE_DIR));
-		configMap.put(ConfigProto.ConfigKey.DB_PATH_VALUE, getStringConfig(SITE_BASE_DIR));
+		// 扩展的http功能接口
+		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_ADDRESS_VALUE, getStringConfig(PLUGIN_API_ADDRESS));
+		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_PORT_VALUE, getStringConfig(PLUGIN_API_PORT));
+		String basePath = System.getProperty("user.dir");
+		configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, basePath);//存放资源的位置
+		configMap.put(ConfigProto.ConfigKey.DB_PATH_VALUE, basePath);
 		configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, getStringConfig(GROUP_MEMBERS_COUNT));
 		// 默认二人绝密聊天状态：开启二人绝密聊天功能
 		configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
@@ -86,9 +85,9 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE, ConfigProto.RealNameConfig.REALNAME_NO_VALUE + "");
 		// 默认开启邀请码
 		configMap.put(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE, ConfigProto.InviteCodeConfig.UIC_YES_VALUE + "");
-		// 默认Push状态：显示push内容
+		// 默认Push状态：不显示push内容
 		configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE,
-				ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT_VALUE + "");
+				String.valueOf(ConfigProto.PushClientStatus.PUSH_HIDDEN_TEXT_VALUE));
 		return configMap;
 	}
 }

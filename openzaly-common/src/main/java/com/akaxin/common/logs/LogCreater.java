@@ -27,23 +27,25 @@ import org.apache.log4j.RollingFileAppender;
  * @since 2018-01-31 12:31:53
  */
 public class LogCreater {
-	private static final Logger logger = Logger.getLogger(LogCreater.class);
-	private static final String DEFAULT_SITE_PATH = "site-logs/";
 
+	// 默认当前目录下
 	public static Logger createLogger(String logName) {
 		return createLogger(logName, null, new PatternLayout(), false, false);
 	}
 
+	// 指定目录logPath下
 	public static Logger createLogger(String logName, String logPath) {
 		return createLogger(logName, logPath, new PatternLayout(), false, false);
 	}
 
+	// 当前目录下每天创建一个日志
 	public static Logger createTimeLogger(String logName) {
-		return createLogger(logName, null, new PatternLayout("[%p] %d [%c] \r\n\t%m%n"), false, false);
+		return createLogger(logName, null, new PatternLayout("[%p] %d [%c] \r\n\t%m%n"), false, true);
 	}
 
+	// 指定目录下每天创建一个日志
 	public static Logger createTimeLogger(String logName, String logPath) {
-		return createLogger(logName, null, new PatternLayout("[%p] %d [%c] \r\n\t%m%n"), false, false);
+		return createLogger(logName, logPath, new PatternLayout("[%p] %d [%c] \r\n\t%m%n"), false, true);
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class LogCreater {
 		try {
 			String logFileName = null;
 			if (StringUtils.isEmpty(logPath)) {
-				logFileName = DEFAULT_SITE_PATH + logName + ".log";
+				logFileName = logName + ".log";
 			} else if (logPath.endsWith("/")) {
 				logFileName = logPath + logName + ".log";
 			} else {
@@ -76,25 +78,24 @@ public class LogCreater {
 			FileAppender fileAppender = null;
 			if (isDailyMode) {
 				fileAppender = new DailyRollingFileAppender(layout, logFileName, "'.'yyyy-MM-dd");
-
 			} else {
 				fileAppender = new RollingFileAppender(layout, logFileName, true);
 				RollingFileAppender rollingAppender = (RollingFileAppender) fileAppender;
 				rollingAppender.setMaxFileSize("200MB");
 				rollingAppender.setMaxBackupIndex(5);
 			}
-			// not need bufferedIO
+			// do not need bufferedIO
 			// fileAppender.setBufferedIO(true);
 			// fileAppender.setBufferSize(8192);
-
+			
 			createdLogger = Logger.getLogger(logName);
 			createdLogger.removeAllAppenders();
 			createdLogger.setAdditivity(additivity);
 			createdLogger.addAppender(fileAppender);
 		} catch (Exception e) {
-			logger.error("create logger error", e);
-			throw new RuntimeException();
+			throw new RuntimeException("create logger error", e);
 		}
 		return createdLogger;
 	}
+
 }

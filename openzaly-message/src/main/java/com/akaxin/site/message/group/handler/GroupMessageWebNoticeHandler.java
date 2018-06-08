@@ -22,6 +22,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
+import com.akaxin.site.message.bean.WebBean;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
@@ -45,17 +46,23 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String deviceId = command.getDeviceId();
+				String proxySiteUserId = request.getGroupWebNotice().getSiteUserId();
 				String gmsgId = request.getGroupWebNotice().getMsgId();
 				String groupId = request.getGroupWebNotice().getSiteGroupId();
-				String webCode = request.getGroupWebNotice().getWebCode();
+
+				WebBean webBean = new WebBean();
+				webBean.setWebCode(request.getGroupWebNotice().getWebCode());
+				webBean.setHrefUrl(request.getGroupWebNotice().getHrefUrl());
+				webBean.setHeight(request.getGroupWebNotice().getHeight());
 
 				long msgTime = System.currentTimeMillis();
 				GroupMessageBean bean = new GroupMessageBean();
 				bean.setMsgId(gmsgId);
-				bean.setSendUserId(siteUserId);
+				// bean.setSendUserId(siteUserId);
+				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSendDeviceId(deviceId);
 				bean.setSiteGroupId(groupId);
-				bean.setContent(webCode);
+				bean.setContent(webBean.toString());
 				bean.setMsgType(type);
 				bean.setMsgTime(msgTime);
 
@@ -72,29 +79,5 @@ public class GroupMessageWebNoticeHandler extends AbstractGroupHandler<Command> 
 
 		return false;
 	}
-
-	// private void msgResponse(Channel channel, Command command, String from,
-	// String to, String msgId, long msgTime) {
-	// CoreProto.MsgStatus status =
-	// CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgServerTime(msgTime)
-	// .setMsgStatus(1).build();
-	//
-	// ImStcMessageProto.MsgWithPointer statusMsg =
-	// ImStcMessageProto.MsgWithPointer.newBuilder()
-	// .setType(MsgType.MSG_STATUS).setStatus(status).build();
-	//
-	// ImStcMessageProto.ImStcMessageRequest request =
-	// ImStcMessageProto.ImStcMessageRequest.newBuilder()
-	// .addList(statusMsg).build();
-	//
-	// CoreProto.TransportPackageData data =
-	// CoreProto.TransportPackageData.newBuilder()
-	// .setData(request.toByteString()).build();
-	//
-	// channel.writeAndFlush(new
-	// RedisCommand().add(CommandConst.PROTOCOL_VERSION).add(CommandConst.IM_MSG_TOCLIENT)
-	// .add(data.toByteArray()));
-	//
-	// }
 
 }

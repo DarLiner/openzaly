@@ -30,6 +30,7 @@ import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UicProto;
 import com.akaxin.site.storage.bean.UicBean;
+import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 import com.akaxin.site.storage.sqlite.SQLiteSiteConfigDao;
 import com.akaxin.site.storage.sqlite.SQLiteUICDao;
 import com.akaxin.site.storage.sqlite.sql.SQLConst;
@@ -52,25 +53,21 @@ import com.akaxin.site.storage.sqlite.sql.SQLIndex;
 public class SQLiteJDBCManager {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteJDBCManager.class);
 
+	private static int SITE_DB_VERSION = SQLConst.SITE_DB_VERSION;
 	private static String sqliteDriverName = "org.sqlite.JDBC";
 	private static Connection sqlitConnection = null;
-	private static final String checkTableSql = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=? AND tbl_name=?;";
 	private static final String DB_FILE_PATH = "openzalyDB.sqlite3";
 
 	private SQLiteJDBCManager() {
 
 	}
 
-	public static void initSqliteDB(String dbDir) {
-		loadDatabaseDriver(dbDir);
-		checkDatabaseTable();
-		checkDatabaseIndex();
-	}
-
-	public static void initSqliteDB(DBConfig config) {
+	// init db
+	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
 		loadDatabaseDriver(config.getDbDir());
-		checkDatabaseTable();
-		checkDatabaseIndex();
+		
+		checkDatabaseBeforeRun();
+
 		initSiteConfig(config.getConfigMap());
 		addSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getAdminApi(), config.getSiteServer(),
 				config.getAdminIcon());
@@ -79,7 +76,7 @@ public class SQLiteJDBCManager {
 		initAdminUic(config.getAdminUic());
 	}
 
-	private static void loadDatabaseDriver(String dbDir) {
+	public static void loadDatabaseDriver(String dbDir) {
 		try {
 			Class.forName(sqliteDriverName);
 			String dbUrl = "jdbc:sqlite:";
@@ -101,7 +98,113 @@ public class SQLiteJDBCManager {
 		}
 	}
 
-	public static void initSiteConfig(Map<Integer, String> configMap) {
+	private static void checkDatabaseBeforeRun() throws SQLException, UpgradeDatabaseException {
+		int dbVersion = getDbVersion();
+		logger.info("SQLite current user-version:{}", dbVersion);
+		if (dbVersion < SITE_DB_VERSION) {
+			int num = checkDatabaseTable();
+			if (num == SQLConst.SITE_TABLES_MAP.size()) {
+				// database index
+				checkDatabaseIndex();
+				// 版本设置为 SITE_DB_VERSION
+				setDbVersion(SITE_DB_VERSION);
+				logger.info("create all database tables finish, currentuser-version:{}", getDbVersion());
+			} else {
+				// 提醒用户升级
+				throw new UpgradeDatabaseException(
+						"Openzaly-server need upgrade SQLite database,from user-version: {} to {}", dbVersion,
+						SITE_DB_VERSION);
+			}
+		} else {
+			logger.info("SQLite is latest version:{} with Openzaly-server", SITE_DB_VERSION);
+		}
+
+		// checkDatabaseVersion();
+	}
+
+	public static int getDbVersion() throws SQLException {
+		PreparedStatement pst = sqlitConnection.prepareStatement("PRAGMA user_version");
+		ResultSet rs = pst.executeQuery();
+		if (rs.next()) {
+			return rs.getInt(1);
+		}
+		return 0;
+	}
+
+	public static void setDbVersion(int version) throws SQLException {
+		String sql = "PRAGMA user_version=" + version;
+		PreparedStatement pst = sqlitConnection.prepareStatement(sql);
+		pst.executeUpdate();
+	}
+
+	public static int checkDatabaseTable() {
+		int num = 0;
+		for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
+			int result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
+			num += result;
+			logger.info("create table:{} {}", tableName, result == 1 ? "OK" : "false");
+		}
+		return num;
+	}
+
+	private static void checkDatabaseIndex() {
+		for (String indexSql : SQLIndex.DB_INDEXS_SQL) {
+			boolean result = createIndex(indexSql);
+			logger.info("create index result:{} sql:{}", result, indexSql);
+		}
+	}
+
+	private static boolean existTable(String tableName) {
+		if (StringUtils.isBlank(tableName)) {
+			return false;
+		}
+		String checkTableSql = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=? AND tbl_name=?;";
+		try {
+			PreparedStatement pst = sqlitConnection.prepareStatement(checkTableSql);
+			pst.setString(1, tableName);
+			pst.setString(2, tableName);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt(1) >= 1;
+			}
+		} catch (SQLException e) {
+			logger.error("check table exist error.", e);
+
+		}
+		return false;
+	}
+
+	private static int createTable(String tableName, String createTableSQL) {
+		try {
+			if (existTable(tableName)) {
+				return 0;
+			}
+			PreparedStatement pst = sqlitConnection.prepareStatement(createTableSQL);
+			pst.executeUpdate();
+			// 再次检测是否创建成功
+			if (existTable(tableName)) {
+				return 1;
+			}
+		} catch (Exception e) {
+			logger.error("create table " + tableName + " sql=" + createTableSQL + " error.,", e);
+		}
+		return 0;
+	}
+
+	private static boolean createIndex(String indexSQL) {
+		boolean result = false;
+		try {
+			PreparedStatement pst = sqlitConnection.prepareStatement(indexSQL);
+			pst.executeUpdate();
+			result = true;
+		} catch (Exception e) {
+			logger.error("create index sql=" + indexSQL + " error.,", e);
+		}
+		return result;
+	}
+
+	private static void initSiteConfig(Map<Integer, String> configMap) {
 		try {
 			Map<Integer, String> oldMap = SQLiteSiteConfigDao.getInstance().querySiteConfig();
 			if (oldMap != null) {
@@ -131,67 +234,6 @@ public class SQLiteJDBCManager {
 		} catch (SQLException e) {
 			logger.error("init site config error.");
 		}
-	}
-
-	private static void checkDatabaseTable() {
-		for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
-			boolean result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
-			logger.info("create table:{} result={}", tableName, result);
-		}
-	}
-
-	private static void checkDatabaseIndex() {
-		for (String indexSql : SQLIndex.DB_INDEXS_SQL) {
-			boolean result = createIndex(indexSql);
-			logger.info("create index result:{} sql:{}", result, indexSql);
-		}
-	}
-
-	private static boolean existTable(String tableName) {
-		if (StringUtils.isBlank(tableName)) {
-			return false;
-		}
-		try {
-			PreparedStatement pst = sqlitConnection.prepareStatement(checkTableSql);
-			pst.setString(1, tableName);
-			pst.setString(2, tableName);
-			ResultSet rs = pst.executeQuery();
-
-			if (rs.next()) {
-				return rs.getInt(1) >= 1;
-			}
-		} catch (SQLException e) {
-			logger.error("check table exist error.", e);
-
-		}
-		return false;
-	}
-
-	private static boolean createTable(String tableName, String createTableSQL) {
-		boolean result = false;
-		try {
-			PreparedStatement pst = sqlitConnection.prepareStatement(createTableSQL);
-			pst.executeUpdate();
-			// 再次检测是否创建成功
-			if (existTable(tableName)) {
-				return true;
-			}
-		} catch (Exception e) {
-			logger.error("create table " + tableName + " sql=" + createTableSQL + " error.,", e);
-		}
-		return result;
-	}
-
-	private static boolean createIndex(String indexSQL) {
-		boolean result = false;
-		try {
-			PreparedStatement pst = sqlitConnection.prepareStatement(indexSQL);
-			pst.executeUpdate();
-			result = true;
-		} catch (Exception e) {
-			logger.error("create index sql=" + indexSQL + " error.,", e);
-		}
-		return result;
 	}
 
 	private static void addSitePlugin(int id, String siteName, String urlPage, String apiUrl, String siteIcon) {
@@ -286,4 +328,7 @@ public class SQLiteJDBCManager {
 		return sqlitConnection;
 	}
 
+	public static String getDbFileName() {
+		return DB_FILE_PATH;
+	}
 }

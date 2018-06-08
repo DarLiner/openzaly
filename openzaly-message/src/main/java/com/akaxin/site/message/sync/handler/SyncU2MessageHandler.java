@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,18 +168,26 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				case CoreProto.MsgType.U2_WEB_VALUE:
 					WebBean webBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
-					CoreProto.U2Web u2Web = CoreProto.U2Web.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
-							.setHeight(webBean.getHeight()).setWidth(webBean.getWidth())
-							.setWebCode(webBean.getWebCode()).setTime(bean.getMsgTime()).build();
+					CoreProto.U2Web.Builder u2Web = CoreProto.U2Web.newBuilder();
+					u2Web.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getSiteUserId()).setHeight(webBean.getHeight())
+							.setWidth(webBean.getWidth()).setWebCode(webBean.getWebCode()).setTime(bean.getMsgTime());
+					if (StringUtils.isNotEmpty(webBean.getHrefUrl())) {
+						u2Web.setHrefUrl(webBean.getHrefUrl());
+					}
 					ImStcMessageProto.MsgWithPointer u2WebMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.U2_WEB).setU2Web(u2Web).build();
 					requestBuilder.addList(u2WebMsg);
 					break;
 				case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
-					CoreProto.U2WebNotice u2WebNotice = CoreProto.U2WebNotice.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
-							.setWebCode(bean.getContent()).setTime(bean.getMsgTime()).build();
+					WebBean webNoticeBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
+					CoreProto.U2WebNotice.Builder u2WebNotice = CoreProto.U2WebNotice.newBuilder();
+					u2WebNotice.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getSiteUserId()).setWebCode(webNoticeBean.getWebCode())
+							.setHeight(webNoticeBean.getHeight()).setTime(bean.getMsgTime());
+					if (StringUtils.isNotEmpty(webNoticeBean.getHrefUrl())) {
+						u2WebNotice.setHrefUrl(webNoticeBean.getHrefUrl());
+					}
 					ImStcMessageProto.MsgWithPointer u2WebNoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.U2_WEB_NOTICE).setU2WebNotice(u2WebNotice)
 							.build();

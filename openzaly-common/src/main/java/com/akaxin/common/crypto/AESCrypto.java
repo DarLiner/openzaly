@@ -10,8 +10,20 @@ import javax.crypto.spec.SecretKeySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.constant.CharsetCoding;
+
 public class AESCrypto {
 	private static final Logger logger = LoggerFactory.getLogger(AESCrypto.class);
+
+	/**
+	 * <pre>
+	 * AES四种加密模式：
+	 * 	ECB模式：有利于并行计算
+	 * 	CBC模式：不容易攻击，安全性高于ECB模式，适合传输长度长的报文，是SSL，IPSec的标准，不利于并行计算
+	 * 	CFB模式：不利于并行计算
+	 * 	OFB模式：不利于并行计算
+	 * </pre>
+	 */
 	public static final String ALGORITHM = "AES/ECB/PKCS5Padding";
 
 	/**
@@ -41,7 +53,7 @@ public class AESCrypto {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
 			SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-			secureRandom.setSeed(key.getBytes());
+			secureRandom.setSeed(key.getBytes(CharsetCoding.ISO_8859_1));
 			kgen.init(128, secureRandom);
 			SecretKey secretKey = kgen.generateKey();
 			return secretKey.getEncoded();

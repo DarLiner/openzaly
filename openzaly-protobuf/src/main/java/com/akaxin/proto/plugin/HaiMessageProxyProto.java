@@ -44,6 +44,19 @@ public final class HaiMessageProxyProto {
     com.akaxin.proto.site.ImCtsMessageProto.ImCtsMessageRequestOrBuilder getProxyMsgOrBuilder();
   }
   /**
+   * <pre>
+   **
+   *代发消息
+   *----
+   *接口名
+   *----
+   * /hai/message/proxy
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiMessageProxyRequest}
    */
   public  static final class HaiMessageProxyRequest extends
@@ -295,6 +308,19 @@ public final class HaiMessageProxyProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *代发消息
+     *----
+     *接口名
+     *----
+     * /hai/message/proxy
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiMessageProxyRequest}
      */
     public static final class Builder extends
@@ -634,11 +660,381 @@ public final class HaiMessageProxyProto {
 
   }
 
+  public interface HaiMessageProxyResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:plugin.HaiMessageProxyResponse)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code plugin.HaiMessageProxyResponse}
+   */
+  public  static final class HaiMessageProxyResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:plugin.HaiMessageProxyResponse)
+      HaiMessageProxyResponseOrBuilder {
+    // Use HaiMessageProxyResponse.newBuilder() to construct.
+    private HaiMessageProxyResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HaiMessageProxyResponse() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private HaiMessageProxyResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.akaxin.proto.plugin.HaiMessageProxyProto.internal_static_plugin_HaiMessageProxyResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.akaxin.proto.plugin.HaiMessageProxyProto.internal_static_plugin_HaiMessageProxyResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.class, com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.Builder.class);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse)) {
+        return super.equals(obj);
+      }
+      com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse other = (com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse) obj;
+
+      boolean result = true;
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code plugin.HaiMessageProxyResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:plugin.HaiMessageProxyResponse)
+        com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.akaxin.proto.plugin.HaiMessageProxyProto.internal_static_plugin_HaiMessageProxyResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.akaxin.proto.plugin.HaiMessageProxyProto.internal_static_plugin_HaiMessageProxyResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.class, com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.Builder.class);
+      }
+
+      // Construct using com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.akaxin.proto.plugin.HaiMessageProxyProto.internal_static_plugin_HaiMessageProxyResponse_descriptor;
+      }
+
+      public com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse getDefaultInstanceForType() {
+        return com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.getDefaultInstance();
+      }
+
+      public com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse build() {
+        com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse buildPartial() {
+        com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse result = new com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse(this);
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse) {
+          return mergeFrom((com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse other) {
+        if (other == com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse.getDefaultInstance()) return this;
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:plugin.HaiMessageProxyResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:plugin.HaiMessageProxyResponse)
+    private static final com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse();
+    }
+
+    public static com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<HaiMessageProxyResponse>
+        PARSER = new com.google.protobuf.AbstractParser<HaiMessageProxyResponse>() {
+      public HaiMessageProxyResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new HaiMessageProxyResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HaiMessageProxyResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HaiMessageProxyResponse> getParserForType() {
+      return PARSER;
+    }
+
+    public com.akaxin.proto.plugin.HaiMessageProxyProto.HaiMessageProxyResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_plugin_HaiMessageProxyRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_plugin_HaiMessageProxyRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_plugin_HaiMessageProxyResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_plugin_HaiMessageProxyResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -651,11 +1047,12 @@ public final class HaiMessageProxyProto {
       "\n\036plugin/hai_message_proxy.proto\022\006plugin" +
       "\032\017core/core.proto\032\031site/im_cts_message.p" +
       "roto\"F\n\026HaiMessageProxyRequest\022,\n\tproxy_" +
-      "msg\030\001 \001(\0132\031.site.ImCtsMessageRequest2U\n\026" +
-      "HaiMessageProxyService\022;\n\005proxy\022\036.plugin" +
-      ".HaiMessageProxyRequest\032\022.core.NoneRespo" +
-      "nseB/\n\027com.akaxin.proto.pluginB\024HaiMessa" +
-      "geProxyProtob\006proto3"
+      "msg\030\001 \001(\0132\031.site.ImCtsMessageRequest\"\031\n\027" +
+      "HaiMessageProxyResponse2U\n\026HaiMessagePro" +
+      "xyService\022;\n\005proxy\022\036.plugin.HaiMessagePr" +
+      "oxyRequest\032\022.core.NoneResponseB/\n\027com.ak" +
+      "axin.proto.pluginB\024HaiMessageProxyProtob" +
+      "\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -677,6 +1074,12 @@ public final class HaiMessageProxyProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiMessageProxyRequest_descriptor,
         new java.lang.String[] { "ProxyMsg", });
+    internal_static_plugin_HaiMessageProxyResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_plugin_HaiMessageProxyResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_plugin_HaiMessageProxyResponse_descriptor,
+        new java.lang.String[] { });
     com.akaxin.proto.core.CoreProto.getDescriptor();
     com.akaxin.proto.site.ImCtsMessageProto.getDescriptor();
   }

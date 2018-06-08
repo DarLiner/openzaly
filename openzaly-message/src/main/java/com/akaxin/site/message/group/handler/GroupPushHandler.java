@@ -28,7 +28,7 @@ import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.PushProto;
-import com.akaxin.proto.platform.ApiPushNotificationProto;
+import com.akaxin.proto.platform.ApiPushNotificationsProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.dao.ImUserGroupDao;
 import com.akaxin.site.message.dao.ImUserProfileDao;
@@ -60,20 +60,51 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 				try {
 					ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 							.parseFrom(command.getParams());
-					String siteUserId = command.getSiteUserId();
-					String siteFromId = siteUserId;
+					// String siteUserId = command.getSiteUserId();
+					String fromSiteUserId = command.isProxy() ? command.getProxySiteUserId() : command.getSiteUserId(); //
 					String siteGroupId = command.getSiteGroupId();
 
 					GroupProfileBean groupBean = ImUserGroupDao.getInstance().getSimpleGroupProfile(siteGroupId);
-					if (groupBean == null) {
+					if (groupBean == null || groupBean.getGroupId() == null) {
+						logger.error("send message with push to group={} error", groupBean);
 						return;
 					}
 
+					String fromGlobalUserId = ImUserProfileDao.getInstance().getGlobalUserId(fromSiteUserId);
+					// Push Request
+					ApiPushNotificationsProto.ApiPushNotificationsRequest.Builder requestBuilder = ApiPushNotificationsProto.ApiPushNotificationsRequest
+							.newBuilder();
+					// 1.set pushType
+					requestBuilder.setPushTypeValue(request.getType().getNumber());
+					// 2.set notification
+					PushProto.Notifications.Builder notifications = PushProto.Notifications.newBuilder();
+					String siteName = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_NAME);
+					if (StringUtils.isNotBlank(siteName)) {
+						notifications.setPushTitle(siteName);
+					}
+					String address = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_ADDRESS);
+					String port = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_PORT);
+					notifications.setSiteServer(address + ":" + port);
+					// 条件1:站点是否支持push展示消息内容
+					// 条件2:站点只支持文本消息展示消息内容
+					if (ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT == pcs) {
+						if (CoreProto.MsgType.GROUP_TEXT == request.getType()) {
+							ByteString byteStr = request.getGroupText().getText();
+							notifications.setPushAlert(byteStr.toString(Charset.forName("UTF-8")));
+						}
+					}
+					requestBuilder.setNotifications(notifications.build());
+					// 3.set pushFromUser
+					PushProto.PushFromUser pushFromUser = PushProto.PushFromUser.newBuilder()
+							.setGlobalUserId(fromGlobalUserId).setSiteUserId(fromSiteUserId)
+							.setPushFromName(groupBean.getGroupName()).build();
+					requestBuilder.setPushFromUser(pushFromUser);
+
+					// 4.set pushToUser
 					List<String> groupMembers = groupDao.getGroupMembersId(siteGroupId);
 					for (String memberUserId : groupMembers) {
 
-						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(siteUserId)) {
-
+						if (StringUtils.isNotBlank(memberUserId) && !memberUserId.equals(fromSiteUserId)) {
 							// 一、用户是否对站点消息免打扰
 							// 二、用户是否对该群消息免打扰
 							if (ImUserProfileDao.getInstance().isMute(memberUserId)
@@ -85,47 +116,25 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							logger.debug("push from groupid={} to siteUserId={} globalUserId={}.", siteGroupId,
 									memberUserId, globalUserId);
 
-							ApiPushNotificationProto.ApiPushNotificationRequest.Builder requestBuilder = ApiPushNotificationProto.ApiPushNotificationRequest
-									.newBuilder();
-							requestBuilder.setPushTypeValue(request.getType().getNumber());
-							PushProto.Notification.Builder notification = PushProto.Notification.newBuilder();
-
-							notification.setUserId(globalUserId);
-							// notification.setPushBadge(1);
-							String siteName = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_NAME);
-							if (StringUtils.isNotBlank(siteName)) {
-								notification.setPushTitle(siteName);
-							}
-							String address = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_ADDRESS);
-							String port = SiteConfigHelper.getConfig(ConfigProto.ConfigKey.SITE_PORT);
-							notification.setSiteServer(address + ":" + port);
-							notification.setPushFromId(siteGroupId);
-							// 条件1:站点是否支持push展示消息内容
-							// 条件2:站点只支持文本消息展示消息内容
-							if (ConfigProto.PushClientStatus.PUSH_DISPLAY_TEXT == pcs) {
-								if (CoreProto.MsgType.GROUP_TEXT == request.getType()) {
-									ByteString byteStr = request.getGroupText().getText();
-									notification.setPushAlert(byteStr.toString(Charset.forName("UTF-8")));
-								}
-								if (StringUtils.isNotEmpty(groupBean.getGroupName())) {
-									notification.setPushFromName(groupBean.getGroupName());
-								}
-							}
+							PushProto.PushToUser.Builder pushToUser = PushProto.PushToUser.newBuilder();
+							pushToUser.setGlobalUserId(globalUserId);
 
 							String userToken = ImUserProfileDao.getInstance().getUserToken(memberUserId);
 							if (StringUtils.isNotBlank(userToken)) {
-								notification.setUserToken(userToken);
-								requestBuilder.setNotification(notification.build());
-
-								logger.debug("client={} siteUserId={} push to groupId={] siteFriend={} content={}",
-										command.getClientIp(), command.getSiteUserId(), command.getSiteGroupId(),
-										command.getSiteFriendId(), requestBuilder.toString());
-								WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
-										requestBuilder.build().toByteArray());
+								pushToUser.setUserToken(userToken);
+								requestBuilder.addPushToUser(pushToUser.build());
+							} else {
+								logger.error("siteUserId={} with no userToken", memberUserId);
 							}
 
 						}
 					}
+
+					logger.debug("client={} siteUserId={} push to groupId={} siteFriend={} content={}",
+							command.getClientIp(), command.getSiteUserId(), command.getSiteGroupId(),
+							command.getSiteFriendId(), requestBuilder.toString());
+					WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATIONS,
+							requestBuilder.build().toByteArray());
 
 				} catch (Exception e) {
 					LogUtils.requestErrorLog(logger, command, GroupPushHandler.class, e);

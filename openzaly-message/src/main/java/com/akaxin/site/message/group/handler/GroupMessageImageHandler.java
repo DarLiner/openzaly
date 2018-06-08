@@ -45,6 +45,7 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String deviceId = command.getDeviceId();
+				String proxySiteUserId = request.getGroupImage().getSiteUserId();
 				String gmsgId = request.getGroupImage().getMsgId();
 				String groupId = request.getGroupImage().getSiteGroupId();
 				String groupImageId = request.getGroupImage().getImageId();
@@ -52,7 +53,8 @@ public class GroupMessageImageHandler extends AbstractGroupHandler<Command> {
 				long msgTime = System.currentTimeMillis();
 				GroupMessageBean gmsgBean = new GroupMessageBean();
 				gmsgBean.setMsgId(gmsgId);
-				gmsgBean.setSendUserId(siteUserId);
+				gmsgBean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				// gmsgBean.setSendUserId(siteUserId);
 				gmsgBean.setSendDeviceId(deviceId);
 				gmsgBean.setSiteGroupId(groupId);
 				gmsgBean.setContent(groupImageId);

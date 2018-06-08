@@ -37,6 +37,19 @@ public final class HaiGroupDeleteProto {
         getGroupIdBytes();
   }
   /**
+   * <pre>
+   **
+   *删除群组
+   *----
+   *接口名
+   *----
+   * /hai/group/delete
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiGroupDeleteRequest}
    */
   public  static final class HaiGroupDeleteRequest extends
@@ -285,6 +298,19 @@ public final class HaiGroupDeleteProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *删除群组
+     *----
+     *接口名
+     *----
+     * /hai/group/delete
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiGroupDeleteRequest}
      */
     public static final class Builder extends

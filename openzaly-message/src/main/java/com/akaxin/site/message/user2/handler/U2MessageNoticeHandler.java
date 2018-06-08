@@ -46,7 +46,8 @@ public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
-				String siteFriendId = command.getSiteFriendId();
+				String proxySiteUserId = request.getU2MsgNotice().getSiteUserId();
+				String siteFriendId = request.getU2MsgNotice().getSiteFriendId();
 				String text = request.getU2MsgNotice().getText().toStringUtf8();
 				String msgId = request.getU2MsgNotice().getMsgId();
 
@@ -54,7 +55,8 @@ public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
+				// 发送者
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(text);
 				u2Bean.setMsgTime(msgTime);

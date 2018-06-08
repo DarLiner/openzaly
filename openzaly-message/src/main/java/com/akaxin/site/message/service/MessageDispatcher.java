@@ -52,8 +52,7 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.U2_NOTICE_VALUE:
 				case CoreProto.MsgType.U2_WEB_VALUE:
 				case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
-					MessageExecutor.getExecutor().execute("im.cts.message.u2", command);
-					return true;
+					return MessageExecutor.getExecutor().execute("im.cts.message.u2", command);
 				case CoreProto.MsgType.GROUP_TEXT_VALUE:
 				case CoreProto.MsgType.GROUP_SECRET_TEXT_VALUE:
 				case CoreProto.MsgType.GROUP_IMAGE_VALUE:
@@ -65,22 +64,24 @@ public class MessageDispatcher {
 				case CoreProto.MsgType.GROUP_NOTICE_VALUE:
 				case CoreProto.MsgType.GROUP_WEB_VALUE:
 				case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
-					MessageExecutor.getExecutor().execute("im.cts.message.group", command);
-					return true;
+					return MessageExecutor.getExecutor().execute("im.cts.message.group", command);
 				}
 			} catch (Exception e) {
 				logger.error(StringHelper.format("client={} siteUserId={} action={} im message dispatch error",
 						command.getClientIp(), command.getSiteUserId(), command.getAction()), e);
 			}
 		} else if (RequestAction.IM_SYNC_MESSAGE.getName().equalsIgnoreCase(action)) {
-			MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_MESSAGE.getName(), command);
-			return true;
+			return MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_MESSAGE.getName(), command);
+//			return true;
 		} else if (RequestAction.IM_SYNC_FINISH.getName().equalsIgnoreCase(action)) {
-			MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_FINISH.getName(), command);
-			return true;
+			return MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_FINISH.getName(), command);
+//			return true;
+		} else if (RequestAction.IM_SYNC_MSGSTATUS.getName().equalsIgnoreCase(action)) {
+			return MessageExecutor.getExecutor().execute(RequestAction.IM_SYNC_MSGSTATUS.getName(), command);
+//			return true;
 		} else if (RequestAction.IM_STC_NOTICE.getName().equalsIgnoreCase(action)) {
-			MessageExecutor.getExecutor().execute(RequestAction.IM_STC_NOTICE.getName(), command);
-			return true;
+			return MessageExecutor.getExecutor().execute(RequestAction.IM_STC_NOTICE.getName(), command);
+//			return true;
 		}
 
 		logger.error("client={} siteUserId={} action={} im message with error command={}", command.getClientIp(),

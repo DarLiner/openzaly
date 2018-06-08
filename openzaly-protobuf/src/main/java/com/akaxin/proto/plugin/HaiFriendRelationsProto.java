@@ -19,41 +19,64 @@ public final class HaiFriendRelationsProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
-    java.util.List<java.lang.String>
-        getUserIdList();
+    java.lang.String getSiteUserId();
     /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
-     */
-    int getUserIdCount();
-    /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
-     */
-    java.lang.String getUserId(int index);
-    /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getUserIdBytes(int index);
+        getSiteUserIdBytes();
+
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    java.util.List<java.lang.String>
+        getTargetSiteUserIdList();
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    int getTargetSiteUserIdCount();
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    java.lang.String getTargetSiteUserId(int index);
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getTargetSiteUserIdBytes(int index);
   }
   /**
+   * <pre>
+   **
+   *获取某用户与其他用户的好友关系
+   *----
+   *接口名
+   *----
+   * /hai/friend/relations
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiFriendRelationsRequest}
    */
   public  static final class HaiFriendRelationsRequest extends
@@ -65,7 +88,8 @@ public final class HaiFriendRelationsProto {
       super(builder);
     }
     private HaiFriendRelationsRequest() {
-      userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      siteUserId_ = "";
+      targetSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -95,11 +119,17 @@ public final class HaiFriendRelationsProto {
             }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                userId_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000001;
+
+              siteUserId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                targetSiteUserId_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000002;
               }
-              userId_.add(s);
+              targetSiteUserId_.add(s);
               break;
             }
           }
@@ -110,8 +140,8 @@ public final class HaiFriendRelationsProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          userId_ = userId_.getUnmodifiableView();
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          targetSiteUserId_ = targetSiteUserId_.getUnmodifiableView();
         }
         makeExtensionsImmutable();
       }
@@ -128,49 +158,84 @@ public final class HaiFriendRelationsProto {
               com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest.class, com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest.Builder.class);
     }
 
-    public static final int USER_ID_FIELD_NUMBER = 1;
-    private com.google.protobuf.LazyStringList userId_;
+    private int bitField0_;
+    public static final int SITE_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object siteUserId_;
     /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getUserIdList() {
-      return userId_;
+    public java.lang.String getSiteUserId() {
+      java.lang.Object ref = siteUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteUserId_ = s;
+        return s;
+      }
     }
     /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
-     */
-    public int getUserIdCount() {
-      return userId_.size();
-    }
-    /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
-     */
-    public java.lang.String getUserId(int index) {
-      return userId_.get(index);
-    }
-    /**
-     * <pre>
-     *需要查询关系的用户ID
-     * </pre>
-     *
-     * <code>repeated string user_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getUserIdBytes(int index) {
-      return userId_.getByteString(index);
+        getSiteUserIdBytes() {
+      java.lang.Object ref = siteUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TARGET_SITE_USER_ID_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList targetSiteUserId_;
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getTargetSiteUserIdList() {
+      return targetSiteUserId_;
+    }
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    public int getTargetSiteUserIdCount() {
+      return targetSiteUserId_.size();
+    }
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    public java.lang.String getTargetSiteUserId(int index) {
+      return targetSiteUserId_.get(index);
+    }
+    /**
+     * <pre>
+     *需要查询关系的用户ID
+     * </pre>
+     *
+     * <code>repeated string target_site_user_id = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTargetSiteUserIdBytes(int index) {
+      return targetSiteUserId_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -185,8 +250,11 @@ public final class HaiFriendRelationsProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      for (int i = 0; i < userId_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userId_.getRaw(i));
+      if (!getSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteUserId_);
+      }
+      for (int i = 0; i < targetSiteUserId_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, targetSiteUserId_.getRaw(i));
       }
     }
 
@@ -195,13 +263,16 @@ public final class HaiFriendRelationsProto {
       if (size != -1) return size;
 
       size = 0;
+      if (!getSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteUserId_);
+      }
       {
         int dataSize = 0;
-        for (int i = 0; i < userId_.size(); i++) {
-          dataSize += computeStringSizeNoTag(userId_.getRaw(i));
+        for (int i = 0; i < targetSiteUserId_.size(); i++) {
+          dataSize += computeStringSizeNoTag(targetSiteUserId_.getRaw(i));
         }
         size += dataSize;
-        size += 1 * getUserIdList().size();
+        size += 1 * getTargetSiteUserIdList().size();
       }
       memoizedSize = size;
       return size;
@@ -219,8 +290,10 @@ public final class HaiFriendRelationsProto {
       com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest other = (com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest) obj;
 
       boolean result = true;
-      result = result && getUserIdList()
-          .equals(other.getUserIdList());
+      result = result && getSiteUserId()
+          .equals(other.getSiteUserId());
+      result = result && getTargetSiteUserIdList()
+          .equals(other.getTargetSiteUserIdList());
       return result;
     }
 
@@ -231,9 +304,11 @@ public final class HaiFriendRelationsProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (getUserIdCount() > 0) {
-        hash = (37 * hash) + USER_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getUserIdList().hashCode();
+      hash = (37 * hash) + SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteUserId().hashCode();
+      if (getTargetSiteUserIdCount() > 0) {
+        hash = (37 * hash) + TARGET_SITE_USER_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getTargetSiteUserIdList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -318,6 +393,19 @@ public final class HaiFriendRelationsProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *获取某用户与其他用户的好友关系
+     *----
+     *接口名
+     *----
+     * /hai/friend/relations
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiFriendRelationsRequest}
      */
     public static final class Builder extends
@@ -353,8 +441,10 @@ public final class HaiFriendRelationsProto {
       }
       public Builder clear() {
         super.clear();
-        userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        siteUserId_ = "";
+
+        targetSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -378,11 +468,14 @@ public final class HaiFriendRelationsProto {
       public com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest buildPartial() {
         com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest result = new com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest(this);
         int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          userId_ = userId_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
+        int to_bitField0_ = 0;
+        result.siteUserId_ = siteUserId_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          targetSiteUserId_ = targetSiteUserId_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.userId_ = userId_;
+        result.targetSiteUserId_ = targetSiteUserId_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -424,13 +517,17 @@ public final class HaiFriendRelationsProto {
 
       public Builder mergeFrom(com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest other) {
         if (other == com.akaxin.proto.plugin.HaiFriendRelationsProto.HaiFriendRelationsRequest.getDefaultInstance()) return this;
-        if (!other.userId_.isEmpty()) {
-          if (userId_.isEmpty()) {
-            userId_ = other.userId_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+        if (!other.getSiteUserId().isEmpty()) {
+          siteUserId_ = other.siteUserId_;
+          onChanged();
+        }
+        if (!other.targetSiteUserId_.isEmpty()) {
+          if (targetSiteUserId_.isEmpty()) {
+            targetSiteUserId_ = other.targetSiteUserId_;
+            bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureUserIdIsMutable();
-            userId_.addAll(other.userId_);
+            ensureTargetSiteUserIdIsMutable();
+            targetSiteUserId_.addAll(other.targetSiteUserId_);
           }
           onChanged();
         }
@@ -461,11 +558,80 @@ public final class HaiFriendRelationsProto {
       }
       private int bitField0_;
 
-      private com.google.protobuf.LazyStringList userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureUserIdIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          userId_ = new com.google.protobuf.LazyStringArrayList(userId_);
-          bitField0_ |= 0x00000001;
+      private java.lang.Object siteUserId_ = "";
+      /**
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public java.lang.String getSiteUserId() {
+        java.lang.Object ref = siteUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteUserIdBytes() {
+        java.lang.Object ref = siteUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public Builder setSiteUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public Builder clearSiteUserId() {
+        
+        siteUserId_ = getDefaultInstance().getSiteUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public Builder setSiteUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList targetSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureTargetSiteUserIdIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          targetSiteUserId_ = new com.google.protobuf.LazyStringArrayList(targetSiteUserId_);
+          bitField0_ |= 0x00000002;
          }
       }
       /**
@@ -473,57 +639,57 @@ public final class HaiFriendRelationsProto {
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
       public com.google.protobuf.ProtocolStringList
-          getUserIdList() {
-        return userId_.getUnmodifiableView();
+          getTargetSiteUserIdList() {
+        return targetSiteUserId_.getUnmodifiableView();
       }
       /**
        * <pre>
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public int getUserIdCount() {
-        return userId_.size();
+      public int getTargetSiteUserIdCount() {
+        return targetSiteUserId_.size();
       }
       /**
        * <pre>
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public java.lang.String getUserId(int index) {
-        return userId_.get(index);
+      public java.lang.String getTargetSiteUserId(int index) {
+        return targetSiteUserId_.get(index);
       }
       /**
        * <pre>
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getUserIdBytes(int index) {
-        return userId_.getByteString(index);
+          getTargetSiteUserIdBytes(int index) {
+        return targetSiteUserId_.getByteString(index);
       }
       /**
        * <pre>
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public Builder setUserId(
+      public Builder setTargetSiteUserId(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureUserIdIsMutable();
-        userId_.set(index, value);
+  ensureTargetSiteUserIdIsMutable();
+        targetSiteUserId_.set(index, value);
         onChanged();
         return this;
       }
@@ -532,15 +698,15 @@ public final class HaiFriendRelationsProto {
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public Builder addUserId(
+      public Builder addTargetSiteUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureUserIdIsMutable();
-        userId_.add(value);
+  ensureTargetSiteUserIdIsMutable();
+        targetSiteUserId_.add(value);
         onChanged();
         return this;
       }
@@ -549,13 +715,13 @@ public final class HaiFriendRelationsProto {
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public Builder addAllUserId(
+      public Builder addAllTargetSiteUserId(
           java.lang.Iterable<java.lang.String> values) {
-        ensureUserIdIsMutable();
+        ensureTargetSiteUserIdIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, userId_);
+            values, targetSiteUserId_);
         onChanged();
         return this;
       }
@@ -564,11 +730,11 @@ public final class HaiFriendRelationsProto {
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public Builder clearUserId() {
-        userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+      public Builder clearTargetSiteUserId() {
+        targetSiteUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -577,16 +743,16 @@ public final class HaiFriendRelationsProto {
        *需要查询关系的用户ID
        * </pre>
        *
-       * <code>repeated string user_id = 1;</code>
+       * <code>repeated string target_site_user_id = 2;</code>
        */
-      public Builder addUserIdBytes(
+      public Builder addTargetSiteUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        ensureUserIdIsMutable();
-        userId_.add(value);
+        ensureTargetSiteUserIdIsMutable();
+        targetSiteUserId_.add(value);
         onChanged();
         return this;
       }
@@ -1506,14 +1672,15 @@ public final class HaiFriendRelationsProto {
   static {
     java.lang.String[] descriptorData = {
       "\n!plugin/hai_friend_relations.proto\022\006plu" +
-      "gin\032\017core/user.proto\",\n\031HaiFriendRelatio" +
-      "nsRequest\022\017\n\007user_id\030\001 \003(\t\"M\n\032HaiFriendR" +
-      "elationsResponse\022/\n\014user_profile\030\001 \003(\0132\031" +
-      ".core.UserRelationProfile2o\n\031HaiFriendRe" +
-      "lationsService\022R\n\trelations\022!.plugin.Hai" +
-      "FriendRelationsRequest\032\".plugin.HaiFrien" +
-      "dRelationsResponseB2\n\027com.akaxin.proto.p" +
-      "luginB\027HaiFriendRelationsProtob\006proto3"
+      "gin\032\017core/user.proto\"N\n\031HaiFriendRelatio" +
+      "nsRequest\022\024\n\014site_user_id\030\001 \001(\t\022\033\n\023targe" +
+      "t_site_user_id\030\002 \003(\t\"M\n\032HaiFriendRelatio" +
+      "nsResponse\022/\n\014user_profile\030\001 \003(\0132\031.core." +
+      "UserRelationProfile2o\n\031HaiFriendRelation" +
+      "sService\022R\n\trelations\022!.plugin.HaiFriend" +
+      "RelationsRequest\032\".plugin.HaiFriendRelat" +
+      "ionsResponseB2\n\027com.akaxin.proto.pluginB" +
+      "\027HaiFriendRelationsProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1533,7 +1700,7 @@ public final class HaiFriendRelationsProto {
     internal_static_plugin_HaiFriendRelationsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiFriendRelationsRequest_descriptor,
-        new java.lang.String[] { "UserId", });
+        new java.lang.String[] { "SiteUserId", "TargetSiteUserId", });
     internal_static_plugin_HaiFriendRelationsResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiFriendRelationsResponse_fieldAccessorTable = new

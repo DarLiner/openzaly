@@ -1,11 +1,24 @@
 package com.akaxin.common.utils;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 public class StringHelper {
+	private static final Logger logger = LoggerFactory.getLogger(StringHelper.class);
 
 	public static String getSubString(String str, int length) {
 		int count = 0;
@@ -72,8 +85,39 @@ public class StringHelper {
 		}
 		return newRandomStr.toString();
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(generateRandomNumber(16));
+
+	public static String toLatinPinYin(String text) {
+		// format for string
+		HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
+		format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+		format.setCaseType(HanyuPinyinCaseType.LOWERCASE);// 小写
+		format.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE);
+
+		char[] input = StringUtils.trimToEmpty(text).toCharArray();
+		StringBuffer result = new StringBuffer();
+		try {
+			for (char ch : input) {
+				if (Character.toString(ch).matches("[\\u4E00-\\u9FA5]+")) {
+					String[] temp = PinyinHelper.toHanyuPinyinStringArray(ch, format);
+					result.append(temp[0]);
+				} else
+					result.append(Character.toString(ch));
+			}
+		} catch (BadHanyuPinyinOutputFormatCombination e) {
+			logger.error("string to latin pinyin error", e);
+		}
+		return result.toString();
 	}
+
+	public static String clearRepeated(String message, String replace) {
+		Pattern pattern = Pattern.compile("(" + replace + ")\\1+");
+		Matcher matcher = pattern.matcher(message);
+		StringBuffer result = new StringBuffer();
+		while (matcher.find()) {
+			matcher.appendReplacement(result, replace);
+		}
+		matcher.appendTail(result);
+		return result.toString();
+	}
+
 }

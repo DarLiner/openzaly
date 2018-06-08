@@ -10,6 +10,8 @@ import java.util.HashMap;
  */
 public interface SQLConst {
 
+	int SITE_DB_VERSION = 9;// 0.9.5
+
 	String SITE_CONFIG_INFO = "site_config_info";
 	String SITE_USER_PROFILE = "site_user_profile";
 	String SITE_USER_SESSION = "site_user_session";
@@ -33,10 +35,13 @@ public interface SQLConst {
 			+ "site_user_id VARCHAR(50) UNIQUE NOT NULL,"// 站点用户ID
 			+ "global_user_id VARCHAR(100) UNIQUE NOT NULL,"// 用户的全局ID
 			+ "user_id_pubk TEXT UNIQUE NOT NULL,"// 用户ID公钥
+			+ "site_login_id VARCHAR(50) UNIQUE,"// 用户登陆账号 login_id_lowercase
+			+ "login_id_lowercase VARCHAR(50) UNIQUE,"// login_id_lowercase
 			+ "user_password VARCHAR(50),"// 用户登陆站点的密码
-			+ "user_name VARCHAR(50),"// 用户昵称
+			+ "user_name VARCHAR(50) NOT NULL,"// 用户昵称
+			+ "user_name_in_latin VARCHAR(50),"// 用户昵称
 			+ "user_photo TEXT,"// 用户头像
-			+ "phone_id VARCHAR(20),"// 手机号码
+			+ "phone_id VARCHAR(20),"// 手机号码 +86_15271868205
 			+ "self_introduce TEXT,"// 自我介绍
 			+ "apply_info varchar(100), "// 申请注册站点的理由
 			+ "user_status INTEGER,"// 用户的状态
@@ -47,7 +52,14 @@ public interface SQLConst {
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, session_id VARCHAR(100), is_online boolean, device_id VARCHAR(50), login_time LONG);";
 
 	String CREATE_SITE_USER_FRIEND_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_FRIEND
-			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, relation INTEGER,mute BOOLEAN, add_time LONG);";
+			+ "(id INTEGER PRIMARY KEY NOT NULL,"// 主键
+			+ "site_user_id VARCHAR(50) not null,"//
+			+ "site_friend_id VARCHAR(50) not null,"// 好友id
+			+ "alias_name VARCHAR(50),"// 好友的别名
+			+ "alias_name_in_latin VARCHAR(50),"// 好友的别名拼音
+			+ "relation INTEGER,"// 和好友之间的关系
+			+ "mute BOOLEAN,"// 是否对好友消息免打扰
+			+ "add_time LONG);";// 添加好友的时间
 
 	String CREATE_SITE_FRIEND_APPLY_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_FRIEND_APPLY
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, apply_reason TEXT, apply_time LONG);";
@@ -70,8 +82,17 @@ public interface SQLConst {
 	String CREATE_SITE_GROUP_MESSAGE_POINTER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE_POINTER
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
 
-	String CREATE_SITE_USER_DEVICE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_DEVICE
-			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, device_id VARCHAR(50), user_device_pubk TEXT, device_name TEXT, device_ip VARCHAR(50), user_token VARCHAR(50),active_time LONG, add_time LONG);";
+	String CREATE_SITE_USER_DEVICE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_DEVICE // 用户设备
+			+ "(id INTEGER PRIMARY KEY NOT NULL," // 主键
+			+ "site_user_id VARCHAR(50) NOT NULL," // 站点用户
+			+ "device_id VARCHAR(50) UNIQUE NOT NULL," // 设备ID
+			+ "user_device_pubk TEXT NOT NULL,"// 设备公钥
+			+ "device_uuid VARCHAR(50) UNIQUE,"// 设备识别码,设备序列码
+			+ "user_token VARCHAR(50),"// 用户的usertoken
+			+ "device_name VARCHAR(60), " // 设备名称
+			+ "device_ip VARCHAR(50), " // 设备ip
+			+ "active_time LONG," // 活跃时间
+			+ "add_time LONG);";// add时间
 
 	String CREATE_SITE_PLUGIN_MANAGER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_PLUGIN_MANAGER
 			+ "(id INTEGER PRIMARY KEY NOT NULL,"// 主键

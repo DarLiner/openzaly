@@ -37,6 +37,19 @@ public final class HaiUserProfileProto {
         getSiteUserIdBytes();
   }
   /**
+   * <pre>
+   **
+   *获取用户资料
+   *----
+   *接口名
+   *----
+   * /hai/user/profile
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiUserProfileRequest}
    */
   public  static final class HaiUserProfileRequest extends
@@ -285,6 +298,19 @@ public final class HaiUserProfileProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *获取用户资料
+     *----
+     *接口名
+     *----
+     * /hai/user/profile
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiUserProfileRequest}
      */
     public static final class Builder extends

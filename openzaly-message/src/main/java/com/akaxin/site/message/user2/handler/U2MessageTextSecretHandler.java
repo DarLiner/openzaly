@@ -47,22 +47,23 @@ public class U2MessageTextSecretHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
-				String siteFriendId = command.getSiteFriendId();
+				String proxySiteUserId = request.getSecretText().getSiteUserId();
+				String siteFriendId = request.getSecretText().getSiteFriendId();
 				String msgId = request.getSecretText().getMsgId();
 				String tsKey = request.getSecretText().getBase64TsKey();
-				String tsDeviceId = request.getSecretText().getToDeviceId();
-				ByteString byteStr = request.getSecretText().getText();
-				String msgText = Base64.getEncoder().encodeToString(byteStr.toByteArray());
+				String toDeviceId = request.getSecretText().getToDeviceId();
+				ByteString textBytes = request.getSecretText().getText();
+				String msgText = Base64.getEncoder().encodeToString(textBytes.toByteArray());
 
 				long msgTime = System.currentTimeMillis();
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(msgText);
 				u2Bean.setTsKey(tsKey);
-				u2Bean.setDeviceId(tsDeviceId);
+				u2Bean.setDeviceId(toDeviceId);
 				u2Bean.setMsgTime(msgTime);
 
 				LogUtils.requestDebugLog(logger, command, u2Bean.toString());

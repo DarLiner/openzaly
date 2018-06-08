@@ -1979,6 +1979,24 @@ public final class PluginProto {
      * <code>optional .core.PermissionStatus permission_status = 11;</code>
      */
     com.akaxin.proto.core.PluginProto.PermissionStatus getPermissionStatus();
+
+    /**
+     * <pre>
+     * 使用auth_key加密的用户session
+     * </pre>
+     *
+     * <code>optional string encrypted_session_id_base64 = 12;</code>
+     */
+    java.lang.String getEncryptedSessionIdBase64();
+    /**
+     * <pre>
+     * 使用auth_key加密的用户session
+     * </pre>
+     *
+     * <code>optional string encrypted_session_id_base64 = 12;</code>
+     */
+    com.google.protobuf.ByteString
+        getEncryptedSessionIdBase64Bytes();
   }
   /**
    * Protobuf type {@code core.Plugin}
@@ -2003,6 +2021,7 @@ public final class PluginProto {
       order_ = 0;
       displayMode_ = 0;
       permissionStatus_ = 0;
+      encryptedSessionIdBase64_ = "";
     }
 
     @java.lang.Override
@@ -2093,6 +2112,12 @@ public final class PluginProto {
               int rawValue = input.readEnum();
 
               permissionStatus_ = rawValue;
+              break;
+            }
+            case 98: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              encryptedSessionIdBase64_ = s;
               break;
             }
           }
@@ -2544,6 +2569,48 @@ public final class PluginProto {
       return result == null ? com.akaxin.proto.core.PluginProto.PermissionStatus.UNRECOGNIZED : result;
     }
 
+    public static final int ENCRYPTED_SESSION_ID_BASE64_FIELD_NUMBER = 12;
+    private volatile java.lang.Object encryptedSessionIdBase64_;
+    /**
+     * <pre>
+     * 使用auth_key加密的用户session
+     * </pre>
+     *
+     * <code>optional string encrypted_session_id_base64 = 12;</code>
+     */
+    public java.lang.String getEncryptedSessionIdBase64() {
+      java.lang.Object ref = encryptedSessionIdBase64_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        encryptedSessionIdBase64_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 使用auth_key加密的用户session
+     * </pre>
+     *
+     * <code>optional string encrypted_session_id_base64 = 12;</code>
+     */
+    public com.google.protobuf.ByteString
+        getEncryptedSessionIdBase64Bytes() {
+      java.lang.Object ref = encryptedSessionIdBase64_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        encryptedSessionIdBase64_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -2589,6 +2656,9 @@ public final class PluginProto {
       if (permissionStatus_ != com.akaxin.proto.core.PluginProto.PermissionStatus.DISABLED.getNumber()) {
         output.writeEnum(11, permissionStatus_);
       }
+      if (!getEncryptedSessionIdBase64Bytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, encryptedSessionIdBase64_);
+      }
     }
 
     public int getSerializedSize() {
@@ -2633,6 +2703,9 @@ public final class PluginProto {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(11, permissionStatus_);
       }
+      if (!getEncryptedSessionIdBase64Bytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, encryptedSessionIdBase64_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -2668,6 +2741,8 @@ public final class PluginProto {
           == other.getOrder());
       result = result && displayMode_ == other.displayMode_;
       result = result && permissionStatus_ == other.permissionStatus_;
+      result = result && getEncryptedSessionIdBase64()
+          .equals(other.getEncryptedSessionIdBase64());
       return result;
     }
 
@@ -2700,6 +2775,8 @@ public final class PluginProto {
       hash = (53 * hash) + displayMode_;
       hash = (37 * hash) + PERMISSION_STATUS_FIELD_NUMBER;
       hash = (53 * hash) + permissionStatus_;
+      hash = (37 * hash) + ENCRYPTED_SESSION_ID_BASE64_FIELD_NUMBER;
+      hash = (53 * hash) + getEncryptedSessionIdBase64().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2840,6 +2917,8 @@ public final class PluginProto {
 
         permissionStatus_ = 0;
 
+        encryptedSessionIdBase64_ = "";
+
         return this;
       }
 
@@ -2873,6 +2952,7 @@ public final class PluginProto {
         result.order_ = order_;
         result.displayMode_ = displayMode_;
         result.permissionStatus_ = permissionStatus_;
+        result.encryptedSessionIdBase64_ = encryptedSessionIdBase64_;
         onBuilt();
         return result;
       }
@@ -2953,6 +3033,10 @@ public final class PluginProto {
         }
         if (other.permissionStatus_ != 0) {
           setPermissionStatusValue(other.getPermissionStatusValue());
+        }
+        if (!other.getEncryptedSessionIdBase64().isEmpty()) {
+          encryptedSessionIdBase64_ = other.encryptedSessionIdBase64_;
+          onChanged();
         }
         onChanged();
         return this;
@@ -3950,6 +4034,95 @@ public final class PluginProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object encryptedSessionIdBase64_ = "";
+      /**
+       * <pre>
+       * 使用auth_key加密的用户session
+       * </pre>
+       *
+       * <code>optional string encrypted_session_id_base64 = 12;</code>
+       */
+      public java.lang.String getEncryptedSessionIdBase64() {
+        java.lang.Object ref = encryptedSessionIdBase64_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          encryptedSessionIdBase64_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 使用auth_key加密的用户session
+       * </pre>
+       *
+       * <code>optional string encrypted_session_id_base64 = 12;</code>
+       */
+      public com.google.protobuf.ByteString
+          getEncryptedSessionIdBase64Bytes() {
+        java.lang.Object ref = encryptedSessionIdBase64_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          encryptedSessionIdBase64_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 使用auth_key加密的用户session
+       * </pre>
+       *
+       * <code>optional string encrypted_session_id_base64 = 12;</code>
+       */
+      public Builder setEncryptedSessionIdBase64(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        encryptedSessionIdBase64_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 使用auth_key加密的用户session
+       * </pre>
+       *
+       * <code>optional string encrypted_session_id_base64 = 12;</code>
+       */
+      public Builder clearEncryptedSessionIdBase64() {
+        
+        encryptedSessionIdBase64_ = getDefaultInstance().getEncryptedSessionIdBase64();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 使用auth_key加密的用户session
+       * </pre>
+       *
+       * <code>optional string encrypted_session_id_base64 = 12;</code>
+       */
+      public Builder setEncryptedSessionIdBase64Bytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        encryptedSessionIdBase64_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -4028,23 +4201,24 @@ public final class PluginProto {
       "er\030\001 \003(\0132*.core.ProxyPluginPackage.Plugi" +
       "nHeaderEntry\022\014\n\004data\030\002 \001(\t\022#\n\nerror_info" +
       "\030\003 \001(\0132\017.core.ErrorInfo\0323\n\021PluginHeaderE" +
-      "ntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\t:\0028\001\"\222\002\n" +
+      "ntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\t:\0028\001\"\267\002\n" +
       "\006Plugin\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\020\n\010url" +
       "_page\030\003 \001(\t\022\017\n\007api_url\030\004 \001(\t\022\014\n\004icon\030\005 \001" +
       "(\t\022\020\n\010auth_key\030\006 \001(\t\022\022\n\nallowed_ip\030\007 \001(\t" +
       "\022&\n\010position\030\010 \001(\0162\024.core.PluginPosition",
       "\022\r\n\005order\030\t \001(\005\022-\n\014display_mode\030\n \001(\0162\027." +
       "core.PluginDisplayMode\0221\n\021permission_sta" +
-      "tus\030\013 \001(\0162\026.core.PermissionStatus*\223\001\n\017Pl" +
-      "uginHeaderKey\022\022\n\016CLIENT_VERSION\020\000\022\027\n\023CLI" +
-      "ENT_SITE_USER_ID\020\001\022\032\n\026CLIENT_SITE_SESSIO" +
-      "N_ID\020\002\022\022\n\016PLUGIN_REFERER\020\003\022\024\n\020PLUGIN_TIM" +
-      "ESTAMP\020\004\022\r\n\tPLUGIN_ID\020\005*/\n\020PermissionSta" +
-      "tus\022\014\n\010DISABLED\020\000\022\r\n\tAVAILABLE\020\001*-\n\016Plug" +
-      "inPosition\022\r\n\tHOME_PAGE\020\000\022\014\n\010MSG_PAGE\020\001*" +
-      "H\n\021PluginDisplayMode\022\014\n\010NEW_PAGE\020\000\022\023\n\017FL",
-      "OATING_SCREEN\020\001\022\020\n\014SPLIT_SCREEN\020\002B$\n\025com" +
-      ".akaxin.proto.coreB\013PluginProtob\006proto3"
+      "tus\030\013 \001(\0162\026.core.PermissionStatus\022#\n\033enc" +
+      "rypted_session_id_base64\030\014 \001(\t*\223\001\n\017Plugi" +
+      "nHeaderKey\022\022\n\016CLIENT_VERSION\020\000\022\027\n\023CLIENT" +
+      "_SITE_USER_ID\020\001\022\032\n\026CLIENT_SITE_SESSION_I" +
+      "D\020\002\022\022\n\016PLUGIN_REFERER\020\003\022\024\n\020PLUGIN_TIMEST" +
+      "AMP\020\004\022\r\n\tPLUGIN_ID\020\005*/\n\020PermissionStatus" +
+      "\022\014\n\010DISABLED\020\000\022\r\n\tAVAILABLE\020\001*-\n\016PluginP" +
+      "osition\022\r\n\tHOME_PAGE\020\000\022\014\n\010MSG_PAGE\020\001*H\n\021",
+      "PluginDisplayMode\022\014\n\010NEW_PAGE\020\000\022\023\n\017FLOAT" +
+      "ING_SCREEN\020\001\022\020\n\014SPLIT_SCREEN\020\002B$\n\025com.ak" +
+      "axin.proto.coreB\013PluginProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4076,7 +4250,7 @@ public final class PluginProto {
     internal_static_core_Plugin_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_Plugin_descriptor,
-        new java.lang.String[] { "Id", "Name", "UrlPage", "ApiUrl", "Icon", "AuthKey", "AllowedIp", "Position", "Order", "DisplayMode", "PermissionStatus", });
+        new java.lang.String[] { "Id", "Name", "UrlPage", "ApiUrl", "Icon", "AuthKey", "AllowedIp", "Position", "Order", "DisplayMode", "PermissionStatus", "EncryptedSessionIdBase64", });
     com.akaxin.proto.core.CoreProto.getDescriptor();
   }
 

@@ -79,7 +79,7 @@ public abstract class AbstractU2Handler<T> implements IHandler<T, Boolean> {
 	}
 
 	protected void msgStatusResponse(Command command, String msgId, long msgTime, int statusValue) {
-		if (command == null || StringUtils.isEmpty(command.getDeviceId())) {
+		if (command == null || StringUtils.isAnyEmpty(command.getDeviceId(), msgId)) {
 			return;
 		}
 		CoreProto.MsgStatus status = CoreProto.MsgStatus.newBuilder().setMsgId(msgId).setMsgStatus(statusValue)

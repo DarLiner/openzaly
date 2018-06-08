@@ -44,7 +44,9 @@ public class U2MessageVoiceSecretHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
-				String siteFriendId = command.getSiteFriendId();
+				String proxySiteUserId = request.getSecretVoice().getSiteUserId();
+				String siteFriendId = request.getSecretVoice().getSiteFriendId();
+
 				String msgId = request.getSecretVoice().getMsgId();
 				String tsKey = request.getSecretVoice().getBase64TsKey();
 				String toDeviceId = request.getSecretVoice().getToDeviceId();
@@ -54,7 +56,7 @@ public class U2MessageVoiceSecretHandler extends AbstractU2Handler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
 				u2Bean.setContent(secretVoiceId);
 				u2Bean.setTsKey(tsKey);
