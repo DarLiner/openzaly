@@ -4,6 +4,8 @@ import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.site.business.dao.UserFriendDao;
+import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.business.push.PushNotification;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.admin.service.IUserService;
@@ -103,21 +105,23 @@ public class SiteMemberController extends AbstractController {
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
 			String siteUserId = headerMap.get(PluginProto.PluginHeaderKey.CLIENT_SITE_USER_ID_VALUE);
 			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
-			String to_user_id = ReqMap.get("site_user_id");
+			String friendSiteUserId = ReqMap.get("site_user_id");
 			String apply_reason = ReqMap.get("apply_reason");
 			if (StringUtils.isBlank(siteUserId)) {
 				return new String[] { "添加失败", "0" };
-			} else if (siteUserId.equals(to_user_id)) {
+			} else if (siteUserId.equals(friendSiteUserId)) {
 
 			} else {
-				int applyTimes = UserFriendDao.getInstance().getApplyCount(to_user_id, siteUserId);
+				int applyTimes = UserFriendDao.getInstance().getApplyCount(friendSiteUserId, siteUserId);
 				if (applyTimes >= 5) {
 					return new String[] { "失败,次数过多", "0" };
 
 				} else {
-					if (UserFriendDao.getInstance().saveFriendApply(siteUserId, to_user_id, apply_reason)) {
-						return new String[] { "成功", to_user_id };
-
+					if (UserFriendDao.getInstance().saveFriendApply(siteUserId, friendSiteUserId, apply_reason)) {
+						new User2Notice().applyFriendNotice(siteUserId, friendSiteUserId);
+						// 同时下发一条PUSH消息
+						PushNotification.sendAddFriend(siteUserId, friendSiteUserId);
+						return new String[] { "成功", friendSiteUserId };
 					}
 				}
 			}
