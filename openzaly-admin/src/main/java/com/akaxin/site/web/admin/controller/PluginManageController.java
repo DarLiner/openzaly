@@ -22,8 +22,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.akaxin.site.web.admin.exception.UserPermissionException;
-import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.storage.bean.PluginBean;
+import com.akaxin.site.web.admin.exception.UserPermissionException;
 import com.akaxin.site.web.admin.service.IPluginService;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 //插件扩展管理
 @Controller
@@ -172,6 +172,7 @@ public class PluginManageController extends AbstractController {
 			bean.setSort(Integer.valueOf(pluginData.get("order")));
 			bean.setDisplayMode(PluginProto.PluginDisplayMode.NEW_PAGE_VALUE);
 			bean.setPermissionStatus(Integer.valueOf(pluginData.get("per_status")));
+			bean.setDisplayMode(Integer.valueOf(pluginData.get("display_mode")));
 			bean.setAddTime(System.currentTimeMillis());
 			bean.setAuthKey(StringHelper.generateRandomString(16));// 随机生成
 

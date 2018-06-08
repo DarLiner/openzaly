@@ -136,7 +136,13 @@
                 <p>扩展状态</p>
             </div>
             <div class="weui-cell__ft per_status-txt">
-
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access display_mode" href="javascript:;">
+            <div class="weui-cell__bd">
+                <p>展现方式</p>
+            </div>
+            <div class="weui-cell__ft display_mode-txt">
             </div>
         </a>
     </div>
@@ -290,6 +296,32 @@
             ]
         });
     });
+    
+    $(document).on("click", '.display_mode', function () {
+        $.actions({
+            title: "",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "新页面展示",
+                className: "color-primary weui-dialog__btn ",
+                onClick: function () {
+                    $(".display_mode-txt").html("新页面展示");
+                    $(".display_mode").attr("data", "0");
+                }
+            },
+                {
+                    text: "浮屏(聊天界面专用)",
+                    className: "color-warning weui-dialog__btn",
+                    onClick: function () {
+                        $(".display_mode-txt").html("浮屏(聊天界面专用)");
+                        $(".display_mode").attr("data", "1");
+                    }
+                }
+            ]
+        });
+    });
 
 
     $(document).on("click", ".addPluginButton", function () {
@@ -298,10 +330,11 @@
         var urlPage = $('.plugin_url_page').val();
         var name = $('.plugin_name').val();
         var pluginIcon = $('.plugin_icon').attr('plugin-icon');
-        var perStatus = $(".per_status").attr("data");
         var position = $(".position").attr("data");
         var order = $(".order").val();
         var allowIp = $(".allow_ip").val();
+        var perStatus = $(".per_status").attr("data");
+        var displayMode = $(".display_mode").attr("data");
 
         if (name.length < 1) {
             $.toptip('名称不能为空', 'error');
@@ -326,7 +359,8 @@
             'position': position,
             'per_status': perStatus,
             'order': order,
-            'allow_ip': allowIp
+            'allow_ip': allowIp,
+            'display_mode':displayMode
         };
         reqUrl(reqUri, JSON.stringify(params), 'addPlugin');
         $('.addPluginButton').removeClass('weui-btn_primary');
