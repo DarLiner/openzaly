@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.storage.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,19 +28,19 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.site.storage.bean.SimpleAuthBean;
 import com.akaxin.site.storage.bean.UserSessionBean;
+import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2017.10.11 14:43:38
  */
-public class SQLiteUserSessionDao {
-	private static final Logger logger = LoggerFactory.getLogger(SQLiteUserSessionDao.class);
+public class SiteUserSessionDao {
+	private static final Logger logger = LoggerFactory.getLogger(SiteUserSessionDao.class);
 	private static final String USER_SESSION_TABLE = SQLConst.SITE_USER_SESSION;
-	private static SQLiteUserSessionDao instance = new SQLiteUserSessionDao();
+	private static SiteUserSessionDao instance = new SiteUserSessionDao();
 
-	public static SQLiteUserSessionDao getInstance() {
+	public static SiteUserSessionDao getInstance() {
 		return instance;
 	}
 
@@ -52,13 +53,24 @@ public class SQLiteUserSessionDao {
 		String sql = "INSERT INTO " + USER_SESSION_TABLE
 				+ "(site_user_id,session_id,is_online,device_id,login_time) VALUES(?,?,?,?,?);";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, bean.getSiteUserId());
-		preStatement.setString(2, bean.getSessionId());
-		preStatement.setBoolean(3, bean.isOnline());
-		preStatement.setString(4, bean.getDeviceId());
-		preStatement.setLong(5, bean.getLoginTime());
-		int result = preStatement.executeUpdate();
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, bean.getSiteUserId());
+			ps.setString(2, bean.getSessionId());
+			ps.setBoolean(3, bean.isOnline());
+			ps.setString(4, bean.getDeviceId());
+			ps.setLong(5, bean.getLoginTime());
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getSiteUserId(), bean.getSessionId(), bean.isOnline(),
 				bean.getDeviceId(), bean.getLoginTime());
@@ -70,13 +82,25 @@ public class SQLiteUserSessionDao {
 		String sql = "UPDATE " + USER_SESSION_TABLE
 				+ " SET session_id=?,login_time=?,is_online=? WHERE site_user_id=? AND device_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, bean.getSessionId());
-		preStatement.setLong(2, bean.getLoginTime());
-		preStatement.setBoolean(3, bean.isOnline());
-		preStatement.setString(4, bean.getSiteUserId());
-		preStatement.setString(5, bean.getDeviceId());
-		int result = preStatement.executeUpdate();
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, bean.getSessionId());
+			ps.setLong(2, bean.getLoginTime());
+			ps.setBoolean(3, bean.isOnline());
+			ps.setString(4, bean.getSiteUserId());
+			ps.setString(5, bean.getDeviceId());
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps, rs);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getSessionId(), bean.getLoginTime(), bean.isOnline(),
 				bean.getSiteUserId(), bean.getDeviceId());
@@ -87,11 +111,22 @@ public class SQLiteUserSessionDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + USER_SESSION_TABLE + " SET is_online=? WHERE site_user_id=? AND device_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setBoolean(1, online);
-		preStatement.setString(2, siteUserId);
-		preStatement.setString(3, deviceId);
-		int result = preStatement.executeUpdate();
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, online);
+			ps.setString(2, siteUserId);
+			ps.setString(3, deviceId);
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, deviceId);
 		return result > 0;
@@ -102,12 +137,23 @@ public class SQLiteUserSessionDao {
 		String sessionDeviceId = null;
 		String sql = "SELECT device_id FROM " + USER_SESSION_TABLE + " WHERE site_user_id=? AND device_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, siteUserId);
-		preStatement.setString(2, deviceId);
-		ResultSet rs = preStatement.executeQuery();
-		if (rs.next()) {
-			sessionDeviceId = rs.getString(1);
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, siteUserId);
+			pst.setString(2, deviceId);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				sessionDeviceId = rs.getString(1);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, sessionDeviceId, sql, siteUserId, deviceId);
@@ -118,15 +164,25 @@ public class SQLiteUserSessionDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,device_id FROM " + USER_SESSION_TABLE + " WHERE session_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, sessionId);
-		ResultSet rs = preStatement.executeQuery();
-
 		SimpleAuthBean authBean = null;
-		if (rs.next()) {
-			authBean = new SimpleAuthBean();
-			authBean.setSiteUserId(rs.getString(1));
-			authBean.setDeviceId(rs.getString(2));
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, sessionId);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				authBean = new SimpleAuthBean();
+				authBean.setSiteUserId(rs.getString(1));
+				authBean.setDeviceId(rs.getString(2));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, authBean, sql, sessionId);
@@ -138,11 +194,22 @@ public class SQLiteUserSessionDao {
 		List<String> deviceIds = new ArrayList<String>();
 		String sql = "SELECT device_id FROM " + USER_SESSION_TABLE + " WHERE site_user_id=? AND is_online=1;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, siteUserid);
-		ResultSet rs = preStatement.executeQuery();
-		while (rs.next()) {
-			deviceIds.add(rs.getString(1));
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, siteUserid);
+
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				deviceIds.add(rs.getString(1));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, deviceIds.size(), sql, siteUserid);
@@ -153,11 +220,22 @@ public class SQLiteUserSessionDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "DELETE FROM " + USER_SESSION_TABLE + " WHERE site_user_id=? AND device_id=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, siteUserId);
-		preStatement.setString(2, deviceId);
-		int result = preStatement.executeUpdate();
-		
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, siteUserId);
+			ps.setString(2, deviceId);
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps);
+		}
+
 		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, deviceId);
 		return result > 0;
 	}

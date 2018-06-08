@@ -20,8 +20,8 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IUserGroupDao;
 import com.akaxin.site.storage.bean.UserGroupBean;
-import com.akaxin.site.storage.dao.SQLiteGroupMessageDao;
-import com.akaxin.site.storage.dao.SQLiteUserGroupDao;
+import com.akaxin.site.storage.dao.SiteGroupMessageDao;
+import com.akaxin.site.storage.dao.SiteUserGroupDao;
 
 /**
  * 
@@ -32,32 +32,32 @@ public class UserGroupDaoService implements IUserGroupDao {
 
 	@Override
 	public List<String> checkGroupMember(String siteGroupId, List<String> userIds) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().checkGroupMember(siteGroupId, userIds);
+		return SiteUserGroupDao.getInstance().checkGroupMember(siteGroupId, userIds);
 	}
 
 	@Override
 	public UserGroupBean getUserGroupSetting(String siteUserId, String siteGroupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
+		return SiteUserGroupDao.getInstance().getUserGroupSetting(siteUserId, siteGroupId);
 	}
 
 	@Override
 	public boolean updateUserGroupSetting(String siteUserId, UserGroupBean bean) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean);
+		return SiteUserGroupDao.getInstance().updateUserGroupSetting(siteUserId, bean);
 	}
 
 	@Override
 	public boolean isMute(String siteUserId, String siteGroupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryMute(siteUserId, siteGroupId);
+		return SiteUserGroupDao.getInstance().queryMute(siteUserId, siteGroupId);
 	}
 
 	@Override
 	public boolean updateMute(String siteUserId, String siteGroupId, boolean mute) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().updateMute(siteUserId, siteGroupId, mute);
+		return SiteUserGroupDao.getInstance().updateMute(siteUserId, siteGroupId, mute);
 	}
 
 	@Override
 	public int queryGroupMessagePerDay(long now, int day) throws SQLException {
-		int groupCount = SQLiteGroupMessageDao.getInstance().queryNumMessagePerDay(now, day);
+		int groupCount = SiteGroupMessageDao.getInstance().queryNumMessagePerDay(now, day);
 		return groupCount;
 	}
 

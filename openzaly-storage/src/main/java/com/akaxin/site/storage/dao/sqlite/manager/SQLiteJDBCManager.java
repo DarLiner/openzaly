@@ -207,7 +207,7 @@ public class SQLiteJDBCManager {
 
 	private static void initSiteConfig(Map<Integer, String> configMap) {
 		try {
-			Map<Integer, String> oldMap = SiteConfigDao.getInstance().querySiteConfig();
+			Map<Integer, String> oldMap = SiteConfigDao.getInstance().queryConfig();
 			if (oldMap != null) {
 				if (oldMap.get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE) != null) {
 					configMap.remove(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
@@ -231,7 +231,7 @@ public class SQLiteJDBCManager {
 					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
 				}
 			}
-			SiteConfigDao.getInstance().updateSiteConfig(configMap, true);
+			SiteConfigDao.getInstance().updateConfig(configMap, true);
 		} catch (SQLException e) {
 			logger.error("init site config error.");
 		}

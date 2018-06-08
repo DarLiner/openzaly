@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.akaxin.site.storage.api.ISiteUsersDao;
-import com.akaxin.site.storage.dao.SQLiteSiteUsersDao;
+import com.akaxin.site.storage.dao.SiteUsersDao;
 
 /**
  * 
@@ -30,7 +30,7 @@ public class SiteUsersDaoService implements ISiteUsersDao {
 
 	@Override
 	public List<String> getSiteUserByPage(int pageNum, int pageSize) throws SQLException {
-		return SQLiteSiteUsersDao.getInstance().querySiteUserId(pageNum, pageSize);
+		return SiteUsersDao.getInstance().querySiteUserId(pageNum, pageSize);
 	}
 
 }

@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.storage.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,8 +28,8 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
+import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * 好友申请相关数据库操作
@@ -36,13 +37,13 @@ import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2017-11-19 20:00:19
  */
-public class SQLiteFriendApplyDao {
-	private static final Logger logger = LoggerFactory.getLogger(SQLiteFriendApplyDao.class);
+public class SiteFriendApplyDao {
+	private static final Logger logger = LoggerFactory.getLogger(SiteFriendApplyDao.class);
 	private static final String FRIEND_APPLY_TABLE = SQLConst.SITE_FRIEND_APPLY;
 
-	private static SQLiteFriendApplyDao instance = new SQLiteFriendApplyDao();
+	private static SiteFriendApplyDao instance = new SiteFriendApplyDao();
 
-	public static SQLiteFriendApplyDao getInstance() {
+	public static SiteFriendApplyDao getInstance() {
 		return instance;
 	}
 
@@ -52,12 +53,22 @@ public class SQLiteFriendApplyDao {
 		String sql = "INSERT INTO " + FRIEND_APPLY_TABLE
 				+ "(site_user_id,site_friend_id,apply_reason,apply_time) VALUES(?,?,?,?);";
 
-		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setString(1, siteUserId);
-		preState.setString(2, siteFriendId);
-		preState.setString(3, applyReason);
-		preState.setLong(4, System.currentTimeMillis());
-		result = preState.executeUpdate();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, siteUserId);
+			ps.setString(2, siteFriendId);
+			ps.setString(3, applyReason);
+			ps.setLong(4, System.currentTimeMillis());
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId, siteFriendId);
 		return result > 0;
@@ -68,10 +79,20 @@ public class SQLiteFriendApplyDao {
 		int result = 0;
 		String sql = "DELETE FROM " + FRIEND_APPLY_TABLE + " WHERE site_user_id=? AND site_friend_id=?;";
 
-		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setString(1, siteUserId);
-		preState.setString(2, siteFriendId);
-		result = preState.executeUpdate();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, siteUserId);
+			ps.setString(2, siteFriendId);
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, siteUserId);
 		return result > 0;
@@ -83,11 +104,24 @@ public class SQLiteFriendApplyDao {
 		String sql = "SELECT COUNT(site_user_id) FROM " + FRIEND_APPLY_TABLE
 				+ " WHERE site_user_id=? AND site_friend_id=?;";
 
-		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setString(1, siteUserId);
-		preState.setString(2, siteFriendId);
-		ResultSet rs = preState.executeQuery();
-		num = rs.getInt(1);
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, siteUserId);
+			pst.setString(2, siteFriendId);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				num = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId, siteFriendId);
 		return num;
@@ -96,12 +130,25 @@ public class SQLiteFriendApplyDao {
 	public int getApplyCount(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		int num = 0;
-		String sql = "SELECT COUNT(distinct site_friend_id) FROM "+FRIEND_APPLY_TABLE+" WHERE site_user_id=? ";
+		String sql = "SELECT COUNT(distinct site_friend_id) FROM " + FRIEND_APPLY_TABLE + " WHERE site_user_id=? ";
 
-		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setString(1, siteUserId);
-		ResultSet rs = preState.executeQuery();
-		num = rs.getInt(1);
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, siteUserId);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				num = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
 		return num;
@@ -120,18 +167,29 @@ public class SQLiteFriendApplyDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,site_friend_id,apply_reason,MAX(apply_time) FROM " + FRIEND_APPLY_TABLE
 				+ " WHERE site_user_id=? AND site_friend_id=?;";
-
-		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setString(1, siteUserId);
-		preState.setString(2, siteFriendId);
-		ResultSet rs = preState.executeQuery();
 		ApplyFriendBean bean = null;
-		if (rs.next()) {
-			bean = new ApplyFriendBean();
-			bean.setSiteUserId(rs.getString(1));
-			bean.setSiteFriendId(rs.getString(2));
-			bean.setApplyInfo(rs.getString(3));
-			bean.setApplyTime(rs.getLong(4));
+
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, siteUserId);
+			pst.setString(2, siteFriendId);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				bean = new ApplyFriendBean();
+				bean.setSiteUserId(rs.getString(1));
+				bean.setSiteFriendId(rs.getString(2));
+				bean.setApplyInfo(rs.getString(3));
+				bean.setApplyTime(rs.getLong(4));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, bean, sql, siteUserId, siteFriendId);
@@ -148,20 +206,32 @@ public class SQLiteFriendApplyDao {
 	public List<ApplyUserBean> queryApplyUsers(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<ApplyUserBean> applyUsers = new ArrayList<ApplyUserBean>();
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,max(a.apply_time) FROM  "
+				+ FRIEND_APPLY_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
+				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?  group by a.site_friend_id ";
 
-		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,max(a.apply_time) FROM  "+FRIEND_APPLY_TABLE+" AS a LEFT JOIN "+SQLConst.SITE_USER_PROFILE+" AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?  group by a.site_friend_id ";
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, siteUserId);
 
-		PreparedStatement preState = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preState.setString(1, siteUserId);
-		ResultSet rs = preState.executeQuery();
-		while (rs.next()) {
-			ApplyUserBean userBean = new ApplyUserBean();
-			userBean.setUserId(rs.getString(1));
-			userBean.setUserName(rs.getString(2));
-			userBean.setUserPhoto(rs.getString(3));
-			userBean.setApplyReason(rs.getString(4));
-			userBean.setApplyTime(rs.getLong(5));
-			applyUsers.add(userBean);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				ApplyUserBean userBean = new ApplyUserBean();
+				userBean.setUserId(rs.getString(1));
+				userBean.setUserName(rs.getString(2));
+				userBean.setUserPhoto(rs.getString(3));
+				userBean.setApplyReason(rs.getString(4));
+				userBean.setApplyTime(rs.getLong(5));
+				applyUsers.add(userBean);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, applyUsers.size(), sql, siteUserId);

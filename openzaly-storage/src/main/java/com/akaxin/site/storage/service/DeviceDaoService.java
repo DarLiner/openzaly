@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IUserDeviceDao;
 import com.akaxin.site.storage.bean.UserDeviceBean;
-import com.akaxin.site.storage.dao.SQLiteUserDeviceDao;
+import com.akaxin.site.storage.dao.SiteUserDeviceDao;
 
 /**
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -30,32 +30,32 @@ public class DeviceDaoService implements IUserDeviceDao {
 
 	@Override
 	public boolean saveUserDevice(UserDeviceBean bean) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().save(bean);
+		return SiteUserDeviceDao.getInstance().save(bean);
 	}
 
 	@Override
 	public boolean updateUserDevice(UserDeviceBean bean) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().update(bean);
+		return SiteUserDeviceDao.getInstance().update(bean);
 	}
 
 	@Override
 	public boolean updateActiveTime(String siteUserId, String deviceId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().updateActiveTime(siteUserId, deviceId);
+		return SiteUserDeviceDao.getInstance().updateActiveTime(siteUserId, deviceId);
 	}
 
 	@Override
 	public UserDeviceBean getDeviceDetails(String siteUserId, String deviceId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryDeviceDetails(siteUserId, deviceId);
+		return SiteUserDeviceDao.getInstance().queryDeviceDetails(siteUserId, deviceId);
 	}
 
 	@Override
 	public List<UserDeviceBean> getUserDeviceList(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryDeviceList(siteUserId);
+		return SiteUserDeviceDao.getInstance().queryDeviceList(siteUserId);
 	}
 
 	@Override
 	public List<UserDeviceBean> getActiveDeviceList(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryActiveDeviceList(siteUserId);
+		return SiteUserDeviceDao.getInstance().queryActiveDeviceList(siteUserId);
 	}
 
 	/**
@@ -63,27 +63,27 @@ public class DeviceDaoService implements IUserDeviceDao {
 	 */
 	@Override
 	public UserDeviceBean getLatestDevice(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryLatestDevice(siteUserId);
+		return SiteUserDeviceDao.getInstance().queryLatestDevice(siteUserId);
 	}
 
 	@Override
 	public String getDeviceId(String userId, String devicePuk) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryDeviceIdByDevicePuk(userId, devicePuk);
+		return SiteUserDeviceDao.getInstance().queryDeviceIdByDevicePuk(userId, devicePuk);
 	}
 
 	@Override
 	public String getUserToken(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().queryUserToken(siteUserId);
+		return SiteUserDeviceDao.getInstance().queryUserToken(siteUserId);
 	}
 
 	@Override
 	public int limitDeviceNum(String siteUserId, int limit) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().limitDeviceNum(siteUserId, limit);
+		return SiteUserDeviceDao.getInstance().limitDeviceNum(siteUserId, limit);
 	}
 
 	@Override
 	public boolean delDevice(String siteUserId) throws SQLException {
-		return SQLiteUserDeviceDao.getInstance().delDevice(siteUserId);
+		return SiteUserDeviceDao.getInstance().delDevice(siteUserId);
 	}
 
 }

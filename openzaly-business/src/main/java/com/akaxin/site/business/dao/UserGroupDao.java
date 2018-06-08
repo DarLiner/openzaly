@@ -267,7 +267,12 @@ public class UserGroupDao {
 	}
 
 	public boolean deleteGroupMember(String groupId, List<String> userIds) {
-		return groupDao.deleteGroupMember(groupId, userIds);
+		try {
+			return groupDao.deleteGroupMember(groupId, userIds);
+		} catch (SQLException e) {
+			logger.error("delete group member error", e);
+		}
+		return false;
 	}
 
 	public List<String> checkGroupMember(String siteGroupId, List<String> userIds) throws SQLException {
@@ -275,7 +280,12 @@ public class UserGroupDao {
 	}
 
 	public boolean quitGroup(String groupId, String userId) {
-		return groupDao.deleteGroupMember(groupId, Arrays.asList(userId));
+		try {
+			return groupDao.deleteGroupMember(groupId, Arrays.asList(userId));
+		} catch (SQLException e) {
+			logger.error("delete group member error", e);
+		}
+		return false;
 	}
 
 	public List<SimpleGroupBean> getGroupList(int pageNum, int pageSize) {

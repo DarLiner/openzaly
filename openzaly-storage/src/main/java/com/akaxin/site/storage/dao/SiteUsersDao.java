@@ -15,6 +15,7 @@
  */
 package com.akaxin.site.storage.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * 获取站点所有用户
@@ -34,15 +35,15 @@ import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2017-11-09 20:19:59
  */
-public class SQLiteSiteUsersDao {
-	private static final Logger logger = LoggerFactory.getLogger(SQLiteSiteUsersDao.class);
+public class SiteUsersDao {
+	private static final Logger logger = LoggerFactory.getLogger(SiteUsersDao.class);
 	private final String USER_PROFILE_TABLE = SQLConst.SITE_USER_PROFILE;
 
 	private static class SingletonHolder {
-		private static SQLiteSiteUsersDao instance = new SQLiteSiteUsersDao();
+		private static SiteUsersDao instance = new SiteUsersDao();
 	}
 
-	public static SQLiteSiteUsersDao getInstance() {
+	public static SiteUsersDao getInstance() {
 		return SingletonHolder.instance;
 	}
 
@@ -52,12 +53,23 @@ public class SQLiteSiteUsersDao {
 		String sql = "SELECT site_user_id FROM " + USER_PROFILE_TABLE + " LIMIT ?,?;";
 
 		int startNum = (pageNum - 1) * pageSize;
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setInt(1, startNum);
-		preStatement.setInt(2, pageSize);
-		ResultSet rs = preStatement.executeQuery();
-		while (rs.next()) {
-			siteUserList.add(rs.getString(1));
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, startNum);
+			pst.setInt(2, pageSize);
+
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				siteUserList.add(rs.getString(1));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, siteUserList.size(), sql, pageNum, pageSize);

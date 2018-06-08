@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.akaxin.site.storage.api.IPluginDao;
 import com.akaxin.site.storage.bean.PluginBean;
-import com.akaxin.site.storage.dao.SQLitePluginDao;
+import com.akaxin.site.storage.dao.SitePluginDao;
 
 /**
  *
@@ -31,43 +31,43 @@ public class PluginServiceDao implements IPluginDao {
 
     @Override
     public boolean addPlugin(PluginBean bean) throws SQLException {
-        return SQLitePluginDao.getInstance().addPlugin(bean);
+        return SitePluginDao.getInstance().addPlugin(bean);
     }
 
     @Override
     public boolean updatePlugin(PluginBean bean) throws SQLException {
-        return SQLitePluginDao.getInstance().updatePlugin(bean);
+        return SitePluginDao.getInstance().updatePlugin(bean);
     }
 
     @Override
     public boolean deletePlugin(int pluginId) throws SQLException {
-        return SQLitePluginDao.getInstance().deletePlugin(pluginId);
+        return SitePluginDao.getInstance().deletePlugin(pluginId);
     }
 
     @Override
     public PluginBean getPluginProfile(int pluginId) throws SQLException {
-        return SQLitePluginDao.getInstance().queryPluginProfile(pluginId);
+        return SitePluginDao.getInstance().queryPluginProfile(pluginId);
     }
 
     @Override
     public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int position, int permissionStatus)
             throws SQLException {
-        return SQLitePluginDao.getInstance().queryPluginList(pageNum, pageSize, position, permissionStatus);
+        return SitePluginDao.getInstance().queryPluginList(pageNum, pageSize, position, permissionStatus);
     }
 
     @Override
     public List<PluginBean> getPluginPageList(int pageNum, int pageSize, int position) throws SQLException {
-        return SQLitePluginDao.getInstance().queryPluginList(pageNum, pageSize, position);
+        return SitePluginDao.getInstance().queryPluginList(pageNum, pageSize, position);
     }
 
     @Override
     public List<PluginBean> getAllPluginList(int pageNum, int pageSize) throws SQLException {
-        return SQLitePluginDao.getInstance().queryAllPluginList(pageNum, pageSize);
+        return SitePluginDao.getInstance().queryAllPluginList(pageNum, pageSize);
     }
 
     @Override
     public String reSetAuthKey(int pluginId) throws SQLException {
-        return SQLitePluginDao.getInstance().reSetAuthKey(pluginId);
+        return SitePluginDao.getInstance().resetAuthKey(pluginId);
     }
 
 }

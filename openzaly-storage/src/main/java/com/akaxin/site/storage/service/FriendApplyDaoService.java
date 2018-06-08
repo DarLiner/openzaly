@@ -21,7 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IFriendApplyDao;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
-import com.akaxin.site.storage.dao.SQLiteFriendApplyDao;
+import com.akaxin.site.storage.dao.SiteFriendApplyDao;
 
 /**
  * 
@@ -32,32 +32,32 @@ public class FriendApplyDaoService implements IFriendApplyDao {
 
 	@Override
 	public boolean saveApply(String siteUserId, String siteFriendId, String applyReason) throws SQLException {
-		return SQLiteFriendApplyDao.getInstance().saveApply(siteUserId, siteFriendId, applyReason);
+		return SiteFriendApplyDao.getInstance().saveApply(siteUserId, siteFriendId, applyReason);
 	}
 
 	@Override
 	public boolean deleteApply(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteFriendApplyDao.getInstance().deleteApply(siteUserId, siteFriendId);
+		return SiteFriendApplyDao.getInstance().deleteApply(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public int getApplyCount(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteFriendApplyDao.getInstance().getApplyCount(siteUserId, siteFriendId);
+		return SiteFriendApplyDao.getInstance().getApplyCount(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public int getApplyCount(String siteUserId) throws SQLException {
-		return SQLiteFriendApplyDao.getInstance().getApplyCount(siteUserId);
+		return SiteFriendApplyDao.getInstance().getApplyCount(siteUserId);
 	}
 
 	@Override
 	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteFriendApplyDao.getInstance().getApplyInfo(siteUserId, siteFriendId);
+		return SiteFriendApplyDao.getInstance().getApplyInfo(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public List<ApplyUserBean> getApplyUsers(String siteUserId) throws SQLException {
-		return SQLiteFriendApplyDao.getInstance().queryApplyUsers(siteUserId);
+		return SiteFriendApplyDao.getInstance().queryApplyUsers(siteUserId);
 	}
 
 }

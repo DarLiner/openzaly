@@ -62,19 +62,22 @@ public class SiteUICDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + UIC_TABLE + "(uic,status,create_time) VALUES(?,?,?);";
 
-		Connection conn = null;
 		int result;
+		Connection conn = null;
+		PreparedStatement ps = null;
 		try {
 			conn = DatabaseConnection.getConnection();
-			PreparedStatement preStatement = conn.prepareStatement(sql);
-			preStatement.setString(1, bean.getUic());
-			preStatement.setInt(2, bean.getStatus());
-			preStatement.setLong(3, System.currentTimeMillis());
-			result = preStatement.executeUpdate();
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, bean.getUic());
+			ps.setInt(2, bean.getStatus());
+			ps.setLong(3, System.currentTimeMillis());
+
+			result = ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
 		} finally {
-			DatabaseConnection.returnConnection(conn);
+			DatabaseConnection.returnConnection(conn, ps);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getUic(), bean.getStatus(), startTime);
@@ -94,18 +97,23 @@ public class SiteUICDao {
 		String sql = "INSERT INTO " + UIC_TABLE + "(uic,status,create_time) VALUES(?,?,?);";
 		int successCount = 0;
 		length = length < 6 ? 6 : length;// 最短6位
+
 		Connection conn = null;
+		PreparedStatement ps = null;
 		try {
 			conn = DatabaseConnection.getConnection();
 			conn.setAutoCommit(false);
 			for (int i = 0; i < num; i++) {
 				try {
 					String uicValue = StringHelper.generateRandomNumber(length);
-					PreparedStatement preStatement = conn.prepareStatement(sql);
-					preStatement.setString(1, uicValue);
-					preStatement.setInt(2, bean.getStatus());
-					preStatement.setLong(3, System.currentTimeMillis());
-					preStatement.executeUpdate();
+
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, uicValue);
+					ps.setInt(2, bean.getStatus());
+					ps.setLong(3, System.currentTimeMillis());
+					ps.executeUpdate();
+
+					ps.clearParameters();
 					successCount++;
 				} catch (Exception e) {
 					logger.error("execute uic sql error ", e);
@@ -118,7 +126,7 @@ public class SiteUICDao {
 			logger.error(StringHelper.format("batch add uic error bean={} num={}", bean.toString(), num), e);
 			throw e;
 		} finally {
-			DatabaseConnection.returnConnection(conn);
+			DatabaseConnection.returnConnection(conn, ps);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, successCount, sql, "randomUic", bean.getStatus(),
@@ -138,16 +146,28 @@ public class SiteUICDao {
 		String sql = "SELECT uic,site_user_id,status,create_time,use_time FROM " + UIC_TABLE + " WHERE uic=?;";
 
 		UicBean bean = null;
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, uic);
-		ResultSet rs = preStatement.executeQuery();
-		if (rs.next()) {
-			bean = new UicBean();
-			bean.setUic(rs.getString(1));
-			bean.setSiteUserId(rs.getString(2));
-			bean.setStatus(rs.getInt(3));
-			bean.setCreateTime(rs.getLong(4));
-			bean.setUseTime(rs.getLong(5));
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, uic);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				bean = new UicBean();
+				bean.setUic(rs.getString(1));
+				bean.setSiteUserId(rs.getString(2));
+				bean.setStatus(rs.getInt(3));
+				bean.setCreateTime(rs.getLong(4));
+				bean.setUseTime(rs.getLong(5));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, bean, sql, uic);
@@ -165,13 +185,25 @@ public class SiteUICDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + UIC_TABLE + " SET site_user_id=?,status=?,use_time=? WHERE uic=?;";
 
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setString(1, bean.getSiteUserId());
-		preStatement.setInt(2, bean.getStatus());
 		long currentTime = System.currentTimeMillis();
-		preStatement.setLong(3, currentTime);
-		preStatement.setString(4, bean.getUic());
-		int result = preStatement.executeUpdate();
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, bean.getSiteUserId());
+			ps.setInt(2, bean.getStatus());
+			ps.setLong(3, currentTime);
+			ps.setString(4, bean.getUic());
+
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, ps);
+		}
 
 		LogUtils.dbDebugLog(logger, startTime, result, sql, bean.getSiteUserId(), bean.getStatus(), currentTime,
 				bean.getUic());
@@ -186,20 +218,31 @@ public class SiteUICDao {
 				+ " AS b ON a.site_user_id=b.site_user_id where a.status=? LIMIT ?,?;";
 
 		int startNum = (pageNum - 1) * pageSize;
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setInt(1, status);
-		preStatement.setInt(2, startNum);
-		preStatement.setInt(3, pageSize);
-		ResultSet rs = preStatement.executeQuery();
-		while (rs.next()) {
-			UicBean bean = new UicBean();
-			bean.setId(rs.getInt(1));
-			bean.setUic(rs.getString(2));
-			bean.setSiteUserId(rs.getString(3));
-			bean.setUserName(rs.getString(4));
-			bean.setCreateTime(rs.getLong(5));
-			bean.setUseTime(rs.getLong(6));
-			uicList.add(bean);
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, status);
+			pst.setInt(2, startNum);
+			pst.setInt(3, pageSize);
+
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				UicBean bean = new UicBean();
+				bean.setId(rs.getInt(1));
+				bean.setUic(rs.getString(2));
+				bean.setSiteUserId(rs.getString(3));
+				bean.setUserName(rs.getString(4));
+				bean.setCreateTime(rs.getLong(5));
+				bean.setUseTime(rs.getLong(6));
+				uicList.add(bean);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, uicList, sql);
@@ -221,19 +264,30 @@ public class SiteUICDao {
 				+ " AS a LEFT JOIN " + USER_PROFILE_TABLE + " AS b ON a.site_user_id=b.site_user_id LIMIT ?,?;";
 
 		int startNum = (pageNum - 1) * pageSize;
-		PreparedStatement preStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
-		preStatement.setInt(1, startNum);
-		preStatement.setInt(2, pageSize);
-		ResultSet rs = preStatement.executeQuery();
-		while (rs.next()) {
-			UicBean bean = new UicBean();
-			bean.setId(rs.getInt(1));
-			bean.setUic(rs.getString(2));
-			bean.setSiteUserId(rs.getString(3));
-			bean.setUserName(rs.getString(4));
-			bean.setCreateTime(rs.getLong(5));
-			bean.setUseTime(rs.getLong(6));
-			uicList.add(bean);
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, startNum);
+			pst.setInt(2, pageSize);
+
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				UicBean bean = new UicBean();
+				bean.setId(rs.getInt(1));
+				bean.setUic(rs.getString(2));
+				bean.setSiteUserId(rs.getString(3));
+				bean.setUserName(rs.getString(4));
+				bean.setCreateTime(rs.getLong(5));
+				bean.setUseTime(rs.getLong(6));
+				uicList.add(bean);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, uicList, sql, startNum, pageSize);
