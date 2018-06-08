@@ -36,6 +36,7 @@ import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.business.push.PushNotification;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 
 /**
@@ -94,6 +95,10 @@ public class HttpFriendService extends AbstractRequest {
 			if (UserFriendDao.getInstance().saveFriendApply(siteUserId, siteFriendId, applyReason)) {
 				errCode = ErrorCode2.SUCCESS;
 				new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
+				// 同时下发一条PUSH消息
+				if (applyTimes < 2) {
+					PushNotification.sendAddFriend(siteUserId, siteFriendId);
+				}
 			}
 
 		} catch (Exception e) {

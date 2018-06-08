@@ -98,7 +98,7 @@ public class SiteMemberController extends AbstractController {
 
 	@RequestMapping("/applyAddFriend")
 	@ResponseBody
-	public String[] addFriend(@RequestBody byte[] bodyParam) {
+	public String[] applyFriend(@RequestBody byte[] bodyParam) {
 		PluginProto.ProxyPluginPackage pluginPackage = null;
 		try {
 			pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
@@ -120,7 +120,9 @@ public class SiteMemberController extends AbstractController {
 					if (UserFriendDao.getInstance().saveFriendApply(siteUserId, friendSiteUserId, apply_reason)) {
 						new User2Notice().applyFriendNotice(siteUserId, friendSiteUserId);
 						// 同时下发一条PUSH消息
-						PushNotification.sendAddFriend(siteUserId, friendSiteUserId);
+						if (applyTimes < 2) {
+							PushNotification.sendAddFriend(siteUserId, friendSiteUserId);
+						}
 						return new String[] { "成功", friendSiteUserId };
 					}
 				}
