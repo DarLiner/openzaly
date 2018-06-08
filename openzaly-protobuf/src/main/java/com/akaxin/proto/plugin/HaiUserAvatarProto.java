@@ -20,21 +20,21 @@ public final class HaiUserAvatarProto {
 
     /**
      * <pre>
-     *头像图片的ID
+     *用户的siteUserId
      * </pre>
      *
-     * <code>optional string photo_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
-    java.lang.String getPhotoId();
+    java.lang.String getSiteUserId();
     /**
      * <pre>
-     *头像图片的ID
+     *用户的siteUserId
      * </pre>
      *
-     * <code>optional string photo_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getPhotoIdBytes();
+        getSiteUserIdBytes();
   }
   /**
    * <pre>
@@ -61,7 +61,7 @@ public final class HaiUserAvatarProto {
       super(builder);
     }
     private HaiUserAvatarRequest() {
-      photoId_ = "";
+      siteUserId_ = "";
     }
 
     @java.lang.Override
@@ -92,7 +92,7 @@ public final class HaiUserAvatarProto {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              photoId_ = s;
+              siteUserId_ = s;
               break;
             }
           }
@@ -118,42 +118,42 @@ public final class HaiUserAvatarProto {
               com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest.class, com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest.Builder.class);
     }
 
-    public static final int PHOTO_ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object photoId_;
+    public static final int SITE_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object siteUserId_;
     /**
      * <pre>
-     *头像图片的ID
+     *用户的siteUserId
      * </pre>
      *
-     * <code>optional string photo_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
-    public java.lang.String getPhotoId() {
-      java.lang.Object ref = photoId_;
+    public java.lang.String getSiteUserId() {
+      java.lang.Object ref = siteUserId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        photoId_ = s;
+        siteUserId_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *头像图片的ID
+     *用户的siteUserId
      * </pre>
      *
-     * <code>optional string photo_id = 1;</code>
+     * <code>optional string site_user_id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getPhotoIdBytes() {
-      java.lang.Object ref = photoId_;
+        getSiteUserIdBytes() {
+      java.lang.Object ref = siteUserId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        photoId_ = b;
+        siteUserId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -172,8 +172,8 @@ public final class HaiUserAvatarProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getPhotoIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, photoId_);
+      if (!getSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteUserId_);
       }
     }
 
@@ -182,8 +182,8 @@ public final class HaiUserAvatarProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getPhotoIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, photoId_);
+      if (!getSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteUserId_);
       }
       memoizedSize = size;
       return size;
@@ -201,8 +201,8 @@ public final class HaiUserAvatarProto {
       com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest other = (com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest) obj;
 
       boolean result = true;
-      result = result && getPhotoId()
-          .equals(other.getPhotoId());
+      result = result && getSiteUserId()
+          .equals(other.getSiteUserId());
       return result;
     }
 
@@ -213,8 +213,8 @@ public final class HaiUserAvatarProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + PHOTO_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getPhotoId().hashCode();
+      hash = (37 * hash) + SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteUserId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -346,7 +346,7 @@ public final class HaiUserAvatarProto {
       }
       public Builder clear() {
         super.clear();
-        photoId_ = "";
+        siteUserId_ = "";
 
         return this;
       }
@@ -370,7 +370,7 @@ public final class HaiUserAvatarProto {
 
       public com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest buildPartial() {
         com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest result = new com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest(this);
-        result.photoId_ = photoId_;
+        result.siteUserId_ = siteUserId_;
         onBuilt();
         return result;
       }
@@ -412,8 +412,8 @@ public final class HaiUserAvatarProto {
 
       public Builder mergeFrom(com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest other) {
         if (other == com.akaxin.proto.plugin.HaiUserAvatarProto.HaiUserAvatarRequest.getDefaultInstance()) return this;
-        if (!other.getPhotoId().isEmpty()) {
-          photoId_ = other.photoId_;
+        if (!other.getSiteUserId().isEmpty()) {
+          siteUserId_ = other.siteUserId_;
           onChanged();
         }
         onChanged();
@@ -442,21 +442,21 @@ public final class HaiUserAvatarProto {
         return this;
       }
 
-      private java.lang.Object photoId_ = "";
+      private java.lang.Object siteUserId_ = "";
       /**
        * <pre>
-       *头像图片的ID
+       *用户的siteUserId
        * </pre>
        *
-       * <code>optional string photo_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public java.lang.String getPhotoId() {
-        java.lang.Object ref = photoId_;
+      public java.lang.String getSiteUserId() {
+        java.lang.Object ref = siteUserId_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          photoId_ = s;
+          siteUserId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -464,19 +464,19 @@ public final class HaiUserAvatarProto {
       }
       /**
        * <pre>
-       *头像图片的ID
+       *用户的siteUserId
        * </pre>
        *
-       * <code>optional string photo_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getPhotoIdBytes() {
-        java.lang.Object ref = photoId_;
+          getSiteUserIdBytes() {
+        java.lang.Object ref = siteUserId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          photoId_ = b;
+          siteUserId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -484,49 +484,49 @@ public final class HaiUserAvatarProto {
       }
       /**
        * <pre>
-       *头像图片的ID
+       *用户的siteUserId
        * </pre>
        *
-       * <code>optional string photo_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public Builder setPhotoId(
+      public Builder setSiteUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        photoId_ = value;
+        siteUserId_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *头像图片的ID
+       *用户的siteUserId
        * </pre>
        *
-       * <code>optional string photo_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public Builder clearPhotoId() {
+      public Builder clearSiteUserId() {
         
-        photoId_ = getDefaultInstance().getPhotoId();
+        siteUserId_ = getDefaultInstance().getSiteUserId();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *头像图片的ID
+       *用户的siteUserId
        * </pre>
        *
-       * <code>optional string photo_id = 1;</code>
+       * <code>optional string site_user_id = 1;</code>
        */
-      public Builder setPhotoIdBytes(
+      public Builder setSiteUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        photoId_ = value;
+        siteUserId_ = value;
         onChanged();
         return this;
       }
@@ -1223,14 +1223,14 @@ public final class HaiUserAvatarProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\034plugin/hai_user_avatar.proto\022\006plugin\"(" +
-      "\n\024HaiUserAvatarRequest\022\020\n\010photo_id\030\001 \001(\t" +
-      "\"@\n\025HaiUserAvatarResponse\022\020\n\010photo_id\030\001 " +
-      "\001(\t\022\025\n\rphoto_content\030\002 \001(\0142]\n\024HaiUserAva" +
-      "tarService\022E\n\006avatar\022\034.plugin.HaiUserAva" +
-      "tarRequest\032\035.plugin.HaiUserAvatarRespons" +
-      "eB-\n\027com.akaxin.proto.pluginB\022HaiUserAva" +
-      "tarProtob\006proto3"
+      "\n\034plugin/hai_user_avatar.proto\022\006plugin\"," +
+      "\n\024HaiUserAvatarRequest\022\024\n\014site_user_id\030\001" +
+      " \001(\t\"@\n\025HaiUserAvatarResponse\022\020\n\010photo_i" +
+      "d\030\001 \001(\t\022\025\n\rphoto_content\030\002 \001(\0142]\n\024HaiUse" +
+      "rAvatarService\022E\n\006avatar\022\034.plugin.HaiUse" +
+      "rAvatarRequest\032\035.plugin.HaiUserAvatarRes" +
+      "ponseB-\n\027com.akaxin.proto.pluginB\022HaiUse" +
+      "rAvatarProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1249,7 +1249,7 @@ public final class HaiUserAvatarProto {
     internal_static_plugin_HaiUserAvatarRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiUserAvatarRequest_descriptor,
-        new java.lang.String[] { "PhotoId", });
+        new java.lang.String[] { "SiteUserId", });
     internal_static_plugin_HaiUserAvatarResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiUserAvatarResponse_fieldAccessorTable = new

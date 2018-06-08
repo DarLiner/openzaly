@@ -161,12 +161,20 @@ public class HttpUserService extends AbstractRequest {
 		try {
 			HaiUserAvatarProto.HaiUserAvatarRequest request = HaiUserAvatarProto.HaiUserAvatarRequest
 					.parseFrom(command.getParams());
-			String photoId = request.getPhotoId();
+			String siteUserId = request.getSiteUserId();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(photoId)) {
+			if (StringUtils.isEmpty(siteUserId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
+
+			SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
+
+			if (bean == null || StringUtils.isEmpty(bean.getUserPhoto())) {
+				throw new ZalyException2(ErrorCode2.ERROR2_USER_AVATAR);
+			}
+
+			String photoId = bean.getUserPhoto();
 
 			byte[] photoContents = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), photoId);
 
@@ -176,8 +184,6 @@ public class HttpUserService extends AbstractRequest {
 
 				commandResponse.setParams(response.toByteArray());
 				errCode = ErrorCode2.SUCCESS;
-			} else {
-				errCode = ErrorCode2.ERROR2_USER_AVATAR;
 			}
 
 		} catch (Exception e) {
