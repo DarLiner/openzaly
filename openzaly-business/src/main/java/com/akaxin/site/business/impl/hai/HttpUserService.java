@@ -29,6 +29,7 @@ import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;
+import com.akaxin.proto.plugin.HaiUserAvatarProto;
 import com.akaxin.proto.plugin.HaiUserFriendsProto;
 import com.akaxin.proto.plugin.HaiUserGroupsProto;
 import com.akaxin.proto.plugin.HaiUserListProto;
@@ -39,9 +40,12 @@ import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
+import com.akaxin.site.business.utils.FilePathUtils;
+import com.akaxin.site.business.utils.FileServerUtils;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
+import com.google.protobuf.ByteString;
 
 /**
  * <pre>
@@ -139,6 +143,42 @@ public class HttpUserService extends AbstractRequest {
 					.newBuilder().setUserProfile(profile).build();
 			commandResponse.setParams(response.toByteArray());
 			errCode = ErrorCode2.SUCCESS;
+
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode(errCode);
+	}
+
+	// 获取用户头像
+	public CommandResponse avatar(Command command) {
+		CommandResponse commandResponse = new CommandResponse();
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			HaiUserAvatarProto.HaiUserAvatarRequest request = HaiUserAvatarProto.HaiUserAvatarRequest
+					.parseFrom(command.getParams());
+			String photoId = request.getPhotoId();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isEmpty(photoId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			byte[] photoContents = FileServerUtils.fileToBinary(FilePathUtils.getPicPath(), photoId);
+
+			if (photoContents != null && photoContents.length > 0) {
+				HaiUserAvatarProto.HaiUserAvatarResponse response = HaiUserAvatarProto.HaiUserAvatarResponse
+						.newBuilder().setPhotoId(photoId).setPhotoContent(ByteString.copyFrom(photoContents)).build();
+
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR2_USER_AVATAR;
+			}
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
