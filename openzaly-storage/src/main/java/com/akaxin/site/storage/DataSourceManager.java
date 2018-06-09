@@ -94,7 +94,7 @@ public class DataSourceManager {
 		// 加载数据库sql执行脚本
 		File fileSql = new File(OPENZALY_MYSQL_SQL);
 		if (!fileSql.exists()) {
-			writeResourceToFile("/" + OPENZALY_MYSQL_SQL, configFile);
+			writeResourceToFile("/" + OPENZALY_MYSQL_SQL, fileSql);
 		}
 
 	}
@@ -135,7 +135,9 @@ public class DataSourceManager {
 	}
 
 	private static void writeResourceToFile(String resourceName, File file) throws FileNotFoundException, IOException {
-		new FileOutputStream(file).close();
+		if (!file.exists()) {
+			new FileOutputStream(file).close();
+		}
 		InputStream is = MysqlManager.class.getResourceAsStream(resourceName);
 		BufferedInputStream bis = new BufferedInputStream(is);
 		FileOutputStream fos = new FileOutputStream(file);
