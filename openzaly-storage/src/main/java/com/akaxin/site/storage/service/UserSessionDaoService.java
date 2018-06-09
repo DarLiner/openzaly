@@ -21,7 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserSessionDao;
 import com.akaxin.site.storage.bean.SimpleAuthBean;
 import com.akaxin.site.storage.bean.UserSessionBean;
-import com.akaxin.site.storage.sqlite.SQLiteUserSessionDao;
+import com.akaxin.site.storage.dao.SiteUserSessionDao;
 
 /**
  * 
@@ -32,32 +32,32 @@ public class UserSessionDaoService implements IUserSessionDao {
 
 	@Override
 	public boolean saveUserSession(UserSessionBean bean) throws SQLException {
-		return SQLiteUserSessionDao.getInstance().saveIfAbsent(bean);
+		return SiteUserSessionDao.getInstance().saveIfAbsent(bean);
 	}
 
 	@Override
 	public SimpleAuthBean getUserSession(String sessionId) throws SQLException {
-		return SQLiteUserSessionDao.getInstance().queryAuthSession(sessionId);
+		return SiteUserSessionDao.getInstance().queryAuthSession(sessionId);
 	}
 
 	@Override
 	public List<String> getSessionDeivceIds(String userId) throws SQLException {
-		return SQLiteUserSessionDao.getInstance().queryDeviceIds(userId);
+		return SiteUserSessionDao.getInstance().queryDeviceIds(userId);
 	}
 
 	@Override
 	public boolean onlineSession(String siteUserId, String deviceId) throws SQLException {
-		return SQLiteUserSessionDao.getInstance().setOnlineSession(siteUserId, deviceId, true);
+		return SiteUserSessionDao.getInstance().setOnlineSession(siteUserId, deviceId, true);
 	}
 
 	@Override
 	public boolean offlineSession(String siteUserId, String deviceId) throws SQLException {
-		return SQLiteUserSessionDao.getInstance().setOnlineSession(siteUserId, deviceId, false);
+		return SiteUserSessionDao.getInstance().setOnlineSession(siteUserId, deviceId, false);
 	}
 
 	@Override
 	public boolean deleteUserSession(String siteUserId, String deviceId) throws SQLException {
-		return SQLiteUserSessionDao.getInstance().deleteSession(siteUserId, deviceId);
+		return SiteUserSessionDao.getInstance().deleteSession(siteUserId, deviceId);
 	}
 
 }

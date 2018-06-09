@@ -53,10 +53,11 @@ import com.akaxin.site.connector.http.HttpServer;
 import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.sqlite.manager.PluginArgs;
 import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.NeedInitMysqlException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
-import com.akaxin.site.storage.sqlite.manager.DBConfig;
-import com.akaxin.site.storage.sqlite.manager.PluginArgs;
 
 /**
  * <pre>
@@ -108,8 +109,6 @@ import com.akaxin.site.storage.sqlite.manager.PluginArgs;
  * @since 2018.01.01 11:23:42
  */
 public class Bootstrap {
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(Bootstrap.class);
 
 	public static void main(String[] args) {
 
@@ -117,8 +116,7 @@ public class Bootstrap {
 		try {
 			setBaseDir();
 		} catch (IOException ioe) {
-			// TODO Auto-generated catch block
-			ioe.printStackTrace();
+			BootLog.error("openzaly set base dir error");
 			System.exit(-100);
 		}
 
@@ -135,8 +133,8 @@ public class Bootstrap {
 		String nettyTcpHost = "0.0.0.0";
 		int nettyTcpPort = 2021;
 
-		String nettyHttpHost = "0.0.0.0";
-		int nettyHttpPort = 8280;
+		String pluginAPiAddress = "0.0.0.0";
+		int pluginAPiPort = 8280;
 
 		try {
 			// init and set default log level by openzaly.properties
@@ -147,8 +145,8 @@ public class Bootstrap {
 			nettyTcpPort = ConfigHelper.getIntConfig(ConfigKey.SITE_PORT);
 
 			// plugin http address from openzaly.properties
-			nettyHttpHost = ConfigHelper.getStringConfig(ConfigKey.PLUGIN_API_ADDRESS);
-			nettyHttpPort = ConfigHelper.getIntConfig(ConfigKey.PLUGIN_API_PORT);
+			pluginAPiAddress = ConfigHelper.getStringConfig(ConfigKey.PLUGIN_API_ADDRESS);
+			pluginAPiPort = ConfigHelper.getIntConfig(ConfigKey.PLUGIN_API_PORT);
 
 			// add site config to database
 			initDataSource();
@@ -156,7 +154,7 @@ public class Bootstrap {
 			addConfigListener();
 
 			// start server
-			startNettyHttpServer(nettyHttpHost, nettyHttpPort);// 0.0.0.0:8280
+			startNettyHttpServer(pluginAPiAddress, pluginAPiPort);// 0.0.0.0:8280
 			startNettyTcpServer(nettyTcpHost, nettyTcpPort);// 0.0.0.0:2021
 
 			// disable websocket server
@@ -180,7 +178,7 @@ public class Bootstrap {
 			BootLog.error("Openzaly-server exit...");
 			System.exit(-2);// system exit
 		} catch (HttpServerException e) {
-			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", nettyHttpHost, nettyHttpPort,
+			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", pluginAPiAddress, pluginAPiPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
 			BootLog.error("start Openzaly with http server error", e);
@@ -195,6 +193,11 @@ public class Bootstrap {
 		} catch (UpgradeDatabaseException e) {
 			Helper.printUpgradeWarn(pwriter);
 			BootLog.error("Openzaly-server current is an old version ,we need to upgrade.", e);
+			System.exit(-5);// system exit
+		} catch (NeedInitMysqlException e) {
+			Helper.printInitMysqlWarn(pwriter);
+			BootLog.error("Openzaly-server need to init mysql.", e);
+			System.exit(-6);// system exit
 		} finally {
 			if (pwriter != null) {
 				pwriter.close();
@@ -211,7 +214,6 @@ public class Bootstrap {
 				file.mkdirs();
 			}
 			System.setProperty("user.dir", file.getCanonicalPath());
-			// BootLog.info("openzaly set base dir:{}", file.getCanonicalPath());
 		}
 	}
 
@@ -234,8 +236,10 @@ public class Bootstrap {
 	 * 
 	 * @throws InitDatabaseException
 	 * @throws UpgradeDatabaseException
+	 * @throws NeedInitMysqlException
 	 */
-	private static void initDataSource() throws InitDatabaseException, UpgradeDatabaseException {
+	private static void initDataSource()
+			throws InitDatabaseException, UpgradeDatabaseException, NeedInitMysqlException {
 		String adminHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
 		int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
 

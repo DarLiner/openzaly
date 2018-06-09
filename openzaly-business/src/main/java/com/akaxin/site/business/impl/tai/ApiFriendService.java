@@ -237,11 +237,11 @@ public class ApiFriendService extends AbstractRequest {
 			}
 
 			if (ErrorCode2.SUCCESS.equals(errCode)) {
-				if (applyTimes == 0) {
-					new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
-				}
+				new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
 				// 同时下发一条PUSH消息
-				PushNotification.sendAddFriend(siteUserId, siteFriendId);
+				if (applyTimes < 2) {
+					PushNotification.sendAddFriend(siteUserId, siteFriendId);
+				}
 			}
 
 		} catch (Exception e) {

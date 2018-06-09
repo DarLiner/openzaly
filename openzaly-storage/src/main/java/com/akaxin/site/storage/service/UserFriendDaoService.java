@@ -21,7 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserFriendDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
-import com.akaxin.site.storage.sqlite.SQLiteUserFriendDao;
+import com.akaxin.site.storage.dao.SiteUserFriendDao;
 
 /**
  * 
@@ -32,79 +32,79 @@ public class UserFriendDaoService implements IUserFriendDao {
 
 	@Override
 	public int getUserFriendNum(String siteUserId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryUserFriendNum(siteUserId);
+		return SiteUserFriendDao.getInstance().queryUserFriendNum(siteUserId);
 	}
 
 	@Override
 	public List<SimpleUserBean> getUserFriends(String siteUserId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryUserFriends(siteUserId);
+		return SiteUserFriendDao.getInstance().queryUserFriends(siteUserId);
 	}
 
 	@Override
 	public List<SimpleUserBean> getUserFriendsByPage(String siteUserId, int pageNum, int pageSize) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryUserFriendsByPage(siteUserId, pageNum, pageSize);
+		return SiteUserFriendDao.getInstance().queryUserFriendsByPage(siteUserId, pageNum, pageSize);
 	}
 
 	@Override
 	public boolean saveRelation(String siteUserId, String siteFriendId, int relation) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().saveRelation(siteUserId, siteFriendId, relation);
+		return SiteUserFriendDao.getInstance().saveRelation(siteUserId, siteFriendId, relation);
 	}
 
 	@Override
 	public int queryRelation(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryRelation(siteUserId, siteFriendId);
+		return SiteUserFriendDao.getInstance().queryRelation(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryIsFriendRelation(siteUserId, siteFriendId);
+		return SiteUserFriendDao.getInstance().queryIsFriendRelation(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public boolean updateRelation(String siteUserId, String siteFriendId, int relation) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().updateRelation(siteUserId, siteFriendId, relation);
+		return SiteUserFriendDao.getInstance().updateRelation(siteUserId, siteFriendId, relation);
 	}
 
 	@Override
 	public boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().deleteRelation(siteUserId, siteFriendId);
+		return SiteUserFriendDao.getInstance().deleteRelation(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public UserFriendBean getFriendSetting(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryUserFriendSetting(siteUserId, siteFriendId);
+		return SiteUserFriendDao.getInstance().queryUserFriendSetting(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public boolean updateFriendSetting(String siteUserId, UserFriendBean bean) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().updateUserFriendSetting(siteUserId, bean);
+		return SiteUserFriendDao.getInstance().updateUserFriendSetting(siteUserId, bean);
 	}
 
 	@Override
 	public boolean isMute(String siteUserId, String siteFriendId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().queryMute(siteUserId, siteFriendId);
+		return SiteUserFriendDao.getInstance().queryMute(siteUserId, siteFriendId);
 	}
 
 	@Override
 	public boolean updateMute(String siteUserId, String siteFriendId, boolean mute) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().updateMute(siteUserId, siteFriendId, mute);
+		return SiteUserFriendDao.getInstance().updateMute(siteUserId, siteFriendId, mute);
 	}
 
 	@Override
 	public boolean remarkFriend(String siteUserId, String siteFriendId, String aliasName, String aliasNameInLatin)
 			throws SQLException {
-		return SQLiteUserFriendDao.getInstance().updateFriendAlias(siteUserId, siteFriendId, aliasName,
+		return SiteUserFriendDao.getInstance().updateFriendAlias(siteUserId, siteFriendId, aliasName,
 				aliasNameInLatin);
 	}
 
 	@Override
 	public int friendNum(long now, int day) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().getFrienNum(now, day);
+		return SiteUserFriendDao.getInstance().getFrienNum(now, day);
 	}
 
 	@Override
 	public boolean delUserFriend(String siteUserId) throws SQLException {
-		return SQLiteUserFriendDao.getInstance().delUserFriend(siteUserId);
+		return SiteUserFriendDao.getInstance().delUserFriend(siteUserId);
 	}
 
 }

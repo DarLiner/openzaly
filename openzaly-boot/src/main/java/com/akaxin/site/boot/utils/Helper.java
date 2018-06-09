@@ -1,6 +1,7 @@
 package com.akaxin.site.boot.utils;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,12 +15,13 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
 import com.akaxin.site.storage.DataSourceManager;
+import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
-import com.akaxin.site.storage.sqlite.manager.DBConfig;
-import com.akaxin.site.storage.sqlite.sql.SQLConst;
 
 public class Helper {
 	private static final Logger logger = LoggerFactory.getLogger(Helper.class);
@@ -36,6 +38,7 @@ public class Helper {
 			options.addOption("h", false, "help message list");
 			options.addOption("help", false, "help message list");
 			options.addOption("upgrade", false, "upgrade openzaly server");
+			options.addOption("init_mysql", false, "init database mysql");
 			DefaultParser posixParser = new DefaultParser();
 			CommandLine commandLine = posixParser.parse(options, args);
 
@@ -52,6 +55,10 @@ public class Helper {
 			} else if (commandLine.hasOption("upgrade")) {
 				pw = new PrintWriter(System.out);
 				upgrade(pw);
+				return true;
+			} else if (commandLine.hasOption("init_mysql")) {
+				pw = new PrintWriter(System.out);
+				initMysqlDatabase(pw);
 				return true;
 			}
 			return false;
@@ -134,24 +141,24 @@ public class Helper {
 		pwriter.flush();
 	}
 
+	public static void printInitMysqlWarn(PrintWriter pwriter) {
+		pwriter.println("[Error] openzaly-server need to init mysql first, you can execute following command:");
+		pwriter.println();
+		pwriter.println("\t java -jar openzaly-server.jar -init_mysql");
+		pwriter.println();
+		pwriter.flush();
+	}
+
 	private static void printHelperMessage(PrintWriter pw) {
 		pw.println();
 		pw.println("example:java -Dsite.port=2021 -jar openzaly-server.jar ");
 		pw.println();
-		// pw.println("\t-Dsite.project.env \topenzaly server environment
-		// default:ONLINE");
-		// pw.println("\t-Dsite.version \t\topenzaly server version default:0.3.2");
 		pw.println("\t-Dsite.address \t\topenzaly Netty address default:0.0.0.0");
 		pw.println("\t-Dsite.port \t\topenzaly Netty port default:2021");
 		pw.println("\t-Dpluginapi.address \topenzaly Http address default: 0.0.0.0");
 		pw.println("\t-Dpluginapi.port \topenzaly Http port default:8280");
-		// pw.println("\t-Dsite.admin.address \topenzaly AdminSystem address default:
-		// 127.0.0.1");
-		// pw.println("\t-Dsite.admin.port \topenzaly AdminSystem port default: 8288");
 		pw.println("\t-Dsite.admin.uic \topenzaly first uic for admin port default: \"000000\"");
 		pw.println("\t-Dsite.baseDir \t\topenzaly openzaly-server root dir default:./");
-		// pw.println("\t-Dgroup.members.count \topenzaly Max group member size
-		// default:100");
 		pw.println();
 		pw.flush();
 	}
@@ -183,4 +190,21 @@ public class Helper {
 		pw.flush();
 	}
 
+	private static void initMysqlDatabase(PrintWriter pw) {
+		pw.println("[INFO] starting init mysql");
+		try {
+			DataSourceManager.initMysql();
+			pw.println("[OK] init mysql finish ,please execute command to start openzaly-server");
+			pw.println();
+			pw.println("\t java -jar openzaly-server.jar");
+		} catch (FileNotFoundException e) {
+			logger.error("init mysql error,", e);
+			pw.println(StringHelper.format("[ERROR] init mysql error:[{}]", e.getMessage()));
+		} catch (IOException e) {
+			logger.error("init mysql error,", e);
+			pw.println(StringHelper.format("[ERROR] init mysql error:[{}]", e.getMessage()));
+		}
+		pw.println();
+		pw.flush();
+	}
 }

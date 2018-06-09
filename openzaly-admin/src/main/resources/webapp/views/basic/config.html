@@ -170,7 +170,7 @@
         </div>
     </div>
 
-    <div class="weui-cell">
+    <!-- <div class="weui-cell">
         <div class="weui-cell__hd">子管理员账号</div>
         <div class="weui-cell__bd">
 
@@ -179,20 +179,20 @@
             <input class="weui-input subgenus_admin" type="text" th:value="${subgenus_admin}"
                    placeholder="输入子管理员账号" th:if="${manager_type}!='site_manager'" style="text-align: right;">
         </div>
-    </div>
+    </div> -->
     <a class="weui-cell weui-cell_access site_push" th:attr="data=${push_client_status}" href="javascript:;">
         <div class="weui-cell__bd">
-            <p>站点push</p>
+            <p>消息通知</p>
         </div>
         <div th:switch="${push_client_status}">
             <div class="weui-cell__ft site_push—txt" th:case="0">
-                站点关闭push
+                关闭通知
             </div>
             <div class="weui-cell__ft site_push—txt" th:case="1">
-                push不显示文本内容
+                不显示文本内容
             </div>
             <div class="weui-cell__ft site_push—txt" th:case="2">
-                push显示文本内容
+                显示文本内容
             </div>
         </div>
     </a>
@@ -202,13 +202,13 @@
         </div>
         <div th:switch="${log_level}">
             <div class="weui-cell__ft log_level—txt" th:case="DEBUG">
-                Debug级别
+                DEBUG
             </div>
             <div class="weui-cell__ft log_level—txt" th:case="*">
-                Info级别
+                INFO
             </div>
             <div class="weui-cell__ft log_level—txt" th:case="ERROR">
-                Error级别
+                ERROR
             </div>
         </div>
     </a>
@@ -331,7 +331,7 @@
         var logLevel = $(".log_level").attr("data");
         var siteAddressInfo = $('.site_address_info').val();
         var openSecret = $('.open_secret').prop('checked');
-        var siteManager = $('.subgenus_admin').val();
+        //var siteManager = $('.subgenus_admin').val();
 
         if (openSecret) {
             openSecret = '1';
@@ -397,8 +397,8 @@
             'uic_status': uic_status,
             'u2_encryption_status': openSecret,
             'push_client_status': pushClientStatus,
-            'log_level': logLevel,
-            'site_manager': siteManager
+            'log_level': logLevel
+           //'site_manager': siteManager
         };
         var reqUri = $(this).attr('url-data');
         $.confirm({
@@ -453,26 +453,26 @@
                 console.log("close");
             },
             actions: [{
-                text: "Debug级别",
+                text: "DEBUG",
                 className: "color-primary weui-dialog__btn",
                 onClick: function () {
-                    $(".log_level—txt").html("Debug级别");
+                    $(".log_level—txt").html("DEBUG");
                     $(".log_level").attr("data", "DEBUG");
                 }
             },
                 {
-                    text: "Info级别",
+                    text: "INFO",
                     className: "color-warning weui-dialog__btn",
                     onClick: function () {
-                        $(".log_level—txt").html("Info级别");
+                        $(".log_level—txt").html("INFO");
                         $(".log_level").attr("data", "INFO");
                     }
                 },
                 {
-                    text: "Error级别",
+                    text: "ERROR",
                     className: 'color-danger weui-dialog__btn',
                     onClick: function () {
-                        $(".log_level—txt").html("Error级别");
+                        $(".log_level—txt").html("ERROR");
                         $(".log_level").attr("data", "ERROR");
                     }
                 }
@@ -488,27 +488,27 @@
                 console.log("close");
             },
             actions: [{
-                text: "站点关闭push",
+                text: "禁用通知",
                 className: "color-primary weui-dialog__btn ",
                 onClick: function () {
-                    $(".site_push—txt").html("站点关闭push");
+                    $(".site_push—txt").html("禁用通知");
                     $(".site_push").attr("data", "0");
                 }
             },
 
                 {
-                    text: "push显示文本内容",
+                    text: "显示文本内容",
                     className: 'color-danger weui-dialog__btn',
                     onClick: function () {
-                        $(".site_push—txt").html("push显示文本内容");
+                        $(".site_push—txt").html("显示文本内容");
                         $(".site_push").attr("data", "2");
                     }
                 },
                 {
-                    text: "push不显示文本内容",
+                    text: "不显示文本内容",
                     className: "color-warning weui-dialog__btn",
                     onClick: function () {
-                        $(".site_push—txt").html("push不显示文本内容");
+                        $(".site_push—txt").html("不显示文本内容");
                         $(".site_push").attr("data", "1");
                     }
                 }

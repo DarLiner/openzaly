@@ -23,8 +23,8 @@ import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.sqlite.SQLiteGroupProfileDao;
-import com.akaxin.site.storage.sqlite.SQLiteUserGroupDao;
+import com.akaxin.site.storage.dao.SiteGroupProfileDao;
+import com.akaxin.site.storage.dao.SiteUserGroupDao;
 
 /**
  * 
@@ -35,139 +35,139 @@ public class GroupDaoService implements IGroupDao {
 
 	@Override
 	public List<SimpleGroupBean> getGroupList(int pageNum, int pageSize) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().queryGroupList(pageNum, pageSize);
+		return SiteGroupProfileDao.getInstance().queryGroupList(pageNum, pageSize);
 	}
 
 	@Override
 	public List<SimpleGroupBean> getUserGroupList(String userId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserGroupList(userId);
+		return SiteUserGroupDao.getInstance().queryUserGroupList(userId);
 	}
 
 	@Override
 	public List<SimpleGroupBean> getUserGroupList(String siteUserId, int pageNum, int pageSize) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserGroupList(siteUserId, pageNum, pageSize);
+		return SiteUserGroupDao.getInstance().queryUserGroupList(siteUserId, pageNum, pageSize);
 	}
 
 	@Override
 	public int getUserGroupCount(String siteUserId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserGroupCount(siteUserId);
+		return SiteUserGroupDao.getInstance().queryUserGroupCount(siteUserId);
 	}
 
 	@Override
 	public String getGroupOwner(String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().getGrouMaster(groupId);
+		return SiteGroupProfileDao.getInstance().getGrouMaster(groupId);
 	}
 
 	@Override
 	public GroupMemberBean getGroupMember(String siteUserId, String groupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().getGroupMember(siteUserId, groupId);
+		return SiteUserGroupDao.getInstance().getGroupMember(siteUserId, groupId);
 	}
 
 	@Override
 	public List<String> getGroupMembersId(String groupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryGroupMembersId(groupId);
+		return SiteUserGroupDao.getInstance().queryGroupMembersId(groupId);
 	}
 
 	@Override
 	public List<GroupMemberBean> getGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryGroupMemberList(groupId, pageNum, pageSize);
+		return SiteUserGroupDao.getInstance().queryGroupMemberList(groupId, pageNum, pageSize);
 	}
 
 	@Override
 	public int getNonGroupMemberNum(String groupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberNum(groupId);
+		return SiteUserGroupDao.getInstance().queryNonGroupMemberNum(groupId);
 	}
 
 	@Override
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberList(groupId, pageNum, pageSize);
+		return SiteUserGroupDao.getInstance().queryNonGroupMemberList(groupId, pageNum, pageSize);
 	}
 
 	@Override
 	public int getUserFriendNonGroupMemberNum(String siteUserId, String groupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberNum(siteUserId, groupId);
+		return SiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberNum(siteUserId, groupId);
 	}
 
 	@Override
 	public List<SimpleUserBean> getUserFriendNonGroupMemberList(String siteUserId, String groupId, int pageNum,
 			int pageSize) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberList(siteUserId, groupId, pageNum,
+		return SiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberList(siteUserId, groupId, pageNum,
 				pageSize);
 	}
 
 	@Override
 	public GroupProfileBean addGroupProfile(GroupProfileBean bean) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().saveGroupProfile(bean);
+		return SiteGroupProfileDao.getInstance().saveGroupProfile(bean);
 	}
 
 	@Override
 	public boolean addGroupMember(String siteUserId, String groupId, int status) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().addGroupMember(siteUserId, groupId, status);
+		return SiteUserGroupDao.getInstance().addGroupMember(siteUserId, groupId, status);
 	}
 
 	@Override
 	public boolean deleteGroupProfile(String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().deleteGroupProfile(groupId);
+		return SiteGroupProfileDao.getInstance().deleteGroupProfile(groupId);
 	}
 
 	@Override
 	public int updateGroupProfile(GroupProfileBean bean) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().updateGroupProfile(bean);
+		return SiteGroupProfileDao.getInstance().updateGroupProfile(bean);
 	}
 
 	@Override
 	public int updateGroupIGC(GroupProfileBean bean) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().updateGroupIGC(bean);
+		return SiteGroupProfileDao.getInstance().updateGroupIGC(bean);
 	}
 
 	@Override
 	public int getTotalGroupNum() throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().getTotalGroupNum();
+		return SiteGroupProfileDao.getInstance().getTotalGroupNum();
 	}
 
 	@Override
 	public int getGroupNum(long now, int day) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().getGroupNum(now, day);
+		return SiteGroupProfileDao.getInstance().getGroupNum(now, day);
 	}
 
 	@Override
 	public boolean rmGroupProfile(String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().rmGroupProfile(groupId);
+		return SiteGroupProfileDao.getInstance().rmGroupProfile(groupId);
 	}
 
 	@Override
 	public int updateGroupOwner(String siteUserId, String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().updateGroupOwer(siteUserId, groupId);
+		return SiteGroupProfileDao.getInstance().updateGroupOwer(siteUserId, groupId);
 	}
 
 	@Override
 	public GroupProfileBean queryGroupProfile(String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().queryGroupProfile(groupId);
+		return SiteGroupProfileDao.getInstance().queryGroupProfile(groupId);
 	}
 
 	@Override
 	public GroupProfileBean querySimpleGroupProfile(String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().querySimpleGroupProfile(groupId);
+		return SiteGroupProfileDao.getInstance().querySimpleGroupProfile(groupId);
 	}
 
 	@Override
 	public int getGroupStatus(String groupId) throws SQLException {
-		return SQLiteGroupProfileDao.getInstance().queryGroupStatus(groupId);
+		return SiteGroupProfileDao.getInstance().queryGroupStatus(groupId);
 	}
 
 	@Override
 	public int getGroupMembersCount(String groupId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryGroupMembersCount(groupId);
+		return SiteUserGroupDao.getInstance().queryGroupMembersCount(groupId);
 	}
 
 	@Override
 	public List<String> getUserGroupsId(String userId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserGroupsId(userId);
+		return SiteUserGroupDao.getInstance().queryUserGroupsId(userId);
 	}
 
 	@Override
-	public boolean deleteGroupMember(String groupId, List<String> userIds) {
-		return SQLiteUserGroupDao.getInstance().deleteGroupMember(groupId, userIds);
+	public boolean deleteGroupMember(String groupId, List<String> userIds) throws SQLException {
+		return SiteUserGroupDao.getInstance().deleteGroupMember(groupId, userIds);
 	}
 
 }

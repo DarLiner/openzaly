@@ -60,6 +60,7 @@ public enum ErrorCode2 implements IErrorCode {
 
 	ERROR2_USER_NO_FRIEND("error.no.friends", "用户暂无好友"), //
 	ERROR2_USER_NO_GROUP("error.no.groups", "用户暂无群组"), //
+	ERROR2_USER_AVATAR("error.user.avartar", "获取用户头像失败"), //
 
 	ERROR2_FRIEND_IS("error.alert", "用户已经为好友关系"), //
 	ERROR2_FRIEND_APPLYSELF("error.alert", "用户不能添加自己为好友"), //

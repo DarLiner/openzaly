@@ -124,35 +124,35 @@
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd">
-            <label class="weui-label">扩展名称</label>
+            <label class="weui-label">名称</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input plugin_name" type="text" th:value="${name}" placeholder="请输入扩展名称" style="text-align: right;">
+            <input class="weui-input plugin_name" type="text" th:value="${name}" placeholder="显示给用户看的名字" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd">
-            <label class="weui-label">扩展服务器地址</label>
+            <label class="weui-label">ApiServer地址</label>
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_api_url" type="text" th:value="${api_url}" pattern="[a-z0-9]*"
-                   placeholder="请输入扩展服务器地址" style="text-align: right;">
+                   placeholder="纯网页扩展可以不填" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__hd">
-            <label class="weui-label">落地页</label>
+            <label class="weui-label">落地页URL</label>
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_url_page" type="text" th:value="${url_page}" pattern="[a-z0-9]*"
-                   placeholder="请输入落地页" style="text-align: right;">
+                   placeholder="纯网页扩展请填写页面完整URL" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
             <div class="weui-uploader">
                 <div class="weui-uploader__hd">
-                    <p class="weui-uploader__title">logo上传</p>
+                    <p class="weui-uploader__title">Logo</p>
                     <div class="weui-uploader__info" th:if="${plugin_icon}!=null">1/1</div>
                     <div class="weui-uploader__info" th:unless="${plugin_icon}!=null">0/1</div>
                 </div>
@@ -178,7 +178,7 @@
     <div class="weui-cells">
         <div class="weui-cell">
             <div class="weui-cell__hd">
-                <label class="weui-label">扩展序号</label>
+                <label class="weui-label">排序序号</label>
             </div>
             <div class="weui-cell__bd">
                 <input class="weui-input order" type="text" pattern="[0-9]*" th:value="${order}" style="text-align: right;">
@@ -214,7 +214,7 @@
         </div>
         <div class="weui-cells">
             <div class="weui-cell">
-                <div class="weui-cell__hd">扩展秘钥</div>
+                <div class="weui-cell__hd">密钥(Authkey)</div>
                 <div class="weui-cell__bd">
 
                     <!--<input class="weui-input subgenus_admin" type="text" th:value="${auth_key}" style="text-align: right;"-->
@@ -365,8 +365,8 @@
             var reqUri = $(this).attr('url-data');
             $('#del_plugin').attr('plugin-id', pluginId);
             $.confirm({
-                title: '删除插件',
-                text: '插件删除后，将不能使用！',
+                title: '删除',
+                text: '删除后，将不能使用！',
                 onOK: function () {
                     var params = {
                         'plugin_id': pluginId,
@@ -412,7 +412,7 @@
             var displayMode = $(".display_mode").attr("data");
             
             if (!name || name.length < 1) {
-                $.toptip('插件名称不能为空', 'error');
+                $.toptip('名称不能为空', 'error');
                 return false;
             }
 
@@ -423,13 +423,13 @@
             }
 
             if (!perStatus || perStatus.length < 1) {
-                $.toptip('请选择插件状态', 'error');
+                $.toptip('请选择状态', 'error');
                 return false;
             }
 
             $.confirm({
-                title: '修改插件',
-                text: '插件修改后，将会更新原有插件！',
+                title: '修改',
+                text: '修改后，将会更新原有信息！',
                 onOK: function () {
                     var params = {
                         'plugin_id': pluginId,
@@ -524,10 +524,10 @@
                     }
                 },
                     {
-                        text: "消息帧扩展",
+                        text: "聊天界面",
                         className: "color-warning weui-dialog__btn",
                         onClick: function () {
-                            $(".position-txt").html("消息帧扩展");
+                            $(".position-txt").html("聊天界面");
                             $(".position").attr("data", "1");
                         }
                     }
@@ -607,10 +607,10 @@
                 }
             },
                 {
-                    text: "浮屏展示",
+                    text: "浮屏(聊天界面专用)",
                     className: "color-warning weui-dialog__btn",
                     onClick: function () {
-                        $(".display_mode-txt").html("浮屏展示");
+                        $(".display_mode-txt").html("浮屏(聊天界面专用)");
                         $(".display_mode").attr("data", "1");
                     }
                 }
