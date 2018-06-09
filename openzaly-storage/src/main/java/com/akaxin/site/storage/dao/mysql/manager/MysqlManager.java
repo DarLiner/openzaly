@@ -1,38 +1,34 @@
 package com.akaxin.site.storage.dao.mysql.manager;
 
+import java.io.File;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
-import com.akaxin.site.storage.dao.config.DBConfig;
-import com.akaxin.site.storage.dao.config.DBConfig;
-import com.akaxin.site.storage.dao.config.PrepareSiteConfigData;
 import com.akaxin.site.storage.exception.InitDatabaseException;
 
 public class MysqlManager {
-	private static final Logger logger = LoggerFactory.getLogger(MysqlManager.class);
+	private static final String OPENZALY_MYSQL_SQL = "/openzaly-mysql.sql";
 
 	// 初始化数据库异常，会导致程序终端启动
-	public static void initMysqlDB(DBConfig config) throws InitDatabaseException {
+	public static void initMysqlDB(Properties pro) throws InitDatabaseException {
 		try {
 			// init db && table
-			Connection conn = InitDatabaseConnection.getInitConnection();
-			String sqlPath = "/Users/anguoyue/git/openzaly/openzaly-storage/src/main/resources/openzaly-mysql.sql";
-			FileSystemResource rc = new FileSystemResource(sqlPath);
+			Connection conn = InitDatabaseConnection.getInitConnection(pro);
+			// 初始化数据库表
+			java.net.URL url = MysqlManager.class.getResource(OPENZALY_MYSQL_SQL);
+			File file = new File(url.getFile());
+			FileSystemResource rc = new FileSystemResource(file);
 			EncodedResource encodeRes = new EncodedResource(rc, "GBK");
 			ScriptUtils.executeSqlScript(conn, encodeRes);
 
 			// init c3p0 pool
-			C3P0PoolManager.initPool();
+			C3P0PoolManager.initPool(pro);
 
-			PrepareSiteConfigData.init(config);
 		} catch (Exception e) {
 			throw new InitDatabaseException("init mysql database error", e);
 		} finally {
@@ -49,33 +45,4 @@ public class MysqlManager {
 		C3P0PoolManager.returnConnection(conn);
 	}
 
-	public static void main(String[] args) throws InitDatabaseException {
-		try {
-			// init mysqldb
-			initMysqlDB(null);
-
-			// do action
-			for (int i = 0; i < 5; i++) {
-
-				System.out.println("times = " + i);
-				Connection conn = C3P0PoolManager.getConnection();
-
-				PreparedStatement ps = conn.prepareStatement("select * from site_config_info;");
-				ResultSet rs = ps.executeQuery();
-
-				while (rs.next()) {
-					System.out.println(rs.getInt(1) + " " + rs.getString(2));
-				}
-
-				C3P0PoolManager.returnConnection(conn);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 }

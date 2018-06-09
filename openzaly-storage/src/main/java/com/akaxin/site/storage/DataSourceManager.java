@@ -15,9 +15,20 @@
  */
 package com.akaxin.site.storage;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.akaxin.site.storage.dao.config.DBConfig;
+import com.akaxin.site.storage.dao.config.DBType;
+import com.akaxin.site.storage.dao.config.JdbcConst;
+import com.akaxin.site.storage.dao.config.PrepareSiteConfigData;
 import com.akaxin.site.storage.dao.mysql.manager.MysqlManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteUpgrade;
@@ -31,6 +42,8 @@ import com.akaxin.site.storage.exception.UpgradeDatabaseException;
  * @since 2018-01-31 12:15:15
  */
 public class DataSourceManager {
+	private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
+	private static final String DATABASE_CONFIG = "./openzaly-datasource.config";
 
 	private DataSourceManager() {
 
@@ -38,14 +51,26 @@ public class DataSourceManager {
 
 	public static void init(DBConfig config) throws InitDatabaseException, UpgradeDatabaseException {
 		try {
-			switch (config.getDb()) {
+			DBType dbType = DBType.SQLITE;
+			Properties pro = loadDatabaseConfig(DATABASE_CONFIG);
+			if (pro != null && pro.size() > 0) {
+				String dbDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME);
+				if (StringUtils.isNotEmpty(dbDriver) && dbDriver.contains("com.mysql")) {
+					dbType = DBType.MYSQL;
+				}
+			}
+
+			logger.info("load database config finish databaseType:{}", dbType);
+
+			switch (dbType) {
 			case SQLITE:
-				System.setProperty("database", config.getDb().getName());
+				System.setProperty("database", dbType.getName());
 				SQLiteJDBCManager.initSqliteDB(config);
 				break;
 			case MYSQL:
-				System.setProperty("database", config.getDb().getName());
-				MysqlManager.initMysqlDB(config);
+				System.setProperty("database", dbType.getName());
+				MysqlManager.initMysqlDB(pro); // 初始化数据库以及数据库连接
+				PrepareSiteConfigData.init(config);// 初始化数据库中数据
 				break;
 			}
 		} catch (SQLException e) {
@@ -66,4 +91,26 @@ public class DataSourceManager {
 		}
 		return 0;
 	}
+
+	public static Properties loadDatabaseConfig(String configPath) {
+		Properties properties = null;
+		InputStream inputStream = null;
+		try {
+			properties = new Properties();
+			inputStream = new FileInputStream(configPath);
+			properties.load(inputStream);
+		} catch (Exception e) {
+			logger.error("load database config error,openzaly will use sqlite database", e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (IOException e) {
+				logger.error("close db config inputstream error", e);
+			}
+		}
+		return properties;
+	}
+
 }

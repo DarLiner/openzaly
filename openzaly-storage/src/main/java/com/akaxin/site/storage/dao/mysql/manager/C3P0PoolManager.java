@@ -1,27 +1,34 @@
 package com.akaxin.site.storage.dao.mysql.manager;
 
 import java.sql.SQLException;
+import java.util.Properties;
 
+import com.akaxin.site.storage.dao.config.JdbcConst;
+import com.akaxin.site.storage.util.SqlLog;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class C3P0PoolManager {
 	private static ComboPooledDataSource cpds;
 
-	public static void initPool() throws Exception {
+	public static void initPool(Properties pro) throws Exception {
+		String jdbcDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME, "com.mysql.cj.jdbc.Driver");
+		String jdbcUrl = InitDatabaseConnection.getDBUrl(pro);
+		String userName = pro.getProperty(JdbcConst.USER_NAME);
+		String password = pro.getProperty(JdbcConst.PASSWORD);
 		cpds = new ComboPooledDataSource();
-		// cpds.setDriverClass("com.mysql.jdbc.Driver"); // loads the jdbc driver
-		cpds.setDriverClass("com.mysql.cj.jdbc.Driver"); // loads the jdbc driver
-		// cpds.setJdbcUrl("jdbc:mysql://localhost:3306/hello?useUnicode=true&characterEncoding=utf-8&useSSL=true");
-		// cpds.setJdbcUrl(
-		// "jdbc:mysql://localhost:3306/hello?useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false&useSSL=false");
-		cpds.setJdbcUrl(
-				"jdbc:mysql://localhost:3306/openzaly?useUnicode=true&characterEncoding=utf-8&verifyServerCertificate=false&useSSL=true");
-		cpds.setUser("root");
-		cpds.setPassword("1234567890");
-		cpds.setInitialPoolSize(10);// 初始创建10个连接
-		cpds.setAcquireIncrement(10);// 每次创建10个
-		cpds.setMaxPoolSize(100);// 最大100个
-		// cpds.setMaxIdleTime(6000);//最大空闲时间
+		cpds.setDriverClass(jdbcDriver); // loads the jdbc driver
+		cpds.setJdbcUrl(jdbcUrl);
+		cpds.setUser(userName);
+		cpds.setPassword(password);
+		int inititalSize = Integer.valueOf(pro.getProperty(JdbcConst.INITIAL_SIZE, "10").trim());
+		int maxSize = Integer.valueOf(pro.getProperty(JdbcConst.MAX_SIZE, "100").trim());
+		cpds.setInitialPoolSize(inititalSize);// 初始创建默认10个连接
+		cpds.setMaxPoolSize(maxSize);// 最大默认100个
+		int inc = (maxSize - inititalSize) / 5;
+		cpds.setAcquireIncrement(Integer.max(1, inc));// 每次创建10个
+
+		int maxIdle = Integer.valueOf(pro.getProperty(JdbcConst.MAX_IDLE, "60").trim());
+		cpds.setMaxIdleTime(maxIdle);// 最大空闲时间
 
 	}
 
@@ -35,8 +42,7 @@ public class C3P0PoolManager {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				SqlLog.error("return connection error", e);
 			}
 		}
 	}
