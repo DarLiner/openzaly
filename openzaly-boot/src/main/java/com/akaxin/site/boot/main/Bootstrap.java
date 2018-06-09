@@ -134,7 +134,7 @@ public class Bootstrap {
 		int nettyTcpPort = 2021;
 
 		String pluginAPiAddress = "0.0.0.0";
-		int nettyHttpPort = 8280;
+		int pluginAPiPort = 8280;
 
 		try {
 			// init and set default log level by openzaly.properties
@@ -146,7 +146,7 @@ public class Bootstrap {
 
 			// plugin http address from openzaly.properties
 			pluginAPiAddress = ConfigHelper.getStringConfig(ConfigKey.PLUGIN_API_ADDRESS);
-			nettyHttpPort = ConfigHelper.getIntConfig(ConfigKey.PLUGIN_API_PORT);
+			pluginAPiPort = ConfigHelper.getIntConfig(ConfigKey.PLUGIN_API_PORT);
 
 			// add site config to database
 			initDataSource();
@@ -154,7 +154,7 @@ public class Bootstrap {
 			addConfigListener();
 
 			// start server
-			startNettyHttpServer(pluginAPiAddress, nettyHttpPort);// 0.0.0.0:8280
+			startNettyHttpServer(pluginAPiAddress, pluginAPiPort);// 0.0.0.0:8280
 			startNettyTcpServer(nettyTcpHost, nettyTcpPort);// 0.0.0.0:2021
 
 			// disable websocket server
@@ -178,7 +178,7 @@ public class Bootstrap {
 			BootLog.error("Openzaly-server exit...");
 			System.exit(-2);// system exit
 		} catch (HttpServerException e) {
-			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", pluginAPiAddress, nettyHttpPort,
+			String errMessage = StringHelper.format("openzaly http-server {}:{} {}", pluginAPiAddress, pluginAPiPort,
 					e.getCause().getMessage());
 			Helper.startFailWithError(pwriter, errMessage);
 			BootLog.error("start Openzaly with http server error", e);

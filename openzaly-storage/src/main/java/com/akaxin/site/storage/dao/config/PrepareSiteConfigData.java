@@ -26,7 +26,7 @@ import com.akaxin.site.storage.dao.sqlite.manager.PluginArgs;
 public class PrepareSiteConfigData {
 	private static final Logger logger = LoggerFactory.getLogger(PrepareSiteConfigData.class);
 
-	public static void init(DBConfig config) {
+	public static void init(DBConfig config) throws SQLException {
 		initSiteConfig(config.getConfigMap());
 		initSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getAdminApi(), config.getSiteServer(),
 				config.getAdminIcon());
@@ -35,36 +35,32 @@ public class PrepareSiteConfigData {
 		initAdminUic(config.getAdminUic());
 	}
 
-	private static void initSiteConfig(Map<Integer, String> configMap) {
-		try {
-			Map<Integer, String> oldMap = SiteConfigDao.getInstance().queryConfig();
-			if (oldMap != null) {
-				if (oldMap.get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.PIC_PATH_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.PIC_PATH_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
-				}
+	private static void initSiteConfig(Map<Integer, String> configMap) throws SQLException {
+		Map<Integer, String> oldMap = SiteConfigDao.getInstance().queryConfig();
+		if (oldMap != null) {
+			if (oldMap.get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
 			}
-			SiteConfigDao.getInstance().updateConfig(configMap, true);
-		} catch (SQLException e) {
-			logger.error("init site config error.");
+			if (oldMap.get(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE);
+			}
+			if (oldMap.get(ConfigProto.ConfigKey.PIC_PATH_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.PIC_PATH_VALUE);
+			}
+			if (oldMap.get(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE);
+			}
+			if (oldMap.get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE);
+			}
+			if (oldMap.get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE);
+			}
+			if (oldMap.get(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE) != null) {
+				configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
+			}
 		}
+		SiteConfigDao.getInstance().updateConfig(configMap, true);
 	}
 
 	private static void initSitePlugin(int id, String siteName, String urlPage, String apiUrl, String siteIcon) {

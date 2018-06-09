@@ -153,7 +153,6 @@ public class SiteConfigDao {
 				int updateResult = ps.executeUpdate();
 
 				ps.clearParameters();
-				ps.close();
 
 				if (updateResult == 0) {
 					updateResult = saveConfig(configEntry.getKey(), configEntry.getValue());
