@@ -293,7 +293,7 @@ public class UserGroupDao {
 		try {
 			goupList = groupDao.getGroupList(pageNum, pageSize);
 		} catch (Exception e) {
-			logger.error("get user group list error.", e);
+			logger.error("get group list error.", e);
 		}
 		return goupList;
 	}

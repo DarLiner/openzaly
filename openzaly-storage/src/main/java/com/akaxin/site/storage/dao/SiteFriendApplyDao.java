@@ -165,10 +165,11 @@ public class SiteFriendApplyDao {
 	 */
 	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,site_friend_id,apply_reason,MAX(apply_time) FROM " + FRIEND_APPLY_TABLE
-				+ " WHERE site_user_id=? AND site_friend_id=?;";
-		ApplyFriendBean bean = null;
+//		String sql = "SELECT site_user_id,site_friend_id,apply_reason,MAX(apply_time) FROM " + FRIEND_APPLY_TABLE
+//				+ " WHERE site_user_id=? AND site_friend_id=?;";
+		String sql = "SELECT a.site_friend_id,a.apply_reason,a.apply_time from site_friend_apply a INNER JOIN (select site_friend_id,max(apply_time) apply_time from site_friend_apply where site_user_id=? and site_friend_id=? group by site_friend_id) as b on a.site_friend_id=b.site_friend_id and a.apply_time=b.apply_time;";
 
+		ApplyFriendBean bean = null;
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -206,10 +207,18 @@ public class SiteFriendApplyDao {
 	public List<ApplyUserBean> queryApplyUsers(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<ApplyUserBean> applyUsers = new ArrayList<ApplyUserBean>();
-		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,max(a.apply_time) FROM  "
-				+ FRIEND_APPLY_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
-				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=?  group by a.site_friend_id ";
+		// String sql = "SELECT
+		// a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,max(a.apply_time)
+		// FROM "
+		// + FRIEND_APPLY_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
+		// + " AS b ON a.site_friend_id=b.site_user_id WHERE a.site_user_id=? GROUP BY
+		// a.site_friend_id;";
 
+		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo,a.apply_reason,a.apply_time from (select c.site_friend_id,c.apply_reason,c.apply_time from "
+				+ FRIEND_APPLY_TABLE + " c inner join (select site_friend_id,max(apply_time) apply_time from "
+				+ FRIEND_APPLY_TABLE
+				+ " where site_user_id=? group by site_friend_id) as d on c.site_friend_id=d.site_friend_id and c.apply_time=d.apply_time) AS a LEFT JOIN "
+				+ SQLConst.SITE_USER_PROFILE + " AS b ON a.site_friend_id=b.site_user_id;";
 		Connection conn = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;

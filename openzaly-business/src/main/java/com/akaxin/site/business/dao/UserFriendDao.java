@@ -121,7 +121,7 @@ public class UserFriendDao {
 			friendApplyDao.deleteApply(siteFriendId, siteUserId);
 			friendApplyDao.deleteApply(siteUserId, siteFriendId);
 		} catch (SQLException e) {
-			logger.error("get apply friend info error", e);
+			logger.error("agree apply friend with clear error", e);
 		}
 		return bean;
 	}

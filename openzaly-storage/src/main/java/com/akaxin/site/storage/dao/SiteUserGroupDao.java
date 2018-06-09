@@ -130,7 +130,7 @@ public class SiteUserGroupDao {
 		List<SimpleGroupBean> groupList = new ArrayList<SimpleGroupBean>();
 		String sql = "SELECT a.site_group_id,b.group_name,b.group_photo FROM " + USER_GROUP_TABLE + " AS a LEFT JOIN "
 				+ SQLConst.SITE_GROUP_PROFILE
-				+ " AS b WHERE a.site_group_id=b.site_group_id AND b.group_status>0 AND a.site_user_id=?;";
+				+ " AS b ON a.site_group_id=b.site_group_id WHERE a.site_user_id=? AND b.group_status>0;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;

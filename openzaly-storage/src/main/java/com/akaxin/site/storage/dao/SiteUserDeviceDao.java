@@ -342,7 +342,7 @@ public class SiteUserDeviceDao {
 		long startTime = System.currentTimeMillis();
 		String userToken = null;
 		String sql = "SELECT user_token,max(active_time) FROM " + SQLConst.SITE_USER_DEVICE
-				+ " WHERE site_user_id=? LIMIT 1;";
+				+ " WHERE site_user_id=? GROUP BY user_token LIMIT 1;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;

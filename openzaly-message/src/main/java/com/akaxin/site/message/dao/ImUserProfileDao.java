@@ -69,7 +69,7 @@ public class ImUserProfileDao {
 		try {
 			return userProfileDao.getGlobalUserIdBySiteUserId(siteUserId);
 		} catch (SQLException e) {
-			logger.error("get user token error.", e);
+			logger.error("get user globalUserId error.", e);
 		}
 		return null;
 	}
