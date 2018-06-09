@@ -21,10 +21,10 @@ public class InitDatabaseConnection {
 	public static Connection getInitConnection(Properties pro) throws Exception {
 		String jdbcDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME, "com.mysql.cj.jdbc.Driver");
 		String jdbcUrl = getDBUrl(pro);
+		jdbcUrl = jdbcUrl.replace("openzaly", "mysql");
 		String userName = pro.getProperty(JdbcConst.USER_NAME);
 		String password = pro.getProperty(JdbcConst.PASSWORD);
 		Class.forName(jdbcDriver);
-		System.out.println(String.format("%s %s %s", jdbcUrl, userName, password));
 		conn = DriverManager.getConnection(jdbcUrl, userName, password);
 		return conn;
 	}

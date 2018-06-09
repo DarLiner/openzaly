@@ -54,9 +54,9 @@ import com.akaxin.site.connector.netty.NettyServer;
 import com.akaxin.site.connector.ws.WsServer;
 import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.dao.config.DBConfig;
-import com.akaxin.site.storage.dao.config.DBType;
 import com.akaxin.site.storage.dao.sqlite.manager.PluginArgs;
 import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.NeedInitMysqlException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 /**
@@ -193,6 +193,11 @@ public class Bootstrap {
 		} catch (UpgradeDatabaseException e) {
 			Helper.printUpgradeWarn(pwriter);
 			BootLog.error("Openzaly-server current is an old version ,we need to upgrade.", e);
+			System.exit(-5);// system exit
+		} catch (NeedInitMysqlException e) {
+			Helper.printInitMysqlWarn(pwriter);
+			BootLog.error("Openzaly-server need to init mysql.", e);
+			System.exit(-6);// system exit
 		} finally {
 			if (pwriter != null) {
 				pwriter.close();
@@ -231,8 +236,10 @@ public class Bootstrap {
 	 * 
 	 * @throws InitDatabaseException
 	 * @throws UpgradeDatabaseException
+	 * @throws NeedInitMysqlException
 	 */
-	private static void initDataSource() throws InitDatabaseException, UpgradeDatabaseException {
+	private static void initDataSource()
+			throws InitDatabaseException, UpgradeDatabaseException, NeedInitMysqlException {
 		String adminHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADMIN_ADDRESS);
 		int adminPort = ConfigHelper.getIntConfig(ConfigKey.SITE_ADMIN_PORT);
 
@@ -241,7 +248,6 @@ public class Bootstrap {
 		Map<Integer, String> siteConfigMap = ConfigHelper.getConfigMap();
 
 		DBConfig config = new DBConfig();
-		config.setDb(DBType.MYSQL);
 		config.setConfigMap(siteConfigMap);
 		config.setDbDir(dbDir);
 		config.setAdminAddress(adminHost);

@@ -10,18 +10,22 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.NeedInitMysqlException;
 
 public class MysqlManager {
-	private static final String OPENZALY_MYSQL_SQL = "/openzaly-mysql.sql";
+	private static final String OPENZALY_MYSQL_SQL = "openzaly-mysql.sql";
 
 	// 初始化数据库异常，会导致程序终端启动
-	public static void initMysqlDB(Properties pro) throws InitDatabaseException {
+	public static void initMysqlDB(Properties pro) throws InitDatabaseException, NeedInitMysqlException {
 		try {
 			// init db && table
 			Connection conn = InitDatabaseConnection.getInitConnection(pro);
 			// 初始化数据库表
-			java.net.URL url = MysqlManager.class.getResource(OPENZALY_MYSQL_SQL);
-			File file = new File(url.getFile());
+			File file = new File(OPENZALY_MYSQL_SQL);
+			if (!file.exists()) {
+				throw new NeedInitMysqlException("init mysql with sql script file error");
+			}
+
 			FileSystemResource rc = new FileSystemResource(file);
 			EncodedResource encodeRes = new EncodedResource(rc, "GBK");
 			ScriptUtils.executeSqlScript(conn, encodeRes);

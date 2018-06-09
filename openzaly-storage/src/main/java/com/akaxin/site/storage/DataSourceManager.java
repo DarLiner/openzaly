@@ -15,7 +15,11 @@
  */
 package com.akaxin.site.storage;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -33,6 +37,7 @@ import com.akaxin.site.storage.dao.mysql.manager.MysqlManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteUpgrade;
 import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.NeedInitMysqlException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 /**
@@ -43,23 +48,25 @@ import com.akaxin.site.storage.exception.UpgradeDatabaseException;
  */
 public class DataSourceManager {
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
-	private static final String DATABASE_CONFIG = "./openzaly-datasource.config";
+
+	private static final String OPENZALY_DATABASE_CONFIG = "openzaly-datasource.config";
+	private static final String OPENZALY_MYSQL_SQL = "openzaly-mysql.sql";
 
 	private DataSourceManager() {
-
 	}
 
-	public static void init(DBConfig config) throws InitDatabaseException, UpgradeDatabaseException {
+	public static void init(DBConfig config)
+			throws InitDatabaseException, UpgradeDatabaseException, NeedInitMysqlException {
 		try {
 			DBType dbType = DBType.SQLITE;
-			Properties pro = loadDatabaseConfig(DATABASE_CONFIG);
+			Properties pro = loadDatabaseConfig(OPENZALY_DATABASE_CONFIG);
 			if (pro != null && pro.size() > 0) {
 				String dbDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME);
 				if (StringUtils.isNotEmpty(dbDriver) && dbDriver.contains("com.mysql")) {
 					dbType = DBType.MYSQL;
 				}
 			}
-
+			config.setDb(dbType);
 			logger.info("load database config finish databaseType:{}", dbType);
 
 			switch (dbType) {
@@ -76,6 +83,20 @@ public class DataSourceManager {
 		} catch (SQLException e) {
 			throw new InitDatabaseException("init database error", e);
 		}
+	}
+
+	public static void initMysql() throws FileNotFoundException, IOException {
+		// 生成配置文件
+		File configFile = new File(OPENZALY_DATABASE_CONFIG);
+		if (!configFile.exists()) {
+			writeResourceToFile("/" + OPENZALY_DATABASE_CONFIG, configFile);
+		}
+		// 加载数据库sql执行脚本
+		File fileSql = new File(OPENZALY_MYSQL_SQL);
+		if (!fileSql.exists()) {
+			writeResourceToFile("/" + OPENZALY_MYSQL_SQL, configFile);
+		}
+
 	}
 
 	public static int upgrade(DBConfig config) throws UpgradeDatabaseException {
@@ -113,4 +134,27 @@ public class DataSourceManager {
 		return properties;
 	}
 
+	private static void writeResourceToFile(String resourceName, File file) throws FileNotFoundException, IOException {
+		new FileOutputStream(file).close();
+		InputStream is = MysqlManager.class.getResourceAsStream(resourceName);
+		BufferedInputStream bis = new BufferedInputStream(is);
+		FileOutputStream fos = new FileOutputStream(file);
+		try {
+			byte[] buffer = new byte[1024];
+			int bytesLen = 0;
+			while ((bytesLen = bis.read(buffer)) != -1) {
+				fos.write(buffer, 0, bytesLen);
+			}
+		} finally {
+			if (bis != null) {
+				bis.close();
+			}
+			if (is != null) {
+				is.close();
+			}
+			if (fos != null) {
+				fos.close();
+			}
+		}
+	}
 }
