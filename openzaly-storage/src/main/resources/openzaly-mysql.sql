@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL AUT
             msg_type INTEGER, 
             content TEXT, 
             device_id VARCHAR(50), 
-            ts_key VARCHAR(50), 
+            ts_key TEXT, 
             msg_time BIGINT);
 
 CREATE TABLE IF NOT EXISTS site_message_pointer(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
