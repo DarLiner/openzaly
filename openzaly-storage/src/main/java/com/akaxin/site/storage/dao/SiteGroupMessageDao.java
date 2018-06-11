@@ -98,8 +98,8 @@ public class SiteGroupMessageDao {
 		long startTime = System.currentTimeMillis();
 		List<GroupMessageBean> gmsgList = new ArrayList<GroupMessageBean>();
 		String sql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
-				+ GROUP_MESSAGE_TABLE
-				+ " AS a LEFT JOIN site_group_profile AS b WHERE a.site_group_id=b.site_group_id AND a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id IS NOT ? LIMIT ?;";
+				+ GROUP_MESSAGE_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_GROUP_PROFILE
+				+ " AS b ON a.site_group_id=b.site_group_id WHERE a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id<>? LIMIT ?;";
 
 		start = queryGroupPointer(groupId, userId, deviceId, start);
 
@@ -167,7 +167,7 @@ public class SiteGroupMessageDao {
 		ResultSet rs = null;
 		try {
 			conn = DatabaseConnection.getConnection();
-			pst = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			pst = conn.prepareStatement(sql);
 			// statement.setString(1, msgIdBuider.toString());
 
 			rs = pst.executeQuery();
@@ -237,7 +237,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement pst = null;
 		try {
 			conn = DatabaseConnection.getConnection();
-			pst = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			pst = conn.prepareStatement(sql);
 			pst.setLong(1, finish);
 			pst.setString(2, userId);
 			pst.setString(3, groupId);
@@ -264,7 +264,7 @@ public class SiteGroupMessageDao {
 		ResultSet rs = null;
 		try {
 			conn = DatabaseConnection.getConnection();
-			pst = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, groupId);
 			pst.setString(3, deviceId);
@@ -351,7 +351,8 @@ public class SiteGroupMessageDao {
 		try {
 			conn = DatabaseConnection.getConnection();
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, groupId);
+			ps.setString(1, siteUserId);
+			ps.setString(2, groupId);
 
 			rs = ps.executeQuery();
 			if (rs.next()) {

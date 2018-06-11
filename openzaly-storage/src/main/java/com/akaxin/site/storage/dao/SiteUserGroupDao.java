@@ -65,7 +65,9 @@ public class SiteUserGroupDao {
 			pst.setString(1, siteGroupId);
 
 			rs = pst.executeQuery();
-			result = rs.getInt(1);
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -284,7 +286,7 @@ public class SiteUserGroupDao {
 		List<GroupMemberBean> membersList = new ArrayList<GroupMemberBean>();
 		String sql = "SELECT DISTINCT a.site_user_id,b.user_name,b.user_photo,a.user_role FROM " + USER_GROUP_TABLE
 				+ " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
-				+ " AS b WHERE a.site_user_id=b.site_user_id AND a.site_group_id=? limit ?,?;";
+				+ " AS b ON a.site_user_id=b.site_user_id WHERE a.site_group_id=? limit ?,?;";
 
 		int startNum = (pageNum - 1) * pageSize;
 		Connection conn = null;

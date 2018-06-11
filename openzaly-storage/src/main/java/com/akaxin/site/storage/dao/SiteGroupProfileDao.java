@@ -66,7 +66,7 @@ public class SiteGroupProfileDao {
 		try {
 			conn = DatabaseConnection.getConnection();
 
-			pst = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+			pst = conn.prepareStatement(sql);
 			pst.setInt(1, startNum);
 			pst.setInt(2, pageSize);
 

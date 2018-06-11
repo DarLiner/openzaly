@@ -239,8 +239,13 @@ public class SiteUserDeviceDao {
 	public UserDeviceBean queryLatestDevice(String siteUserId) throws SQLException {
 		UserDeviceBean deviceBean = new UserDeviceBean();
 		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,device_id,user_device_pubk,device_name,max(active_time) FROM "
-				+ USER_DEVICE_TABLE + " WHERE site_user_id=? LIMIT 1;";
+		// String sql = "SELECT
+		// site_user_id,device_id,user_device_pubk,device_name,max(active_time) FROM "
+		// + USER_DEVICE_TABLE + " WHERE site_user_id=? LIMIT 1;";
+
+		String sql = "SELECT a.site_user_id,a.device_id,a.user_device_pubk,a.device_name,a.active_time FROM "
+				+ USER_DEVICE_TABLE + " AS a INNER JOIN (SELECT device_id,MAX(active_time) FROM " + USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? GROUP BY device_id) AS b ON a.device_id=b.device_id;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -307,7 +312,7 @@ public class SiteUserDeviceDao {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT a.site_user_id,a.device_id,a.login_time,b.user_device_pubk,b.device_name,b.active_time FROM "
 				+ USER_SESSION_TABLE + " AS a LEFT JOIN " + USER_DEVICE_TABLE
-				+ " AS b WHERE a.device_id=b.device_id AND a.site_user_id=b.site_user_id AND a.site_user_id=? ORDER BY b.active_time DESC;";
+				+ " AS b ON a.device_id=b.device_id AND a.site_user_id=b.site_user_id WHERE a.site_user_id=? ORDER BY b.active_time DESC;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;

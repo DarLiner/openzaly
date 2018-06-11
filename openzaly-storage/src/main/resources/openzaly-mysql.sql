@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS site_user_group(id INTEGER PRIMARY KEY NOT NULL AUTO_
             add_time BIGINT);
 
 CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            site_group_id INTEGER UNIQUE NOT NULL,
+            site_group_id VARCHAR(50) UNIQUE NOT NULL,
             create_user_id VARCHAR(50),
             group_name VARCHAR(50),
             group_photo VARCHAR(100),
