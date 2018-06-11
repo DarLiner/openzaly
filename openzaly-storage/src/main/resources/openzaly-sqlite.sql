@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL,
             msg_type INTEGER, 
             content TEXT, 
             device_id VARCHAR(50), 
-            ts_key VARCHAR(50), 
+            ts_key TEXT, 
             msg_time BIGINT);
 
 CREATE TABLE IF NOT EXISTS site_message_pointer(id INTEGER PRIMARY KEY NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS site_user_group(id INTEGER PRIMARY KEY NOT NULL,
             add_time BIGINT);
 
 CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL,
-            site_group_id INTEGER UNIQUE NOT NULL,
+            site_group_id VARCHAR(50) UNIQUE NOT NULL,
             create_user_id VARCHAR(50),
             group_name VARCHAR(50),
             group_photo VARCHAR(100),
