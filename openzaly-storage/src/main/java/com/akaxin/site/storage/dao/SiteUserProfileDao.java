@@ -769,7 +769,9 @@ public class SiteUserProfileDao {
 			pst.setLong(2, endTimeOfDay);
 
 			rs = pst.executeQuery();
-			count = rs.getInt(1);
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -797,7 +799,9 @@ public class SiteUserProfileDao {
 			pst.setLong(1, endTimeOfDay);
 
 			rs = pst.executeQuery();
-			userNum = rs.getInt(1);
+			if (rs.next()) {
+				userNum = rs.getInt(1);
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {

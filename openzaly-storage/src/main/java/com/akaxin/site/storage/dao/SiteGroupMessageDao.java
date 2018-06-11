@@ -32,7 +32,6 @@ import com.akaxin.common.utils.TimeFormats;
 import com.akaxin.site.storage.bean.GroupMessageBean;
 import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 
 /**
  * 群消息数据库相关操作
@@ -99,7 +98,7 @@ public class SiteGroupMessageDao {
 		List<GroupMessageBean> gmsgList = new ArrayList<GroupMessageBean>();
 		String sql = "SELECT a.id,a.site_group_id,a.msg_id,a.send_user_id,a.send_device_id,a.msg_type,a.content,a.msg_time FROM "
 				+ GROUP_MESSAGE_TABLE + " AS a LEFT JOIN " + SQLConst.SITE_GROUP_PROFILE
-				+ " AS b ON a.site_group_id=b.site_group_id WHERE a.site_group_id=? AND a.id>? AND b.group_status=1 AND a.send_device_id<>? LIMIT ?;";
+				+ " AS b ON a.site_group_id=b.site_group_id WHERE a.site_group_id=? AND a.id>? AND b.group_status=1 LIMIT ?;";
 
 		start = queryGroupPointer(groupId, userId, deviceId, start);
 
@@ -115,8 +114,7 @@ public class SiteGroupMessageDao {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
 			pst.setLong(2, start);
-			pst.setString(3, deviceId);
-			pst.setInt(4, limit);
+			pst.setInt(3, limit);
 
 			rs = pst.executeQuery();
 			while (rs.next()) {
