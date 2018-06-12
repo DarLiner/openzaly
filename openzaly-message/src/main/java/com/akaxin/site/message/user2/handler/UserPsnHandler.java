@@ -44,7 +44,8 @@ public class UserPsnHandler extends AbstractU2Handler<Command> {
 
 			// 如果是代发消息，则需要给发送方发送一个psn
 			if (command.isProxy()) {
-				List<String> proxyDeviceList = ImUserSessionDao.getInstance().getSessionDevices(siteUserId);
+				List<String> proxyDeviceList = ImUserSessionDao.getInstance()
+						.getSessionDevices(command.getProxySiteUserId());
 				sendPsnToUserDevices(proxyDeviceList);
 			}
 

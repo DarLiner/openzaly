@@ -64,10 +64,11 @@ public class SQLiteJDBCManager {
 
 	// init db
 	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
-		loadDatabaseDriver(config.getDbDir());
-		
 		SQLiteUpgrade.upgradeSqliteDB(config);
-		
+
+		//重新加载一次
+		loadDatabaseDriver(config.getDbDir());
+
 		checkDatabaseBeforeRun();
 
 		initSiteConfig(config.getConfigMap());
