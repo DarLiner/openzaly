@@ -40,22 +40,24 @@ import com.akaxin.proto.core.ConfigProto.ConfigKey;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.web.admin.exception.UserPermissionException;
-import com.akaxin.site.web.admin.service.IBasicService;
+import com.akaxin.site.web.admin.service.IConfigService;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * 阿卡信 - 后台管理 - 站点设置
+ * 
+ * akaxin 后台管理配置
  * 
  * @author Sam{@link an.guoyue254@gmail.com} ,Mino
  * @since 2018-05-28 14:10:05
  */
 @Controller
 @RequestMapping("manage")
-public class BasicManageController extends AbstractController {
+public class ConfigManageController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
 	@Autowired
-	private IBasicService basicManageService;
+	private IConfigService configManageService;
 
 	@RequestMapping("/index")
 	public String homePage(@RequestBody byte[] bodyParam) {
@@ -78,7 +80,7 @@ public class BasicManageController extends AbstractController {
 
 	// 获取站点配置信息
 	@RequestMapping("/basicConfig")
-	public ModelAndView toBasic(@RequestBody byte[] bodyParam) {
+	public ModelAndView toSiteConfigPage(@RequestBody byte[] bodyParam) {
 
 		ModelAndView modelAndView = new ModelAndView("basic/config");
 		Map<String, Object> model = modelAndView.getModel();
@@ -103,7 +105,7 @@ public class BasicManageController extends AbstractController {
 			model.put("u2_encryption_status", "1");
 			model.put("push_client_status", "0");
 			model.put("log_level", "INFO");
-			Map<Integer, String> map = basicManageService.getSiteConfig();
+			Map<Integer, String> map = configManageService.getSiteConfig();
 			Set<Integer> integers = map.keySet();
 			String site_prot = "";
 			String site_address = "";
@@ -178,7 +180,7 @@ public class BasicManageController extends AbstractController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, value = "/updateConfig")
 	@ResponseBody
-	public String updateBasicConfig(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+	public String updateSiteConfig(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 
@@ -237,7 +239,7 @@ public class BasicManageController extends AbstractController {
 			if (isAdmin(siteUserId) && StringUtils.isNotEmpty(trim(dataMap.get("site_manager")))) {
 				configMap.put(ConfigProto.ConfigKey.SITE_MANAGER_VALUE, trim(dataMap.get("site_manager")));
 			}
-			if (basicManageService.updateSiteConfig(siteUserId, configMap)) {
+			if (configManageService.updateSiteConfig(siteUserId, configMap)) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {

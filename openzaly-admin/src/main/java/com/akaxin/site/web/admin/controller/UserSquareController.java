@@ -1,15 +1,13 @@
 package com.akaxin.site.web.admin.controller;
 
-import com.akaxin.common.utils.GsonUtils;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.proto.core.UserProto;
-import com.akaxin.site.business.dao.UserFriendDao;
-import com.akaxin.site.business.impl.notice.User2Notice;
-import com.akaxin.site.business.push.PushNotification;
-import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
-import com.akaxin.site.web.admin.service.IUserService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +18,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.akaxin.common.utils.GsonUtils;
+import com.akaxin.proto.core.PluginProto;
+import com.akaxin.proto.core.UserProto;
+import com.akaxin.site.business.dao.UserFriendDao;
+import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.business.push.PushNotification;
+import com.akaxin.site.storage.bean.SimpleUserBean;
+import com.akaxin.site.storage.bean.UserProfileBean;
+import com.akaxin.site.web.admin.service.IUserService;
+import com.google.protobuf.InvalidProtocolBufferException;
 
+/**
+ * 用户广场
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-06-12 18:24:29
+ */
 @Controller
-@RequestMapping("site_member")
-
-public class SiteMemberController extends AbstractController {
+@RequestMapping("userSquare")
+public class UserSquareController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
+
 	@Resource(name = "userManageService")
 	private IUserService userService;
 
@@ -48,7 +56,7 @@ public class SiteMemberController extends AbstractController {
 			model.put("site_user_id", siteUserId);
 			model.put("site_user_name", userProfile.getUserName());
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("to SiteMember error", e);
+			logger.error("to user square error", e);
 			return new ModelAndView("siteMember/error");
 		}
 

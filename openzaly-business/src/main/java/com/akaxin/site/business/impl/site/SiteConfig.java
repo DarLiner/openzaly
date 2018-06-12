@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.site.business.constant.GroupConfig;
 import com.akaxin.site.business.dao.SiteConfigDao;
+import com.akaxin.site.message.utils.SiteConfigHelper;
 
 /**
  * 管理站点配置相关信息
@@ -39,7 +40,10 @@ public class SiteConfig {
 	private static final Logger logger = LoggerFactory.getLogger(SiteConfig.class);
 
 	private static volatile Map<Integer, String> configMap;
-	private static volatile Set<String> siteManagerSet = new HashSet<String>();
+
+	private static volatile Set<String> siteManagerSet;
+	private static volatile Set<String> userDefaultFriendSet;
+	private static volatile Set<String> userDefaultGroupSet;
 
 	private SiteConfig() {
 	}
@@ -55,18 +59,45 @@ public class SiteConfig {
 		try {
 			configMap = SiteConfigDao.getInstance().getSiteConfig();
 			if (configMap != null) {
-				String siteManageUsers = getConfigMap().get(ConfigProto.ConfigKey.SITE_MANAGER_VALUE);
-				if (StringUtils.isNotEmpty(siteManageUsers)) {
-					String[] adminUsers = siteManageUsers.split(",");
-					List<String> managerList = Arrays.asList(adminUsers);
-					siteManagerSet = new HashSet<String>(managerList);
-					logger.info("update new site manage users={}", siteManagerSet);
-				}
+				updateCacheSiteManagerSet();
+				updateCacheUserDefaultFriendSet();
+				updateCacheUserDefaultGroupSet();
 			}
+			SiteConfigHelper.updateConfig();
 		} catch (Exception e) {
 			logger.error("update site config error.", e);
 		}
 		return configMap;
+	}
+
+	private static void updateCacheSiteManagerSet() {
+		String siteManageUsers = getConfigMap().get(ConfigProto.ConfigKey.SITE_MANAGER_VALUE);
+		if (StringUtils.isNotEmpty(siteManageUsers)) {
+			String[] adminUsers = siteManageUsers.split(",");
+			List<String> managerList = Arrays.asList(adminUsers);
+			siteManagerSet = new HashSet<String>(managerList);
+			logger.info("update new site managers={}", siteManagerSet);
+		}
+	}
+
+	private static void updateCacheUserDefaultFriendSet() {
+		String userFriends = getConfigMap().get(ConfigProto.ConfigKey.DEFAULT_USER_FRIENDS_VALUE);
+		if (StringUtils.isNotEmpty(userFriends)) {
+			String[] friends = userFriends.split(",");
+			List<String> friendList = Arrays.asList(friends);
+			userDefaultFriendSet = new HashSet<String>(friendList);
+			logger.info("update user default friends={}", userDefaultFriendSet);
+		}
+	}
+
+	private static void updateCacheUserDefaultGroupSet() {
+		String userGroups = getConfigMap().get(ConfigProto.ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+		if (StringUtils.isNotEmpty(userGroups)) {
+			String[] groups = userGroups.split(",");
+			List<String> groupList = Arrays.asList(groups);
+			userDefaultGroupSet = new HashSet<String>(groupList);
+			logger.info("update user default groups={}", userDefaultGroupSet);
+		}
 	}
 
 	public static String getConfig(int key) {
@@ -238,5 +269,13 @@ public class SiteConfig {
 			logger.error("get site logo error", e);
 		}
 		return null;
+	}
+
+	public static Set<String> getUserDefaultFriends() {
+		return userDefaultFriendSet;
+	}
+
+	public static Set<String> getUserDefaultGroups() {
+		return userDefaultGroupSet;
 	}
 }

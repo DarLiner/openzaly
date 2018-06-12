@@ -104,6 +104,33 @@ public class SiteConfigDao {
 		return configMap;
 	}
 
+	public String queryConfigValue(int key) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT config_value FROM " + SITE_CONFIG_INFO_TABLE + " WHERE config_key=?;";
+
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String value = null;
+		try {
+			conn = DatabaseConnection.getSlaveConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, key);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				value = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, value, sql);
+		return value;
+	}
+
 	public int updateConfig(int key, String value) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "UPDATE " + SITE_CONFIG_INFO_TABLE + " set config_value=? WHERE config_key=?;";
