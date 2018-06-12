@@ -69,6 +69,14 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 					proxyBean.setSiteUserId(proxySiteUserId);
 					proxyBean.setSendUserId(proxySiteUserId);
 					proxyBean.setReceiveUserId(siteFriendId);
+					// 这里兼容一个客户端的chatSessionId Bug
+					String hrefUrl = request.getU2WebNotice().getHrefUrl();
+					if (hrefUrl.contains("page=plugin_for_u2_chat&site_user_id")) {
+						String oldPar = "plugin_for_u2_chat&site_user_id=" + proxySiteUserId;
+						String newPar = "plugin_for_u2_chat&site_user_id=" + siteFriendId;
+						String hrefUrl2 = hrefUrl.replace(oldPar, newPar);
+						webBean.setHrefUrl(hrefUrl2);
+					}
 					proxyBean.setContent(webBean.toString());
 					proxyBean.setMsgTime(msgTime);
 					messageDao.saveU2Message(proxyBean);
