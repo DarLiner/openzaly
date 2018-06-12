@@ -24,9 +24,9 @@ public class DatabaseConnection {
 
 	public static Connection getConnection() throws SQLException {
 		switch (DATABASE_TYPE) {
-		case SQLITE:
+		case PERSONAL:
 			return SQLiteJDBCManager.getConnection();
-		case MYSQL:
+		case TEAM:
 			return MysqlManager.getConnection();
 		}
 		return null;
@@ -34,9 +34,9 @@ public class DatabaseConnection {
 
 	public static void returnConnection(Connection conn) {
 		switch (DATABASE_TYPE) {
-		case SQLITE:
+		case PERSONAL:
 			break;
-		case MYSQL:
+		case TEAM:
 			MysqlManager.returnConnection(conn);
 			return;
 		}
@@ -45,9 +45,9 @@ public class DatabaseConnection {
 	public static void returnConnection(Connection conn, PreparedStatement ps) {
 		closePreparedStatement(ps);
 		switch (DATABASE_TYPE) {
-		case SQLITE:
+		case PERSONAL:
 			break;
-		case MYSQL:
+		case TEAM:
 			MysqlManager.returnConnection(conn);
 			return;
 		}
@@ -57,9 +57,9 @@ public class DatabaseConnection {
 		closePreparedStatement(pst);
 		closeResultSet(rs);
 		switch (DATABASE_TYPE) {
-		case SQLITE:
+		case PERSONAL:
 			break;
-		case MYSQL:
+		case TEAM:
 			MysqlManager.returnConnection(conn);
 			return;
 		}

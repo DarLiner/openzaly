@@ -4,30 +4,35 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import com.akaxin.site.storage.dao.config.JdbcConst;
-import com.akaxin.site.storage.util.SqlLog;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-public class C3P0PoolManager {
+/**
+ * C3P0 主库配置管理
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-06-11 18:21:38
+ */
+public class C3P0PoolManager extends AbstractPoolManager {
 	private static ComboPooledDataSource cpds;
 
 	public static void initPool(Properties pro) throws Exception {
-		String jdbcDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME, "com.mysql.cj.jdbc.Driver");
-		String jdbcUrl = InitDatabaseConnection.getDBUrl(pro);
-		String userName = pro.getProperty(JdbcConst.USER_NAME);
-		String password = pro.getProperty(JdbcConst.PASSWORD);
+		String jdbcUrl = getDBUrl(pro);
+		String userName = trimToNull(pro, JdbcConst.MYSQL_USER_NAME);
+		String password = trimToNull(pro, JdbcConst.MYSQL_PASSWORD);
+
 		cpds = new ComboPooledDataSource();
-		cpds.setDriverClass(jdbcDriver); // loads the jdbc driver
+		cpds.setDriverClass(MYSQL_JDBC_DRIVER); // loads the jdbc driver
 		cpds.setJdbcUrl(jdbcUrl);
 		cpds.setUser(userName);
 		cpds.setPassword(password);
-		int inititalSize = Integer.valueOf(pro.getProperty(JdbcConst.INITIAL_SIZE, "10").trim());
-		int maxSize = Integer.valueOf(pro.getProperty(JdbcConst.MAX_SIZE, "100").trim());
+		int inititalSize = Integer.valueOf(trimToNull(pro, JdbcConst.MYSQL_INITIAL_SIZE, "10"));
+		int maxSize = Integer.valueOf(trimToNull(pro, JdbcConst.MYSQL_MAX_SIZE, "100"));
 		cpds.setInitialPoolSize(inititalSize);// 初始创建默认10个连接
 		cpds.setMaxPoolSize(maxSize);// 最大默认100个
 		int inc = (maxSize - inititalSize) / 5;
 		cpds.setAcquireIncrement(Integer.max(1, inc));// 每次创建10个
 
-		int maxIdle = Integer.valueOf(pro.getProperty(JdbcConst.MAX_IDLE, "60").trim());
+		int maxIdle = Integer.valueOf(trimToNull(pro, JdbcConst.MYSQL_MAX_IDLE, "60"));
 		cpds.setMaxIdleTime(maxIdle);// 最大空闲时间
 
 	}
@@ -36,14 +41,4 @@ public class C3P0PoolManager {
 		return cpds.getConnection();
 	}
 
-	public static void returnConnection(java.sql.Connection conn) {
-		// cpds.r
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				SqlLog.error("return connection error", e);
-			}
-		}
-	}
 }

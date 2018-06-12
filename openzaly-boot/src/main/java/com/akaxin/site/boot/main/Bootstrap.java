@@ -137,8 +137,7 @@ public class Bootstrap {
 		int pluginAPiPort = 8280;
 
 		try {
-			// init and set default log level by openzaly.properties
-			setSystemLogLevel();
+			setDefaultSystemLogLevel();
 
 			// client tcp address from openzaly.properties
 			nettyTcpHost = ConfigHelper.getStringConfig(ConfigKey.SITE_ADDRESS);
@@ -217,18 +216,10 @@ public class Bootstrap {
 		}
 	}
 
-	private static void setSystemLogLevel() {
-		// 先获取站点的项目环境 site.project.env
-		String projectEvn = ConfigHelper.getStringConfig(ConfigKey.SITE_PROJECT_ENV);
-		Level level = Level.INFO;
-		if ("DEBUG".equalsIgnoreCase(projectEvn)) {
-			level = Level.DEBUG;
-		} else if ("ERROR".equalsIgnoreCase(projectEvn)) {
-			level = Level.ERROR;
-		}
+	private static void setDefaultSystemLogLevel() {
 		// 更新日志级别
-		AkxLog4jManager.setLogLevel(level);
-		BootLog.info("{} set system log level={}", AkxProject.PLN, level);
+		AkxLog4jManager.setLogLevel(Level.INFO);
+		BootLog.info("{} set system log level={}", AkxProject.PLN, Level.INFO);
 	}
 
 	/**

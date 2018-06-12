@@ -35,7 +35,7 @@ public class PropertiesUtils {
 		InputStream inputStream = null;
 		Properties properties = new Properties();
 		try {
-			inputStream = PropertiesUtils.class.getResourceAsStream("/openzaly.properties");
+			inputStream = PropertiesUtils.class.getResourceAsStream("/openzaly-server.config");
 			properties.load(inputStream);
 		} catch (IOException e) {
 			logger.error("load properties from openzaly.properties error,user default", e);

@@ -49,7 +49,7 @@ import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 public class DataSourceManager {
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
 
-	private static final String OPENZALY_DATABASE_CONFIG = "openzaly-datasource.config";
+	private static final String OPENZALY_DATABASE_CONFIG = "openzaly-server.config";
 	private static final String OPENZALY_MYSQL_SQL = "openzaly-mysql.sql";
 
 	private DataSourceManager() {
@@ -58,23 +58,24 @@ public class DataSourceManager {
 	public static void init(DBConfig config)
 			throws InitDatabaseException, UpgradeDatabaseException, NeedInitMysqlException {
 		try {
-			DBType dbType = DBType.SQLITE;
+			DBType dbType = DBType.PERSONAL;
 			Properties pro = loadDatabaseConfig(OPENZALY_DATABASE_CONFIG);
 			if (pro != null && pro.size() > 0) {
-				String dbDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME);
-				if (StringUtils.isNotEmpty(dbDriver) && dbDriver.contains("com.mysql")) {
-					dbType = DBType.MYSQL;
+				// get edition from config file
+				String edition = MysqlManager.trimToNull(pro, JdbcConst.OPENZALY_EDITION);
+				if (StringUtils.isNotEmpty(edition)) {
+					dbType = DBType.getDBType(edition);
 				}
 			}
 			config.setDb(dbType);
 			logger.info("load database config finish databaseType:{}", dbType);
 
 			switch (dbType) {
-			case SQLITE:
+			case PERSONAL:
 				System.setProperty("database", dbType.getName());
 				SQLiteJDBCManager.initSqliteDB(config);
 				break;
-			case MYSQL:
+			case TEAM:
 				System.setProperty("database", dbType.getName());
 				MysqlManager.initMysqlDB(pro); // 初始化数据库以及数据库连接
 				PrepareSiteConfigData.init(config);// 初始化数据库中数据
@@ -102,9 +103,9 @@ public class DataSourceManager {
 	public static int upgrade(DBConfig config) throws UpgradeDatabaseException {
 		try {
 			switch (config.getDb()) {
-			case SQLITE:
+			case PERSONAL:
 				return SQLiteUpgrade.upgradeSqliteDB(config);
-			case MYSQL:
+			case TEAM:
 				throw new UpgradeDatabaseException("database upgrade can't support mysql");
 			}
 		} catch (SQLException e) {
@@ -121,7 +122,7 @@ public class DataSourceManager {
 			inputStream = new FileInputStream(configPath);
 			properties.load(inputStream);
 		} catch (Exception e) {
-			logger.error("load database config error,openzaly will use sqlite database", e);
+			logger.error("load database config fail,openzaly will system config or use sqlite database", e);
 		} finally {
 			try {
 				if (inputStream != null) {

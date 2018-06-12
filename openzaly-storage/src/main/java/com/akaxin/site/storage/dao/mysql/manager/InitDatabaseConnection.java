@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.akaxin.site.storage.dao.config.JdbcConst;
 import com.akaxin.site.storage.util.SqlLog;
 
@@ -15,16 +13,16 @@ import com.akaxin.site.storage.util.SqlLog;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-06-07 16:18:11
  */
-public class InitDatabaseConnection {
+public class InitDatabaseConnection extends AbstractPoolManager {
 	private static Connection conn;
 
 	public static Connection getInitConnection(Properties pro) throws Exception {
-		String jdbcDriver = pro.getProperty(JdbcConst.DRIVER_CLASSNAME, "com.mysql.cj.jdbc.Driver");
+		// "com.mysql.cj.jdbc.Driver"
 		String jdbcUrl = getDBUrl(pro);
 		jdbcUrl = jdbcUrl.replace("openzaly", "mysql");
-		String userName = pro.getProperty(JdbcConst.USER_NAME);
-		String password = pro.getProperty(JdbcConst.PASSWORD);
-		Class.forName(jdbcDriver);
+		String userName = trimToNull(pro, JdbcConst.MYSQL_USER_NAME);
+		String password = trimToNull(pro, JdbcConst.MYSQL_PASSWORD);
+		Class.forName(MYSQL_JDBC_DRIVER);
 		conn = DriverManager.getConnection(jdbcUrl, userName, password);
 		return conn;
 	}
@@ -36,35 +34,6 @@ public class InitDatabaseConnection {
 		} catch (Exception e) {
 			SqlLog.error("close mysql init connection error", e);
 		}
-	}
-
-	public static String getDBUrl(Properties pro) throws Exception {
-		String url = pro.getProperty(JdbcConst.DB_URL);
-
-		if (StringUtils.isEmpty(url)) {
-			throw new Exception("jdbc url is empty");
-		}
-
-		String useUnicode = pro.getProperty(JdbcConst.USE_UNICODE, "true");
-		String characterEncoding = pro.getProperty(JdbcConst.CHARACTER_ENCODING, "utf-8");
-		String verifyServerCertificate = pro.getProperty(JdbcConst.VERIFY_SERVER_CERTIFICATE, "false");
-		String useSSL = pro.getProperty(JdbcConst.USE_SSL, "true");
-
-		StringBuilder sb = new StringBuilder(url);
-		if (url.contains("?")) {
-			sb.append("&useUnicode=");
-		} else {
-			sb.append("?useUnicode=");
-		}
-		sb.append(useUnicode);
-		sb.append("&characterEncoding=");
-		sb.append(characterEncoding);
-		sb.append("&verifyServerCertificate=");
-		sb.append(verifyServerCertificate);
-		sb.append("&useSSL=");
-		sb.append(useSSL);
-
-		return sb.toString();
 	}
 
 }

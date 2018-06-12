@@ -1,8 +1,8 @@
 package com.akaxin.site.storage.dao.config;
 
 public enum DBType {
-	SQLITE(1, "sqlite"), // sqlite
-	MYSQL(2, "mysql");
+	PERSONAL(1, "personal"), // sqlite
+	TEAM(2, "team");
 
 	private int index;
 	private String name;
@@ -22,7 +22,7 @@ public enum DBType {
 				return db;
 			}
 		}
-
-		return SQLITE;
+		return PERSONAL;
 	}
+
 }
