@@ -60,7 +60,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteGroupId);
 
@@ -138,7 +138,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -173,7 +173,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setInt(2, startNum);
@@ -207,7 +207,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -234,7 +234,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, userId);
 
@@ -262,7 +262,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
 
@@ -293,7 +293,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
 			pst.setInt(2, startNum);
@@ -329,7 +329,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
 
@@ -360,7 +360,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
 			pst.setInt(2, startNum);
@@ -398,7 +398,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, groupId);
@@ -440,7 +440,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, groupId);
@@ -475,7 +475,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, groupId);
@@ -523,7 +523,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteGroupId);
 
@@ -584,7 +584,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteGroupId);
@@ -639,7 +639,7 @@ public class SiteUserGroupDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteGroupId);

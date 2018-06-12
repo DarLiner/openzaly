@@ -32,6 +32,8 @@ import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
 
 /**
+ * session 只从主库中获取session，不做主从分离
+ * 
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2017.10.11 14:43:38
  */

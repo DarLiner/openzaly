@@ -81,7 +81,7 @@ public abstract class AbstractPoolManager {
 	}
 
 	public static List<String> getSlaveDBUrl(Properties pro) throws Exception {
-		String slaveHosts = trimToNull(pro, JdbcConst.MYSQL_HOST);// 192.168.3.4,192.168.3.5,192.168.3.6
+		String slaveHosts = trimToNull(pro, JdbcConst.MYSQL_SLAVE_HOST);// 192.168.3.4,192.168.3.5,192.168.3.6
 
 		if (StringUtils.isEmpty(slaveHosts)) {
 			return null;

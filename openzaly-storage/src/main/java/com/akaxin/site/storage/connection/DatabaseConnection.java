@@ -32,6 +32,16 @@ public class DatabaseConnection {
 		return null;
 	}
 
+	public static Connection getSlaveConnection() throws SQLException {
+		switch (DATABASE_TYPE) {
+		case PERSONAL:
+			return SQLiteJDBCManager.getConnection();
+		case TEAM:
+			return MysqlManager.getSalveConnection();
+		}
+		return null;
+	}
+
 	public static void returnConnection(Connection conn) {
 		switch (DATABASE_TYPE) {
 		case PERSONAL:

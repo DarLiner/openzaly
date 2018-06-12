@@ -108,7 +108,7 @@ public class SiteFriendApplyDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);
@@ -136,7 +136,7 @@ public class SiteFriendApplyDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -177,7 +177,7 @@ public class SiteFriendApplyDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);
@@ -227,7 +227,7 @@ public class SiteFriendApplyDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 

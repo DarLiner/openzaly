@@ -83,7 +83,7 @@ public class SiteConfigDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 
 			rs = pst.executeQuery();

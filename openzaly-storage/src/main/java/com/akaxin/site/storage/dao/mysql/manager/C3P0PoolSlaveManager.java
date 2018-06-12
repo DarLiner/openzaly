@@ -37,7 +37,6 @@ public class C3P0PoolSlaveManager extends AbstractPoolManager {
 		cpdsList = new ArrayList<ComboPooledDataSource>();
 
 		for (String jdbcUrl : jdbcUrlList) {
-
 			ComboPooledDataSource cpds = new ComboPooledDataSource();
 			cpds.setDriverClass(MYSQL_JDBC_DRIVER); // loads the jdbc driver
 			cpds.setJdbcUrl(jdbcUrl);
@@ -54,6 +53,8 @@ public class C3P0PoolSlaveManager extends AbstractPoolManager {
 			cpds.setMaxIdleTime(maxIdle);// 最大空闲时间
 
 			cpdsList.add(cpds);
+
+			SqlLog.info("openzaly init mysql slave connection pool cpds={}", cpds.toString());
 		}
 	}
 

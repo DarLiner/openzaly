@@ -122,7 +122,7 @@ public class DataSourceManager {
 			inputStream = new FileInputStream(configPath);
 			properties.load(inputStream);
 		} catch (Exception e) {
-			logger.error("load database config fail,openzaly will system config or use sqlite database", e);
+			logger.error("load database config fail,openzaly will use sqlite database,cause={}", e.getMessage());
 		} finally {
 			try {
 				if (inputStream != null) {

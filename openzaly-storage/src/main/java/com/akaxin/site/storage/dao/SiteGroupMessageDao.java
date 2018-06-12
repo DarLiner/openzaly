@@ -110,7 +110,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
 			pst.setLong(2, start);
@@ -164,7 +164,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			// statement.setString(1, msgIdBuider.toString());
 
@@ -261,7 +261,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, groupId);
@@ -292,7 +292,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, groupId);
@@ -320,7 +320,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, groupId);
 
@@ -347,7 +347,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, siteUserId);
 			ps.setString(2, groupId);
@@ -381,7 +381,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setLong(1, startTimeOfDay);
 			ps.setLong(2, endTimeOfDay);
@@ -443,7 +443,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			preparedStatement = conn.prepareStatement(sql);
 			preparedStatement.setString(1, siteUserId);
 			rs = preparedStatement.executeQuery();

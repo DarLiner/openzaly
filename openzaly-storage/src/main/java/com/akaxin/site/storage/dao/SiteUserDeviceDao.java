@@ -57,7 +57,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, devicePuk);
 
@@ -176,7 +176,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, deviceId);
@@ -210,7 +210,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, site_user_id);
 			pst.setString(2, device_id);
@@ -251,7 +251,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -283,7 +283,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -318,7 +318,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -353,7 +353,7 @@ public class SiteUserDeviceDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 

@@ -57,7 +57,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -87,7 +87,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -127,7 +127,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setInt(2, startNum);
@@ -217,7 +217,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);
@@ -246,7 +246,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);
@@ -298,7 +298,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);
@@ -352,7 +352,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);
@@ -438,7 +438,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setLong(1, endTimeOfDay);
 

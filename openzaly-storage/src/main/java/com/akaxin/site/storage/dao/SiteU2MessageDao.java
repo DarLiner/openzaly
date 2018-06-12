@@ -94,7 +94,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, userId);
 			pst.setLong(2, start);
@@ -152,7 +152,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 
 			rs = pst.executeQuery();
@@ -185,7 +185,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, deviceId);
@@ -213,7 +213,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -247,7 +247,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 
@@ -325,7 +325,7 @@ public class SiteU2MessageDao {
 
 	public boolean checkMsgPointer(String siteUserId, String deviceId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String querySql = "select pointer from " + USER2_MESSAGE_POINATER_TABLE
+		String querySql = "SELECT pointer from " + USER2_MESSAGE_POINATER_TABLE
 				+ " WHERE site_user_id=? AND device_id=?";
 		Long pointer = null;
 
@@ -333,7 +333,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(querySql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, deviceId);
@@ -368,7 +368,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setLong(1, startTimeOfDay);
 			pst.setLong(2, endTimeOfDay);
@@ -430,7 +430,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteUserId);

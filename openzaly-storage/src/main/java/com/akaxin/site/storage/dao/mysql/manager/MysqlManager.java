@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import com.akaxin.site.storage.exception.InitDatabaseException;
 import com.akaxin.site.storage.exception.NeedInitMysqlException;
+import com.akaxin.site.storage.util.SqlLog;
 
 /**
  * Mysql 连接器管理
@@ -35,6 +36,7 @@ public class MysqlManager {
 			FileSystemResource rc = new FileSystemResource(file);
 			EncodedResource encodeRes = new EncodedResource(rc, "GBK");
 			ScriptUtils.executeSqlScript(conn, encodeRes);
+			SqlLog.info("openzaly init mysql database with sql-script finish");
 
 			// init c3p0 pool
 			C3P0PoolManager.initPool(pro);

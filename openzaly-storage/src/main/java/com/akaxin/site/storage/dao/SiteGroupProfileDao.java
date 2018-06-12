@@ -64,7 +64,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, startNum);
@@ -133,7 +133,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteGroupId);
 
@@ -170,7 +170,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteGroupId);
 
@@ -210,7 +210,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteGroupId);
@@ -348,7 +348,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, groupId);
@@ -376,7 +376,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -406,7 +406,7 @@ public class SiteGroupProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getConnection();
+			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setLong(1, endTimeOfDay);
 
