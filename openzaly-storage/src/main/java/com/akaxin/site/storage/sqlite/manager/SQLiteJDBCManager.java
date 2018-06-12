@@ -53,7 +53,7 @@ import com.akaxin.site.storage.sqlite.sql.SQLIndex;
 public class SQLiteJDBCManager {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteJDBCManager.class);
 
-	private static int SITE_DB_VERSION = SQLConst.SITE_DB_VERSION;
+	private static int SITE_DB_VERSION = SQLConst.SITE_DB_VERSION_9;
 	private static String sqliteDriverName = "org.sqlite.JDBC";
 	private static Connection sqlitConnection = null;
 	private static final String DB_FILE_PATH = "openzalyDB.sqlite3";
@@ -65,6 +65,8 @@ public class SQLiteJDBCManager {
 	// init db
 	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
 		loadDatabaseDriver(config.getDbDir());
+		
+		SQLiteUpgrade.upgradeSqliteDB(config);
 		
 		checkDatabaseBeforeRun();
 

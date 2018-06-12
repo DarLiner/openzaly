@@ -55,13 +55,25 @@ public class U2MessageNoticeHandler extends AbstractGroupHandler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				// 发送者
-				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				u2Bean.setReceiveUserId(siteFriendId);
 				u2Bean.setContent(text);
 				u2Bean.setMsgTime(msgTime);
 
 				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
+
+				if (command.isProxy()) {
+					U2MessageBean proxyBean = new U2MessageBean();
+					proxyBean.setMsgId(msgId);
+					proxyBean.setMsgType(type);
+					proxyBean.setSiteUserId(proxySiteUserId);
+					proxyBean.setSendUserId(proxySiteUserId);
+					proxyBean.setReceiveUserId(siteFriendId);
+					proxyBean.setContent(text);
+					proxyBean.setMsgTime(msgTime);
+					messageDao.saveU2Message(proxyBean);
+				}
 
 				return messageDao.saveU2Message(u2Bean);
 			}
