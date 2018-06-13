@@ -78,7 +78,8 @@ footer a {
 			</div>
 			<div class="weui-cell__bd">
 				<input class="weui-input site_login_id" type="text"
-					name="site_login_id" th:value="${siteLoginId}" placeholder="站点账号" maxlength="16">
+					name="site_login_id" th:value="${siteLoginId}" placeholder="站点账号"
+					maxlength="16">
 			</div>
 		</div>
 
@@ -108,30 +109,43 @@ footer a {
 			<a
 				class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info"
 				url-data="/user/updateProfile" href="javascript:"
-				id="update_user_info">确定</a> <a
+				id="update_user_info">确定</a> 
+				
+			<a class="weui-btn basic-weui-btn weui-btn_primary basic-color site_manager"
+				url-data="/user/setSiteManager" href="javascript:" id="site_manager"
+				th:if="${managerState}==0" th:attr="managerState=${managerState}">设为管理员身份</a>
+			<a class="weui-btn basic-weui-btn weui-btn_primary basic-color site_manager"
+				url-data="/user/deleteSiteManager" href="javascript:"
+				id="site_manager" th:if="${managerState}==1"
+				th:attr="managerState=${managerState}">删除管理员身份</a> 
+				
+			<a class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
+				url-data="/user/setUserDefaultFriend" href="javascript:"
+				id="user_default" th:if="${defaultState}==0"
+				th:attr="defaultState=${defaultState}">设为新用户默认好友</a> <a
 				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
-				url-data="/user/setUserDefaultFriend" href="javascript:" id="user_default"
-				th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为新用户默认好友</a>
-			<a
-				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
-				url-data="/user/deleteUserDefaultFriend" href="javascript:" id="user_default"
-				th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">取消新用户默认好友</a>
-
-			<a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
+				url-data="/user/deleteUserDefaultFriend" href="javascript:"
+				id="user_default" th:if="${defaultState}==1"
+				th:attr="defaultState=${defaultState}">取消新用户默认好友</a> 
+				
+				<a href="javascript:;" name='sealup-user' th:attr="data=${siteUserId}"
 				class="sealup-site-user weui-btn weui-btn_warn "
-				url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a> <a
-				href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
+				url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a> 
+				<a href="javascript:;" name='sealup' th:attr="data=${siteUserId}"
+				class="sealup-site-user weui-btn weui-btn_warn"
+				url-data="/user/sealup" th:if="${userStatus}==1">解封用户</a>
+
+			<!-- <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
 				class="unfreeze-site-user weui-btn weui-btn_warn "
 				url-data="/user/sealup" style="display: none"
-				th:if="${userStatus}==0">解禁用户</a> <a href="javascript:;"
-				name='del-user' th:attr="data=${siteUserId}"
+				th:if="${userStatus}==0">解禁用户</a> 
+			<a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
 				class="sealup-site-user weui-btn weui-btn_warn"
 				style="display: none" url-data="/user/sealup"
-				th:unless="${userStatus}==0">封禁用户</a> <a href="javascript:;"
-				name='del-user' th:attr="data=${siteUserId}"
-				class="unfreeze-site-user weui-btn weui-btn_warn"
-				url-data="/user/sealup" th:unless="${userStatus}==0">解禁用户</a> <a
-				class="weui-btn weui-btn_warn  delUser" url-data="/user/delUser"
+				th:unless="${userStatus}==0">封禁用户</a> -->
+
+			<!-- 删除用户 -->
+			<a class="weui-btn weui-btn_warn  delUser" url-data="/user/delUser"
 				href="javascript:" id="delUser">删除用户</a>
 
 		</div>
@@ -156,9 +170,9 @@ footer a {
 		}
 
 		function reqUrl(reqUri, params, callbackName) {
-            reqUri = "/akaxin" + reqUri;
-            var type = getOsType();
-			console.log('utl' + type);
+			reqUri = "/akaxin" + reqUri;
+			var type = getOsType();
+			//console.log('utl' + type);
 
 			if (type == 'Android') {
 				Android.requestPost(reqUri, params, callbackName);
@@ -170,8 +184,8 @@ footer a {
 		}
 
 		function reqHtml(reqUri, params) {
-            reqUri = "/akaxin" + reqUri;
-            var type = getOsType();
+			reqUri = "/akaxin" + reqUri;
+			var type = getOsType();
 			if (type == 'Android') {
 				Android.requestPage(reqUri, params)
 			} else if (type == 'IOS') {
@@ -217,14 +231,22 @@ footer a {
 		$(document).on("click", ".sealup-site-user", function() {
 			var siteUserId = $(this).attr('data');
 			var url = $(this).attr('url-data');
-			$('#sealUpUserId').attr('data', siteUserId);
+			var userStatus = $(this).attr('userStatus');
+			
+			var confirmTitle = "确定要封禁用户？";
+			var status = 1;
+			if(userStatus==1){
+				confirmTitle = "确认要解封用户？";
+				status = 0;
+			}
+			
 			$.confirm({
-				title : '封禁用户',
-				text : '确定要封禁用户？',
+				title : confirmTitle,
+				//text : confirmText,
 				onOK : function() {
 					var userInfo = {
 						'site_user_id' : siteUserId,
-						'type' : '1'
+						'user_status' : status
 					};
 					reqUrl(url, JSON.stringify(userInfo), "sealupSiteUser");
 					$.closeModal();
@@ -238,38 +260,21 @@ footer a {
 		});
 
 		function sealupSiteUser(results) {
-			console.log('sealupUser');
 			if (results == 'success') {
-				$('.sealup-site-user').hide();
-				$('.unfreeze-site-user').show();
+				var userStatus = $(this).attr('userStatus');
+				if(userStatus == 0){
+					$('.sealup-site-user').attr('userStatus', '1');
+                    $('.sealup-site-user').html('解封用户');
+				}else if(userStatus == 1){
+					$('.sealup-site-user').attr('userStatus', '0');
+                    $('.sealup-site-user').html('封禁用户');
+				}
 				$.toast("操作成功");
 			} else {
 				$.toast("操作失败", "forbidden");
 			}
 		}
 
-		$(document).on("click", ".unfreeze-site-user", function() {
-			var siteUserId = $(this).attr('data');
-			var url = $(this).attr('url-data');
-			$('#unfreezeUserId').attr('data', siteUserId);
-			$.confirm({
-				title : '解禁用户',
-				text : '解禁后，用户可以访问该站点',
-				onOK : function() {
-					var userInfo = {
-						'site_user_id' : siteUserId,
-						'type' : '0'
-					};
-					reqUrl(url, JSON.stringify(userInfo), "unfreezeSiteUser");
-					$.closeModal();
-				},
-				onCancel : function() {
-					console.log('cancle');
-					toast('取消操作');
-					$.closeModal();
-				}
-			});
-		});
 
 		$(document).on("click", ".update_user_info", function() {
 			var userName = $('.user_name').val();
@@ -288,45 +293,53 @@ footer a {
 			reqUrl(reqUri, JSON.stringify(userInfo), 'updateSiteUser');
 		});
 
+		function updateSiteUser(results) {
+			if (results == 'success') {
+				var userName = $('#edit_user_id').attr('user_name');
+				$('.user_name').attr('value', userName);
+				$.toast("操作成功");
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
+
+		$(document).on("click", ".site_manager", function() {
+			var siteUserId = $('.site_user_id').attr('data');
+			var userInfo = {
+				"siteUserId" : siteUserId
+			};
+			var reqUri = $(this).attr('url-data');
+			reqUrl(reqUri, JSON.stringify(userInfo), 'siteManagerResult');
+		});
+
+		function siteManagerResult(results) {
+			if (results == 'success') {
+				var managerStatus = $('.site_manager').attr('managerState');
+				if(managerStatus==0){
+					$('.site_manager').attr('managerState', '1');
+                    $('.site_manager').attr('url-data', '/user/deleteSiteManager');
+                    $('.site_manager').html('取消管理员身份');
+				}else if(managerStatus==1){
+					$('.site_manager').attr('managerState', '0');
+                    $('.site_manager').attr('url-data', '/user/setSiteManager');
+                    $('.site_manager').html('设为管理员身份');
+				}
+				$.toast("操作成功");
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
+
 		$(document).on("click", ".user_default", function() {
 			var siteUserId = $('.site_user_id').attr('data');
 			var userInfo = {
 				"siteUserId" : siteUserId
 			};
 			var reqUri = $(this).attr('url-data');
-			reqUrl(reqUri, JSON.stringify(userInfo), 'UserDefault');
+			reqUrl(reqUri, JSON.stringify(userInfo), 'userDefaultResult');
 		});
 
-		$(document).on("click", ".delUser", function() {
-			var siteUserId = $('.site_user_id').attr('data');
-			var reqUri = $(this).attr('url-data');
-			$.confirm({
-				title : '删除用户',
-				text : '删除后,用户将被从站点彻底抹除',
-				onOK : function() {
-					var userInfo = {
-						"siteUserId" : siteUserId
-					};
-					reqUrl(reqUri, JSON.stringify(userInfo), 'delUser');
-					$.closeModal();
-				},
-				onCancel : function() {
-					console.log('cancle');
-					toast('取消操作');
-					$.closeModal();
-				}
-			});
-
-		});
-
-		function delUser(results) {
-			if (results == 'success') {
-				$.toast("操作成功");
-			} else {
-				$.toast("操作失败", "forbidden");
-			}
-		}
-		function UserDefault(results) {
+		function userDefaultResult(results) {
 			if (results == 'success') {
 				$.toast("操作成功");
 				var attr = $('.user_default').attr('defaultState');
@@ -344,21 +357,30 @@ footer a {
 			}
 		}
 
-		function unfreezeSiteUser(results) {
-			console.log('sealupUser');
-			if (results == 'success') {
-				$('.sealup-site-user').show();
-				$('.unfreeze-site-user').hide();
-				$.toast("操作成功");
-			} else {
-				$.toast("操作失败", "forbidden");
-			}
-		}
+		$(document).on("click", ".delUser", function() {
+			var siteUserId = $('.site_user_id').attr('data');
+			var reqUri = $(this).attr('url-data');
+			$.confirm({
+				title : '删除用户',
+				text : '删除后,用户将被从站点彻底抹除',
+				onOK : function() {
+					var userInfo = {
+						"siteUserId" : siteUserId
+					};
+					reqUrl(reqUri, JSON.stringify(userInfo), 'delUserResult');
+					$.closeModal();
+				},
+				onCancel : function() {
+					console.log('cancle');
+					toast('取消操作');
+					$.closeModal();
+				}
+			});
 
-		function updateSiteUser(results) {
+		});
+
+		function delUserResult(results) {
 			if (results == 'success') {
-				var userName = $('#edit_user_id').attr('user_name');
-				$('.user_name').attr('value', userName);
 				$.toast("操作成功");
 			} else {
 				$.toast("操作失败", "forbidden");

@@ -15,7 +15,6 @@
  */
 package com.akaxin.site.web.admin.service.impl;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Service;
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.impl.site.SiteConfig;
 import com.akaxin.site.web.admin.service.IConfigService;
+import com.akaxin.site.web.utils.ArraysUtils;
 
 @Service
 public class ConfigManageService implements IConfigService {
@@ -55,10 +55,12 @@ public class ConfigManageService implements IConfigService {
 		if (StringUtils.isNotEmpty(siteManagers)) {
 			if (!siteManagers.contains(siteUserId)) {
 				siteManagers = siteManagers + "," + siteUserId;
-				result = SiteConfigDao.getInstance().updateSiteManagers(siteManagers);
-				SiteConfig.updateConfig();
 			}
+		} else {
+			siteManagers = siteUserId;
 		}
+		result = SiteConfigDao.getInstance().updateSiteManagers(siteManagers);
+		SiteConfig.updateConfig();
 		return result;
 	}
 
@@ -68,7 +70,7 @@ public class ConfigManageService implements IConfigService {
 		String siteManagers = SiteConfigDao.getInstance().getSiteManagers();
 		if (StringUtils.isNotEmpty(siteManagers)) {
 			String[] managers = siteManagers.split(",");
-			List<String> managerList = Arrays.asList(managers);
+			List<String> managerList = ArraysUtils.asList(managers);
 			if (managerList.contains(siteUserId)) {
 				managerList.remove(siteUserId);
 				String newManagers = listToString(null, ",");
@@ -86,10 +88,12 @@ public class ConfigManageService implements IConfigService {
 		if (StringUtils.isNotEmpty(defaultFriends)) {
 			if (!defaultFriends.contains(siteUserId)) {
 				defaultFriends = defaultFriends + "," + siteUserId;
-				result = SiteConfigDao.getInstance().updateDefaultUserFriends(defaultFriends);
-				SiteConfig.updateConfig();
 			}
+		} else {
+			defaultFriends = siteUserId;
 		}
+		result = SiteConfigDao.getInstance().updateDefaultUserFriends(defaultFriends);
+		SiteConfig.updateConfig();
 		return result;
 	}
 
@@ -99,7 +103,7 @@ public class ConfigManageService implements IConfigService {
 		String defaultFriends = SiteConfigDao.getInstance().getDefaultUserFriends();
 		if (StringUtils.isNotEmpty(defaultFriends)) {
 			String[] friends = defaultFriends.split(",");
-			List<String> friendList = Arrays.asList(friends);
+			List<String> friendList = ArraysUtils.asList(friends);
 			if (friendList.contains(siteUserId)) {
 				friendList.remove(siteUserId);
 				String newFriends = listToString(friendList, ",");
@@ -132,7 +136,7 @@ public class ConfigManageService implements IConfigService {
 		String defaultGroups = SiteConfigDao.getInstance().getDefaultUserGroups();
 		if (StringUtils.isNotEmpty(defaultGroups)) {
 			String[] groups = defaultGroups.split(",");
-			List<String> groupList = Arrays.asList(groups);
+			List<String> groupList = ArraysUtils.asList(groups);
 			if (groupList.contains(siteGroupId)) {
 				groupList.remove(siteGroupId);
 				String newGroups = listToString(groupList, ",");
@@ -162,7 +166,7 @@ public class ConfigManageService implements IConfigService {
 		String defaultFriends = SiteConfigDao.getInstance().getDefaultUserFriends();
 		if (StringUtils.isNotEmpty(defaultFriends)) {
 			String[] friends = defaultFriends.split(",");
-			return Arrays.asList(friends);
+			return ArraysUtils.asList(friends);
 		}
 		return null;
 	}
@@ -172,8 +176,9 @@ public class ConfigManageService implements IConfigService {
 		String defaultGroups = SiteConfigDao.getInstance().getDefaultUserGroups();
 		if (StringUtils.isNotEmpty(defaultGroups)) {
 			String[] groups = defaultGroups.split(",");
-			return Arrays.asList(groups);
+			return ArraysUtils.asList(groups);
 		}
 		return null;
 	}
+
 }

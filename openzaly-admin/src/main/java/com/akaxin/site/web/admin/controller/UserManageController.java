@@ -60,9 +60,9 @@ public class UserManageController extends AbstractController {
 	@Autowired
 	private IConfigService configService;
 
-	// admin.html 分页获取用户列表
+	// 进入用户管理首页
 	@RequestMapping("/index")
-	public ModelAndView toUserIndex(@RequestBody byte[] bodyParam) {
+	public ModelAndView toIndex(@RequestBody byte[] bodyParam) {
 		ModelAndView modelAndView = new ModelAndView("user/index");
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
@@ -211,9 +211,11 @@ public class UserManageController extends AbstractController {
 			if (!isManager(currentUserId)) {
 				throw new UserPermissionException("Current user is not a manager");
 			}
+
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
 			String siteUserId = reqMap.get("site_user_id");
 			UserProfileBean bean = userService.getUserProfile(siteUserId);
+
 			modelAndView.addObject("siteUserId", bean.getSiteUserId());
 			modelAndView.addObject("siteLoginId", bean.getSiteLoginId());
 			modelAndView.addObject("userName", bean.getUserName());
@@ -222,6 +224,8 @@ public class UserManageController extends AbstractController {
 			modelAndView.addObject("userStatus", bean.getUserStatus());
 			modelAndView.addObject("regTime", bean.getRegisterTime());
 			modelAndView.addObject("defaultState", bean.getDefaultState());
+			boolean isManager = isManager(siteUserId);
+			modelAndView.addObject("managerState", isManager ? 1 : 0);
 			return modelAndView;
 		} catch (InvalidProtocolBufferException e) {
 			logger.error(StringHelper.format("siteUserId={} get user profile error"), e);
@@ -407,13 +411,14 @@ public class UserManageController extends AbstractController {
 				throw new UserPermissionException("Current user is not a manager");
 			}
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-			String reqStatus = reqMap.get("type");
+			String reqUserId = reqMap.get("site_user_id");
+			String reqStatus = reqMap.get("user_status");
 			int status = UserStatus.NORMAL_VALUE;
 			if ("1".equals(reqStatus)) {
 				status = UserStatus.SEALUP_VALUE;
 			}
 
-			if (userService.sealUpUser(reqMap.get("site_user_id"), status)) {
+			if (userService.sealUpUser(reqUserId, status)) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
