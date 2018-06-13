@@ -31,6 +31,7 @@ public class SQLiteUpgrade {
 	// upgrade db,return current db user-version
 	public static int upgradeSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
 		SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
+		SQLiteJDBCManager.checkDatabaseBeforeRun();
 
 		while (true) {
 			int dbVersion = SQLiteJDBCManager.getDbVersion();
