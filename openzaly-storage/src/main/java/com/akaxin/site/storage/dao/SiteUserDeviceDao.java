@@ -387,8 +387,8 @@ public class SiteUserDeviceDao {
 		// String sql = "DELETE FROM " + USER_DEVICE_TABLE + " WHERE site_user_id='?'
 		// ORDER BY active_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_DEVICE_TABLE
-				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT device_id FROM " + USER_DEVICE_TABLE
-				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?)";
+				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT d.device_id (SELECT device_id FROM "
+				+ USER_DEVICE_TABLE + " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?) as d)";
 		int num = 0;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -416,8 +416,8 @@ public class SiteUserDeviceDao {
 		// String sql = "DELETE FROM " + USER_SESSION_TABLE + " WHERE site_user_id='?'
 		// ORDER BY login_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_SESSION_TABLE
-				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT device_id FROM " + USER_DEVICE_TABLE
-				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?)";
+				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT s.device_id (SELECT device_id FROM "
+				+ USER_DEVICE_TABLE + " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?) as s);";
 
 		int num = 0;
 		Connection conn = null;
