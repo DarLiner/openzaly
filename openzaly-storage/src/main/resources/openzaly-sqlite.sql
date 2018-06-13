@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL, config_key INTEGER UNIQUE NOT NULL, config_value TEXT);
+CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL,
+            config_key INTEGER UNIQUE NOT NULL,
+            config_value TEXT);
 
 CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL,
             site_user_id VARCHAR(50) UNIQUE NOT NULL,
@@ -43,7 +45,8 @@ CREATE TABLE IF NOT EXISTS site_friend_apply(id INTEGER PRIMARY KEY NOT NULL,
 CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL,
             site_user_id VARCHAR(50) NOT NULL, 
             msg_id VARCHAR(50), 
-            send_user_id VARCHAR(50), 
+            send_user_id VARCHAR(50),
+            receive_user_id VARCHAR(50),
             msg_type INTEGER, 
             content TEXT, 
             device_id VARCHAR(50), 
@@ -82,7 +85,11 @@ CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL,
             content TEXT, 
             msg_time BIGINT);
 
-CREATE TABLE IF NOT EXISTS site_group_message_pointer(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));
+CREATE TABLE IF NOT EXISTS site_group_message_pointer(id INTEGER PRIMARY KEY NOT NULL,
+            site_user_id VARCHAR(50) not null,
+            site_group_id VARCHAR(50) not null,
+            pointer INTEGER, 
+            device_id VARCHAR(50));
 
 CREATE TABLE IF NOT EXISTS site_user_device(id INTEGER PRIMARY KEY NOT NULL,
             site_user_id VARCHAR(50) NOT NULL,

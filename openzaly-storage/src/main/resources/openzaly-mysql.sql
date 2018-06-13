@@ -2,7 +2,9 @@ CREATE DATABASE IF NOT EXISTS openzaly;
 
 use openzaly;
 
-CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, config_key INTEGER UNIQUE NOT NULL, config_value TEXT);
+CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+            config_key INTEGER UNIQUE NOT NULL,
+            config_value TEXT);
 
 CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) UNIQUE NOT NULL,
@@ -48,6 +50,7 @@ CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL AUT
             site_user_id VARCHAR(50) NOT NULL, 
             msg_id VARCHAR(50), 
             send_user_id VARCHAR(50), 
+            receive_user_id VARCHAR(50),
             msg_type INTEGER, 
             content TEXT, 
             device_id VARCHAR(50), 
