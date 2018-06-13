@@ -234,7 +234,7 @@ public class ApiSiteService extends AbstractRequest {
 			Set<String> defaultFriends = SiteConfig.getUserDefaultFriends();
 			if (defaultFriends != null && defaultFriends.size() > 0) {
 				for (String siteFriendId : defaultFriends) {
-					UserFriendDao.getInstance().saveFriendApply(siteFriendId, siteUserId, "给我发消息试试看吧");
+					UserFriendDao.getInstance().saveFriendApply(siteFriendId, siteUserId, "我已成为你的好友，给我发消息试试吧");
 					UserFriendDao.getInstance().agreeApply(siteUserId, siteFriendId, true);
 					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
 							siteFriendId);

@@ -234,11 +234,11 @@
             var attr = $('.group_default').attr('defaultState');
             if (attr == '0') {
                 $('.group_default').attr('defaultState', '1');
-                $('.group_default').attr('url-data', '/group/delGroupDefault');
-                $('.group_default').html('设为普通群');
+                $('.group_default').attr('url-data', '/group/deleteUserDefaultGroup');
+                $('.group_default').html('取消默认添加群');
             } else {
                 $('.group_default').attr('defaultState', '0');
-                $('.group_default').attr('url-data', '/group/setGroupDefault');
+                $('.group_default').attr('url-data', '/group/setUserDefaultGroup');
                 $('.group_default').html('设为默认添加群');
             }
         } else {

@@ -128,21 +128,10 @@ footer a {
 				id="user_default" th:if="${defaultState}==1"
 				th:attr="defaultState=${defaultState}">取消新用户默认好友</a> 
 				
-				<a href="javascript:;" name='sealup-user' th:attr="data=${siteUserId}"
-				class="sealup-site-user weui-btn weui-btn_warn "
-				url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a> 
-				<a href="javascript:;" name='sealup' th:attr="data=${siteUserId}"
-				class="sealup-site-user weui-btn weui-btn_warn"
-				url-data="/user/sealup" th:if="${userStatus}==1">解封用户</a>
-
-			<!-- <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
-				class="unfreeze-site-user weui-btn weui-btn_warn "
-				url-data="/user/sealup" style="display: none"
-				th:if="${userStatus}==0">解禁用户</a> 
-			<a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
-				class="sealup-site-user weui-btn weui-btn_warn"
-				style="display: none" url-data="/user/sealup"
-				th:unless="${userStatus}==0">封禁用户</a> -->
+				<a href="javascript:;" name='sealup-user' th:attr="data=${siteUserId},userStatus=${userStatus}"
+				class="sealup-site-user weui-btn weui-btn_warn " url-data="/user/sealup" th:if="${userStatus}==0" >封禁用户</a> 
+				<a href="javascript:;" name='sealup-user' th:attr="data=${siteUserId},userStatus=${userStatus}"
+				class="sealup-site-user weui-btn weui-btn_warn" url-data="/user/sealup" th:if="${userStatus}==1">解封用户</a>
 
 			<!-- 删除用户 -->
 			<a class="weui-btn weui-btn_warn  delUser" url-data="/user/delUser"
@@ -232,12 +221,11 @@ footer a {
 			var siteUserId = $(this).attr('data');
 			var url = $(this).attr('url-data');
 			var userStatus = $(this).attr('userStatus');
-			
 			var confirmTitle = "确定要封禁用户？";
-			var status = 1;
+			var status = "1";
 			if(userStatus==1){
 				confirmTitle = "确认要解封用户？";
-				status = 0;
+				status = "0";
 			}
 			
 			$.confirm({
@@ -252,7 +240,6 @@ footer a {
 					$.closeModal();
 				},
 				onCancel : function() {
-					console.log('cancle');
 					toast('取消操作');
 					$.closeModal();
 				}
@@ -261,7 +248,7 @@ footer a {
 
 		function sealupSiteUser(results) {
 			if (results == 'success') {
-				var userStatus = $(this).attr('userStatus');
+				var userStatus = $('.sealup-site-user').attr('userStatus');
 				if(userStatus == 0){
 					$('.sealup-site-user').attr('userStatus', '1');
                     $('.sealup-site-user').html('解封用户');
@@ -345,11 +332,11 @@ footer a {
 				var attr = $('.user_default').attr('defaultState');
 				if (attr == '0') {
 					$('.user_default').attr('defaultState', '1');
-					$('.user_default').attr('url-data', 'deleteUserDefaultFriend');
+					$('.user_default').attr('url-data', '/user/deleteUserDefaultFriend');
 					$('.user_default').html('取消默认好友');
 				} else {
 					$('.user_default').attr('defaultState', '0');
-					$('.user_default').attr('url-data', 'setUserDefaultFriend');
+					$('.user_default').attr('url-data', '/user/setUserDefaultFriend');
 					$('.user_default').html('设为默认好友');
 				}
 			} else {

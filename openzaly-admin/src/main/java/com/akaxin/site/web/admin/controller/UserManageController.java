@@ -110,10 +110,12 @@ public class UserManageController extends AbstractController {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("to set User Default  error", e);
+			logger.error("set user as default friend error", e);
 		} catch (UserPermissionException e) {
-			logger.error("to set User Default  error : " + e.getMessage());
+			logger.error("set user as default friend error", e);
 			return NO_PERMISSION;
+		} catch (Exception e) {
+			logger.error("set user as default friend error", e);
 		}
 		return ERROR;
 	}
@@ -122,21 +124,27 @@ public class UserManageController extends AbstractController {
 	@ResponseBody
 	public String deleteUserDefaultFriend(@RequestBody byte[] bodyParam) {
 		try {
+			logger.info("siteUserId={} deleteUserDefaultFriend userId={} ");
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			if (!isManager(siteUserId)) {
 				throw new UserPermissionException("Current user is not a manager");
 			}
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-			String site_user_id = reqMap.get("siteUserId");
-			boolean flag = configService.deleteUserDefaultFriends(site_user_id);
+			String friendSiteUserId = reqMap.get("siteUserId");
+			boolean flag = configService.deleteUserDefaultFriends(friendSiteUserId);
+
+			logger.info("siteUserId={} deleteUserDefaultFriend userId={} ", siteUserId, friendSiteUserId);
 			if (flag) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("to del User Default  error", e);
+			logger.error("delete user as default friend error ", e);
 		} catch (UserPermissionException e) {
-			logger.error("to del User Default  error : " + e.getMessage());
+			logger.error("delete user as default friend error : ", e);
 			return NO_PERMISSION;
+		} catch (Exception e) {
+			logger.error("delete user as default friend error", e);
 		}
 		return ERROR;
 	}
@@ -418,14 +426,17 @@ public class UserManageController extends AbstractController {
 				status = UserStatus.SEALUP_VALUE;
 			}
 
+			logger.info("siteUserId={} sealup siteUserId={} to status={}", siteUserId, reqUserId, status);
 			if (userService.sealUpUser(reqUserId, status)) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("update profile error", e);
+			logger.error("sealup user error", e);
 		} catch (UserPermissionException e) {
-			logger.error("update profile error : " + e.getMessage());
+			logger.error("sealup user error : ", e);
 			return NO_PERMISSION;
+		} catch (Exception e) {
+			logger.error("sealup user error : ", e);
 		}
 		return ERROR;
 	}
