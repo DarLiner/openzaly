@@ -104,7 +104,7 @@ public class UserSquareController extends AbstractController {
 		return results;
 	}
 
-	@RequestMapping("/applyAddFriend")
+	@RequestMapping("/applyFriend")
 	@ResponseBody
 	public String[] applyFriend(@RequestBody byte[] bodyParam) {
 		PluginProto.ProxyPluginPackage pluginPackage = null;

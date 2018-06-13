@@ -6,7 +6,6 @@
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
 <title>编辑用户信息</title>
-</title>
 <!-- 引入 WeUI -->
 <link rel="stylesheet"
 	href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
@@ -111,12 +110,12 @@ footer a {
 				url-data="/user/updateProfile" href="javascript:"
 				id="update_user_info">确定</a> <a
 				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
-				url-data="/user/setUserDefault" href="javascript:" id="user_default"
-				th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为默认好友</a>
+				url-data="/user/setUserDefaultFriend" href="javascript:" id="user_default"
+				th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为新用户默认好友</a>
 			<a
 				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
-				url-data="/user/delUserDefault" href="javascript:" id="user_default"
-				th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">取消默认好友</a>
+				url-data="/user/deleteUserDefaultFriend" href="javascript:" id="user_default"
+				th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">取消新用户默认好友</a>
 
 			<a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
 				class="sealup-site-user weui-btn weui-btn_warn "

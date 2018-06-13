@@ -35,7 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.akaxin.common.utils.GsonUtils;
 import com.akaxin.proto.core.PluginProto;
-import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;

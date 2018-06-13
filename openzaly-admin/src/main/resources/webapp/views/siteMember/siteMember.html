@@ -211,7 +211,7 @@
                     'site_user_id': siteUserId,
                     "apply_reason": text
                 };
-                reqUrl(url, JSON.stringify(userInfo), "applyAddFriend");
+                reqUrl(url, JSON.stringify(userInfo), "applyFriend");
 
             },
             onCancel: function () {
@@ -259,7 +259,7 @@
                 if (user.site_user_relation == 1) {
                     var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><p style="color:#9b9b9b;font-size:14px;">添加成功</p></div>';
                 } else {
-                    var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><a href="javascript:;" name="add-member-friend" data="' + user.site_user_id + '" class="add-member-friend weui-btn  basic-weui-btn weui-btn_mini weui-btn_primary basic-color"  url-data="/site_member/applyAddFriend">添加好友</a></div>';
+                    var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><a href="javascript:;" name="add-member-friend" data="' + user.site_user_id + '" class="add-member-friend weui-btn  basic-weui-btn weui-btn_mini weui-btn_primary basic-color"  url-data="/userSquare/applyFriend">添加好友</a></div>';
                 }
                 $('#member-lists').append(html);
             }
@@ -267,7 +267,7 @@
         loading = results.loading;
     }
 
-    function applyAddFriend(result) {
+    function applyFriend(result) {
         result = eval("(" + result + ")");
 
         if (result[0] == '成功') {
