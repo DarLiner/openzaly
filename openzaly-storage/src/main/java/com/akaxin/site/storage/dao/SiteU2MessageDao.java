@@ -50,7 +50,7 @@ public class SiteU2MessageDao {
 	public boolean saveU2Message(U2MessageBean bean) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "INSERT INTO " + USER2_MESSAGE_TABLE
-				+ "(site_user_id,msg_id,send_user_id,msg_type,content,device_id,ts_key,msg_time) VALUES(?,?,?,?,?,?,?,?);";
+				+ "(site_user_id,msg_id,send_user_id,receive_user_id,msg_type,content,device_id,ts_key,msg_time) VALUES(?,?,?,?,?,?,?,?,?);";
 
 		int result = 0;
 		Connection conn = null;
@@ -62,11 +62,12 @@ public class SiteU2MessageDao {
 			pst.setString(1, bean.getSiteUserId());
 			pst.setString(2, bean.getMsgId());
 			pst.setString(3, bean.getSendUserId());
-			pst.setLong(4, bean.getMsgType());
-			pst.setString(5, bean.getContent());
-			pst.setString(6, bean.getDeviceId());
-			pst.setString(7, bean.getTsKey());
-			pst.setLong(8, bean.getMsgTime());
+			pst.setString(4, bean.getReceiveUserId());
+			pst.setLong(5, bean.getMsgType());
+			pst.setString(6, bean.getContent());
+			pst.setString(7, bean.getDeviceId());
+			pst.setString(8, bean.getTsKey());
+			pst.setLong(9, bean.getMsgTime());
 
 			result = pst.executeUpdate();
 		} catch (Exception e) {
@@ -84,7 +85,7 @@ public class SiteU2MessageDao {
 			throws SQLException {
 		long startTime = System.currentTimeMillis();
 		List<U2MessageBean> msgList = new ArrayList<U2MessageBean>();
-		String sql = "SELECT id,site_user_id,msg_id,send_user_id,msg_type,content,device_id,ts_key,msg_time FROM "
+		String sql = "SELECT id,site_user_id,msg_id,send_user_id,receive_user_id,msg_type,content,device_id,ts_key,msg_time FROM "
 				+ USER2_MESSAGE_TABLE + " WHERE site_user_id=? AND id>? LIMIT ?;";
 
 		long pointer = queryU2MessagePointer(userId, deviceId);
@@ -107,11 +108,12 @@ public class SiteU2MessageDao {
 				u2MsgBean.setSiteUserId(rs.getString(2));
 				u2MsgBean.setMsgId(rs.getString(3));
 				u2MsgBean.setSendUserId(rs.getString(4));
-				u2MsgBean.setMsgType(rs.getInt(5));
-				u2MsgBean.setContent(rs.getString(6));
-				u2MsgBean.setDeviceId(rs.getString(7));
-				u2MsgBean.setTsKey(rs.getString(8));
-				u2MsgBean.setMsgTime(rs.getLong(9));
+				u2MsgBean.setReceiveUserId(rs.getString(5));
+				u2MsgBean.setMsgType(rs.getInt(6));
+				u2MsgBean.setContent(rs.getString(7));
+				u2MsgBean.setDeviceId(rs.getString(8));
+				u2MsgBean.setTsKey(rs.getString(9));
+				u2MsgBean.setMsgTime(rs.getLong(10));
 
 				msgList.add(u2MsgBean);
 			}
@@ -127,8 +129,8 @@ public class SiteU2MessageDao {
 
 	public List<U2MessageBean> queryU2MessageByMsgId(List<String> msgIds) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String sql = "SELECT id,site_user_id,msg_id,send_user_id,msg_type,msg_time FROM " + USER2_MESSAGE_TABLE
-				+ " WHERE msg_id in ({});";
+		String sql = "SELECT id,site_user_id,msg_id,send_user_id,receive_user_id,msg_type,msg_time FROM "
+				+ USER2_MESSAGE_TABLE + " WHERE msg_id in ({});";
 
 		List<U2MessageBean> msgList = new ArrayList<U2MessageBean>();
 
@@ -162,8 +164,9 @@ public class SiteU2MessageDao {
 				bean.setSiteUserId(rs.getString(2));
 				bean.setMsgId(rs.getString(3));
 				bean.setSendUserId(rs.getString(4));
-				bean.setMsgType(rs.getInt(5));
-				bean.setMsgTime(rs.getLong(6));
+				bean.setReceiveUserId(rs.getString(5));
+				bean.setMsgType(rs.getInt(6));
+				bean.setMsgTime(rs.getLong(7));
 				msgList.add(bean);
 			}
 		} catch (Exception e) {

@@ -58,15 +58,35 @@ public class U2MessageWebHandler extends AbstractU2Handler<Command> {
 				U2MessageBean bean = new U2MessageBean();
 				bean.setMsgId(msgId);
 				bean.setMsgType(type);
-				// bean.setSendUserId(siteUserId);
-				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				bean.setSiteUserId(siteFriendId);
+				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				bean.setReceiveUserId(siteFriendId);
 				bean.setContent(webBean.toString());
 				bean.setMsgTime(msgTime);
 
 				LogUtils.requestDebugLog(logger, command, bean.toString());
 
 				boolean success = messageDao.saveU2Message(bean);
+
+				if (command.isProxy()) {
+					U2MessageBean proxyBean = new U2MessageBean();
+					proxyBean.setMsgId(msgId);
+					proxyBean.setMsgType(type);
+					proxyBean.setSiteUserId(proxySiteUserId);
+					proxyBean.setSendUserId(proxySiteUserId);
+					proxyBean.setReceiveUserId(siteFriendId);
+					// 这里兼容一个客户端的chatSessionId Bug
+					if (hrefUrl.contains("page=plugin_for_u2_chat&site_user_id")) {
+						String oldPar = "plugin_for_u2_chat&site_user_id=" + proxySiteUserId;
+						String newPar = "plugin_for_u2_chat&site_user_id=" + siteFriendId;
+						String hrefUrl2 = hrefUrl.replace(oldPar, newPar);
+						webBean.setHrefUrl(hrefUrl2);
+					}
+					proxyBean.setContent(webBean.toString());
+					proxyBean.setMsgTime(msgTime);
+					messageDao.saveU2Message(proxyBean);
+				}
+
 				msgStatusResponse(command, msgId, msgTime, success);
 
 				return success;

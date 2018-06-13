@@ -52,8 +52,9 @@ public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				u2Bean.setReceiveUserId(siteFriendId);
 				u2Bean.setContent(imageId);
 				long msgTime = System.currentTimeMillis();
 				u2Bean.setMsgTime(msgTime);
@@ -61,6 +62,19 @@ public class U2MessageImageHandler extends AbstractU2Handler<Command> {
 				LogUtils.requestDebugLog(logger, command, u2Bean.toString());
 
 				boolean success = messageDao.saveU2Message(u2Bean);
+
+				if (command.isProxy()) {
+					U2MessageBean proxyBean = new U2MessageBean();
+					proxyBean.setMsgId(msgId);
+					proxyBean.setMsgType(type);
+					proxyBean.setSiteUserId(proxySiteUserId);
+					proxyBean.setSendUserId(proxySiteUserId);
+					proxyBean.setReceiveUserId(siteFriendId);
+					proxyBean.setContent(imageId);
+					proxyBean.setMsgTime(msgTime);
+					messageDao.saveU2Message(proxyBean);
+				}
+
 				msgStatusResponse(command, msgId, msgTime, success);
 
 				return success;

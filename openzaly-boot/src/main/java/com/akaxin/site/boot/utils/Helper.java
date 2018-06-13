@@ -175,7 +175,7 @@ public class Helper {
 			config.setDb(DBType.PERSONAL);
 			// 升级
 			int dbUserVersion = DataSourceManager.upgrade(config);
-			int needVersion = SQLConst.SITE_DB_VERSION;
+			int needVersion = SQLConst.SITE_DB_VERSION_10;
 			pw.println("[INFO] upgrade openzaly-server version : " + siteVersion);
 			if (needVersion == dbUserVersion) {
 				pw.println("[OK] upgrade database user-version : " + dbUserVersion);

@@ -32,25 +32,46 @@ public class SQLiteUpgrade {
 	public static int upgradeSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
 		SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
 
-		int dbVersion = SQLiteJDBCManager.getDbVersion();
-		if (dbVersion < 9) {
-			// 1.首先备份
-			String fileName = backupDatabaseFile(config.getDbDir(), dbVersion);
-			if (StringUtils.isEmpty(fileName)) {
-				throw new UpgradeDatabaseException("backup database file before upgrade error");
-			}
-			// 2.升级
-			if (upgrade0_9(dbVersion)) {
-				SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION);
-			} else {
-				logger.error("upgrade user-version {} -> {} error.", dbVersion, SQLConst.SITE_DB_VERSION);
-				// db rename to original db file
-				restoreDatabase(fileName);
-			}
-		} else if (dbVersion >= 9) {
-			// latest db user-version do nothing
-		}
+		while (true) {
+			int dbVersion = SQLiteJDBCManager.getDbVersion();
+			if (dbVersion < 9) {
+				// 1.首先备份
+				String fileName = backupDatabaseFile(config.getDbDir(), dbVersion);
+				if (StringUtils.isEmpty(fileName)) {
+					throw new UpgradeDatabaseException("backup database file before upgrade error");
+				}
+				// 2.升级
+				if (upgrade0_9(dbVersion)) {
+					SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_9);
+				} else {
+					logger.error("upgrade user-version {} -> {} error.", dbVersion, SQLConst.SITE_DB_VERSION_9);
+					// db rename to original db file
+					restoreDatabase(fileName);
+				}
+				continue;
+			} else if (dbVersion == 9) {
+				// 0.9.5 upgrade from 9 to 10
+				// 1.首先备份
+				String fileName = backupDatabaseFile(config.getDbDir(), dbVersion);
+				if (StringUtils.isEmpty(fileName)) {
+					throw new UpgradeDatabaseException("backup database file before upgrade error");
+				}
+				if (StringUtils.isEmpty(fileName)) {
+					throw new UpgradeDatabaseException("backup database file before upgrade error");
+				}
+				// 2.升级
+				if (upgrade9_10(dbVersion)) {
+					SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_10);
+				} else {
+					logger.error("upgrade user-version {} -> {} error.", dbVersion, SQLConst.SITE_DB_VERSION_10);
+					// db rename to original db file
+					restoreDatabase(fileName);
+				}
 
+			}
+
+			break;
+		}
 		return SQLiteJDBCManager.getDbVersion();
 	}
 
@@ -113,8 +134,11 @@ public class SQLiteUpgrade {
 					PreparedStatement pst = conn.prepareStatement(sql);
 					int res = pst.executeUpdate();
 					logger.info("rename database table result={} sql:{}", res, sql);
+					if (pst != null) {
+						pst.close();
+					}
 				}
-				// 2.chekc all tables
+				// 2.check all tables
 				SQLiteJDBCManager.checkDatabaseTable();
 
 				// 3. migrate
@@ -146,6 +170,9 @@ public class SQLiteUpgrade {
 					PreparedStatement pst = conn.prepareStatement(sql_mig);
 					int res = pst.executeUpdate();
 					logger.info("migrate database table result={} sql:{}", res, sql_mig);
+					if (pst != null) {
+						pst.close();
+					}
 				}
 				result = true;// 兼容失败情况，这里不能使用成功个数
 			} catch (Exception e) {
@@ -155,6 +182,45 @@ public class SQLiteUpgrade {
 			conn.setAutoCommit(true);
 		} catch (SQLException e) {
 			logger.error("rename database table to upgrade error.", e);
+		}
+
+		return result;
+	}
+
+	private static boolean upgrade9_10(int oldVersion) {
+		String sql = "ALTER TABLE " + SQLConst.SITE_USER_MESSAGE + " RENAME TO "
+				+ getTempTable(oldVersion, SQLConst.SITE_USER_MESSAGE);
+
+		boolean result = false;
+		try {
+			Connection conn = SQLiteJDBCManager.getConnection();
+			// 1.rename
+			PreparedStatement pst = conn.prepareStatement(sql);
+			int res = pst.executeUpdate();
+			logger.info("rename database table result={} sql:{}", res, sql);
+
+			if (pst != null) {
+				pst.close();
+			}
+
+			// 2.check all tables
+			SQLiteJDBCManager.checkDatabaseTable();
+
+			// 3. migrate
+			String sql_mig = "INSERT INTO " + SQLConst.SITE_USER_MESSAGE
+					+ "(id,site_user_id,msg_id,send_user_id,receive_user_id,msg_type,content,device_id,ts_key,msg_time) "
+					+ "SELECT id,site_user_id,msg_id,send_user_id,site_user_id,msg_type,content,device_id,ts_key,msg_time FROM "
+					+ getTempTable(oldVersion, SQLConst.SITE_USER_MESSAGE);
+
+			PreparedStatement pst2 = conn.prepareStatement(sql_mig);
+			int res2 = pst2.executeUpdate();
+			logger.info("migrate database table result={} sql:{}", res2, sql_mig);
+			if (pst2 != null) {
+				pst2.close();
+			}
+			result = true;// 兼容失败情况，这里不能使用成功个数
+		} catch (SQLException e) {
+			logger.error("execute database table to upgrade error.", e);
 		}
 
 		return result;

@@ -56,8 +56,9 @@ public class U2MessageVoiceSecretHandler extends AbstractU2Handler<Command> {
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				u2Bean.setReceiveUserId(siteFriendId);
 				u2Bean.setContent(secretVoiceId);
 				u2Bean.setTsKey(tsKey);
 				u2Bean.setDeviceId(toDeviceId);
