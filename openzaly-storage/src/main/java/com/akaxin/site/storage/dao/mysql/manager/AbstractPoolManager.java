@@ -68,8 +68,8 @@ public abstract class AbstractPoolManager {
 		sb.append("?useUnicode=");
 		sb.append(useUnicode);
 
-		sb.append("&characterEncoding=");
-		sb.append(characterEncoding);
+//		sb.append("&characterEncoding=");
+//		sb.append(characterEncoding);
 
 		sb.append("&verifyServerCertificate=");
 		sb.append(verifyServerCertificate);
