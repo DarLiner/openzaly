@@ -345,11 +345,11 @@ footer a {
 				var attr = $('.user_default').attr('defaultState');
 				if (attr == '0') {
 					$('.user_default').attr('defaultState', '1');
-					$('.user_default').attr('url-data', '/user/delUserDefault');
+					$('.user_default').attr('url-data', 'deleteUserDefaultFriend');
 					$('.user_default').html('取消默认好友');
 				} else {
 					$('.user_default').attr('defaultState', '0');
-					$('.user_default').attr('url-data', '/user/setUserDefault');
+					$('.user_default').attr('url-data', 'setUserDefaultFriend');
 					$('.user_default').html('设为默认好友');
 				}
 			} else {
