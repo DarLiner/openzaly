@@ -66,7 +66,7 @@ public class SQLiteJDBCManager {
 	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
 		SQLiteUpgrade.upgradeSqliteDB(config);
 
-		//重新加载一次
+		// 重新加载一次
 		loadDatabaseDriver(config.getDbDir());
 
 		checkDatabaseBeforeRun();
@@ -81,6 +81,10 @@ public class SQLiteJDBCManager {
 
 	public static void loadDatabaseDriver(String dbDir) {
 		try {
+			if (sqlitConnection != null) {
+				sqlitConnection.close();
+			}
+
 			Class.forName(sqliteDriverName);
 			String dbUrl = "jdbc:sqlite:";
 			if (StringUtils.isNotEmpty(dbDir)) {
