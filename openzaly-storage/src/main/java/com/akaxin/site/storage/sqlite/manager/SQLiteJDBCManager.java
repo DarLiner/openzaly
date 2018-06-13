@@ -53,7 +53,7 @@ import com.akaxin.site.storage.sqlite.sql.SQLIndex;
 public class SQLiteJDBCManager {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteJDBCManager.class);
 
-	private static int SITE_DB_VERSION = SQLConst.SITE_DB_VERSION_9;
+	private static int SITE_DB_VERSION = SQLConst.SITE_DB_VERSION_10;
 	private static String sqliteDriverName = "org.sqlite.JDBC";
 	private static Connection sqlitConnection = null;
 	private static final String DB_FILE_PATH = "openzalyDB.sqlite3";
@@ -64,12 +64,16 @@ public class SQLiteJDBCManager {
 
 	// init db
 	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
+
+		// 尝试升级，如果需要会尝试自动升级
 		SQLiteUpgrade.upgradeSqliteDB(config);
 
-		// 重新加载一次
+		// 关闭升级使用的connection，重新加载一次Driver
 		loadDatabaseDriver(config.getDbDir());
 
-		checkDatabaseBeforeRun();
+		if (getDbVersion() < SITE_DB_VERSION) {
+			throw new UpgradeDatabaseException("openzaly-server need to upgrade before run it");
+		}
 
 		initSiteConfig(config.getConfigMap());
 		addSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getAdminApi(), config.getSiteServer(),
@@ -105,9 +109,11 @@ public class SQLiteJDBCManager {
 		}
 	}
 
-	private static void checkDatabaseBeforeRun() throws SQLException, UpgradeDatabaseException {
+	public static void checkDatabaseBeforeRun() throws SQLException, UpgradeDatabaseException {
 		int dbVersion = getDbVersion();
-		logger.info("SQLite current user-version:{}", dbVersion);
+		logger.info("SQLite current user-version : {}", dbVersion);
+
+		// 不是最新版本，启动需要创建表
 		if (dbVersion < SITE_DB_VERSION) {
 			int num = checkDatabaseTable();
 			if (num == SQLConst.SITE_TABLES_MAP.size()) {
@@ -116,17 +122,8 @@ public class SQLiteJDBCManager {
 				// 版本设置为 SITE_DB_VERSION
 				setDbVersion(SITE_DB_VERSION);
 				logger.info("create all database tables finish, currentuser-version:{}", getDbVersion());
-			} else {
-				// 提醒用户升级
-				throw new UpgradeDatabaseException(
-						"Openzaly-server need upgrade SQLite database,from user-version: {} to {}", dbVersion,
-						SITE_DB_VERSION);
 			}
-		} else {
-			logger.info("SQLite is latest version:{} with Openzaly-server", SITE_DB_VERSION);
 		}
-
-		// checkDatabaseVersion();
 	}
 
 	public static int getDbVersion() throws SQLException {
