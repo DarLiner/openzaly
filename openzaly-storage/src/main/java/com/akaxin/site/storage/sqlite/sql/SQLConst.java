@@ -10,7 +10,9 @@ import java.util.HashMap;
  */
 public interface SQLConst {
 
-	int SITE_DB_VERSION = 9;// 0.9.5
+	int SITE_DB_VERSION_9 = 9;// 0.9.5
+
+	int SITE_DB_VERSION_10 = 10;// 0.9.5
 
 	String SITE_CONFIG_INFO = "site_config_info";
 	String SITE_USER_PROFILE = "site_user_profile";
@@ -65,7 +67,16 @@ public interface SQLConst {
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_friend_id VARCHAR(50) not null, apply_reason TEXT, apply_time LONG);";
 
 	String CREATE_SITE_USER_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_MESSAGE
-			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), msg_type INTEGER, content TEXT, device_id VARCHAR(50), ts_key VARCHAR(50), msg_time LONG);";
+			+ "(id INTEGER PRIMARY KEY NOT NULL," // primary key
+			+ "site_user_id VARCHAR(50) not null,"// 消息拥有者
+			+ "msg_id VARCHAR(50)," // 消息ID
+			+ "send_user_id VARCHAR(50),"// 消息发送者
+			+ "receive_user_id VARCHAR(50),"// 消息接受者
+			+ "msg_type INTEGER, " // 消息类型
+			+ "content TEXT, "// 消息内容
+			+ "device_id VARCHAR(50), "// 设备ID
+			+ "ts_key VARCHAR(50),"// 加密key
+			+ "msg_time LONG);";// 消息时间
 
 	String CREATE_SITE_MESSAGE_POINTER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_MESSAGE_POINTER
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
