@@ -16,15 +16,12 @@
 package com.akaxin.site.business.dao;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
-import com.akaxin.site.storage.bean.GroupProfileBean;
-import com.akaxin.site.storage.bean.SimpleUserBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.proto.core.ConfigProto.ConfigKey;
 import com.akaxin.site.storage.api.ISiteConfigDao;
 import com.akaxin.site.storage.service.SiteConfigDaoService;
 
@@ -35,123 +32,91 @@ import com.akaxin.site.storage.service.SiteConfigDaoService;
  * @since 2018-01-25 16:18:58
  */
 public class SiteConfigDao {
-    private static final Logger logger = LoggerFactory.getLogger(SiteConfigDao.class);
+	private static final Logger logger = LoggerFactory.getLogger(SiteConfigDao.class);
 
-    private SiteConfigDao() {
-    }
+	private SiteConfigDao() {
+	}
 
-    public static SiteConfigDao getInstance() {
-        return SingletonHolder.instance;
-    }
+	public static SiteConfigDao getInstance() {
+		return SingletonHolder.instance;
+	}
 
-    public boolean setUserDefault(String site_user_id) {
-        try {
-            return siteConfigDao.setUserDefault(site_user_id);
-        } catch (SQLException e) {
-            logger.error("set user as default friend error.", e);
-        }
-        return false;
-    }
+	static class SingletonHolder {
+		private static SiteConfigDao instance = new SiteConfigDao();
+	}
 
-    public List<String> getUserDefault() {
-        try {
-            return siteConfigDao.getUserDefault();
-        } catch (SQLException e) {
-            logger.error("get user default list error.", e);
-        }
-        return null;
-    }
+	private ISiteConfigDao siteConfigDao = new SiteConfigDaoService();
 
-    public boolean updateUserDefault(String site_user_id) {
-        try {
-            return siteConfigDao.updateUserDefault(site_user_id);
-        } catch (SQLException e) {
-            logger.error("get user default list error.", e);
-        }
-        return false;
-    }
+	public Map<Integer, String> getSiteConfig() {
+		try {
+			return siteConfigDao.getSiteConfig();
+		} catch (SQLException e) {
+			logger.error("get site profile error.", e);
+		}
+		return null;
+	}
 
-    public boolean delUserDefault(String s) {
-        try {
-            return siteConfigDao.delUserDefault(s);
-        } catch (SQLException e) {
-            logger.error("del user default error.", e);
-        }
-        return false;
-    }
+	public boolean updateSiteConfig(Map<Integer, String> configMap, boolean isAdmin) {
+		int count = 0;
+		try {
+			if (configMap != null) {
+				count = siteConfigDao.updateSiteConfig(configMap, isAdmin);
+				if (count == configMap.size()) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			logger.error("update site configmap error.", e);
+		}
+		return false;
+	}
 
-    public List<String> getGroupDefault() {
-        try {
-            return siteConfigDao.getGroupDefault();
-        } catch (SQLException e) {
-            logger.error("get group default error.", e);
-        }
-        return null;
-    }
+	public boolean updateSiteConfig(int key, String value) {
+		try {
+			return siteConfigDao.updateSiteConfig(key, value) > 0;
+		} catch (SQLException e) {
+			logger.error("update site config error.", e);
+		}
+		return false;
+	}
 
-    public boolean updateGroupDefault(String siteGroupId) {
-        try {
-            return siteConfigDao.updateGroupDefault(siteGroupId);
-        } catch (SQLException e) {
-            logger.error("update group default error.", e);
-        }
-        return false;
-    }
+	public String getSiteManagers() {
+		try {
+			return siteConfigDao.getSiteConfigValue(ConfigKey.SITE_MANAGER_VALUE);
+		} catch (SQLException e) {
+			logger.error("get site user managers error.", e);
+		}
+		return null;
+	}
 
-    public boolean setGroupDefault(String siteGroupId) {
-        try {
-            return siteConfigDao.setGroupDefault(siteGroupId);
-        } catch (SQLException e) {
-            logger.error("update group default error.", e);
-        }
-        return false;
-    }
+	public boolean updateSiteManagers(String userManagers) {
+		return updateSiteConfig(ConfigKey.SITE_MANAGER_VALUE, userManagers);
+	}
 
-    public boolean delGroupDefault(String del) {
-        try {
-            return siteConfigDao.delGroupDefault(del);
-        } catch (SQLException e) {
-            logger.error("del user default error.", e);
-        }
-        return false;
-    }
+	public String getDefaultUserFriends() {
+		try {
+			return siteConfigDao.getSiteConfigValue(ConfigKey.DEFAULT_USER_FRIENDS_VALUE);
+		} catch (SQLException e) {
+			logger.error("get site default user friends error.", e);
+		}
+		return null;
+	}
 
-    static class SingletonHolder {
-        private static SiteConfigDao instance = new SiteConfigDao();
-    }
+	public boolean updateDefaultUserFriends(String defaultFriends) {
+		return updateSiteConfig(ConfigKey.DEFAULT_USER_FRIENDS_VALUE, defaultFriends);
+	}
 
-    private ISiteConfigDao siteConfigDao = new SiteConfigDaoService();
+	public String getDefaultUserGroups() {
+		try {
+			return siteConfigDao.getSiteConfigValue(ConfigKey.DEFAULT_USER_GROUPS_VALUE);
+		} catch (SQLException e) {
+			logger.error("get site official group default error.", e);
+		}
+		return null;
+	}
 
-    public Map<Integer, String> getSiteConfig() {
-        try {
-            return siteConfigDao.getSiteConfig();
-        } catch (SQLException e) {
-            logger.error("get site profile error.", e);
-        }
-        return null;
-    }
+	public boolean updateDefaultUserGroups(String defaultGroupIds) {
+		return updateSiteConfig(ConfigKey.DEFAULT_USER_GROUPS_VALUE, defaultGroupIds);
+	}
 
-    public boolean updateSiteConfig(Map<Integer, String> configMap, boolean isAdmin) {
-        int count = 0;
-        try {
-            if (configMap != null) {
-                count = siteConfigDao.updateSiteConfig(configMap, isAdmin);
-                if (count == configMap.size()) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("update site configmap error.", e);
-        }
-        return false;
-    }
-
-    public boolean updateSiteConfig(int key, String value) {
-        try {
-            return siteConfigDao.updateSiteConfig(key, value) > 0;
-        } catch (SQLException e) {
-            logger.error("update site config error.", e);
-        }
-        return false;
-    }
 }

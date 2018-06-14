@@ -19,6 +19,13 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * springboot的支持，放在openzaly-boot中
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-06-05 19:31:16
+ */
+@Deprecated
 @SpringBootApplication
 public class OpenzalyAdminApplication {
 

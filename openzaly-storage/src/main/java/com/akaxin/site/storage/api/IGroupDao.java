@@ -46,7 +46,7 @@ public interface IGroupDao {
 
 	public List<GroupMemberBean> getGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException;
 
-	public boolean deleteGroupMember(String groupId, List<String> userIds);
+	public boolean deleteGroupMember(String groupId, List<String> userIds) throws SQLException;
 
 	public int getNonGroupMemberNum(String groupId) throws SQLException;
 

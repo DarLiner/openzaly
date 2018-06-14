@@ -54,23 +54,28 @@ public class GroupNotice {
 	public void addGroupMemberNotice(String siteUserId, String groupId, List<String> userIdList) {
 		logger.info("add group member notice siteUserId={} groupId={} userList={}", siteUserId, groupId, userIdList);
 
-		if (StringUtils.isAnyEmpty(siteUserId, groupId) || userIdList == null || userIdList.size() == 0) {
+		if (StringUtils.isEmpty(groupId) || userIdList == null || userIdList.size() == 0) {
 			return;
 		}
 
 		StringBuilder noticeText = new StringBuilder();
 		try {
-			// 移除群主,群创建者
-			userIdList.remove(siteUserId);
-			// 查询群主信息
-			SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
-			if (bean != null && StringUtils.isNotEmpty(bean.getUserName())) {
-				noticeText.append(bean.getUserName());
-				noticeText.append(" 邀请了 ");
+			if (StringUtils.isNotEmpty(siteUserId)) {
+				// 移除群主,群创建者
+				userIdList.remove(siteUserId);
+				// 查询群主信息
+				SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId);
+				if (bean != null && StringUtils.isNotEmpty(bean.getUserName())) {
+					noticeText.append(bean.getUserName());
+					noticeText.append(" 邀请了 ");
+				}
 			}
 
 			int num = 0;
 			for (String userId : userIdList) {
+				if (StringUtils.isEmpty(siteUserId)) {
+					siteUserId = userId;
+				}
 				SimpleUserBean memberBean = UserProfileDao.getInstance().getSimpleProfileById(userId);
 				if (memberBean != null && StringUtils.isNotEmpty(memberBean.getUserName())) {
 					noticeText.append(memberBean.getUserName());

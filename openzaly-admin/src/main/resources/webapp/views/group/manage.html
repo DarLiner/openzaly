@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>
-        群管理
-    </title>
+    <title>群管理</title>
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
@@ -77,12 +75,12 @@
             <div class="weui-cell weui-cell_access"></div>
             <div class="weui-btn-area">
                 <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
-                   url-data="/group/setGroupDefault" href="javascript:" id="group_default"
+                   url-data="/group/setUserDefaultGroup" href="javascript:" id="group_default"
                    th:if="${defaultState}==0" th:attr="defaultState=${defaultState},group-id=${group_id}">设为默认添加群</a>
 
                 <a class="weui-btn basic-weui-btn basic-color weui-btn_warn group_default"
-                   url-data="/group/delGroupDefault" href="javascript:" id="group_default"
-                   th:if="${defaultState}==1" th:attr="defaultState=${defaultState},group-id=${group_id}">设为普通群</a>
+                   url-data="/group/deleteUserDefaultGroup" href="javascript:" id="group_default"
+                   th:if="${defaultState}==1" th:attr="defaultState=${defaultState},group-id=${group_id}">取消默认添加群</a>
 
                 <a href="javascript:;" url-data="/group/dissmissGroup"
                    class="weui-btn basic-weui-btn weui-btn_warn disband-group"
@@ -107,6 +105,7 @@
     }
 
     function reqUrl(reqUri, params, callbackName) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         if (type == 'Android') {
             Android.requestPost(reqUri, params, callbackName);
@@ -118,6 +117,7 @@
     }
 
     function reqHtml(reqUri, params) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         if (type == 'Android') {
             Android.requestPage(reqUri, params)
@@ -234,11 +234,11 @@
             var attr = $('.group_default').attr('defaultState');
             if (attr == '0') {
                 $('.group_default').attr('defaultState', '1');
-                $('.group_default').attr('url-data', '/group/delGroupDefault');
-                $('.group_default').html('设为普通群');
+                $('.group_default').attr('url-data', '/group/deleteUserDefaultGroup');
+                $('.group_default').html('取消默认添加群');
             } else {
                 $('.group_default').attr('defaultState', '0');
-                $('.group_default').attr('url-data', '/group/setGroupDefault');
+                $('.group_default').attr('url-data', '/group/setUserDefaultGroup');
                 $('.group_default').html('设为默认添加群');
             }
         } else {

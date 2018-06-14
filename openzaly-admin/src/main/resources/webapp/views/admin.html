@@ -132,6 +132,7 @@
     }
 
     function reqHtml(reqUri, params) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         console.log(type);
         if (type == 'Android') {

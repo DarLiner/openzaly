@@ -36,8 +36,9 @@ public class ConfigHelper implements ConfigKey {
 
 	}
 
-	public static Properties getProperties() {
+	public static Properties loadOZProperties() {
 		if (prop == null) {
+			// 加载openzaly.property 配置文件
 			prop = PropertiesUtils.getOZProperties();
 		}
 		return prop;
@@ -52,7 +53,7 @@ public class ConfigHelper implements ConfigKey {
 	public static String getStringConfig(String configName) {
 		String configValue = System.getProperty(configName);
 		if (StringUtils.isEmpty(configValue)) {
-			Object obj = getProperties().get(configName);
+			Object obj = loadOZProperties().get(configName);
 			return obj != null ? obj.toString() : null;
 		}
 		return configValue;
@@ -61,7 +62,7 @@ public class ConfigHelper implements ConfigKey {
 	public static int getIntConfig(String configName) {
 		String configValue = System.getProperty(configName);
 		if (StringUtils.isBlank(configValue)) {
-			configValue = getProperties().get(configName).toString();
+			configValue = loadOZProperties().get(configName).toString();
 		}
 		return Integer.parseInt(configValue);
 	}
@@ -75,9 +76,10 @@ public class ConfigHelper implements ConfigKey {
 		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_ADDRESS_VALUE, getStringConfig(PLUGIN_API_ADDRESS));
 		configMap.put(ConfigProto.ConfigKey.SITE_HTTP_PORT_VALUE, getStringConfig(PLUGIN_API_PORT));
 		String basePath = System.getProperty("user.dir");
-		configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, basePath);//存放资源的位置
+		configMap.put(ConfigProto.ConfigKey.PIC_PATH_VALUE, basePath);// 存放资源的位置
 		configMap.put(ConfigProto.ConfigKey.DB_PATH_VALUE, basePath);
-		configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, getStringConfig(GROUP_MEMBERS_COUNT));
+		// 默认100人
+		configMap.put(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE, "100");
 		// 默认二人绝密聊天状态：开启二人绝密聊天功能
 		configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE,
 				ConfigProto.U2EncryptionConfig.U2_OPEN_VALUE + "");

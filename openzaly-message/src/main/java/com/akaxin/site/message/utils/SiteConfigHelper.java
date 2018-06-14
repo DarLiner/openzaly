@@ -48,7 +48,7 @@ public class SiteConfigHelper {
 		try {
 			configMap = SiteConfigDao.getInstance().getSiteConfig();
 		} catch (Exception e) {
-			logger.error("update site config error.", e);
+			logger.error("update im site config error.", e);
 		}
 		return configMap;
 	}

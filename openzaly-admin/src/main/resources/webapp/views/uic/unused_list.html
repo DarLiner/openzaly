@@ -93,6 +93,7 @@
     }
 
     function reqUrl(reqUri, params, callbackName) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         if (type == 'Android') {
             Android.requestPost(reqUri, params, callbackName);
@@ -104,6 +105,7 @@
     }
 
     function reqHtml(reqUri, params) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         if (type == 'Android') {
             Android.requestPage(reqUri, params)

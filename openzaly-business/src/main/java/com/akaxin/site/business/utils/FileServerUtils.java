@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -42,11 +43,8 @@ public class FileServerUtils {
 
 	// 获取当前时间 "20180428"
 	private static String getDayTime() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);// 获取年份
-		int month = cal.get(Calendar.MONTH) + 1;// 获取月份
-		int day = cal.get(Calendar.DATE);// 获取日
-		return year + "" + (month < 10 ? ("0" + month) : month) + "" + day;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		return sdf.format(System.currentTimeMillis());
 	}
 
 	// 生成存放文件的文件目录

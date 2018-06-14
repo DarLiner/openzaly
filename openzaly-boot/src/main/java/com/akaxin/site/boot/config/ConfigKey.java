@@ -22,10 +22,8 @@ package com.akaxin.site.boot.config;
  * @since 2018-01-24 19:49:19
  */
 public interface ConfigKey {
-	// site.project.env
-	public String SITE_PROJECT_ENV = "site.project.env";
 	// 站点版本
-	public String SITE_VERSION = "site.version";
+	public String SITE_VERSION = "openzaly.version";
 	// 站点服务地址，提供用户和站点之间连接使用
 	public String SITE_ADDRESS = "site.address";
 	// 站点服务监听端口
@@ -40,9 +38,10 @@ public interface ConfigKey {
 	// 站点管理员
 	public String SITE_ADMINISTRATORS = "site.administrators";
 	// 站点管理员首次登陆站点，设置的邀请码
-	public String SITE_ADMIN_UIC = "site.admin.uic";
+	public String SITE_ADMIN_UIC = "site.uic";
 	// 存放站点图片，音频相关文件路径
 	public String SITE_BASE_DIR = "site.baseDir";
 	// 最大成员人数
 	public String GROUP_MEMBERS_COUNT = "group.members.count";
+
 }

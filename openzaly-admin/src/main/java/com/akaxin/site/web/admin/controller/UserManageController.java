@@ -39,12 +39,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UserProto.UserStatus;
-import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.web.admin.exception.ManagerException;
 import com.akaxin.site.web.admin.exception.UserPermissionException;
-import com.akaxin.site.web.admin.service.IBasicService;
+import com.akaxin.site.web.admin.service.IConfigService;
 import com.akaxin.site.web.admin.service.IUserService;
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -59,27 +58,27 @@ public class UserManageController extends AbstractController {
 	@Resource(name = "userManageService")
 	private IUserService userService;
 	@Autowired
-	private IBasicService basicService;
+	private IConfigService configService;
 
-	// admin.html 分页获取用户列表
+	// 进入用户管理首页
 	@RequestMapping("/index")
-	public ModelAndView toUserIndex(@RequestBody byte[] bodyParam) {
+	public ModelAndView toIndex(@RequestBody byte[] bodyParam) {
 		ModelAndView modelAndView = new ModelAndView("user/index");
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
 				throw new UserPermissionException("Current user is not a manager");
 			}
-			List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
+			List<String> defaultFriendList = configService.getUserDefaultFriendList();
 			List<UserProfileBean> userProfileBeans = new ArrayList<>();
 			modelAndView.addObject("userDefaultSize", "0");
-			if (userDefault != null && userDefault.size() > 0) {
-				for (String siteUserId : userDefault) {
+			if (defaultFriendList != null && defaultFriendList.size() > 0) {
+				for (String siteUserId : defaultFriendList) {
 					UserProfileBean userProfile = userService.getUserProfile(siteUserId);
 					userProfileBeans.add(userProfile);
 				}
 				modelAndView.addObject("userList", userProfileBeans);
-				modelAndView.addObject("userDefaultSize", String.valueOf(userDefault.size()));
+				modelAndView.addObject("userDefaultSize", String.valueOf(defaultFriendList.size()));
 			}
 			return modelAndView;
 		} catch (InvalidProtocolBufferException e) {
@@ -90,47 +89,119 @@ public class UserManageController extends AbstractController {
 		return new ModelAndView("error");
 	}
 
-	@RequestMapping("/setUserDefault")
+	/**
+	 * 设置官方用户，默认为所有新用户的好友
+	 * 
+	 * @param bodyParam
+	 * @return
+	 */
+	@RequestMapping("/setUserDefaultFriend")
 	@ResponseBody
-	public String setUserAsDefaultFriend(@RequestBody byte[] bodyParam) {
+	public String setUserDefaultFriend(@RequestBody byte[] bodyParam) {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
 				throw new UserPermissionException("Current user is not a manager");
 			}
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-			String site_user_id = reqMap.get("siteUserId");
-			boolean flag = basicService.setUserDefault(site_user_id);
+			String friendSiteUserId = reqMap.get("siteUserId");
+			boolean result = configService.setUserDefaultFriends(friendSiteUserId);
+			if (result) {
+				return SUCCESS;
+			}
+		} catch (InvalidProtocolBufferException e) {
+			logger.error("set user as default friend error", e);
+		} catch (UserPermissionException e) {
+			logger.error("set user as default friend error", e);
+			return NO_PERMISSION;
+		} catch (Exception e) {
+			logger.error("set user as default friend error", e);
+		}
+		return ERROR;
+	}
+
+	@RequestMapping("/deleteUserDefaultFriend")
+	@ResponseBody
+	public String deleteUserDefaultFriend(@RequestBody byte[] bodyParam) {
+		try {
+			logger.info("siteUserId={} deleteUserDefaultFriend userId={} ");
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			String siteUserId = getRequestSiteUserId(pluginPackage);
+			if (!isManager(siteUserId)) {
+				throw new UserPermissionException("Current user is not a manager");
+			}
+			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+			String friendSiteUserId = reqMap.get("siteUserId");
+			boolean flag = configService.deleteUserDefaultFriends(friendSiteUserId);
+
+			logger.info("siteUserId={} deleteUserDefaultFriend userId={} ", siteUserId, friendSiteUserId);
 			if (flag) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("to set User Default  error", e);
+			logger.error("delete user as default friend error ", e);
 		} catch (UserPermissionException e) {
-			logger.error("to set User Default  error : " + e.getMessage());
+			logger.error("delete user as default friend error : ", e);
+			return NO_PERMISSION;
+		} catch (Exception e) {
+			logger.error("delete user as default friend error", e);
+		}
+		return ERROR;
+	}
+
+	/**
+	 * 设置用户为管理员
+	 * 
+	 * @param bodyParam
+	 * @return
+	 */
+	@RequestMapping("/setSiteManager")
+	@ResponseBody
+	public String setSiteManager(@RequestBody byte[] bodyParam) {
+		try {
+			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
+			if (!isAdmin(getRequestSiteUserId(pluginPackage))) {
+				throw new UserPermissionException("Current user is not admin");
+			}
+			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
+			String managerUserId = reqMap.get("siteUserId");
+			boolean result = configService.addUserManager(managerUserId);
+			if (result) {
+				return SUCCESS;
+			}
+		} catch (InvalidProtocolBufferException e) {
+			logger.error("set site manager error : ", e.getMessage());
+		} catch (UserPermissionException e) {
+			logger.error("set site manager error : " + e.getMessage());
 			return NO_PERMISSION;
 		}
 		return ERROR;
 	}
 
-	@RequestMapping("/delUserDefault")
+	/**
+	 * 删除用户管理员身份
+	 * 
+	 * @param bodyParam
+	 * @return
+	 */
+	@RequestMapping("/deleteSiteManager")
 	@ResponseBody
-	public String delUserDefault(@RequestBody byte[] bodyParam) {
+	public String deleteSiteManager(@RequestBody byte[] bodyParam) {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
-			if (!isManager(getRequestSiteUserId(pluginPackage))) {
-				throw new UserPermissionException("Current user is not a manager");
+			if (!isAdmin(getRequestSiteUserId(pluginPackage))) {
+				throw new UserPermissionException("Current user is not admin");
 			}
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-			String site_user_id = reqMap.get("siteUserId");
-			boolean flag = basicService.delUserDefault(site_user_id);
-			if (flag) {
+			String managerUserId = reqMap.get("siteUserId");
+			boolean result = configService.deleteUserManager(managerUserId);
+			if (result) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("to del User Default  error", e);
+			logger.error("delete site manager error : ", e.getMessage());
 		} catch (UserPermissionException e) {
-			logger.error("to del User Default  error : " + e.getMessage());
+			logger.error("delete site manager error : " + e.getMessage());
 			return NO_PERMISSION;
 		}
 		return ERROR;
@@ -148,9 +219,11 @@ public class UserManageController extends AbstractController {
 			if (!isManager(currentUserId)) {
 				throw new UserPermissionException("Current user is not a manager");
 			}
+
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
 			String siteUserId = reqMap.get("site_user_id");
 			UserProfileBean bean = userService.getUserProfile(siteUserId);
+
 			modelAndView.addObject("siteUserId", bean.getSiteUserId());
 			modelAndView.addObject("siteLoginId", bean.getSiteLoginId());
 			modelAndView.addObject("userName", bean.getUserName());
@@ -159,6 +232,8 @@ public class UserManageController extends AbstractController {
 			modelAndView.addObject("userStatus", bean.getUserStatus());
 			modelAndView.addObject("regTime", bean.getRegisterTime());
 			modelAndView.addObject("defaultState", bean.getDefaultState());
+			boolean isManager = isManager(siteUserId);
+			modelAndView.addObject("managerState", isManager ? 1 : 0);
 			return modelAndView;
 		} catch (InvalidProtocolBufferException e) {
 			logger.error(StringHelper.format("siteUserId={} get user profile error"), e);
@@ -170,7 +245,7 @@ public class UserManageController extends AbstractController {
 
 	@RequestMapping("/refresh")
 	@ResponseBody
-	public Map<String, Object> refreshDefault(@RequestBody byte[] bodyParam) {
+	public Map<String, Object> refreshPage(@RequestBody byte[] bodyParam) {
 		HashMap<String, Object> dataMap = new HashMap<>();
 
 		try {
@@ -178,7 +253,7 @@ public class UserManageController extends AbstractController {
 			if (!isManager(getRequestSiteUserId(pluginPackage))) {
 				throw new UserPermissionException("Current user is not a manager");
 			}
-			List<String> userDefault = basicService.getUserDefault();
+			List<String> userDefault = configService.getUserDefaultFriendList();
 			if (userDefault == null || userDefault.size() <= 0) {
 				dataMap.put("size", 0);
 				return dataMap;
@@ -226,10 +301,10 @@ public class UserManageController extends AbstractController {
 				if (PAGE_SIZE == userList.size()) {
 					nodata = false;
 				}
-				List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
-				if (userDefault != null && userDefault.size() > 0) {
+				List<String> defaultFriendList = configService.getUserDefaultFriendList();
+				if (defaultFriendList != null && defaultFriendList.size() > 0) {
 					for (SimpleUserBean bean : userList) {
-						boolean contains = userDefault.contains(bean.getUserId());
+						boolean contains = defaultFriendList.contains(bean.getUserId());
 						Map<String, Object> userMap = new HashMap<String, Object>();
 						if (contains) {
 							continue;
@@ -344,27 +419,31 @@ public class UserManageController extends AbstractController {
 				throw new UserPermissionException("Current user is not a manager");
 			}
 			Map<String, String> reqMap = getRequestDataMap(pluginPackage);
-			String reqStatus = reqMap.get("type");
+			String reqUserId = reqMap.get("site_user_id");
+			String reqStatus = reqMap.get("user_status");
 			int status = UserStatus.NORMAL_VALUE;
 			if ("1".equals(reqStatus)) {
 				status = UserStatus.SEALUP_VALUE;
 			}
 
-			if (userService.sealUpUser(reqMap.get("site_user_id"), status)) {
+			logger.info("siteUserId={} sealup siteUserId={} to status={}", siteUserId, reqUserId, status);
+			if (userService.sealUpUser(reqUserId, status)) {
 				return SUCCESS;
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("update profile error", e);
+			logger.error("sealup user error", e);
 		} catch (UserPermissionException e) {
-			logger.error("update profile error : " + e.getMessage());
+			logger.error("sealup user error : ", e);
 			return NO_PERMISSION;
+		} catch (Exception e) {
+			logger.error("sealup user error : ", e);
 		}
 		return ERROR;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "delUser")
 	@ResponseBody
-	public String delUser(HttpServletRequest request, @RequestBody byte[] bodyParam) {
+	public String deleteUser(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			String siteUserId = getRequestSiteUserId(pluginPackage);

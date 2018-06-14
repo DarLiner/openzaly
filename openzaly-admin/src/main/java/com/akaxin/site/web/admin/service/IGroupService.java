@@ -29,7 +29,4 @@ public interface IGroupService {
 
 	boolean dismissGroup(String siteGroupId);
 
-	boolean setGroupDefault(String siteGroupId);
-
-	boolean delUserDefault(String siteGroupId);
 }

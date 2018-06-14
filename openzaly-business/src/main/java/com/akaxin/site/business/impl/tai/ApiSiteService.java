@@ -17,10 +17,10 @@ package com.akaxin.site.business.impl.tai;
 
 import java.security.PublicKey;
 import java.security.Signature;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -214,7 +214,7 @@ public class ApiSiteService extends AbstractRequest {
 			}
 
 			if (ErrorCode2.SUCCESS == errCode) {
-				addDefaultFriendsAndGroups(siteUserId);
+				addUserDefaultFriendsAndGroups(siteUserId);
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());
 			}
@@ -229,40 +229,35 @@ public class ApiSiteService extends AbstractRequest {
 	}
 
 	// 增加默认好友以及群组
-	private boolean addDefaultFriendsAndGroups(String siteUserId) {
-		boolean a = false;
-		boolean b = false;
+	private void addUserDefaultFriendsAndGroups(String siteUserId) {
 		try {
-			List<String> userDefault = SiteConfigDao.getInstance().getUserDefault();
-			if (userDefault != null && userDefault.size() > 0) {
-				for (String s : userDefault) {
-					UserFriendDao.getInstance().saveFriendApply(s, siteUserId, "给我发消息试试看吧");
-					a = UserFriendDao.getInstance().agreeApply(siteUserId, s, true);
-					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId, s);
+			Set<String> defaultFriends = SiteConfig.getUserDefaultFriends();
+			if (defaultFriends != null && defaultFriends.size() > 0) {
+				for (String siteFriendId : defaultFriends) {
+					UserFriendDao.getInstance().saveFriendApply(siteFriendId, siteUserId, "我已成为你的好友，给我发消息试试吧");
+					UserFriendDao.getInstance().agreeApply(siteUserId, siteFriendId, true);
+					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
+							siteFriendId);
 					new User2Notice().addFriendTextMessage(applyBean);
 				}
 			}
-			logger.debug("添加默认好友={}", a);
+			logger.debug("{} add default friends={}", siteUserId, defaultFriends);
 		} catch (Exception e) {
-			logger.error("add default friends and groups error", e);
+			logger.error("add default friends error", e);
 		}
 
 		try {
-			List<String> groupDefault = SiteConfigDao.getInstance().getGroupDefault();
-			if (groupDefault != null && groupDefault.size() > 0) {
-				ArrayList<String> strings = new ArrayList<>();
-				strings.add(siteUserId);
-				for (String s : groupDefault) {
-					b = UserGroupDao.getInstance().addGroupMember(null, s, strings);
+			Set<String> defaultGroups = SiteConfig.getUserDefaultGroups();
+			if (defaultGroups != null && defaultGroups.size() > 0) {
+				for (String groupId : defaultGroups) {
+					UserGroupDao.getInstance().addGroupMember(null, groupId, Arrays.asList(siteUserId));
 				}
-				logger.debug("添加默认群组={}", b);
 			}
-
+			logger.debug("{} add default groups={}", siteUserId, defaultGroups);
 		} catch (Exception e) {
-			logger.error("add default friends and groups error", e);
+			logger.error("add user default groups error", e);
 		}
 
-		return a && b ? true : false;
 	}
 
 	private void justForAdminUser(String siteUserId, Map<Integer, String> header) {

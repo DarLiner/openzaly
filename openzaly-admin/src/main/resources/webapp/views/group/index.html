@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>群聊管理</title>
+    <title>群组管理</title>
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
@@ -96,6 +96,7 @@
     }
 
     function reqUrl(reqUri, params, callbackName) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         if (type == 'Android') {
             Android.requestPost(reqUri, params, callbackName);
@@ -107,6 +108,7 @@
     }
 
     function reqHtml(reqUri, params) {
+        reqUri = "/akaxin" + reqUri;
         var type = getOsType();
         if (type == 'Android') {
             Android.requestPage(reqUri, params)
