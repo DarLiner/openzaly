@@ -85,9 +85,8 @@ public class HttpRequestHandler extends AbstractCommonHandler<Command, CommandRe
 		FullHttpResponse response = null;
 		try {
 			PluginProto.ProxyPluginPackage.Builder packBuilder = PluginProto.ProxyPluginPackage.newBuilder();
-			CoreProto.ErrorInfo errInfo = CoreProto.ErrorInfo.newBuilder()
-					.setCode(String.valueOf(commandResponse.getErrCode())).setInfo(commandResponse.getErrInfo())
-					.build();
+			CoreProto.ErrorInfo errInfo = CoreProto.ErrorInfo.newBuilder().setCode(commandResponse.getErrCode())
+					.setInfo(commandResponse.getErrInfo()).build();
 			packBuilder.setErrorInfo(errInfo);
 			if (commandResponse.getParams() != null) {
 				String dataStr = Base64.getEncoder().encodeToString(commandResponse.getParams());

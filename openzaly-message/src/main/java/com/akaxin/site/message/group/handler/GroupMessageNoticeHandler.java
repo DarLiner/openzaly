@@ -45,14 +45,18 @@ public class GroupMessageNoticeHandler extends AbstractGroupHandler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
+				String deviceId = command.getDeviceId();
+
+				String proxySiteUserId = request.getGroupMsgNotice().getSiteUserId();
 				String groupId = request.getGroupMsgNotice().getSiteGroupId();
 				String groupNoticeText = request.getGroupMsgNotice().getText().toStringUtf8();
 				String msgId = request.getGroupMsgNotice().getMsgId();
 
 				GroupMessageBean bean = new GroupMessageBean();
 				bean.setMsgId(msgId);
-				bean.setSendUserId(siteUserId);
-				bean.setSendDeviceId("");
+				// bean.setSendUserId(siteUserId);
+				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				bean.setSendDeviceId(deviceId);
 				bean.setSiteGroupId(groupId);
 				bean.setContent(groupNoticeText);
 				bean.setMsgType(type);

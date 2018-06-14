@@ -9,27 +9,19 @@
 </p>
 
 
-[Akaxin](https://www.akaxin.com) 
+[Akaxin](https://www.akaxin.com)
 ====
 
 [![License](https://img.shields.io/badge/license-apache2-blue.svg)](LICENSE)
 
 **源码仓库**
 
-> * `推荐` `国内快` Gitee: https://gitee.com/akaxin/openzaly
 > * **Github**: https://github.com/akaxincom/openzaly
-
+> * `国内快` Gitee: https://gitee.com/akaxin/openzaly
 
 _
 
-
 **向我们提问**
-
-> * `推荐` 开源中国社区: https://www.oschina.net/question/ask
->     * 软件选项里请填写 `Akaxin` ，方便我们第一时间获知。
-> * Issues
-> * mail: hi@akaxin.xyz
-
 
 > QQ群：`655249600`
 
@@ -58,16 +50,18 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
 
 **1. 启动服务器**
 
-  * **最新版本: openzaly-0.5.4.jar**
-    * Github下载: https://github.com/akaxincom/openzaly/releases/
+  * **最新版本: openzaly-0.9.5.jar**
     * 国内镜像：https://cdn-akaxin-1255552447.cos.ap-beijing.myqcloud.com/openzaly/openzaly-server.jar
+    * Github下载: https://github.com/akaxincom/openzaly/releases/
 
   * **Changelog**
-    * 支持同时启用邀请码与实名账号
-    * 增加默认好友、默认群
-    * 管理员首次登陆后，注册机制默认修改为：匿名（无邀请码）
+    * 支持好友备注。
+    * 增加扩展模式——浮屏。
+    * 重构PluginAPI，功能更强大、使用更简单！
 
 启动命令：`java -jar openzaly-server.jar`
+
+版本升级：`java -jar openzaly-server.jar -upgrade`
 
 支持的启动参数：`java -jar openzaly-server.jar -h`
 
@@ -91,14 +85,8 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
 二、源码编译安装
 ----
 
-需要本地有mvn
+需要本地有mvn，直接使用mvn编译即可。
 
-```
-git clone https://github.com/akaxincom/openzaly.git
-sh build.sh
-
-// Windows 环境，请直接使用 mvn 进行编译即可。
-```
 
 三、扩展开发
 ----
@@ -121,8 +109,6 @@ Akaxin 具有灵活、强大的扩展机制 `(“管理平台” 就是一个扩
 </p>
 
 > 大家可以去 demo.akaxin.com 体验。
-
-
 
 
 四、技术贡献者

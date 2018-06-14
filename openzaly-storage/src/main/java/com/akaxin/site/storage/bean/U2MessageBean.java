@@ -7,6 +7,7 @@ public class U2MessageBean {
 	private String siteUserId;
 	private String msgId;
 	private String sendUserId;
+	private String receiveUserId;
 	private int msgType;
 	private String content;
 	private String deviceId;
@@ -43,6 +44,14 @@ public class U2MessageBean {
 
 	public void setSendUserId(String sendUserId) {
 		this.sendUserId = sendUserId;
+	}
+
+	public String getReceiveUserId() {
+		return receiveUserId;
+	}
+
+	public void setReceiveUserId(String receiveUserId) {
+		this.receiveUserId = receiveUserId;
 	}
 
 	public int getMsgType() {

@@ -268,6 +268,8 @@ public class SQLiteUserDeviceDao {
 
 	private int deleteDeviceAsLimit(String siteUserId, int limit) {
 		long startTime = System.currentTimeMillis();
+		// String sql = "DELETE FROM " + USER_DEVICE_TABLE + " WHERE site_user_id='?'
+		// ORDER BY active_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_DEVICE_TABLE
 				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?,1000000;";
 		int num = 0;
@@ -286,7 +288,9 @@ public class SQLiteUserDeviceDao {
 
 	private int deleteSessionAsLimit(String siteUserId, int limit) {
 		long startTime = System.currentTimeMillis();
-		// 删除site_user_device中设备
+		// 删除site_user_session中设备
+		// String sql = "DELETE FROM " + USER_SESSION_TABLE + " WHERE site_user_id='?'
+		// ORDER BY login_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_SESSION_TABLE
 				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?,10000;";
 		int num = 0;
@@ -297,10 +301,25 @@ public class SQLiteUserDeviceDao {
 			preparedStatement.setInt(3, limit);
 			num = preparedStatement.executeUpdate();
 		} catch (Exception e) {
-			logger.error("delete session device as limit", e);
+			logger.error("delete session device as limit error", e);
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, num, sql, siteUserId);
 		return num;
+	}
+
+	public boolean delDevice(String siteUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "DELETE from " + SQLConst.SITE_USER_DEVICE + " WHERE site_user_id=? ";
+		PreparedStatement preparedStatement = SQLiteJDBCManager.getConnection().prepareStatement(sql);
+		preparedStatement.setString(1, siteUserId);
+		int i = preparedStatement.executeUpdate();
+		if (i > 0) {
+			LogUtils.dbDebugLog(logger, startTime, i, sql, true);
+			return true;
+		}
+		LogUtils.dbDebugLog(logger, startTime, i, sql, false);
+		return false;
+
 	}
 }

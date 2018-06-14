@@ -20,10 +20,28 @@ public final class HaiGroupNonmembersProto {
 
     /**
      * <pre>
+     * 以谁的视角获取这份数据
+     * </pre>
+     *
+     * <code>optional string site_user_id = 1;</code>
+     */
+    java.lang.String getSiteUserId();
+    /**
+     * <pre>
+     * 以谁的视角获取这份数据
+     * </pre>
+     *
+     * <code>optional string site_user_id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getSiteUserIdBytes();
+
+    /**
+     * <pre>
      *群组ID
      * </pre>
      *
-     * <code>optional string group_id = 1;</code>
+     * <code>optional string group_id = 2;</code>
      */
     java.lang.String getGroupId();
     /**
@@ -31,7 +49,7 @@ public final class HaiGroupNonmembersProto {
      *群组ID
      * </pre>
      *
-     * <code>optional string group_id = 1;</code>
+     * <code>optional string group_id = 2;</code>
      */
     com.google.protobuf.ByteString
         getGroupIdBytes();
@@ -41,20 +59,33 @@ public final class HaiGroupNonmembersProto {
      *分页：第几页
      * </pre>
      *
-     * <code>optional int32 page_number = 2;</code>
+     * <code>optional int32 page_number = 3;</code>
      */
     int getPageNumber();
 
     /**
      * <pre>
-     *分页：每页条数
+     *分页：每页条数，默认100
      * </pre>
      *
-     * <code>optional int32 page_size = 3;</code>
+     * <code>optional int32 page_size = 4;</code>
      */
     int getPageSize();
   }
   /**
+   * <pre>
+   **
+   *分页获非群成员
+   *----
+   *接口名
+   *----
+   * /hai/group/nonmembers
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiGroupNonmembersRequest}
    */
   public  static final class HaiGroupNonmembersRequest extends
@@ -66,6 +97,7 @@ public final class HaiGroupNonmembersProto {
       super(builder);
     }
     private HaiGroupNonmembersRequest() {
+      siteUserId_ = "";
       groupId_ = "";
       pageNumber_ = 0;
       pageSize_ = 0;
@@ -99,15 +131,21 @@ public final class HaiGroupNonmembersProto {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
+              siteUserId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
               groupId_ = s;
               break;
             }
-            case 16: {
+            case 24: {
 
               pageNumber_ = input.readInt32();
               break;
             }
-            case 24: {
+            case 32: {
 
               pageSize_ = input.readInt32();
               break;
@@ -135,14 +173,56 @@ public final class HaiGroupNonmembersProto {
               com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest.class, com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest.Builder.class);
     }
 
-    public static final int GROUP_ID_FIELD_NUMBER = 1;
+    public static final int SITE_USER_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object siteUserId_;
+    /**
+     * <pre>
+     * 以谁的视角获取这份数据
+     * </pre>
+     *
+     * <code>optional string site_user_id = 1;</code>
+     */
+    public java.lang.String getSiteUserId() {
+      java.lang.Object ref = siteUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        siteUserId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 以谁的视角获取这份数据
+     * </pre>
+     *
+     * <code>optional string site_user_id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSiteUserIdBytes() {
+      java.lang.Object ref = siteUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        siteUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GROUP_ID_FIELD_NUMBER = 2;
     private volatile java.lang.Object groupId_;
     /**
      * <pre>
      *群组ID
      * </pre>
      *
-     * <code>optional string group_id = 1;</code>
+     * <code>optional string group_id = 2;</code>
      */
     public java.lang.String getGroupId() {
       java.lang.Object ref = groupId_;
@@ -161,7 +241,7 @@ public final class HaiGroupNonmembersProto {
      *群组ID
      * </pre>
      *
-     * <code>optional string group_id = 1;</code>
+     * <code>optional string group_id = 2;</code>
      */
     public com.google.protobuf.ByteString
         getGroupIdBytes() {
@@ -177,27 +257,27 @@ public final class HaiGroupNonmembersProto {
       }
     }
 
-    public static final int PAGE_NUMBER_FIELD_NUMBER = 2;
+    public static final int PAGE_NUMBER_FIELD_NUMBER = 3;
     private int pageNumber_;
     /**
      * <pre>
      *分页：第几页
      * </pre>
      *
-     * <code>optional int32 page_number = 2;</code>
+     * <code>optional int32 page_number = 3;</code>
      */
     public int getPageNumber() {
       return pageNumber_;
     }
 
-    public static final int PAGE_SIZE_FIELD_NUMBER = 3;
+    public static final int PAGE_SIZE_FIELD_NUMBER = 4;
     private int pageSize_;
     /**
      * <pre>
-     *分页：每页条数
+     *分页：每页条数，默认100
      * </pre>
      *
-     * <code>optional int32 page_size = 3;</code>
+     * <code>optional int32 page_size = 4;</code>
      */
     public int getPageSize() {
       return pageSize_;
@@ -215,14 +295,17 @@ public final class HaiGroupNonmembersProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (!getSiteUserIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, siteUserId_);
+      }
       if (!getGroupIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, groupId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, groupId_);
       }
       if (pageNumber_ != 0) {
-        output.writeInt32(2, pageNumber_);
+        output.writeInt32(3, pageNumber_);
       }
       if (pageSize_ != 0) {
-        output.writeInt32(3, pageSize_);
+        output.writeInt32(4, pageSize_);
       }
     }
 
@@ -231,16 +314,19 @@ public final class HaiGroupNonmembersProto {
       if (size != -1) return size;
 
       size = 0;
+      if (!getSiteUserIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, siteUserId_);
+      }
       if (!getGroupIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, groupId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, groupId_);
       }
       if (pageNumber_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, pageNumber_);
+          .computeInt32Size(3, pageNumber_);
       }
       if (pageSize_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, pageSize_);
+          .computeInt32Size(4, pageSize_);
       }
       memoizedSize = size;
       return size;
@@ -258,6 +344,8 @@ public final class HaiGroupNonmembersProto {
       com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest other = (com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest) obj;
 
       boolean result = true;
+      result = result && getSiteUserId()
+          .equals(other.getSiteUserId());
       result = result && getGroupId()
           .equals(other.getGroupId());
       result = result && (getPageNumber()
@@ -274,6 +362,8 @@ public final class HaiGroupNonmembersProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + SITE_USER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getSiteUserId().hashCode();
       hash = (37 * hash) + GROUP_ID_FIELD_NUMBER;
       hash = (53 * hash) + getGroupId().hashCode();
       hash = (37 * hash) + PAGE_NUMBER_FIELD_NUMBER;
@@ -363,6 +453,19 @@ public final class HaiGroupNonmembersProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *分页获非群成员
+     *----
+     *接口名
+     *----
+     * /hai/group/nonmembers
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiGroupNonmembersRequest}
      */
     public static final class Builder extends
@@ -398,6 +501,8 @@ public final class HaiGroupNonmembersProto {
       }
       public Builder clear() {
         super.clear();
+        siteUserId_ = "";
+
         groupId_ = "";
 
         pageNumber_ = 0;
@@ -426,6 +531,7 @@ public final class HaiGroupNonmembersProto {
 
       public com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest buildPartial() {
         com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest result = new com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest(this);
+        result.siteUserId_ = siteUserId_;
         result.groupId_ = groupId_;
         result.pageNumber_ = pageNumber_;
         result.pageSize_ = pageSize_;
@@ -470,6 +576,10 @@ public final class HaiGroupNonmembersProto {
 
       public Builder mergeFrom(com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest other) {
         if (other == com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersRequest.getDefaultInstance()) return this;
+        if (!other.getSiteUserId().isEmpty()) {
+          siteUserId_ = other.siteUserId_;
+          onChanged();
+        }
         if (!other.getGroupId().isEmpty()) {
           groupId_ = other.groupId_;
           onChanged();
@@ -506,13 +616,102 @@ public final class HaiGroupNonmembersProto {
         return this;
       }
 
+      private java.lang.Object siteUserId_ = "";
+      /**
+       * <pre>
+       * 以谁的视角获取这份数据
+       * </pre>
+       *
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public java.lang.String getSiteUserId() {
+        java.lang.Object ref = siteUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          siteUserId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 以谁的视角获取这份数据
+       * </pre>
+       *
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSiteUserIdBytes() {
+        java.lang.Object ref = siteUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          siteUserId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 以谁的视角获取这份数据
+       * </pre>
+       *
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public Builder setSiteUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 以谁的视角获取这份数据
+       * </pre>
+       *
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public Builder clearSiteUserId() {
+        
+        siteUserId_ = getDefaultInstance().getSiteUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 以谁的视角获取这份数据
+       * </pre>
+       *
+       * <code>optional string site_user_id = 1;</code>
+       */
+      public Builder setSiteUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        siteUserId_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object groupId_ = "";
       /**
        * <pre>
        *群组ID
        * </pre>
        *
-       * <code>optional string group_id = 1;</code>
+       * <code>optional string group_id = 2;</code>
        */
       public java.lang.String getGroupId() {
         java.lang.Object ref = groupId_;
@@ -531,7 +730,7 @@ public final class HaiGroupNonmembersProto {
        *群组ID
        * </pre>
        *
-       * <code>optional string group_id = 1;</code>
+       * <code>optional string group_id = 2;</code>
        */
       public com.google.protobuf.ByteString
           getGroupIdBytes() {
@@ -551,7 +750,7 @@ public final class HaiGroupNonmembersProto {
        *群组ID
        * </pre>
        *
-       * <code>optional string group_id = 1;</code>
+       * <code>optional string group_id = 2;</code>
        */
       public Builder setGroupId(
           java.lang.String value) {
@@ -568,7 +767,7 @@ public final class HaiGroupNonmembersProto {
        *群组ID
        * </pre>
        *
-       * <code>optional string group_id = 1;</code>
+       * <code>optional string group_id = 2;</code>
        */
       public Builder clearGroupId() {
         
@@ -581,7 +780,7 @@ public final class HaiGroupNonmembersProto {
        *群组ID
        * </pre>
        *
-       * <code>optional string group_id = 1;</code>
+       * <code>optional string group_id = 2;</code>
        */
       public Builder setGroupIdBytes(
           com.google.protobuf.ByteString value) {
@@ -601,7 +800,7 @@ public final class HaiGroupNonmembersProto {
        *分页：第几页
        * </pre>
        *
-       * <code>optional int32 page_number = 2;</code>
+       * <code>optional int32 page_number = 3;</code>
        */
       public int getPageNumber() {
         return pageNumber_;
@@ -611,7 +810,7 @@ public final class HaiGroupNonmembersProto {
        *分页：第几页
        * </pre>
        *
-       * <code>optional int32 page_number = 2;</code>
+       * <code>optional int32 page_number = 3;</code>
        */
       public Builder setPageNumber(int value) {
         
@@ -624,7 +823,7 @@ public final class HaiGroupNonmembersProto {
        *分页：第几页
        * </pre>
        *
-       * <code>optional int32 page_number = 2;</code>
+       * <code>optional int32 page_number = 3;</code>
        */
       public Builder clearPageNumber() {
         
@@ -636,20 +835,20 @@ public final class HaiGroupNonmembersProto {
       private int pageSize_ ;
       /**
        * <pre>
-       *分页：每页条数
+       *分页：每页条数，默认100
        * </pre>
        *
-       * <code>optional int32 page_size = 3;</code>
+       * <code>optional int32 page_size = 4;</code>
        */
       public int getPageSize() {
         return pageSize_;
       }
       /**
        * <pre>
-       *分页：每页条数
+       *分页：每页条数，默认100
        * </pre>
        *
-       * <code>optional int32 page_size = 3;</code>
+       * <code>optional int32 page_size = 4;</code>
        */
       public Builder setPageSize(int value) {
         
@@ -659,10 +858,10 @@ public final class HaiGroupNonmembersProto {
       }
       /**
        * <pre>
-       *分页：每页条数
+       *分页：每页条数，默认100
        * </pre>
        *
-       * <code>optional int32 page_size = 3;</code>
+       * <code>optional int32 page_size = 4;</code>
        */
       public Builder clearPageSize() {
         
@@ -766,6 +965,15 @@ public final class HaiGroupNonmembersProto {
      */
     com.akaxin.proto.core.GroupProto.GroupMemberProfileOrBuilder getGroupMemberOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     * 分页总数
+     * </pre>
+     *
+     * <code>optional int32 page_total_num = 2;</code>
+     */
+    int getPageTotalNum();
   }
   /**
    * Protobuf type {@code plugin.HaiGroupNonmembersResponse}
@@ -780,6 +988,7 @@ public final class HaiGroupNonmembersProto {
     }
     private HaiGroupNonmembersResponse() {
       groupMember_ = java.util.Collections.emptyList();
+      pageTotalNum_ = 0;
     }
 
     @java.lang.Override
@@ -816,6 +1025,11 @@ public final class HaiGroupNonmembersProto {
                   input.readMessage(com.akaxin.proto.core.GroupProto.GroupMemberProfile.parser(), extensionRegistry));
               break;
             }
+            case 16: {
+
+              pageTotalNum_ = input.readInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -842,6 +1056,7 @@ public final class HaiGroupNonmembersProto {
               com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersResponse.class, com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersResponse.Builder.class);
     }
 
+    private int bitField0_;
     public static final int GROUP_MEMBER_FIELD_NUMBER = 1;
     private java.util.List<com.akaxin.proto.core.GroupProto.GroupMemberProfile> groupMember_;
     /**
@@ -897,6 +1112,19 @@ public final class HaiGroupNonmembersProto {
       return groupMember_.get(index);
     }
 
+    public static final int PAGE_TOTAL_NUM_FIELD_NUMBER = 2;
+    private int pageTotalNum_;
+    /**
+     * <pre>
+     * 分页总数
+     * </pre>
+     *
+     * <code>optional int32 page_total_num = 2;</code>
+     */
+    public int getPageTotalNum() {
+      return pageTotalNum_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -912,6 +1140,9 @@ public final class HaiGroupNonmembersProto {
       for (int i = 0; i < groupMember_.size(); i++) {
         output.writeMessage(1, groupMember_.get(i));
       }
+      if (pageTotalNum_ != 0) {
+        output.writeInt32(2, pageTotalNum_);
+      }
     }
 
     public int getSerializedSize() {
@@ -922,6 +1153,10 @@ public final class HaiGroupNonmembersProto {
       for (int i = 0; i < groupMember_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, groupMember_.get(i));
+      }
+      if (pageTotalNum_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, pageTotalNum_);
       }
       memoizedSize = size;
       return size;
@@ -941,6 +1176,8 @@ public final class HaiGroupNonmembersProto {
       boolean result = true;
       result = result && getGroupMemberList()
           .equals(other.getGroupMemberList());
+      result = result && (getPageTotalNum()
+          == other.getPageTotalNum());
       return result;
     }
 
@@ -955,6 +1192,8 @@ public final class HaiGroupNonmembersProto {
         hash = (37 * hash) + GROUP_MEMBER_FIELD_NUMBER;
         hash = (53 * hash) + getGroupMemberList().hashCode();
       }
+      hash = (37 * hash) + PAGE_TOTAL_NUM_FIELD_NUMBER;
+      hash = (53 * hash) + getPageTotalNum();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1080,6 +1319,8 @@ public final class HaiGroupNonmembersProto {
         } else {
           groupMemberBuilder_.clear();
         }
+        pageTotalNum_ = 0;
+
         return this;
       }
 
@@ -1103,6 +1344,7 @@ public final class HaiGroupNonmembersProto {
       public com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersResponse buildPartial() {
         com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersResponse result = new com.akaxin.proto.plugin.HaiGroupNonmembersProto.HaiGroupNonmembersResponse(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (groupMemberBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             groupMember_ = java.util.Collections.unmodifiableList(groupMember_);
@@ -1112,6 +1354,8 @@ public final class HaiGroupNonmembersProto {
         } else {
           result.groupMember_ = groupMemberBuilder_.build();
         }
+        result.pageTotalNum_ = pageTotalNum_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1178,6 +1422,9 @@ public final class HaiGroupNonmembersProto {
               groupMemberBuilder_.addAllMessages(other.groupMember_);
             }
           }
+        }
+        if (other.getPageTotalNum() != 0) {
+          setPageTotalNum(other.getPageTotalNum());
         }
         onChanged();
         return this;
@@ -1517,6 +1764,44 @@ public final class HaiGroupNonmembersProto {
         }
         return groupMemberBuilder_;
       }
+
+      private int pageTotalNum_ ;
+      /**
+       * <pre>
+       * 分页总数
+       * </pre>
+       *
+       * <code>optional int32 page_total_num = 2;</code>
+       */
+      public int getPageTotalNum() {
+        return pageTotalNum_;
+      }
+      /**
+       * <pre>
+       * 分页总数
+       * </pre>
+       *
+       * <code>optional int32 page_total_num = 2;</code>
+       */
+      public Builder setPageTotalNum(int value) {
+        
+        pageTotalNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 分页总数
+       * </pre>
+       *
+       * <code>optional int32 page_total_num = 2;</code>
+       */
+      public Builder clearPageTotalNum() {
+        
+        pageTotalNum_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -1586,15 +1871,17 @@ public final class HaiGroupNonmembersProto {
   static {
     java.lang.String[] descriptorData = {
       "\n!plugin/hai_group_nonmembers.proto\022\006plu" +
-      "gin\032\020core/group.proto\"U\n\031HaiGroupNonmemb" +
-      "ersRequest\022\020\n\010group_id\030\001 \001(\t\022\023\n\013page_num" +
-      "ber\030\002 \001(\005\022\021\n\tpage_size\030\003 \001(\005\"L\n\032HaiGroup" +
-      "NonmembersResponse\022.\n\014group_member\030\001 \003(\013" +
-      "2\030.core.GroupMemberProfile2p\n\031HaiGroupNo" +
-      "nmembersService\022S\n\nnonmembers\022!.plugin.H" +
-      "aiGroupNonmembersRequest\032\".plugin.HaiGro" +
-      "upNonmembersResponseB2\n\027com.akaxin.proto" +
-      ".pluginB\027HaiGroupNonmembersProtob\006proto3"
+      "gin\032\020core/group.proto\"k\n\031HaiGroupNonmemb" +
+      "ersRequest\022\024\n\014site_user_id\030\001 \001(\t\022\020\n\010grou" +
+      "p_id\030\002 \001(\t\022\023\n\013page_number\030\003 \001(\005\022\021\n\tpage_" +
+      "size\030\004 \001(\005\"d\n\032HaiGroupNonmembersResponse" +
+      "\022.\n\014group_member\030\001 \003(\0132\030.core.GroupMembe" +
+      "rProfile\022\026\n\016page_total_num\030\002 \001(\0052p\n\031HaiG" +
+      "roupNonmembersService\022S\n\nnonmembers\022!.pl" +
+      "ugin.HaiGroupNonmembersRequest\032\".plugin." +
+      "HaiGroupNonmembersResponseB2\n\027com.akaxin",
+      ".proto.pluginB\027HaiGroupNonmembersProtob\006" +
+      "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1614,13 +1901,13 @@ public final class HaiGroupNonmembersProto {
     internal_static_plugin_HaiGroupNonmembersRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiGroupNonmembersRequest_descriptor,
-        new java.lang.String[] { "GroupId", "PageNumber", "PageSize", });
+        new java.lang.String[] { "SiteUserId", "GroupId", "PageNumber", "PageSize", });
     internal_static_plugin_HaiGroupNonmembersResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_plugin_HaiGroupNonmembersResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_plugin_HaiGroupNonmembersResponse_descriptor,
-        new java.lang.String[] { "GroupMember", });
+        new java.lang.String[] { "GroupMember", "PageTotalNum", });
     com.akaxin.proto.core.GroupProto.getDescriptor();
   }
 

@@ -37,6 +37,19 @@ public final class HaiGroupProfileProto {
         getGroupIdBytes();
   }
   /**
+   * <pre>
+   **
+   *获取群组资料
+   *----
+   *接口名
+   *----
+   * /hai/group/profile
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiGroupProfileRequest}
    */
   public  static final class HaiGroupProfileRequest extends
@@ -285,6 +298,19 @@ public final class HaiGroupProfileProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *获取群组资料
+     *----
+     *接口名
+     *----
+     * /hai/group/profile
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiGroupProfileRequest}
      */
     public static final class Builder extends

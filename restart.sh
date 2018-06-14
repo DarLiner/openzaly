@@ -19,9 +19,6 @@ echo "
             \ /  
      
 Akaxin is an open source and free proprietary IM software，you can build private openzaly-server for everyone in any server.
-openzaly-version : 0.5.4
-java-version : JDK 1.8+
-maven-version : 3.0+
 
 "
 
@@ -32,7 +29,7 @@ fi
 	
 ##set http port
 if [ -n $PORT2 ]; then
-	PORT2=8080 
+	PORT2=8280 
 fi
 
 sh stop.sh $PORT 1

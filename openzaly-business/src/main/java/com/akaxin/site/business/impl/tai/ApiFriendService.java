@@ -25,7 +25,10 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiFriendApplyCountProto;
 import com.akaxin.proto.site.ApiFriendApplyListProto;
@@ -35,6 +38,7 @@ import com.akaxin.proto.site.ApiFriendDeleteProto;
 import com.akaxin.proto.site.ApiFriendListProto;
 import com.akaxin.proto.site.ApiFriendMuteProto;
 import com.akaxin.proto.site.ApiFriendProfileProto;
+import com.akaxin.proto.site.ApiFriendRemarkProto;
 import com.akaxin.proto.site.ApiFriendSettingProto;
 import com.akaxin.proto.site.ApiFriendUpdateMuteProto;
 import com.akaxin.proto.site.ApiFriendUpdateSettingProto;
@@ -42,11 +46,11 @@ import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.business.push.PushNotification;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
 import com.akaxin.site.storage.bean.ApplyUserBean;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.UserFriendBean;
-import com.akaxin.site.storage.bean.UserProfileBean;
 
 /**
  * <pre>
@@ -90,22 +94,47 @@ public class ApiFriendService extends AbstractRequest {
 				return commandResponse.setErrCode2(errCode);
 			}
 
-			UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(globalOrSiteFriendId);
-			if (null == userBean || StringUtils.isBlank(userBean.getSiteUserId())) {
-				// 直接复用之前的接口了。
-				userBean = UserProfileDao.getInstance().getUserProfileByGlobalUserId(globalOrSiteFriendId);
+			// 1.如果是siteUserId
+			UserFriendBean userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId,
+					globalOrSiteFriendId);
+			// 2.如果不是则认为是globalUserId
+			if (null == userBean || StringUtils.isNotEmpty(userBean.getSiteUserId())) {
+				String siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalOrSiteFriendId);
+				if (StringUtils.isNotEmpty(siteFriendId)) {
+					userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId, siteFriendId);
+				}
 			}
 
 			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {
-				UserProto.UserProfile userProfileProto = UserProto.UserProfile.newBuilder()
-						.setSiteUserId(String.valueOf(userBean.getSiteUserId()))
-						.setUserName(String.valueOf(userBean.getUserName()))
-						.setUserPhoto(String.valueOf(userBean.getUserPhoto()))
-						.setUserStatusValue(userBean.getUserStatus()).build();
+				UserProto.UserProfile.Builder friendProfileBuilder = UserProto.UserProfile.newBuilder();
+				friendProfileBuilder.setSiteUserId(userBean.getSiteUserId());
+
+				if (StringUtils.isNotEmpty(userBean.getAliasName())) {
+					friendProfileBuilder.setUserName(userBean.getAliasName());
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
+						friendProfileBuilder.setNickName(userBean.getUserName());
+					}
+				} else {
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
+						friendProfileBuilder.setUserName(userBean.getUserName());
+						friendProfileBuilder.setNickName(userBean.getUserName());
+					}
+				}
+
+				if (StringUtils.isNotEmpty(userBean.getSiteLoginId())) {
+					friendProfileBuilder.setSiteLoginId(userBean.getSiteLoginId());
+				}
+				if (StringUtils.isNotEmpty(userBean.getUserPhoto())) {
+					friendProfileBuilder.setUserPhoto(userBean.getUserPhoto());
+				}
+				friendProfileBuilder.setUserStatusValue(userBean.getUserStatus());
+				UserProto.UserProfile friendProfile = friendProfileBuilder.build();
+
+				// 查关系
 				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
 						userBean.getSiteUserId());
 				ApiFriendProfileProto.ApiFriendProfileResponse response = ApiFriendProfileProto.ApiFriendProfileResponse
-						.newBuilder().setProfile(userProfileProto).setRelation(userRelation)
+						.newBuilder().setProfile(friendProfile).setRelation(userRelation)
 						.setUserIdPubk(userBean.getUserIdPubk()).build();
 				commandResponse.setParams(response.toByteArray());
 				errCode = ErrorCode2.SUCCESS;
@@ -141,11 +170,19 @@ public class ApiFriendService extends AbstractRequest {
 				for (SimpleUserBean friendBean : friendBeanList) {
 					UserProto.SimpleUserProfile.Builder friendBuilder = UserProto.SimpleUserProfile.newBuilder();
 					friendBuilder.setSiteUserId(friendBean.getUserId());
-					if (StringUtils.isNotEmpty(friendBean.getUserName())) {
-						friendBuilder.setUserName(String.valueOf(friendBean.getUserName()));
+					if (StringUtils.isNotEmpty(friendBean.getAliasName())) {
+						friendBuilder.setUserName(friendBean.getAliasName());
+						if (StringUtils.isNotEmpty(friendBean.getAliasNameInLatin())) {
+							friendBuilder.setUsernameInLatin(friendBean.getAliasNameInLatin());
+						}
+					} else {
+						friendBuilder.setUserName(friendBean.getUserName());
+						if (StringUtils.isNotEmpty(friendBean.getUserNameInLatin())) {
+							friendBuilder.setUsernameInLatin(friendBean.getUserNameInLatin());
+						}
 					}
 					if (StringUtils.isNotEmpty(friendBean.getUserPhoto())) {
-						friendBuilder.setUserPhoto(String.valueOf(friendBean.getUserPhoto()));
+						friendBuilder.setUserPhoto(friendBean.getUserPhoto());
 					}
 					responseBuilder.addList(friendBuilder.build());
 				}
@@ -169,8 +206,7 @@ public class ApiFriendService extends AbstractRequest {
 	 */
 	public CommandResponse apply(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
-		int applyTimes = 0;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiFriendApplyProto.ApiFriendApplyRequest request = ApiFriendApplyProto.ApiFriendApplyRequest
 					.parseFrom(command.getParams());
@@ -179,38 +215,43 @@ public class ApiFriendService extends AbstractRequest {
 			String applyReason = request.getApplyReason();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isEmpty(siteUserId)) {
-				errCode = ErrorCode2.ERROR_PARAMETER;
-			} else if (siteUserId.equals(siteFriendId)) {
-				errCode = ErrorCode2.ERROR2_FRIEND_APPLYSELF;
-			} else if (StringUtils.isNotBlank(siteUserId) && !siteUserId.equals(siteFriendId)) {
-				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
-						siteFriendId);
-				if (UserProto.UserRelation.RELATION_FRIEND == userRelation) {
-					errCode = ErrorCode2.ERROR2_FRIEND_IS;
-				} else {
-					applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
-					if (applyTimes >= 5) {
-						errCode = ErrorCode2.ERROR2_FRIEND_APPLYCOUNT;
-					} else {
-						if (UserFriendDao.getInstance().saveFriendApply(siteUserId, siteFriendId, applyReason)) {
-							errCode = ErrorCode2.SUCCESS;
-						}
-					}
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (siteUserId.equals(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_APPLYSELF);
+			}
+
+			if (UserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_IS);
+			}
+
+			int applyTimes = UserFriendDao.getInstance().getApplyCount(siteFriendId, siteUserId);
+			if (applyTimes >= 5) {
+				errCode = ErrorCode2.ERROR2_FRIEND_APPLYCOUNT;
+			} else {
+				if (UserFriendDao.getInstance().saveFriendApply(siteUserId, siteFriendId, applyReason)) {
+					errCode = ErrorCode2.SUCCESS;
 				}
 			}
 
 			if (ErrorCode2.SUCCESS.equals(errCode)) {
-				if (applyTimes == 0) {
-					new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
+				new User2Notice().applyFriendNotice(siteUserId, siteFriendId);
+				// 同时下发一条PUSH消息
+				if (applyTimes < 2) {
+					PushNotification.sendAddFriend(siteUserId, siteFriendId);
 				}
 			}
 
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -305,6 +346,10 @@ public class ApiFriendService extends AbstractRequest {
 				if (ErrorCode2.SUCCESS.equals(errCode) && result) {
 					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
 							siteFriendId);
+					// xxx 同意了你的好友申请 ,发送push
+					PushNotification.agreeAddFriend(siteUserId, siteFriendId);
+
+					// 发送文本消息
 					if (applyBean != null && StringUtils.isNotEmpty(applyBean.getSiteUserId())) {
 						new User2Notice().addFriendTextMessage(applyBean);
 					}
@@ -491,6 +536,38 @@ public class ApiFriendService extends AbstractRequest {
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode2(errCode);
+	}
+
+	public CommandResponse remark(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			ApiFriendRemarkProto.ApiFriendRemarkRequest request = ApiFriendRemarkProto.ApiFriendRemarkRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteFriendId = request.getSiteFriendId();
+			String aliasName = request.getAliasName();
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId, aliasName)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			String aliasInLatin = StringHelper.toLatinPinYin(aliasName);
+			if (UserFriendDao.getInstance().remarkFriend(siteUserId, siteFriendId, aliasName, aliasInLatin)) {
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR_DATABASE_EXECUTE;
+			}
+
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode(errCode);
 	}
 
 }

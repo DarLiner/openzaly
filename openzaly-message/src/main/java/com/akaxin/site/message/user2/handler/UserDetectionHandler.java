@@ -30,9 +30,10 @@ import com.akaxin.site.storage.bean.SimpleUserBean;
 
 /**
  * <pre>
- * 	消息发送之前的检测： 
- * 		1.群是否为存在的群 
- * 		2.如果用户之间不是好友，消息发送不出去
+ * 	U2消息发送之前的检测： 
+ * 		1.支持消息属于代发类型
+ * 		2.发送者和接受者是否为正常状态用户
+ * 		3.如果用户之间不是好友，消息发送不出去
  * </pre>
  * 
  * @author Sam
@@ -54,26 +55,44 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 
 			switch (type) {
 			case CoreProto.MsgType.TEXT_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getText().getSiteUserId();
+				}
 				siteFriendId = request.getText().getSiteFriendId();
 				msgId = request.getText().getMsgId();
 				break;
 			case CoreProto.MsgType.SECRET_TEXT_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getSecretText().getSiteUserId();
+				}
 				siteFriendId = request.getSecretText().getSiteFriendId();
 				msgId = request.getSecretText().getMsgId();
 				break;
 			case CoreProto.MsgType.IMAGE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getImage().getSiteUserId();
+				}
 				siteFriendId = request.getImage().getSiteFriendId();
 				msgId = request.getImage().getMsgId();
 				break;
 			case CoreProto.MsgType.SECRET_IMAGE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getSecretImage().getSiteUserId();
+				}
 				siteFriendId = request.getSecretImage().getSiteFriendId();
 				msgId = request.getSecretImage().getMsgId();
 				break;
 			case CoreProto.MsgType.VOICE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getVoice().getSiteUserId();
+				}
 				siteFriendId = request.getVoice().getSiteFriendId();
 				msgId = request.getVoice().getMsgId();
 				break;
 			case CoreProto.MsgType.SECRET_VOICE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getSecretVoice().getSiteUserId();
+				}
 				siteFriendId = request.getSecretVoice().getSiteFriendId();
 				msgId = request.getSecretVoice().getMsgId();
 				break;
@@ -82,20 +101,32 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 				command.setMsgType(type);
 				return true;
 			case CoreProto.MsgType.U2_WEB_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getU2Web().getSiteUserId();
+				}
+				siteFriendId = request.getU2Web().getSiteFriendId();
+				command.setProxySiteUserId(siteUserId);
+				command.setSiteFriendId(siteFriendId);
 				return true;
 			case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
+				if (command.isProxy()) {
+					siteUserId = request.getU2WebNotice().getSiteUserId();
+					siteFriendId = request.getU2WebNotice().getSiteFriendId();
+					command.setProxySiteUserId(siteUserId);
+					command.setSiteFriendId(siteFriendId);
+				}
 				return true;
 			default:
-				logger.error("it's a unsupport type message cmd={} request={}", command.toString(), request.toString());
+				logger.error("error message type cmd={} request={}", command.toString(), request.toString());
 				return false;
 			}
-
+			command.setProxySiteUserId(siteUserId);
 			command.setSiteFriendId(siteFriendId);
 
 			if (checkUser(siteUserId, siteFriendId)) {
 				return true;
 			} else {
-				logger.warn("user2 are not friend.user:{},friend:{}", siteUserId, siteFriendId);
+				logger.warn("users arent friend relation.siteUserId:{},siteFriendId:{}", siteUserId, siteFriendId);
 				int statusValue = -1;// 非好友关系，返回状态值
 				msgStatusResponse(command, msgId, System.currentTimeMillis(), statusValue);
 			}

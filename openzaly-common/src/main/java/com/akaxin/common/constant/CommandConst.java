@@ -17,16 +17,25 @@ package com.akaxin.common.constant;
 
 public interface CommandConst {
 	public String PROTOCOL_VERSION = "1.0";// 网络协议版本
-	public String SITE_VERSION = "0.3.2";// 站点版本（特指proto版本）
+	public String SITE_VERSION = "0.9.5";// 站点版本（特指proto版本）
 
+	public String PROXY_SITE_USER_ID = "proxy_site_user_id";
 	public String SITE_FRIEND_ID = "site_friend_id";
 	public String SITE_GROUP_ID = "site_group_id";
 	public String CHAHHEL_SESSION = "channel_session";
 	public String CHANNEL_CONTEXT = "channel_context";
 	public String CLIENT_IP = "client_ip";
+	public String CLIENT_VERSION = "client_version";
+
 	public String MSG_TYPE = "msg_type";
 	public String START_TIME = "start_time";
 	public String END_TIME = "end_time";
+
+	public String IS_PROXY = "is_proxy";
+
+	// plugin
+	public String PLUGIN_AUTH_KEY = "plugin_auth_key";
+	public String PLUGIN_ID = "plugin_id";
 
 	public String IM_MSG_TOCLIENT = "im.stc.message";
 	public String IM_MSG_TOSITE = "im.cts.message";
@@ -38,6 +47,7 @@ public interface CommandConst {
 	public String IM_NOTICE = "im.stc.notice";
 
 	public String API_PUSH_NOTIFICATION = "api.push.notification";
+	public String API_PUSH_NOTIFICATIONS = "api.push.notifications";
 
 	public String API_PHONE_CONFIRETOKEN = "api.phone.confirmToken";
 

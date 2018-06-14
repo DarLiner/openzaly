@@ -36,6 +36,7 @@ import io.netty.channel.Channel;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-04-26 15:15:54
  */
+@Deprecated
 public class GroupMessageVoiceSecretHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupMessageVoiceSecretHandler.class);
 	private IMessageDao messageDao = new MessageDaoService();

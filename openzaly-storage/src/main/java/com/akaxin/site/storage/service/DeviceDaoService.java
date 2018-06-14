@@ -81,4 +81,9 @@ public class DeviceDaoService implements IUserDeviceDao {
 		return SQLiteUserDeviceDao.getInstance().limitDeviceNum(siteUserId, limit);
 	}
 
+	@Override
+	public boolean delDevice(String siteUserId) throws SQLException {
+		return SQLiteUserDeviceDao.getInstance().delDevice(siteUserId);
+	}
+
 }

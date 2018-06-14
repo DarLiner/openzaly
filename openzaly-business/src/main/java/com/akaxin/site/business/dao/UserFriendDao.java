@@ -49,10 +49,29 @@ public class UserFriendDao {
 		return instance;
 	}
 
+	public int getUserFriendNum(String siteUserId) {
+		try {
+			return userFriendDao.getUserFriendNum(siteUserId);
+		} catch (SQLException e) {
+			logger.error("get user friend num error", e);
+		}
+		return -1;
+	}
+
 	public List<SimpleUserBean> getUserFriends(String userId) {
 		List<SimpleUserBean> friendList = new ArrayList<SimpleUserBean>();
 		try {
 			friendList = userFriendDao.getUserFriends(userId);
+		} catch (SQLException e) {
+			logger.error("get user friend list error", e);
+		}
+		return friendList;
+	}
+
+	public List<SimpleUserBean> getUserFriendsByPage(String siteUserId, int pageNum, int pageSize) {
+		List<SimpleUserBean> friendList = null;
+		try {
+			friendList = userFriendDao.getUserFriendsByPage(siteUserId, pageNum, pageSize);
 		} catch (SQLException e) {
 			logger.error("get user friend list error", e);
 		}
@@ -66,6 +85,15 @@ public class UserFriendDao {
 			logger.error("friend apply error.", e);
 		}
 		return false;
+	}
+
+	// 查询二者是否为好友
+	public boolean isFriend(String siteUserId, String siteFriendId) throws SQLException {
+		return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId);
+	}
+
+	public boolean isNotFriend(String siteUserId, String siteFriendId) throws SQLException {
+		return !isFriend(siteUserId, siteFriendId);
 	}
 
 	public boolean agreeApply(String siteUserId, String siteFriendId, boolean agree) {
@@ -202,6 +230,15 @@ public class UserFriendDao {
 	public boolean updateFriendMute(String siteUserId, String siteFriendId, boolean mute) {
 		try {
 			return userFriendDao.updateMute(siteUserId, siteFriendId, mute);
+		} catch (SQLException e) {
+			logger.error("update friend mute error", e);
+		}
+		return false;
+	}
+
+	public boolean remarkFriend(String siteUserId, String siteFriendId, String aliasName, String aliasInLatin) {
+		try {
+			return userFriendDao.remarkFriend(siteUserId, siteFriendId, aliasName, aliasInLatin);
 		} catch (SQLException e) {
 			logger.error("update friend mute error", e);
 		}

@@ -44,6 +44,19 @@ public final class HaiUserUpdateProto {
     com.akaxin.proto.core.UserProto.UserProfileOrBuilder getUserProfileOrBuilder();
   }
   /**
+   * <pre>
+   **
+   *更新用户信息
+   *----
+   *接口名
+   *----
+   * /hai/user/update
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiUserUpdateRequest}
    */
   public  static final class HaiUserUpdateRequest extends
@@ -295,6 +308,19 @@ public final class HaiUserUpdateProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *更新用户信息
+     *----
+     *接口名
+     *----
+     * /hai/user/update
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiUserUpdateRequest}
      */
     public static final class Builder extends

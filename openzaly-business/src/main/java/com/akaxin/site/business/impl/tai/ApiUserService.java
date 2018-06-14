@@ -15,6 +15,9 @@
  */
 package com.akaxin.site.business.impl.tai;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +26,10 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
+import com.akaxin.common.utils.StringHelper;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserProfileProto;
@@ -62,9 +68,8 @@ public class ApiUserService extends AbstractRequest {
 
 			if (StringUtils.isNotBlank(siteUserId) && siteUserId.equals(currentUserId)) {
 				UserProfileBean userBean = UserProfileDao.getInstance().getUserProfileById(siteUserId);
-
 				if (null == userBean) {
-					// 直接复用之前的接口了。
+					// 理论不会执行到这一步
 					userBean = UserProfileDao.getInstance().getUserProfileByGlobalUserId(siteUserId);
 				}
 
@@ -72,13 +77,16 @@ public class ApiUserService extends AbstractRequest {
 
 					UserProto.UserProfile.Builder userProfileBuilder = UserProto.UserProfile.newBuilder();
 					userProfileBuilder.setSiteUserId(userBean.getSiteUserId());
-					if (userBean.getUserName() != null) {
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
 						userProfileBuilder.setUserName(userBean.getUserName());
 					}
-					if (userBean.getUserPhoto() != null) {
+					if (StringUtils.isNotEmpty(userBean.getSiteLoginId())) {
+						userProfileBuilder.setSiteLoginId(userBean.getSiteLoginId());
+					}
+					if (StringUtils.isNotEmpty(userBean.getUserPhoto())) {
 						userProfileBuilder.setUserPhoto(userBean.getUserPhoto());
 					}
-					if (userBean.getSelfIntroduce() != null) {
+					if (StringUtils.isNotEmpty(userBean.getSelfIntroduce())) {
 						userProfileBuilder.setSelfIntroduce(userBean.getSelfIntroduce());
 					}
 					userProfileBuilder.setUserStatusValue(userBean.getUserStatus());
@@ -106,37 +114,67 @@ public class ApiUserService extends AbstractRequest {
 	 */
 	public CommandResponse updateProfile(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiUserUpdateProfileProto.ApiUserUpdateProfileRequest request = ApiUserUpdateProfileProto.ApiUserUpdateProfileRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
+			String siteLoginId = request.getUserProfile().getSiteLoginId();
 			String userName = request.getUserProfile().getUserName();
 			String userPhoto = request.getUserProfile().getUserPhoto();
 			String introduce = request.getUserProfile().getSelfIntroduce();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (StringUtils.isNoneEmpty(siteUserId, userName, userPhoto)) {
-
-				UserProfileBean userBean = new UserProfileBean();
-				userBean.setSiteUserId(siteUserId);
-				userBean.setUserName(userName);
-				userBean.setUserPhoto(userPhoto);
-				userBean.setSelfIntroduce(introduce);
-
-				if (UserProfileDao.getInstance().updateUserProfile(userBean)) {
-					errCode = ErrorCode2.SUCCESS;
-				} else {
-					errCode = ErrorCode2.ERROR2_USER_UPDATE_PROFILE;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR_PARAMETER;
+			// 校验参数
+			if (StringUtils.isEmpty(siteUserId) || StringUtils.isAllEmpty(siteLoginId, userName, userPhoto)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
+
+			// 用户名长度 1-16
+			if (StringUtils.isNotEmpty(userName) && userName.length() > 16) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER_NICKNAME);
+			}
+
+			// 站点账号 3-16
+			if (StringUtils.isNotEmpty(siteLoginId)) {
+				Matcher match = Pattern.compile("^[A-Za-z][A-Za-z0-9]{2,15}$").matcher(siteLoginId);
+				if (!match.matches()) {
+					throw new ZalyException2(ErrorCode2.ERROR_LOGINID_LENGTH);
+				}
+
+				String loginId = UserProfileDao.getInstance().getSiteLoginIdBySiteUserId(siteUserId);
+				if (loginId != null && !loginId.equalsIgnoreCase(siteLoginId)) {
+					throw new ZalyException2(ErrorCode2.ERROR_LOGINID_EXIST);
+				} else if (siteLoginId.equalsIgnoreCase(loginId)) {
+					// equal, ignore
+					siteLoginId = null;
+				}
+			}
+
+			UserProfileBean userBean = new UserProfileBean();
+			userBean.setSiteUserId(siteUserId);
+			userBean.setSiteLoginId(siteLoginId);
+			if (StringUtils.isNotEmpty(userName)) {
+				userBean.setUserName(userName);
+				userBean.setUserNameInLatin(StringHelper.toLatinPinYin(userName));
+			}
+			userBean.setUserPhoto(userPhoto);
+			userBean.setSelfIntroduce(introduce);
+
+			if (UserProfileDao.getInstance().updateUserProfile(userBean)) {
+				errCode = ErrorCode2.SUCCESS;
+			} else {
+				errCode = ErrorCode2.ERROR2_USER_UPDATE_PROFILE;
+			}
+
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	public CommandResponse mute(Command command) {

@@ -75,6 +75,11 @@ public class CommandResponse {
 		return errCode;
 	}
 
+	public CommandResponse setErrCode(String errCode) {
+		this.errCode = errCode;
+		return this;
+	}
+
 	public CommandResponse setErrCode(IErrorCode errCode) {
 		this.errCode = errCode.getCode();
 		this.errInfo = errCode.getInfo();

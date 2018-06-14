@@ -44,23 +44,23 @@ public class U2MessageImageSecretHandler extends AbstractU2Handler<Command> {
 			if (CoreProto.MsgType.SECRET_IMAGE_VALUE == type) {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
-				String siteUserId = request.getSecretImage().getSiteUserId();
+				String siteUserId = command.getSiteUserId();
+				String proxySiteUserId = request.getSecretImage().getSiteUserId();
 				String siteFriendId = request.getSecretImage().getSiteFriendId();
 				String msgId = request.getSecretImage().getMsgId();
 				String tsKey = request.getSecretImage().getBase64TsKey();
-				String ts_device_id = request.getSecretImage().getToDeviceId();
+				String toDeviceId = request.getSecretImage().getToDeviceId();
 				String imageId = request.getSecretImage().getImageId();
-				command.setSiteUserId(siteUserId);
-				command.setSiteFriendId(siteFriendId);
 
 				U2MessageBean u2Bean = new U2MessageBean();
 				u2Bean.setMsgId(msgId);
 				u2Bean.setMsgType(type);
-				u2Bean.setSendUserId(siteUserId);
 				u2Bean.setSiteUserId(siteFriendId);
+				u2Bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				u2Bean.setReceiveUserId(siteFriendId);
 				u2Bean.setContent(imageId);
 				u2Bean.setTsKey(tsKey);
-				u2Bean.setDeviceId(ts_device_id);
+				u2Bean.setDeviceId(toDeviceId);
 				long msgTime = System.currentTimeMillis();
 				u2Bean.setMsgTime(System.currentTimeMillis());
 

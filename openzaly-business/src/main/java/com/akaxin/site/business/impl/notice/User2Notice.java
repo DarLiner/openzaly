@@ -27,7 +27,6 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.CoreProto.MsgType;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.business.constant.NoticeText;
-import com.akaxin.site.business.push.PushNotification;
 import com.akaxin.site.message.api.IMessageService;
 import com.akaxin.site.message.service.ImMessageService;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
@@ -46,18 +45,20 @@ public class User2Notice {
 	 *            用户B的用户ID
 	 */
 	public void applyFriendNotice(String siteUserId, String siteFriendId) {
-		Command command = new Command();
-		command.setSiteUserId(siteUserId);
-		command.setSiteFriendId(siteFriendId);
-		command.setAction(RequestAction.IM_STC_NOTICE.getName());
-		ImStcNoticeProto.ImStcNoticeRequest noticeRequest = ImStcNoticeProto.ImStcNoticeRequest.newBuilder()
-				.setType(ImStcNoticeProto.NoticeType.APPLY_FRIEND).build();
-		command.setParams(noticeRequest.toByteArray());
-		// 发送im.stc.notice消息
-		boolean result = imService.execute(command);
-		// 同时下发一条PUSH消息
-		PushNotification.sendAddFriend(siteUserId, siteFriendId);
-		logger.debug("siteUserId={} apply friend notice friendId={} result={}", siteUserId, siteFriendId, result);
+		try {
+			Command command = new Command();
+			command.setSiteUserId(siteUserId);
+			command.setSiteFriendId(siteFriendId);
+			command.setAction(RequestAction.IM_STC_NOTICE.getName());
+			ImStcNoticeProto.ImStcNoticeRequest noticeRequest = ImStcNoticeProto.ImStcNoticeRequest.newBuilder()
+					.setType(ImStcNoticeProto.NoticeType.APPLY_FRIEND).build();
+			command.setParams(noticeRequest.toByteArray());
+			// 发送im.stc.notice消息
+			boolean result = imService.execute(command);
+			logger.debug("siteUserId={} apply friend notice friendId={} result={}", siteUserId, siteFriendId, result);
+		} catch (Exception e) {
+			logger.error("send apply friend notice error", e);
+		}
 	}
 
 	/**

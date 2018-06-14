@@ -39,6 +39,21 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public List<SimpleGroupBean> getUserGroupList(String userId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryUserGroupList(userId);
+	}
+
+	@Override
+	public List<SimpleGroupBean> getUserGroupList(String siteUserId, int pageNum, int pageSize) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryUserGroupList(siteUserId, pageNum, pageSize);
+	}
+
+	@Override
+	public int getUserGroupCount(String siteUserId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryUserGroupCount(siteUserId);
+	}
+
+	@Override
 	public String getGroupOwner(String groupId) throws SQLException {
 		return SQLiteGroupProfileDao.getInstance().getGrouMaster(groupId);
 	}
@@ -59,8 +74,18 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public int getNonGroupMemberNum(String groupId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberNum(groupId);
+	}
+
+	@Override
 	public List<GroupMemberBean> getNonGroupMemberList(String groupId, int pageNum, int pageSize) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().queryNonGroupMemberList(groupId, pageNum, pageSize);
+	}
+
+	@Override
+	public int getUserFriendNonGroupMemberNum(String siteUserId, String groupId) throws SQLException {
+		return SQLiteUserGroupDao.getInstance().queryUserFriendNonGroupMemberNum(siteUserId, groupId);
 	}
 
 	@Override
@@ -96,8 +121,18 @@ public class GroupDaoService implements IGroupDao {
 	}
 
 	@Override
+	public int getTotalGroupNum() throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().getTotalGroupNum();
+	}
+
+	@Override
 	public int getGroupNum(long now, int day) throws SQLException {
 		return SQLiteGroupProfileDao.getInstance().getGroupNum(now, day);
+	}
+
+	@Override
+	public boolean rmGroupProfile(String groupId) throws SQLException {
+		return SQLiteGroupProfileDao.getInstance().rmGroupProfile(groupId);
 	}
 
 	@Override
@@ -123,11 +158,6 @@ public class GroupDaoService implements IGroupDao {
 	@Override
 	public int getGroupMembersCount(String groupId) throws SQLException {
 		return SQLiteUserGroupDao.getInstance().queryGroupMembersCount(groupId);
-	}
-
-	@Override
-	public List<SimpleGroupBean> getUserGroups(String userId) throws SQLException {
-		return SQLiteUserGroupDao.getInstance().queryUserGroups(userId);
 	}
 
 	@Override

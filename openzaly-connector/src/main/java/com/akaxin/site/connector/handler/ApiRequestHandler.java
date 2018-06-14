@@ -39,7 +39,6 @@ import com.akaxin.site.storage.service.UserSessionDaoService;
 import com.google.protobuf.ByteString;
 
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -108,28 +107,41 @@ public class ApiRequestHandler extends AbstractCommonHandler<Command, CommandRes
 	}
 
 	private CommandResponse doApiRequest(final Channel channel, Command command) {
-		CommandResponse comamndResponse = new ApiRequestService().process(command);
 		// response
 		CoreProto.TransportPackageData.Builder packageBuilder = CoreProto.TransportPackageData.newBuilder();
-		// header
+
+		CommandResponse comamndResponse = new ApiRequestService().process(command);
+
+		// 1.header
 		Map<Integer, String> header = new HashMap<Integer, String>();
 		// 站点业务版本（proto版本）
 		header.put(CoreProto.HeaderKey.SITE_SERVER_VERSION_VALUE, CommandConst.SITE_VERSION);
 		packageBuilder.putAllHeader(header);
-		// errCode
-		CoreProto.ErrorInfo errinfo = CoreProto.ErrorInfo.newBuilder()
-				.setCode(String.valueOf(comamndResponse.getErrCode())).setInfo(comamndResponse.getErrInfo()).build();
-		packageBuilder.setErr(errinfo);
-		// data
+
+		// 2.errCode
+		int protoVersion = command.getProtoVersion();
+		CoreProto.ErrorInfo.Builder errBuilder = CoreProto.ErrorInfo.newBuilder();
+		// 兼容 “error.alert”
+		if (protoVersion < 5 && "error.alert".equals(comamndResponse.getErrCode())) {
+			errBuilder.setCode("error.alter");
+		} else {
+			errBuilder.setCode(comamndResponse.getErrCode());
+		}
+
+		if (StringUtils.isNotEmpty(comamndResponse.getErrInfo())) {
+			errBuilder.setInfo(comamndResponse.getErrInfo());
+		}
+		packageBuilder.setErr(errBuilder.build());
+
+		// 3.data
 		if (comamndResponse.getParams() != null) {
 			packageBuilder.setData(ByteString.copyFrom(comamndResponse.getParams())).build();
 		}
 		// 协议版本 CommandConst.PROTOCOL_VERSION=1.0
 		String protocolVersion = CommandConst.PROTOCOL_VERSION;
 		String action = comamndResponse.getAction() == null ? CommandConst.ACTION_RES : comamndResponse.getAction();
-		ChannelFuture future = channel
-				.writeAndFlush(
-						new RedisCommand().add(protocolVersion).add(action).add(packageBuilder.build().toByteArray()))
+		channel.writeAndFlush(
+				new RedisCommand().add(protocolVersion).add(action).add(packageBuilder.build().toByteArray()))
 				.addListener(new GenericFutureListener<Future<? super Void>>() {
 
 					@Override

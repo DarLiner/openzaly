@@ -2,346 +2,402 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>编辑用户信息</title>
-    </title>
-    <!-- 引入 WeUI -->
-    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css"/>
-    <style type="text/css">
-        body, html {
-            height: 100%;
-            background-color: #f4f4f4;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,user-scalable=0">
+<title>编辑用户信息</title>
+</title>
+<!-- 引入 WeUI -->
+<link rel="stylesheet"
+	href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css" />
+<style type="text/css">
+body, html {
+	height: 100%;
+	background-color: #f4f4f4;
+	-webkit-tap-highlight-color: transparent;
+}
 
-        .margin_top_30px {
-            margin-top: 30px;
-        }
+.margin_top_30px {
+	margin-top: 30px;
+}
 
-        .basic-color {
-            background-color: #1E88E5;
-            color: #FFFFFF;
-        }
+.basic-color {
+	background-color: #1E88E5;
+	color: #FFFFFF;
+}
 
-        .basic-weui-btn {
-            background-color: #1E88E5;
-            color: #FFFFFF;
-        }
+.basic-weui-btn {
+	background-color: #1E88E5;
+	color: #FFFFFF;
+}
 
-        .basic-weui-btn:hover {
-            background-color: #1E88E5;
-            color: #FFFFFF;
-        }
+.basic-weui-btn:hover {
+	background-color: #1E88E5;
+	color: #FFFFFF;
+}
 
-        .basic-weui-btn:active {
-            background-color: #1E88E5 !important;
-            color: #FFFFFF;
-        }
+.basic-weui-btn:active {
+	background-color: #1E88E5 !important;
+	color: #FFFFFF;
+}
 
-        footer {
-            text-align: center;
-            font-size: 14px;
-            padding: 20px;
-        }
+footer {
+	text-align: center;
+	font-size: 14px;
+	padding: 20px;
+}
 
-        .weui-loadmore_line {
-            background-color: #f4f4f4;
-        }
+.weui-loadmore_line {
+	background-color: #f4f4f4;
+}
 
-        footer a {
-            color: #999;
-            text-decoration: none;
-        }
-
-    </style>
+footer a {
+	color: #999;
+	text-decoration: none;
+}
+</style>
 </head>
 
 <body ontouchstart="">
-<div class="weui-cells weui-cells_form margin_top_30px">
-    <div class="weui-cell">
-        <div class="weui-cell__hd">
-            <label class="weui-label">用户名称</label>
-        </div>
-        <div class="weui-cell__bd">
-            <input class="weui-input user_name" type="text" name="user_name" th:value="${userName}"
-                   placeholder="用户名称">
-        </div>
-    </div>
-    <input class="site_user_id" type="hidden" th:attr="data=${siteUserId}">
-    <div class="weui-cell">
-        <div class="weui-cell__bd">
-            <div class="weui-uploader">
-                <div class="weui-uploader__hd">
-                    <p class="weui-uploader__title">图片上传</p>
-                    <div class="weui-uploader__info" th:if="${userPhoto}!=null">1/1</div>
-                    <div class="weui-uploader__info" th:unless="${userPhoto}!=null">0/1</div>
-                </div>
-                <div class="weui-uploader__bd">
-                    <ul class="weui-uploader__files" id="uploaderFiles">
-                        <li class="weui-uploader__file user_photo" id="user_photo"
-                            th:attr="user-photo=${userPhoto}" th:if="${userPhoto}!=null"></li>
-                    </ul>
-                    <div class="weui-uploader__input-box">
-                        <input id="uploaderInput" class="weui-uploader__input  uploaderInput" type="file"
-                               accept="image/*" multiple="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="weui-btn-area">
-        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info"
-           url-data="/user/updateProfile" href="javascript:" id="update_user_info">确定</a>
+	<div class="weui-cells weui-cells_form margin_top_30px">
+		<input class="site_user_id" type="hidden" th:attr="data=${siteUserId}">
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">用户昵称</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input user_name" type="text" name="user_name"
+					th:value="${userName}" placeholder="用户昵称" maxlength="16">
+			</div>
+		</div>
 
-        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
-           url-data="/user/setUserDefault" href="javascript:" id="user_default"
-           th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为默认添加用户</a>
-        <a class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
-           url-data="/user/delUserDefault" href="javascript:" id="user_default"
-           th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">设为普通用户</a>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">站点账号</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input site_login_id" type="text"
+					name="site_login_id" th:value="${siteLoginId}" placeholder="站点账号" maxlength="16">
+			</div>
+		</div>
 
-        <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
-           class="sealup-site-user weui-btn weui-btn_warn " url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a>
-        <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
-           class="unfreeze-site-user weui-btn weui-btn_warn " url-data="/user/sealup"
-           style="display:none" th:if="${userStatus}==0">解禁用户</a>
+		<div class="weui-cell">
+			<div class="weui-cell__bd">
+				<div class="weui-uploader">
+					<div class="weui-uploader__hd">
+						<p class="weui-uploader__title">图片上传</p>
+						<div class="weui-uploader__info" th:if="${userPhoto}!=null">1/1</div>
+						<div class="weui-uploader__info" th:unless="${userPhoto}!=null">0/1</div>
+					</div>
+					<div class="weui-uploader__bd">
+						<ul class="weui-uploader__files" id="uploaderFiles">
+							<li class="weui-uploader__file user_photo" id="user_photo"
+								th:attr="user-photo=${userPhoto}" th:if="${userPhoto}!=null"></li>
+						</ul>
+						<div class="weui-uploader__input-box">
+							<input id="uploaderInput"
+								class="weui-uploader__input  uploaderInput" type="file"
+								accept="image/*" multiple="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="weui-btn-area">
+			<a
+				class="weui-btn basic-weui-btn weui-btn_primary basic-color update_user_info"
+				url-data="/user/updateProfile" href="javascript:"
+				id="update_user_info">确定</a> <a
+				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
+				url-data="/user/setUserDefault" href="javascript:" id="user_default"
+				th:if="${defaultState}==0" th:attr="defaultState=${defaultState}">设为默认好友</a>
+			<a
+				class="weui-btn basic-weui-btn weui-btn_primary basic-color user_default"
+				url-data="/user/delUserDefault" href="javascript:" id="user_default"
+				th:if="${defaultState}==1" th:attr="defaultState=${defaultState}">取消默认好友</a>
 
-        <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
-           class="sealup-site-user weui-btn weui-btn_warn" style="display:none" url-data="/user/sealup"
-           th:unless="${userStatus}==0">封禁用户</a>
-        <a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
-           class="unfreeze-site-user weui-btn weui-btn_warn" url-data="/user/sealup"
-           th:unless="${userStatus}==0">解禁用户</a>
-    </div>
-</div>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
-<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
-<script type="text/javascript">
-    function getOsType() {
-        var u = navigator.userAgent;
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Windows Phone') > -1) {
-            return 'Android';
-        } else if (u.indexOf('iPhone') > -1) {
-            return 'IOS';
-        } else {
-            return 'PC';
-        }
-    }
+			<a href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
+				class="sealup-site-user weui-btn weui-btn_warn "
+				url-data="/user/sealup" th:if="${userStatus}==0">封禁用户</a> <a
+				href="javascript:;" name='del-user' th:attr="data=${siteUserId}"
+				class="unfreeze-site-user weui-btn weui-btn_warn "
+				url-data="/user/sealup" style="display: none"
+				th:if="${userStatus}==0">解禁用户</a> <a href="javascript:;"
+				name='del-user' th:attr="data=${siteUserId}"
+				class="sealup-site-user weui-btn weui-btn_warn"
+				style="display: none" url-data="/user/sealup"
+				th:unless="${userStatus}==0">封禁用户</a> <a href="javascript:;"
+				name='del-user' th:attr="data=${siteUserId}"
+				class="unfreeze-site-user weui-btn weui-btn_warn"
+				url-data="/user/sealup" th:unless="${userStatus}==0">解禁用户</a> <a
+				class="weui-btn weui-btn_warn  delUser" url-data="/user/delUser"
+				href="javascript:" id="delUser">删除用户</a>
 
-    function reqUrl(reqUri, params, callbackName) {
-        var type = getOsType();
-        console.log('utl' + type);
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+	<script type="text/javascript"
+		src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
+	<script type="text/javascript">
+		function getOsType() {
+			var u = navigator.userAgent;
+			if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1
+					|| u.indexOf('Windows Phone') > -1) {
+				return 'Android';
+			} else if (u.indexOf('iPhone') > -1) {
+				return 'IOS';
+			} else {
+				return 'PC';
+			}
+		}
 
-        if (type == 'Android') {
-            Android.requestPost(reqUri, params, callbackName);
-        } else if (type == 'IOS') {
-            ios_requestPost(reqUri, params, callbackName);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
+		function reqUrl(reqUri, params, callbackName) {
+			var type = getOsType();
+			console.log('utl' + type);
 
-    function reqHtml(reqUri, params) {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.requestPage(reqUri, params)
-        } else if (type == 'IOS') {
-            ios_requestPage(reqUri, params);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
+			if (type == 'Android') {
+				Android.requestPost(reqUri, params, callbackName);
+			} else if (type == 'IOS') {
+				ios_requestPost(reqUri, params, callbackName);
+			} else {
+				$.toast('暂时不支持该设备');
+			}
+		}
 
-    function reqImageUpload(callback) {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.imageUpload(callback);
-        } else if (type == 'IOS') {
-            ios_imageUpload(callback);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
+		function reqHtml(reqUri, params) {
+			var type = getOsType();
+			if (type == 'Android') {
+				Android.requestPage(reqUri, params)
+			} else if (type == 'IOS') {
+				ios_requestPage(reqUri, params);
+			} else {
+				$.toast('暂时不支持该设备');
+			}
+		}
 
-    function reqImageDownload(imageid, callback) {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.imageDownload(imageid, callback);
-        } else if (type == 'IOS') {
-            ios_imageDownload(imageid, callback);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
+		function reqImageUpload(callback) {
+			var type = getOsType();
+			if (type == 'Android') {
+				Android.imageUpload(callback);
+			} else if (type == 'IOS') {
+				ios_imageUpload(callback);
+			} else {
+				$.toast('暂时不支持该设备');
+			}
+		}
 
-    function toast(msg) {
-        var type = getOsType();
-        if (type == 'Android') {
-            Android.showToast(msg);
-        } else if (type == 'IOS') {
-            $.toast(msg);
-        } else {
-            $.toast('暂时不支持该设备');
-        }
-    }
+		function reqImageDownload(imageid, callback) {
+			var type = getOsType();
+			if (type == 'Android') {
+				Android.imageDownload(imageid, callback);
+			} else if (type == 'IOS') {
+				ios_imageDownload(imageid, callback);
+			} else {
+				$.toast('暂时不支持该设备');
+			}
+		}
 
-    $(document).on("click", ".sealup-site-user", function () {
-        var siteUserId = $(this).attr('data');
-        var url = $(this).attr('url-data');
-        $('#sealUpUserId').attr('data', siteUserId);
-        $.confirm({
-            title: '封禁用户',
-            text: '确定要封禁用户？',
-            onOK: function () {
-                var userInfo = {
-                    'site_user_id': siteUserId,
-                    'type': '1'
-                };
-                reqUrl(url, JSON.stringify(userInfo), "sealupSiteUser");
-                $.closeModal();
-            },
-            onCancel: function () {
-                console.log('cancle');
-                toast('取消操作');
-                $.closeModal();
-            }
-        });
-    });
+		function toast(msg) {
+			var type = getOsType();
+			if (type == 'Android') {
+				Android.showToast(msg);
+			} else if (type == 'IOS') {
+				$.toast(msg);
+			} else {
+				$.toast('暂时不支持该设备');
+			}
+		}
 
-    function sealupSiteUser(results) {
-        console.log('sealupUser');
-        if (results == 'success') {
-            $('.sealup-site-user').hide();
-            $('.unfreeze-site-user').show();
-            $.toast("操作成功");
-        } else {
-            $.toast("操作失败", "forbidden");
-        }
-    }
+		$(document).on("click", ".sealup-site-user", function() {
+			var siteUserId = $(this).attr('data');
+			var url = $(this).attr('url-data');
+			$('#sealUpUserId').attr('data', siteUserId);
+			$.confirm({
+				title : '封禁用户',
+				text : '确定要封禁用户？',
+				onOK : function() {
+					var userInfo = {
+						'site_user_id' : siteUserId,
+						'type' : '1'
+					};
+					reqUrl(url, JSON.stringify(userInfo), "sealupSiteUser");
+					$.closeModal();
+				},
+				onCancel : function() {
+					console.log('cancle');
+					toast('取消操作');
+					$.closeModal();
+				}
+			});
+		});
 
-    $(document).on("click", ".unfreeze-site-user", function () {
-        var siteUserId = $(this).attr('data');
-        var url = $(this).attr('url-data');
-        $('#unfreezeUserId').attr('data', siteUserId);
-        $.confirm({
-            title: '解禁用户',
-            text: '解禁后，用户可以访问该站点',
-            onOK: function () {
-                var userInfo = {
-                    'site_user_id': siteUserId,
-                    'type': '0'
-                };
-                reqUrl(url, JSON.stringify(userInfo), "unfreezeSiteUser");
-                $.closeModal();
-            },
-            onCancel: function () {
-                console.log('cancle');
-                toast('取消操作');
-                $.closeModal();
-            }
-        });
-    });
+		function sealupSiteUser(results) {
+			console.log('sealupUser');
+			if (results == 'success') {
+				$('.sealup-site-user').hide();
+				$('.unfreeze-site-user').show();
+				$.toast("操作成功");
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
 
+		$(document).on("click", ".unfreeze-site-user", function() {
+			var siteUserId = $(this).attr('data');
+			var url = $(this).attr('url-data');
+			$('#unfreezeUserId').attr('data', siteUserId);
+			$.confirm({
+				title : '解禁用户',
+				text : '解禁后，用户可以访问该站点',
+				onOK : function() {
+					var userInfo = {
+						'site_user_id' : siteUserId,
+						'type' : '0'
+					};
+					reqUrl(url, JSON.stringify(userInfo), "unfreezeSiteUser");
+					$.closeModal();
+				},
+				onCancel : function() {
+					console.log('cancle');
+					toast('取消操作');
+					$.closeModal();
+				}
+			});
+		});
 
-    $(document).on("click", ".update_user_info", function () {
-        var userName = $('.user_name').val();
-        var siteUserId = $('.site_user_id').attr('data');
-        var userPhoto = $('.user_photo').attr('user-photo');
-        $('#edit_user_id').attr('user_name', userName);
-        var userInfo = {
-            "siteUserId": siteUserId,
-            "userName": userName,
-            "userPhoto": userPhoto
-        };
-        var reqUri = $(this).attr('url-data');
-        reqUrl(reqUri, JSON.stringify(userInfo), 'updateSiteUser');
-    });
+		$(document).on("click", ".update_user_info", function() {
+			var userName = $('.user_name').val();
+			var siteLoginId = $('.site_login_id').val();
+			var siteUserId = $('.site_user_id').attr('data');
+			var userPhoto = $('.user_photo').attr('user-photo');
+			$('#edit_user_id').attr('user_name', userName);
 
-    $(document).on("click", ".user_default", function () {
-        var siteUserId = $('.site_user_id').attr('data');
-        var userInfo = {
-            "siteUserId": siteUserId
-        };
-        var reqUri = $(this).attr('url-data');
-        reqUrl(reqUri, JSON.stringify(userInfo), 'UserDefault');
-    });
+			var userInfo = {
+				"siteUserId" : siteUserId,
+				"siteLoginId" : siteLoginId,
+				"userName" : userName,
+				"userPhoto" : userPhoto
+			};
+			var reqUri = $(this).attr('url-data');
+			reqUrl(reqUri, JSON.stringify(userInfo), 'updateSiteUser');
+		});
 
-    function UserDefault(results) {
-        if (results == 'success') {
-            $.toast("操作成功");
-            var attr = $('.user_default').attr('defaultState');
-            if (attr == '0') {
-                $('.user_default').attr('defaultState', '1');
-                $('.user_default').attr('url-data', '/user/delUserDefault');
-                $('.user_default').html('设为普通用户');
-            } else {
-                $('.user_default').attr('defaultState', '0');
-                $('.user_default').attr('url-data', '/user/setUserDefault');
-                $('.user_default').html('设为默认添加用户');
-            }
-        } else {
-            $.toast("操作失败", "forbidden");
-        }
-    }
+		$(document).on("click", ".user_default", function() {
+			var siteUserId = $('.site_user_id').attr('data');
+			var userInfo = {
+				"siteUserId" : siteUserId
+			};
+			var reqUri = $(this).attr('url-data');
+			reqUrl(reqUri, JSON.stringify(userInfo), 'UserDefault');
+		});
 
-    function unfreezeSiteUser(results) {
-        console.log('sealupUser');
-        if (results == 'success') {
-            $('.sealup-site-user').show();
-            $('.unfreeze-site-user').hide();
-            $.toast("操作成功");
-        } else {
-            $.toast("操作失败", "forbidden");
-        }
-    }
+		$(document).on("click", ".delUser", function() {
+			var siteUserId = $('.site_user_id').attr('data');
+			var reqUri = $(this).attr('url-data');
+			$.confirm({
+				title : '删除用户',
+				text : '删除后,用户将被从站点彻底抹除',
+				onOK : function() {
+					var userInfo = {
+						"siteUserId" : siteUserId
+					};
+					reqUrl(reqUri, JSON.stringify(userInfo), 'delUser');
+					$.closeModal();
+				},
+				onCancel : function() {
+					console.log('cancle');
+					toast('取消操作');
+					$.closeModal();
+				}
+			});
 
-    function updateSiteUser(results) {
-        if (results == 'success') {
-            var userName = $('#edit_user_id').attr('user_name');
-            $('.user_name').attr('value', userName);
-            $.toast("操作成功");
-        } else {
-            $.toast("操作失败", "forbidden");
-        }
-    }
+		});
 
-    $(document).on("click", '.uploaderInput', function () {
-        reqImageUpload("jsimageUpload");
-    });
+		function delUser(results) {
+			if (results == 'success') {
+				$.toast("操作成功");
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
+		function UserDefault(results) {
+			if (results == 'success') {
+				$.toast("操作成功");
+				var attr = $('.user_default').attr('defaultState');
+				if (attr == '0') {
+					$('.user_default').attr('defaultState', '1');
+					$('.user_default').attr('url-data', '/user/delUserDefault');
+					$('.user_default').html('取消默认好友');
+				} else {
+					$('.user_default').attr('defaultState', '0');
+					$('.user_default').attr('url-data', '/user/setUserDefault');
+					$('.user_default').html('设为默认好友');
+				}
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
 
-    function jsimageUpload(result, imageId, imageLocalPath) {
-        var type = getOsType();
-        if (result == 1) {
-            if (type == 'Android') {
-                var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
-            } else {
-                var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
-            }
-            $('#uploaderFiles').html(img);
-            $('.weui-uploader__info').html('1/1');
-        } else {
-            $.toast('上传图片失败', 'forbidden');
-        }
-    }
+		function unfreezeSiteUser(results) {
+			console.log('sealupUser');
+			if (results == 'success') {
+				$('.sealup-site-user').show();
+				$('.unfreeze-site-user').hide();
+				$.toast("操作成功");
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
 
-    $(window).load(function () {
-        var imageid = $('.user_photo').attr('user-photo');
-        reqImageDownload(imageid, "jsimageDownload");
-    });
+		function updateSiteUser(results) {
+			if (results == 'success') {
+				var userName = $('#edit_user_id').attr('user_name');
+				$('.user_name').attr('value', userName);
+				$.toast("操作成功");
+			} else {
+				$.toast("操作失败", "forbidden");
+			}
+		}
 
-    function jsimageDownload(result, imageid, imageLocalPath) {
-        var type = getOsType();
-        if (type == 'Android') {
-            var html = '<img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" />';
-        } else {
-            var html = '<img src="' + imageLocalPath + '" style="height:75px; width:75px;" />';
-        }
-        $('#user_photo').html(html);
-    }
-</script>
+		$(document).on("click", '.uploaderInput', function() {
+			reqImageUpload("jsimageUpload");
+		});
+
+		function jsimageUpload(result, imageId, imageLocalPath) {
+			var type = getOsType();
+			if (result == 1) {
+				if (type == 'Android') {
+					var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
+				} else {
+					var img = '<li class="weui-uploader__file user_photo" user-photo="' + imageId + '"><img src="' + imageLocalPath + '" style="height:75px; width:75px;" /></li>';
+				}
+				$('#uploaderFiles').html(img);
+				$('.weui-uploader__info').html('1/1');
+			} else {
+				$.toast('上传图片失败', 'forbidden');
+			}
+		}
+
+		$(window).load(function() {
+			var imageid = $('.user_photo').attr('user-photo');
+			reqImageDownload(imageid, "jsimageDownload");
+		});
+
+		function jsimageDownload(result, imageid, imageLocalPath) {
+			var type = getOsType();
+			if (type == 'Android') {
+				var html = '<img src="http://akaxin/img' + imageLocalPath + '" style="height:75px; width:75px;" />';
+			} else {
+				var html = '<img src="' + imageLocalPath + '" style="height:75px; width:75px;" />';
+			}
+			$('#user_photo').html(html);
+		}
+	</script>
 </body>
 
 </html>

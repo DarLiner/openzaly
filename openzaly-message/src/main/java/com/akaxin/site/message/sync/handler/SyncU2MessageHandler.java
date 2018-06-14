@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,7 +107,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 				switch (bean.getMsgType()) {
 				case CoreProto.MsgType.TEXT_VALUE:
 					CoreProto.MsgText MsgText = CoreProto.MsgText.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getReceiveUserId())
 							.setText(ByteString.copyFromUtf8(bean.getContent())).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer textMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.TEXT).setPointer(bean.getId()).setText(MsgText).build();
@@ -115,7 +116,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 				case CoreProto.MsgType.SECRET_TEXT_VALUE:
 					byte[] secretTexgt = Base64.getDecoder().decode(bean.getContent());
 					CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getReceiveUserId())
 							.setText(ByteString.copyFrom(secretTexgt)).setToDeviceId(String.valueOf(bean.getDeviceId()))
 							.setBase64TsKey(bean.getTsKey()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretTextMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
@@ -125,7 +126,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 				case CoreProto.MsgType.IMAGE_VALUE:
 					CoreProto.MsgImage msgImage = CoreProto.MsgImage.newBuilder().setImageId(bean.getContent())
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
-							.setSiteFriendId(bean.getSiteUserId()).setTime(bean.getMsgTime())
+							.setSiteFriendId(bean.getReceiveUserId()).setTime(bean.getMsgTime())
 							.setImageId(bean.getContent()).build();
 					ImStcMessageProto.MsgWithPointer imageMsgWithPointer = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.IMAGE).setPointer(bean.getId()).setImage(msgImage).build();
@@ -134,8 +135,8 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 				case CoreProto.MsgType.SECRET_IMAGE_VALUE:
 					CoreProto.MsgSecretImage secretImage = CoreProto.MsgSecretImage.newBuilder()
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
-							.setSiteFriendId(bean.getSiteUserId()).setImageId(bean.getContent())
-							.setToDeviceId(String.valueOf(bean.getDeviceId())).setBase64TsKey(bean.getTsKey())
+							.setSiteFriendId(bean.getReceiveUserId()).setImageId(bean.getContent())
+							.setToDeviceId(bean.getDeviceId()).setBase64TsKey(bean.getTsKey())
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretImageMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.SECRET_IMAGE).setPointer(bean.getId()).setSecretImage(secretImage).build();
@@ -143,7 +144,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				case CoreProto.MsgType.VOICE_VALUE:
 					CoreProto.MsgVoice voice = CoreProto.MsgVoice.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getReceiveUserId())
 							.setVoiceId(bean.getContent()).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer voiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setType(MsgType.VOICE).setPointer(bean.getId()).setVoice(voice).build();
@@ -152,7 +153,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 				case CoreProto.MsgType.SECRET_VOICE_VALUE:
 					CoreProto.MsgSecretVoice secretVoice = CoreProto.MsgSecretVoice.newBuilder()
 							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
-							.setSiteFriendId(bean.getSiteUserId()).setVoiceId(bean.getContent())
+							.setSiteFriendId(bean.getReceiveUserId()).setVoiceId(bean.getContent())
 							.setToDeviceId(String.valueOf(bean.getDeviceId())).setBase64TsKey(bean.getTsKey())
 							.setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer secretVoiceMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
@@ -161,7 +162,7 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				case CoreProto.MsgType.U2_NOTICE_VALUE:
 					CoreProto.U2MsgNotice u2Notice = CoreProto.U2MsgNotice.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
+							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getReceiveUserId())
 							.setText(ByteString.copyFromUtf8(bean.getContent())).setTime(bean.getMsgTime()).build();
 					ImStcMessageProto.MsgWithPointer u2NoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.U2_NOTICE).setU2MsgNotice(u2Notice).build();
@@ -169,18 +170,26 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				case CoreProto.MsgType.U2_WEB_VALUE:
 					WebBean webBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
-					CoreProto.U2Web u2Web = CoreProto.U2Web.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
-							.setHeight(webBean.getHeight()).setWidth(webBean.getWidth())
-							.setWebCode(webBean.getWebCode()).setTime(bean.getMsgTime()).build();
+					CoreProto.U2Web.Builder u2Web = CoreProto.U2Web.newBuilder();
+					u2Web.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getReceiveUserId()).setHeight(webBean.getHeight())
+							.setWidth(webBean.getWidth()).setWebCode(webBean.getWebCode()).setTime(bean.getMsgTime());
+					if (StringUtils.isNotEmpty(webBean.getHrefUrl())) {
+						u2Web.setHrefUrl(webBean.getHrefUrl());
+					}
 					ImStcMessageProto.MsgWithPointer u2WebMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.U2_WEB).setU2Web(u2Web).build();
 					requestBuilder.addList(u2WebMsg);
 					break;
 				case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
-					CoreProto.U2WebNotice u2WebNotice = CoreProto.U2WebNotice.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteFriendId(bean.getSiteUserId())
-							.setWebCode(bean.getContent()).setTime(bean.getMsgTime()).build();
+					WebBean webNoticeBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
+					CoreProto.U2WebNotice.Builder u2WebNotice = CoreProto.U2WebNotice.newBuilder();
+					u2WebNotice.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteFriendId(bean.getReceiveUserId()).setWebCode(webNoticeBean.getWebCode())
+							.setHeight(webNoticeBean.getHeight()).setTime(bean.getMsgTime());
+					if (StringUtils.isNotEmpty(webNoticeBean.getHrefUrl())) {
+						u2WebNotice.setHrefUrl(webNoticeBean.getHrefUrl());
+					}
 					ImStcMessageProto.MsgWithPointer u2WebNoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.U2_WEB_NOTICE).setU2WebNotice(u2WebNotice)
 							.build();

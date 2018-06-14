@@ -21,6 +21,7 @@ import java.util.List;
 import com.akaxin.site.storage.api.IUserProfileDao;
 import com.akaxin.site.storage.bean.SimpleUserBean;
 import com.akaxin.site.storage.bean.SimpleUserRelationBean;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
 
@@ -32,30 +33,45 @@ import com.akaxin.site.storage.sqlite.SQLiteUserProfileDao;
 public class UserProfileDaoService implements IUserProfileDao {
 
 	@Override
-	public boolean saveUserProfile(UserProfileBean bean) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().saveUserProfile(bean);
+	public boolean saveProfile(UserProfileBean bean) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().saveProfile(bean);
 	}
 
 	@Override
-	public String getSiteUserId(String userIdPubk) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySiteUserId(userIdPubk);
+	public String getSiteUserIdByGlobalUserId(String globalUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteUserIdByGlobalUserId(globalUserId);
 	}
 
 	@Override
-	public String getGlobalUserId(String siteUserId) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().queryGlobalUserId(siteUserId);
+	public String getSiteUserIdByPubk(String userIdPubk) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteUserIdByPubk(userIdPubk);
 	}
 
 	@Override
-	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(userId);
+	public String getSiteUserIdByLowercaseLoginId(String lowercaseLoginId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteUserIdByLowercaseLoginId(lowercaseLoginId);
 	}
-	
+
+	@Override
+	public String getGlobalUserIdBySiteUserId(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryGlobalUserIdBySiteUserId(siteUserId);
+	}
+
+	@Override
+	public String getSiteLoginIdBySiteUserId(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySiteLoginIdBySiteUserId(siteUserId);
+	}
+
+	@Override
+	public SimpleUserBean getSimpleProfileById(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().querySimpleProfileById(siteUserId);
+	}
+
 	@Override
 	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().querySimpleProfileByGlobalUserId(globalUserId);
 	}
-
+	
 	@Deprecated
 	@Override
 	public SimpleUserBean getSimpleProfileByPubk(String userIdPubk) throws SQLException {
@@ -63,8 +79,8 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public List<SimpleUserBean> getSimpleProfileByName(String userName) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().querySimpleProfileByName(userName);
+	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriendId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryFriendProfileById(siteUserId, siteFriendId);
 	}
 
 	@Override
@@ -83,7 +99,7 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int updateUserProfile(UserProfileBean userBean) throws SQLException {
+	public int updateProfile(UserProfileBean userBean) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().updateUserProfile(userBean);
 	}
 
@@ -96,6 +112,11 @@ public class UserProfileDaoService implements IUserProfileDao {
 	public List<SimpleUserRelationBean> getUserRelationPageList(String siteUserId, int pageNum, int pageSize)
 			throws SQLException {
 		return SQLiteUserProfileDao.getInstance().queryUserRelationPageList(siteUserId, pageNum, pageSize);
+	}
+
+	@Override
+	public int getTotalUserNum() throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryTotalUserNum();
 	}
 
 	@Override
@@ -114,13 +135,18 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public int queryNumRegisterPerDay(long now, int day) throws SQLException {
-		return SQLiteUserProfileDao.getInstance().queryNumRegisterPerDay(now, day);
+	public int queryRegisterNumPerDay(long now, int day) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().queryRegisterNumPerDay(now, day);
 	}
 
 	@Override
 	public int getUserNum(long now, int day) throws SQLException {
 		return SQLiteUserProfileDao.getInstance().getUserNum(now, day);
+	}
+
+	@Override
+	public boolean delUser(String siteUserId) throws SQLException {
+		return SQLiteUserProfileDao.getInstance().delUser(siteUserId);
 	}
 
 }

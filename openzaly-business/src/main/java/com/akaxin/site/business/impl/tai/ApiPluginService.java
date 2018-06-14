@@ -15,9 +15,11 @@
  */
 package com.akaxin.site.business.impl.tai;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+//import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,9 @@ import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CharsetCoding;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
 import com.akaxin.common.crypto.AESCrypto;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.http.ZalyHttpClient;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
@@ -60,45 +64,61 @@ public class ApiPluginService extends AbstractRequest {
 	 */
 	public CommandResponse list(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiPluginListProto.ApiPluginListRequest request = ApiPluginListProto.ApiPluginListRequest
 					.parseFrom(command.getParams());
 			String siteUserId = command.getSiteUserId();
+			String sessionId = command.getHeader().get(CoreProto.HeaderKey.CLIENT_SOCKET_SITE_SESSION_ID_VALUE);
 			int pageNumber = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			PluginProto.PluginPosition position = request.getPosition();
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			pageNumber = Math.max(pageNumber, 1);// 从第一页开始
-			// 先做首帧扩展
-			if (PluginProto.PluginPosition.HOME_PAGE == position) {
-				List<PluginBean> pluginList = null;
-				if (StringUtils.isNotBlank(siteUserId) && SiteConfig.isSiteManager(siteUserId)) {
-					pluginList = SitePluginDao.getInstance().getAdminPluginPageList(pageNumber, pageSize,
-							position.getNumber());
-				} else {
-					pluginList = SitePluginDao.getInstance().getOrdinaryPluginPageList(pageNumber, pageSize,
-							position.getNumber());
-				}
 
-				if (pluginList != null) {
-					ApiPluginListProto.ApiPluginListResponse.Builder responseBuilder = ApiPluginListProto.ApiPluginListResponse
-							.newBuilder();
-					for (PluginBean bean : pluginList) {
-						responseBuilder.addPlugin(getPluginProfile(bean));
-					}
-					commandResponse.setParams(responseBuilder.build().toByteArray());
-					errCode = ErrorCode2.SUCCESS;
-				}
-			} else {
-				errCode = ErrorCode2.ERROR2_PLUGIN_STATUS;
+			// 支持首页以及消息聊天界面扩展
+			if (PluginProto.PluginPosition.HOME_PAGE != position && PluginProto.PluginPosition.MSG_PAGE != position) {
+				throw new ZalyException2(ErrorCode2.ERROR2_PLUGIN_STATUS);
 			}
+
+			List<PluginBean> pluginList = null;
+			if (StringUtils.isNotBlank(siteUserId) && SiteConfig.isSiteManager(siteUserId)) {
+				pluginList = SitePluginDao.getInstance().getAdminPluginPageList(pageNumber, pageSize,
+						position.getNumber());
+			} else {
+				pluginList = SitePluginDao.getInstance().getOrdinaryPluginPageList(pageNumber, pageSize,
+						position.getNumber());
+			}
+
+			if (pluginList != null) {
+				ApiPluginListProto.ApiPluginListResponse.Builder responseBuilder = ApiPluginListProto.ApiPluginListResponse
+						.newBuilder();
+				for (PluginBean bean : pluginList) {
+					PluginProto.Plugin.Builder pluginBuilder = getPluginProtoBuilder(bean);
+
+					String authKey = bean.getAuthKey();
+					if (StringUtils.isNotEmpty(authKey)) {
+						byte[] tsk = bean.getAuthKey().getBytes(CharsetCoding.ISO_8859_1);
+						byte[] encryptedSessionId = AESCrypto.encrypt(tsk,
+								sessionId.getBytes(CharsetCoding.ISO_8859_1));
+						String base64UrlSafeSessionId = Base64.getUrlEncoder().encodeToString(encryptedSessionId);
+						pluginBuilder.setEncryptedSessionIdBase64(base64UrlSafeSessionId);
+					}
+					responseBuilder.addPlugin(pluginBuilder.build());
+				}
+				commandResponse.setParams(responseBuilder.build().toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			}
+
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	/**
@@ -156,11 +176,15 @@ public class ApiPluginService extends AbstractRequest {
 					}
 
 					byte[] httpResponse = ZalyHttpClient.getInstance().postBytes(pageUrl, httpContent);
-					ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
-							.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
-					
-					commandResponse.setParams(response.toByteArray());
-					errCode = ErrorCode2.SUCCESS;
+					if (httpResponse != null) {
+						ApiPluginProxyProto.ApiPluginProxyResponse response = ApiPluginProxyProto.ApiPluginProxyResponse
+								.newBuilder().setData(ByteString.copyFrom(httpResponse)).build();
+
+						commandResponse.setParams(response.toByteArray());
+						errCode = ErrorCode2.SUCCESS;
+					} else {
+						logger.error("http request uri={} response={}", pageUrl, httpResponse);
+					}
 				}
 			} else {
 				errCode = ErrorCode2.ERROR_PARAMETER;
@@ -247,7 +271,7 @@ public class ApiPluginService extends AbstractRequest {
 		return commandResponse.setErrCode2(errCode);
 	}
 
-	private PluginProto.Plugin getPluginProfile(PluginBean bean) {
+	private PluginProto.Plugin.Builder getPluginProtoBuilder(PluginBean bean) {
 		PluginProto.Plugin.Builder pluginBuilder = PluginProto.Plugin.newBuilder();
 		pluginBuilder.setId(String.valueOf(bean.getId()));
 		if (StringUtils.isNotBlank(bean.getName())) {
@@ -271,8 +295,9 @@ public class ApiPluginService extends AbstractRequest {
 		pluginBuilder.setOrder(bean.getSort());
 		pluginBuilder.setPositionValue(bean.getPosition());
 		pluginBuilder.setPermissionStatusValue(bean.getPermissionStatus());
-
-		return pluginBuilder.build();
+		pluginBuilder.setDisplayModeValue(bean.getDisplayMode());
+		// pluginBuilder.setEncryptedSessionIdBase64(value)
+		return pluginBuilder;
 	}
 
 	private String buildUrl(String apiUrl, String apiName, String defaultPage) {

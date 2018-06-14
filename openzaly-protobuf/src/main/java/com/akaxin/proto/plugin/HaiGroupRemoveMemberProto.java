@@ -38,7 +38,7 @@ public final class HaiGroupRemoveMemberProto {
 
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -47,7 +47,7 @@ public final class HaiGroupRemoveMemberProto {
         getGroupMemberList();
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -55,7 +55,7 @@ public final class HaiGroupRemoveMemberProto {
     int getGroupMemberCount();
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -63,7 +63,7 @@ public final class HaiGroupRemoveMemberProto {
     java.lang.String getGroupMember(int index);
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -72,6 +72,19 @@ public final class HaiGroupRemoveMemberProto {
         getGroupMemberBytes(int index);
   }
   /**
+   * <pre>
+   **
+   *删除群成员
+   *----
+   *接口名
+   *----
+   * /hai/group/removeMember
+   *错误码
+   *----
+   * success
+   * error.alert
+   * </pre>
+   *
    * Protobuf type {@code plugin.HaiGroupRemoveMemberRequest}
    */
   public  static final class HaiGroupRemoveMemberRequest extends
@@ -200,7 +213,7 @@ public final class HaiGroupRemoveMemberProto {
     private com.google.protobuf.LazyStringList groupMember_;
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -211,7 +224,7 @@ public final class HaiGroupRemoveMemberProto {
     }
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -221,7 +234,7 @@ public final class HaiGroupRemoveMemberProto {
     }
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -231,7 +244,7 @@ public final class HaiGroupRemoveMemberProto {
     }
     /**
      * <pre>
-     *需要删除的群组成员
+     *需要删除的群组成员！！不能删除管理员
      * </pre>
      *
      * <code>repeated string group_member = 3;</code>
@@ -396,6 +409,19 @@ public final class HaiGroupRemoveMemberProto {
       return builder;
     }
     /**
+     * <pre>
+     **
+     *删除群成员
+     *----
+     *接口名
+     *----
+     * /hai/group/removeMember
+     *错误码
+     *----
+     * success
+     * error.alert
+     * </pre>
+     *
      * Protobuf type {@code plugin.HaiGroupRemoveMemberRequest}
      */
     public static final class Builder extends
@@ -646,7 +672,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -657,7 +683,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -667,7 +693,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -677,7 +703,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -688,7 +714,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -705,7 +731,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -722,7 +748,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -737,7 +763,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>
@@ -750,7 +776,7 @@ public final class HaiGroupRemoveMemberProto {
       }
       /**
        * <pre>
-       *需要删除的群组成员
+       *需要删除的群组成员！！不能删除管理员
        * </pre>
        *
        * <code>repeated string group_member = 3;</code>

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,19 +165,26 @@ public class SyncGroupMessageHandler extends AbstractSyncHandler<Command> {
 					break;
 				case CoreProto.MsgType.GROUP_WEB_VALUE:
 					WebBean webBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
-					CoreProto.GroupWeb groupWeb = CoreProto.GroupWeb.newBuilder().setMsgId(bean.getMsgId())
-							.setSiteUserId(bean.getSendUserId()).setSiteGroupId(bean.getSiteGroupId())
-							.setWebCode(webBean.getWebCode()).setHeight(webBean.getHeight())
-							.setWidth(webBean.getWidth()).setTime(bean.getMsgTime()).build();
+					CoreProto.GroupWeb.Builder groupWeb = CoreProto.GroupWeb.newBuilder();
+					groupWeb.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteGroupId(bean.getSiteGroupId()).setWebCode(webBean.getWebCode())
+							.setHeight(webBean.getHeight()).setWidth(webBean.getWidth()).setTime(bean.getMsgTime());
+					if (StringUtils.isNotEmpty(webBean.getHrefUrl())) {
+						groupWeb.setHrefUrl(webBean.getHrefUrl());
+					}
 					ImStcMessageProto.MsgWithPointer groupWebMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.GROUP_WEB).setGroupWeb(groupWeb).build();
 					requestBuilder.addList(groupWebMsg);
 					break;
 				case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
-					CoreProto.GroupWebNotice groupWebNotice = CoreProto.GroupWebNotice.newBuilder()
-							.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
-							.setSiteGroupId(bean.getSiteGroupId()).setWebCode(bean.getContent())
-							.setTime(bean.getMsgTime()).build();
+					WebBean webNoticeBean = GsonUtils.fromJson(bean.getContent(), WebBean.class);
+					CoreProto.GroupWebNotice.Builder groupWebNotice = CoreProto.GroupWebNotice.newBuilder();
+					groupWebNotice.setMsgId(bean.getMsgId()).setSiteUserId(bean.getSendUserId())
+							.setSiteGroupId(bean.getSiteGroupId()).setWebCode(webNoticeBean.getWebCode())
+							.setHeight(webNoticeBean.getHeight()).setTime(bean.getMsgTime());
+					if (StringUtils.isNotEmpty(webNoticeBean.getHrefUrl())) {
+						groupWebNotice.setHrefUrl(webNoticeBean.getHrefUrl());
+					}
 					ImStcMessageProto.MsgWithPointer groupWebNoticeMsg = ImStcMessageProto.MsgWithPointer.newBuilder()
 							.setPointer(bean.getId()).setType(MsgType.GROUP_WEB_NOTICE)
 							.setGroupWebNotice(groupWebNotice).build();

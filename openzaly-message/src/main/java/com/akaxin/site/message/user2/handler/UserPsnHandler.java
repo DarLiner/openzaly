@@ -40,19 +40,31 @@ public class UserPsnHandler extends AbstractU2Handler<Command> {
 			// 查找对方的设备信息，发送psh
 			List<String> deviceIdList = ImUserSessionDao.getInstance().getSessionDevices(siteFriendId);
 			command.setField("deviceIdList", deviceIdList);
+			sendPsnToUserDevices(deviceIdList);
 
-			for (String deviceId : deviceIdList) {
-				if (deviceId != null) {
-					writePsn(deviceId);
-					logger.debug("client={} siteUserId={} PSH to siteFriendId={}, deviceId={}", siteUserId,
-							siteFriendId, deviceId);
-				}
+			// 如果是代发消息，则需要给发送方发送一个psn
+			if (command.isProxy()) {
+				List<String> proxyDeviceList = ImUserSessionDao.getInstance()
+						.getSessionDevices(command.getProxySiteUserId());
+				sendPsnToUserDevices(proxyDeviceList);
 			}
+
 			return true;
 		} catch (Exception e) {
 			LogUtils.requestErrorLog(logger, command, this.getClass(), e);
 		}
 		return false;
+	}
+
+	private void sendPsnToUserDevices(List<String> deviceIdList) {
+		if (deviceIdList == null || deviceIdList.size() == 0) {
+			return;
+		}
+		for (String deviceId : deviceIdList) {
+			if (deviceId != null) {
+				writePsn(deviceId);
+			}
+		}
 	}
 
 	private void writePsn(String deviceId) {

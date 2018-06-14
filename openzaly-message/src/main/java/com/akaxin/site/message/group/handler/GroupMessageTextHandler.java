@@ -45,6 +45,8 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
 				String deviceId = command.getDeviceId();
+
+				String proxySiteUserId = request.getGroupText().getSiteUserId();
 				String gmsgId = request.getGroupText().getMsgId();
 				String groupId = request.getGroupText().getSiteGroupId();
 				String groupText = request.getGroupText().getText().toStringUtf8();
@@ -53,6 +55,7 @@ public class GroupMessageTextHandler extends AbstractGroupHandler<Command> {
 				GroupMessageBean gmsgBean = new GroupMessageBean();
 				gmsgBean.setMsgId(gmsgId);
 				gmsgBean.setSendUserId(siteUserId);
+				gmsgBean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
 				gmsgBean.setSendDeviceId(deviceId);
 				gmsgBean.setSiteGroupId(groupId);
 				gmsgBean.setContent(groupText);

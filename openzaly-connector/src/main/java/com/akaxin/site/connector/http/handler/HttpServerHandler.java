@@ -87,22 +87,26 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				}
 
 				String sitePluginId = request.headers().get(PluginConst.SITE_PLUGIN_ID);
-				httpClientIp = request.headers().get(HttpConst.HTTP_H_FORWARDED);
 
 				if (StringUtils.isEmpty(sitePluginId)) {
-					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, httpClientIp,
-							sitePluginId);
+					logger.error("{} http request illegal with error pluginId={}.", AkxProject.PLN, sitePluginId);
 					ctx.close();
 					return;
 				}
 
-				if (StringUtils.isEmpty(httpClientIp)) {
-					InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
-					httpClientIp = address.getAddress().getHostAddress();
-				}
+				// set socket ip
+				InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+				httpClientIp = address.getAddress().getHostAddress();
 
 				if (!checkLegalClientIp(sitePluginId, httpClientIp)) {
 					logger.error("{} http request illegal IP={}.", AkxProject.PLN, httpClientIp);
+					ctx.close();
+					return;
+				}
+
+				// 检测URI，http://127.0.0.1:8280/akaxin-plugin-api/hai/user/friends
+				if (checkRequestUri()) {
+					logger.error("akaxin plugin http request illegal uri={}.", AkxProject.PLN, request.uri());
 					ctx.close();
 					return;
 				}
@@ -135,14 +139,14 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 				logger.debug("{} http request IP={} pluginId={}", AkxProject.PLN, httpClientIp, sitePluginId);
 
 				if (StringUtils.isEmpty(sitePluginId)) {
-					logger.error("{} http request illegal IP={} pluginId={}.", AkxProject.PLN, httpClientIp,
-							sitePluginId);
+					logger.error("{} http request body illegal pluginId={}.", AkxProject.PLN, sitePluginId);
 					ctx.close();
 					return;
 				}
 
 				// 查询扩展的auth——key
 				String authKey = PluginSession.getInstance().getPluginAuthKey(sitePluginId);
+				logger.debug("http request ip={} pluginId={} authKey={}", httpClientIp, sitePluginId, authKey);
 				if (StringUtils.isNotEmpty(authKey)) {
 					// byte[] tsk = AESCrypto.generateTSKey(authKey);
 					byte[] tsk = authKey.getBytes(CharsetCoding.ISO_8859_1);
@@ -177,6 +181,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 					command.setParams(Base64.getDecoder().decode(pluginPackage.getData()));
 					command.setClientIp(httpClientIp);
 					command.setStartTime(System.currentTimeMillis());
+					command.setPluginId(sitePluginId);
+					command.setPluginAuthKey(authKey);
 
 					logger.info("{} client={} uri={} http server handler command={}", AkxProject.PLN, httpClientIp,
 							request.uri(), command.toString());
@@ -230,6 +236,15 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 			}
 		}
 		return true;
+	}
+
+	private boolean checkRequestUri() {
+		String uri = request.uri();
+		if (StringUtils.isNotEmpty(uri)) {
+			return uri.startsWith("/akaxin-plugin-api/hai/") || uri.startsWith("//akaxin-plugin-api/hai/")
+					|| uri.startsWith("akaxin-plugin-api/hai/");
+		}
+		return false;
 	}
 
 }

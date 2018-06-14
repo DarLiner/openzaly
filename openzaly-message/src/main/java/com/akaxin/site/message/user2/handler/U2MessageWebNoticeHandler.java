@@ -22,6 +22,7 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
+import com.akaxin.site.message.bean.WebBean;
 import com.akaxin.site.storage.api.IMessageDao;
 import com.akaxin.site.storage.bean.U2MessageBean;
 import com.akaxin.site.storage.service.MessageDaoService;
@@ -38,22 +39,49 @@ public class U2MessageWebNoticeHandler extends AbstractU2Handler<Command> {
 				ImCtsMessageProto.ImCtsMessageRequest request = ImCtsMessageProto.ImCtsMessageRequest
 						.parseFrom(command.getParams());
 				String siteUserId = command.getSiteUserId();
+				String proxySiteUserId = request.getU2WebNotice().getSiteUserId();
 				String siteFriendId = request.getU2WebNotice().getSiteFriendId();
 				String msgId = request.getU2WebNotice().getMsgId();
-				String webCode = request.getU2WebNotice().getWebCode();
+
+				WebBean webBean = new WebBean();
+				webBean.setWebCode(request.getU2WebNotice().getWebCode());
+				webBean.setHrefUrl(request.getU2WebNotice().getHrefUrl());
+				webBean.setHeight(request.getU2WebNotice().getHeight());
 
 				long msgTime = System.currentTimeMillis();
 				U2MessageBean bean = new U2MessageBean();
 				bean.setMsgId(msgId);
 				bean.setMsgType(type);
-				bean.setSendUserId(siteUserId);
 				bean.setSiteUserId(siteFriendId);
-				bean.setContent(webCode);
+				bean.setSendUserId(command.isProxy() ? proxySiteUserId : siteUserId);
+				bean.setReceiveUserId(siteFriendId);
+				bean.setContent(webBean.toString());
 				bean.setMsgTime(msgTime);
 
 				LogUtils.requestDebugLog(logger, command, bean.toString());
 
 				boolean success = messageDao.saveU2Message(bean);
+				// 代理消息同时发送发送者
+				if (command.isProxy()) {
+					U2MessageBean proxyBean = new U2MessageBean();
+					proxyBean.setMsgId(msgId);
+					proxyBean.setMsgType(type);
+					proxyBean.setSiteUserId(proxySiteUserId);
+					proxyBean.setSendUserId(proxySiteUserId);
+					proxyBean.setReceiveUserId(siteFriendId);
+					// 这里兼容一个客户端的chatSessionId Bug
+					String hrefUrl = request.getU2WebNotice().getHrefUrl();
+					if (hrefUrl.contains("page=plugin_for_u2_chat&site_user_id")) {
+						String oldPar = "plugin_for_u2_chat&site_user_id=" + proxySiteUserId;
+						String newPar = "plugin_for_u2_chat&site_user_id=" + siteFriendId;
+						String hrefUrl2 = hrefUrl.replace(oldPar, newPar);
+						webBean.setHrefUrl(hrefUrl2);
+					}
+					proxyBean.setContent(webBean.toString());
+					proxyBean.setMsgTime(msgTime);
+					messageDao.saveU2Message(proxyBean);
+				}
+
 				msgStatusResponse(command, msgId, msgTime, success);
 
 				return success;

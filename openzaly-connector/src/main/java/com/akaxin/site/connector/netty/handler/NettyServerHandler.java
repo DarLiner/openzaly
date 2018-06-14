@@ -16,6 +16,7 @@
 package com.akaxin.site.connector.netty.handler;
 
 import java.net.InetSocketAddress;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -95,7 +96,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 			logger.warn("{} close client={} as its channel is not active ", AkxProject.PLN, clientIp);
 		}
 
-		String version = redisCmd.getParameterByIndex(0);
+		String version = redisCmd.getParameterByIndex(0);// 网络协议版本1.0
 		String action = redisCmd.getParameterByIndex(1);
 		byte[] params = redisCmd.getBytesParamByIndex(2);
 		CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(params);
@@ -110,12 +111,17 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 			RequestQpsMonitor.IM_SYNC_MESSAGE.inc();
 		}
 
+		Map<Integer, String> header = packageData.getHeaderMap();
+
 		Command command = new Command();
 		command.setClientIp(clientIp);
 		command.setSiteUserId(channelSession.getUserId());
 		command.setDeviceId(channelSession.getDeviceId());
 		command.setAction(action);
-		command.setHeader(packageData.getHeaderMap());
+		command.setHeader(header);
+		if (header != null) {
+			command.setClientVersion(header.get(CoreProto.HeaderKey.CLIENT_SOCKET_VERSION_VALUE));
+		}
 		command.setParams(packageData.getData().toByteArray());
 		command.setChannelSession(channelSession);
 		command.setStartTime(System.currentTimeMillis());
@@ -123,8 +129,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RedisCommand
 		if (!RequestAction.IM_CTS_PING.getName().equalsIgnoreCase(command.getAction())) {
 			logger.debug("{} client={} -> site version={} action={} params-length={}", AkxProject.PLN, clientIp,
 					version, action, params.length);
-		} else {
-			logger.trace("{} client={} ping -> site", AkxProject.PLN, clientIp);
 		}
 
 		if (RequestAction.IM.getName().equals(command.getRety())) {

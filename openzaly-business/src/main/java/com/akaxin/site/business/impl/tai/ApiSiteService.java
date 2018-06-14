@@ -31,8 +31,10 @@ import com.akaxin.common.command.Command;
 import com.akaxin.common.command.CommandResponse;
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
+import com.akaxin.common.constant.IErrorCode;
 import com.akaxin.common.crypto.HashCrypto;
 import com.akaxin.common.crypto.RSACrypto;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.common.utils.UserIdUtils;
@@ -135,7 +137,7 @@ public class ApiSiteService extends AbstractRequest {
 
 	public CommandResponse register(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errorCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiSiteRegisterProto.ApiSiteRegisterRequest request = ApiSiteRegisterProto.ApiSiteRegisterRequest
 					.parseFrom(command.getParams());
@@ -147,13 +149,16 @@ public class ApiSiteService extends AbstractRequest {
 			String phoneToken = request.getPhoneToken();
 			String phoneId = null;// 通过phoneCod
 			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
-			String siteLoginName = request.getSiteLoginName();
+			String siteLoginId = request.getSiteLoginId();// 站点账号
 
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userName)) {
-				errorCode = ErrorCode2.ERROR_PARAMETER;
-				return commandResponse.setErrCode2(errorCode);
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (userName.length() > 16) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER_NICKNAME);
 			}
 
 			// 是否开启实名
@@ -163,14 +168,12 @@ public class ApiSiteService extends AbstractRequest {
 				logger.debug("注册方式：实名注册");
 				if (StringUtils.isNotBlank(phoneToken)) {
 					phoneId = UserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
-					logger.info("实名注册，站点获取手机号：{}", phoneId);
+					logger.debug("实名注册，站点获取手机号：{}", phoneId);
 					if (!StringUtils.isNotBlank(phoneId)) {
-						errorCode = ErrorCode2.ERROR_REGISTER_PHONEID;
-						return commandResponse.setErrCode2(errorCode);
+						throw new ZalyException2(ErrorCode2.ERROR_REGISTER_PHONEID);
 					}
 				} else {
-					errorCode = ErrorCode2.ERROR_REGISTER_PHONETOKEN;
-					return commandResponse.setErrCode2(errorCode);
+					throw new ZalyException2(ErrorCode2.ERROR_REGISTER_PHONETOKEN);
 				}
 				break;
 			default:
@@ -183,8 +186,7 @@ public class ApiSiteService extends AbstractRequest {
 			case UIC_YES:
 				logger.debug("注册方式：邀请码注册");
 				if (!UserUic.getInstance().checkUic(userUic, siteUserId)) {
-					errorCode = ErrorCode2.ERROR_REGISTER_UIC;
-					return commandResponse.setErrCode2(errorCode);
+					throw new ZalyException2(ErrorCode2.ERROR_REGISTER_UIC);
 				}
 				break;
 			default:
@@ -195,6 +197,7 @@ public class ApiSiteService extends AbstractRequest {
 			regBean.setSiteUserId(siteUserId);
 			regBean.setUserIdPubk(userIdPubk);
 			regBean.setUserName(userName);
+			regBean.setUserNameInLatin(StringHelper.toLatinPinYin(userName));
 			regBean.setApplyInfo(applyInfo);
 			regBean.setUserPhoto(userPhoto);
 			regBean.setPhoneId(phoneId);
@@ -205,21 +208,24 @@ public class ApiSiteService extends AbstractRequest {
 				ApiSiteRegisterProto.ApiSiteRegisterResponse response = ApiSiteRegisterProto.ApiSiteRegisterResponse
 						.newBuilder().setSiteUserId(siteUserId).build();
 				commandResponse.setParams(response.toByteArray());
-				errorCode = ErrorCode2.SUCCESS;
+				errCode = ErrorCode2.SUCCESS;
 			} else {
-				errorCode = ErrorCode2.ERROR_REGISTER_USERID_UNIQUE;
+				errCode = ErrorCode2.ERROR_REGISTER_USERID_UNIQUE;
 			}
 
-			if (ErrorCode2.SUCCESS == errorCode) {
+			if (ErrorCode2.SUCCESS == errCode) {
 				addDefaultFriendsAndGroups(siteUserId);
 				// 注册成功，需要做一个管理员身份验证
 				justForAdminUser(siteUserId, command.getHeader());
 			}
 		} catch (Exception e) {
-			errorCode = ErrorCode2.ERROR_SYSTEMERROR;
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errorCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	// 增加默认好友以及群组

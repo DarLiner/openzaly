@@ -40,7 +40,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project_build_encoding>UTF-8</project_build_encoding>
-		<netty_version>4.1.1.Final</netty_version>
+		<netty_version>4.1.24.Final</netty_version>
 		<okhttp_version>2.7.5</okhttp_version>
 		<gson_version>2.8.2</gson_version>
 		<fastjson_version>1.2.31</fastjson_version>
