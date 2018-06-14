@@ -4,15 +4,16 @@ use openzaly;
 
 CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             config_key INTEGER UNIQUE NOT NULL,
-            config_value TEXT);
+            config_value TEXT
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点配置表';
 
 CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) UNIQUE NOT NULL,
             global_user_id VARCHAR(100) UNIQUE NOT NULL,
-            user_id_pubk TEXT NOT NULL,
             site_login_id VARCHAR(50) UNIQUE,
             login_id_lowercase VARCHAR(50) UNIQUE,
             user_password VARCHAR(50),
+            user_id_pubk TEXT NOT NULL,
             user_name VARCHAR(50) NOT NULL,
             user_name_in_latin VARCHAR(50),
             user_photo VARCHAR(100),
@@ -21,15 +22,18 @@ CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL AUT
             apply_info varchar(100),
             user_status INTEGER,
             mute BOOLEAN,
-            register_time BIGINT);
+            register_time BIGINT
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户资料表';
             
 
 CREATE TABLE IF NOT EXISTS site_user_session(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            site_user_id VARCHAR(50) not null,
-            session_id VARCHAR(100), 
+            session_id VARCHAR(100) UNIQUE, 
+            site_user_id VARCHAR(50) NOT NULL,
             is_online boolean, 
             device_id VARCHAR(50), 
-            login_time BIGINT);
+            login_time BIGINT,
+            INDEX (site_user_id,device_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户会话表';
             
 CREATE TABLE IF NOT EXISTS site_user_friend(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) NOT NULL,
@@ -38,36 +42,47 @@ CREATE TABLE IF NOT EXISTS site_user_friend(id INTEGER PRIMARY KEY NOT NULL AUTO
             alias_name_in_latin VARCHAR(50),
             relation INTEGER,
             mute BOOLEAN,
-            add_time BIGINT);
+            add_time BIGINT,
+            INDEX(site_user_id,site_friend_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户好友关系表';
             
 CREATE TABLE IF NOT EXISTS site_friend_apply(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            site_user_id VARCHAR(50) not null,
-            site_friend_id VARCHAR(50) not null,
+            site_user_id VARCHAR(50) NOT NULL,
+            site_friend_id VARCHAR(50) NOT NULL,
             apply_reason VARCHAR(100),
-            apply_time BIGINT);
+            apply_time BIGINT,
+            INDEX(site_user_id,site_friend_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '好友申请表';
 
 CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) NOT NULL, 
-            msg_id VARCHAR(50), 
+            msg_id VARCHAR(50) UNIQUE NOT NULL, 
             send_user_id VARCHAR(50), 
             receive_user_id VARCHAR(50),
             msg_type INTEGER, 
             content TEXT, 
             device_id VARCHAR(50), 
             ts_key TEXT, 
-            msg_time BIGINT);
+            msg_time BIGINT,
+            INDEX(site_user_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户消息表';
 
 CREATE TABLE IF NOT EXISTS site_message_pointer(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            site_user_id VARCHAR(50) not null,
+            site_user_id VARCHAR(50) NOT NULL,
+            device_id VARCHAR(50),
             pointer INTEGER, 
-            device_id VARCHAR(50));
+            INDEX(site_user_id,device_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户消息游标表';
 
 CREATE TABLE IF NOT EXISTS site_user_group(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) not null, 
             site_group_id VARCHAR(50) not null, 
             user_role INTEGER, 
             mute BOOLEAN, 
-            add_time BIGINT);
+            add_time BIGINT,
+            INDEX(site_user_id,site_group_id),
+            INDEX(site_group_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户群组列表';
 
 CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_group_id VARCHAR(50) UNIQUE NOT NULL,
@@ -78,7 +93,9 @@ CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL AU
             ts_status INTEGER,
             group_status INTEGER,
             close_invite_group_chat BOOLEAN,
-            create_time BIGINT);
+            create_time BIGINT,
+            UNIQUE INDEX (site_group_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组资料表';
 
 CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_group_id VARCHAR(50) NOT NULL, 
@@ -87,13 +104,17 @@ CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AU
             send_device_id VARCHAR(50), 
             msg_type INTEGER, 
             content TEXT, 
-            msg_time BIGINT);
+            msg_time BIGINT,
+            INDEX(site_group_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组消息表';
 
 CREATE TABLE IF NOT EXISTS site_group_message_pointer(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-            site_user_id VARCHAR(50) not null,
             site_group_id VARCHAR(50) not null,
+            site_user_id VARCHAR(50) not null,
+            device_id VARCHAR(50),
             pointer INTEGER,
-            device_id VARCHAR(50));
+            INDEX(site_group_id,site_user_id,device_id)            
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组消息游标表';
 
 CREATE TABLE IF NOT EXISTS site_user_device(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) NOT NULL,
@@ -104,7 +125,9 @@ CREATE TABLE IF NOT EXISTS site_user_device(id INTEGER PRIMARY KEY NOT NULL AUTO
             device_name VARCHAR(60),
             device_ip VARCHAR(50),
             active_time BIGINT,
-            add_time BIGINT);
+            add_time BIGINT,
+            INDEX(site_user_id,device_id)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户设备表';
 
 CREATE TABLE IF NOT EXISTS site_plugin_manager(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             name VARCHAR(50) UNIQUE NOT NULL,
@@ -117,12 +140,14 @@ CREATE TABLE IF NOT EXISTS site_plugin_manager(id INTEGER PRIMARY KEY NOT NULL A
             sort INTEGER,
             display_mode INTEGER,
             permission_status INTEGER,
-            add_time BIGINT);
+            add_time BIGINT
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点扩展表';
 
 CREATE TABLE IF NOT EXISTS site_user_uic(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             uic VARCHAR(20) UNIQUE NOT NULL,
             site_user_id VARCHAR(50),
             status INTEGER,
             create_time BIGINT,
-            use_time BIGINT);
+            use_time BIGINT
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点邀请码表';
             
