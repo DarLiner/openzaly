@@ -229,7 +229,7 @@ public class SiteGroupMessageDao {
 		long startTime = System.currentTimeMillis();
 		int result = 0;
 		String sql = "UPDATE " + GROUP_POINTER_TABLE
-				+ " SET pointer=? WHERE site_user_id=? AND site_group_id=? AND device_id=?;";
+				+ " SET pointer=? WHERE site_group_id=? AND site_user_id=? AND device_id=?;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -237,9 +237,9 @@ public class SiteGroupMessageDao {
 			conn = DatabaseConnection.getConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setLong(1, finish);
+			pst.setString(1, groupId);
 			pst.setString(2, userId);
-			pst.setString(3, groupId);
-			pst.setString(4, deviceId);
+			pst.setString(3, deviceId);
 			result = pst.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -255,7 +255,7 @@ public class SiteGroupMessageDao {
 		long startTime = System.currentTimeMillis();
 		long pointer = 0;
 		String sql = "SELECT pointer FROM " + GROUP_POINTER_TABLE
-				+ " WHERE site_user_id=? AND site_group_id=? AND device_id=?;";
+				+ " WHERE site_group_id=? AND site_user_id=?  AND device_id=?;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -263,8 +263,8 @@ public class SiteGroupMessageDao {
 		try {
 			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, siteUserId);
-			pst.setString(2, groupId);
+			pst.setString(1, groupId);
+			pst.setString(2, siteUserId);
 			pst.setString(3, deviceId);
 
 			rs = pst.executeQuery();
@@ -286,7 +286,7 @@ public class SiteGroupMessageDao {
 	private long queryMaxGroupPointerWithUser(String groupId, String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		long pointer = 0;
-		String sql = "SELECT max(pointer) FROM " + GROUP_POINTER_TABLE + " WHERE site_user_id=? AND site_group_id=?;";
+		String sql = "SELECT max(pointer) FROM " + GROUP_POINTER_TABLE + " WHERE site_group_id=? AND site_user_id=?;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -294,8 +294,8 @@ public class SiteGroupMessageDao {
 		try {
 			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, siteUserId);
-			pst.setString(2, groupId);
+			pst.setString(1, groupId);
+			pst.setString(2, siteUserId);
 
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -341,7 +341,7 @@ public class SiteGroupMessageDao {
 	public long queryMaxUserGroupPointer(String groupId, String siteUserId) {
 		long startTime = System.currentTimeMillis();
 		long pointer = 0;
-		String sql = "SELECT MAX(pointer) FROM " + GROUP_POINTER_TABLE + " WHERE site_user_id=? AND site_group_id=?;";
+		String sql = "SELECT MAX(pointer) FROM " + GROUP_POINTER_TABLE + " WHERE site_group_id=? AND site_user_id=?;";
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -349,8 +349,8 @@ public class SiteGroupMessageDao {
 		try {
 			conn = DatabaseConnection.getSlaveConnection();
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, siteUserId);
-			ps.setString(2, groupId);
+			ps.setString(1, groupId);
+			ps.setString(2, siteUserId);
 
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -403,7 +403,7 @@ public class SiteGroupMessageDao {
 	public boolean delUserMessage(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		boolean result = false;
-		String sql_msg = "DELETE FROM " + GROUP_MESSAGE_TABLE + " WHERE  send_user_id = ? ";
+		String sql_msg = "DELETE FROM " + GROUP_MESSAGE_TABLE + " WHERE send_user_id = ? ";
 		String sql_pointer = "DELETE FROM " + GROUP_POINTER_TABLE + " WHERE  site_user_id = ? ";
 
 		Connection conn = null;
