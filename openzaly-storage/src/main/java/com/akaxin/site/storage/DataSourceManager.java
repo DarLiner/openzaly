@@ -37,8 +37,10 @@ import com.akaxin.site.storage.dao.mysql.manager.MysqlManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteUpgrade;
 import com.akaxin.site.storage.exception.InitDatabaseException;
+import com.akaxin.site.storage.exception.MigrateDatabaseException;
 import com.akaxin.site.storage.exception.NeedInitMysqlException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
+import com.akaxin.site.storage.util.MigrateUtils;
 
 /**
  * 数据源初始化管理，不做具体操作对外提供方法
@@ -55,6 +57,7 @@ public class DataSourceManager {
 	private DataSourceManager() {
 	}
 
+	// server启动，初始化数据库
 	public static void init(DBConfig config)
 			throws InitDatabaseException, UpgradeDatabaseException, NeedInitMysqlException {
 		try {
@@ -86,7 +89,8 @@ public class DataSourceManager {
 		}
 	}
 
-	public static void initMysql() throws FileNotFoundException, IOException {
+	// 初始化，生成mysql的配置文件
+	public static void initMysqlConfig() throws FileNotFoundException, IOException {
 		// 生成配置文件
 		File configFile = new File(OPENZALY_DATABASE_CONFIG);
 		if (!configFile.exists()) {
@@ -100,7 +104,8 @@ public class DataSourceManager {
 
 	}
 
-	public static int upgrade(DBConfig config) throws UpgradeDatabaseException {
+	// 手动升级数据库
+	public static int upgradeDB(DBConfig config) throws UpgradeDatabaseException {
 		try {
 			switch (config.getDb()) {
 			case PERSONAL:
@@ -112,6 +117,13 @@ public class DataSourceManager {
 			throw new UpgradeDatabaseException("upgrade database error", e);
 		}
 		return 0;
+	}
+
+	// 迁移数据库，把sqlite迁移至mysql数据库
+	public static void migrateDB() throws MigrateDatabaseException {
+		// 加载配置文件中的数据库配置
+		Properties prop = loadDatabaseConfig(OPENZALY_DATABASE_CONFIG);
+		MigrateUtils.sqlite2Mysql(prop);
 	}
 
 	public static Properties loadDatabaseConfig(String configPath) {

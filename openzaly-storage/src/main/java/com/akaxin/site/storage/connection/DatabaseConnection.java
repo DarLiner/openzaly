@@ -75,7 +75,7 @@ public class DatabaseConnection {
 		}
 	}
 
-	private static void closePreparedStatement(PreparedStatement ps) {
+	public static void closePreparedStatement(PreparedStatement ps) {
 		try {
 			if (ps != null) {
 				ps.close();
@@ -85,7 +85,7 @@ public class DatabaseConnection {
 		}
 	}
 
-	private static void closeResultSet(ResultSet rs) {
+	public static void closeResultSet(ResultSet rs) {
 		try {
 			if (rs != null) {
 				rs.close();

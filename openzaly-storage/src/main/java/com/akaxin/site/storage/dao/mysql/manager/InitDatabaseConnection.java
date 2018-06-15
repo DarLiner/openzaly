@@ -27,6 +27,17 @@ public class InitDatabaseConnection extends AbstractPoolManager {
 		return conn;
 	}
 
+	// 获取单独一个连接，迁移数据库使用
+	public static Connection getConnection(Properties pro) throws Exception {
+		// "com.mysql.cj.jdbc.Driver"
+		String jdbcUrl = getDBUrl(pro);
+		String userName = trimToNull(pro, JdbcConst.MYSQL_USER_NAME);
+		String password = trimToNull(pro, JdbcConst.MYSQL_PASSWORD);
+		Class.forName(MYSQL_JDBC_DRIVER);
+		conn = DriverManager.getConnection(jdbcUrl, userName, password);
+		return conn;
+	}
+
 	public static void closeInitConnection() {
 		try {
 			if (conn != null)

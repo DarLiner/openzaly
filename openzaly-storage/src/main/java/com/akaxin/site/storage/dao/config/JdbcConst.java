@@ -10,6 +10,8 @@ public interface JdbcConst {
 
 	String OPENZALY_EDITION = "openzaly.edition";
 
+	String SQLITE_URL = "openzaly.sqlite.url";
+
 	// ----------------------MASTER--------------------
 	String MYSQL_HOST = "openzaly.mysql.host";
 	String MYSQL_PORT = "openzaly.mysql.port";

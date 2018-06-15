@@ -15,6 +15,7 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.akaxin.common.utils.PrintUtils;
 import com.akaxin.common.utils.StringHelper;
 import com.akaxin.site.boot.config.ConfigHelper;
 import com.akaxin.site.boot.config.ConfigKey;
@@ -22,6 +23,7 @@ import com.akaxin.site.storage.DataSourceManager;
 import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.config.DBType;
 import com.akaxin.site.storage.dao.sql.SQLConst;
+import com.akaxin.site.storage.exception.MigrateDatabaseException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 public class Helper {
@@ -40,6 +42,7 @@ public class Helper {
 			options.addOption("help", false, "help message list");
 			options.addOption("init", false, "init openzaly by loading site config and database config");
 			options.addOption("upgrade", false, "upgrade openzaly server");
+			options.addOption("migrate", false, "migrate data from sqlite to mysql");
 			DefaultParser posixParser = new DefaultParser();
 			CommandLine commandLine = posixParser.parse(options, args);
 
@@ -60,6 +63,9 @@ public class Helper {
 			} else if (commandLine.hasOption("init")) {
 				pw = new PrintWriter(System.out);
 				initMysqlDatabase(pw);
+				return true;
+			} else if (commandLine.hasOption("migrate")) {
+
 				return true;
 			}
 			return false;
@@ -174,7 +180,7 @@ public class Helper {
 			config.setDbDir(dbDir);
 			config.setDb(DBType.PERSONAL);
 			// 升级
-			int dbUserVersion = DataSourceManager.upgrade(config);
+			int dbUserVersion = DataSourceManager.upgradeDB(config);
 			int needVersion = SQLConst.SITE_DB_VERSION_10;
 			pw.println("[INFO] upgrade openzaly-server version : " + siteVersion);
 			if (needVersion == dbUserVersion) {
@@ -195,7 +201,7 @@ public class Helper {
 	private static void initMysqlDatabase(PrintWriter pw) {
 		pw.println("[INFO] starting init mysql");
 		try {
-			DataSourceManager.initMysql();
+			DataSourceManager.initMysqlConfig();
 			pw.println("[OK] init mysql finish ,please execute command to start openzaly-server");
 			pw.println();
 			pw.println("\t java -jar openzaly-server.jar");
@@ -208,5 +214,22 @@ public class Helper {
 		}
 		pw.println();
 		pw.flush();
+	}
+
+	/**
+	 * 把sqlite数据迁移mysql中
+	 * 
+	 */
+	private static void migrateSqlite2Mysql() {
+		PrintUtils.print("[INFO]openzaly is migrating sqlite to mysql...");
+
+		try {
+			DataSourceManager.migrateDB();
+			PrintUtils.print("[OK] migrate sqlite to mysql finish");
+		} catch (MigrateDatabaseException e) {
+			PrintUtils.print("[ERROR] migrate sqlite to mysql error,msg={}", e.getMessage());
+		}
+
+		PrintUtils.flush();
 	}
 }

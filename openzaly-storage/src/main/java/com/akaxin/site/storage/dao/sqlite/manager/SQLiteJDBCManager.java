@@ -84,6 +84,7 @@ public class SQLiteJDBCManager {
 		initAdminUic(config.getAdminUic());
 	}
 
+	// 指定目录，加载默认数据库dbDir目录下存放默认数据库
 	public static void loadDatabaseDriver(String dbDir) {
 		try {
 			if (sqlitConnection != null) {
@@ -108,6 +109,17 @@ public class SQLiteJDBCManager {
 		} catch (SQLException e) {
 			logger.error("load sqlite driver error.", e);
 		}
+	}
+
+	// 指定目录，加载默认数据库dbDir目录下存放默认数据库
+	public static void loadDriver(String dbFile) throws Exception {
+		if (sqlitConnection != null) {
+			sqlitConnection.close();
+		}
+
+		Class.forName(sqliteDriverName);
+		String dbUrl = "jdbc:sqlite:" + dbFile;
+		sqlitConnection = DriverManager.getConnection(dbUrl);
 	}
 
 	public static void checkDatabaseBeforeRun() throws SQLException, UpgradeDatabaseException {
