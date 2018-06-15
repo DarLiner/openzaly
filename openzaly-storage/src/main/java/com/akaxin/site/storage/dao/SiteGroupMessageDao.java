@@ -237,9 +237,9 @@ public class SiteGroupMessageDao {
 			conn = DatabaseConnection.getConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setLong(1, finish);
-			pst.setString(1, groupId);
-			pst.setString(2, userId);
-			pst.setString(3, deviceId);
+			pst.setString(2, groupId);
+			pst.setString(3, userId);
+			pst.setString(4, deviceId);
 			result = pst.executeUpdate();
 		} catch (Exception e) {
 			throw e;
