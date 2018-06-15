@@ -66,6 +66,10 @@ CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL AUT
             msg_time BIGINT,
             INDEX(site_user_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户消息表';
+            
+ALTER TABLE site_user_message CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+ALTER TABLE site_user_message MODIFY COLUMN content text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS site_message_pointer(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_user_id VARCHAR(50) NOT NULL,
@@ -107,6 +111,11 @@ CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AU
             msg_time BIGINT,
             INDEX(site_group_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组消息表';
+            
+ALTER TABLE site_group_message CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+ALTER TABLE site_group_message MODIFY COLUMN content text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+            
 
 CREATE TABLE IF NOT EXISTS site_group_message_pointer(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_group_id VARCHAR(50) not null,
