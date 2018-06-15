@@ -69,7 +69,7 @@ public interface SQLConst {
 	String CREATE_SITE_USER_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_USER_MESSAGE
 			+ "(id INTEGER PRIMARY KEY NOT NULL," // primary key
 			+ "site_user_id VARCHAR(50) not null,"// 消息拥有者
-			+ "msg_id VARCHAR(50)," // 消息ID
+			+ "msg_id VARCHAR(50) UNIQUE NOT NULL," // 消息ID
 			+ "send_user_id VARCHAR(50),"// 消息发送者
 			+ "receive_user_id VARCHAR(50),"// 消息接受者
 			+ "msg_type INTEGER, " // 消息类型
@@ -88,7 +88,14 @@ public interface SQLConst {
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_group_id INTEGER UNIQUE NOT NULL, group_name VARCHAR(50), group_photo TEXT, group_notice TEXT, ts_status INTEGER, create_user_id VARCHAR(20), group_status INTEGER,close_invite_group_chat BOOLEAN, create_time LONG);";
 
 	String CREATE_SITE_GROUP_MESSAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE
-			+ "(id INTEGER PRIMARY KEY NOT NULL, site_group_id VARCHAR(50) not null, msg_id VARCHAR(50), send_user_id VARCHAR(50), send_device_id VARCHAR(50), msg_type INTEGER, content TEXT, msg_time LONG);";
+			+ "(id INTEGER PRIMARY KEY NOT NULL, "
+			+ "site_group_id VARCHAR(50) NOT NULL, "
+			+ "msg_id VARCHAR(50) UNIQUE NOT NULL, "
+			+ "send_user_id VARCHAR(50), "
+			+ "send_device_id VARCHAR(50), "
+			+ "msg_type INTEGER, "
+			+ "content TEXT, "
+			+ "msg_time LONG);";
 
 	String CREATE_SITE_GROUP_MESSAGE_POINTER_TABLE = "CREATE TABLE IF NOT EXISTS " + SITE_GROUP_MESSAGE_POINTER
 			+ "(id INTEGER PRIMARY KEY NOT NULL, site_user_id VARCHAR(50) not null, site_group_id VARCHAR(50) not null, pointer INTEGER, device_id VARCHAR(50));";
