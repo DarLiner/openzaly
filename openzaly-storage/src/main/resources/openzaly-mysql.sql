@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS openzaly;
+CREATE DATABASE IF NOT EXISTS openzaly CHARACTER SET utf8mb4;
 
 use openzaly;
 
