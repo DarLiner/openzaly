@@ -24,6 +24,7 @@ import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.config.DBType;
 import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.exception.MigrateDatabaseException;
+import com.akaxin.site.storage.exception.NeedInitMysqlException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 public class Helper {
@@ -65,7 +66,7 @@ public class Helper {
 				initMysqlDatabase(pw);
 				return true;
 			} else if (commandLine.hasOption("migrate")) {
-
+				migrateSqlite2Mysql();
 				return true;
 			}
 			return false;
@@ -222,14 +223,17 @@ public class Helper {
 	 */
 	private static void migrateSqlite2Mysql() {
 		PrintUtils.print("[INFO]openzaly is migrating sqlite to mysql...");
-
 		try {
 			DataSourceManager.migrateDB();
 			PrintUtils.print("[OK] migrate sqlite to mysql finish");
 		} catch (MigrateDatabaseException e) {
 			PrintUtils.print("[ERROR] migrate sqlite to mysql error,msg={}", e.getMessage());
+		} catch (NeedInitMysqlException e) {
+			PrintUtils.print("[ERROR] please execute command before migrate database.");
+			PrintUtils.print();
+			PrintUtils.print("java -jar openzaly-server.jar -init");
+			PrintUtils.print();
 		}
-
 		PrintUtils.flush();
 	}
 }

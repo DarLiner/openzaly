@@ -120,7 +120,7 @@ public class DataSourceManager {
 	}
 
 	// 迁移数据库，把sqlite迁移至mysql数据库
-	public static void migrateDB() throws MigrateDatabaseException {
+	public static void migrateDB() throws MigrateDatabaseException, NeedInitMysqlException {
 		// 加载配置文件中的数据库配置
 		Properties prop = loadDatabaseConfig(OPENZALY_DATABASE_CONFIG);
 		MigrateUtils.sqlite2Mysql(prop);

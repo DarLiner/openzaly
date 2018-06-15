@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL AU
 
 CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_group_id VARCHAR(50) NOT NULL, 
-            msg_id VARCHAR(50), 
+            msg_id VARCHAR(50) UNIQUE NOT NULL, 
             send_user_id VARCHAR(50), 
             send_device_id VARCHAR(50), 
             msg_type INTEGER, 

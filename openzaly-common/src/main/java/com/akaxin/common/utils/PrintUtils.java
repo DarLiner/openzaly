@@ -23,6 +23,10 @@ public class PrintUtils {
 		getPW().println(StringHelper.format(messagePattern, objects));
 	}
 
+	public static void print() {
+		getPW().println();
+	}
+
 	public static void flush() {
 		getPW().flush();
 	}

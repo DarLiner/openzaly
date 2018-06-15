@@ -17,6 +17,10 @@ public class MigrateDatabaseException extends Throwable {
 		super(message, t);
 	}
 
+	public MigrateDatabaseException(Throwable t) {
+		super(t);
+	}
+
 	public MigrateDatabaseException(String messagePattern, Object... objects) {
 		this(StringHelper.format(messagePattern, objects));
 	}
