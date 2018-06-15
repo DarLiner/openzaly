@@ -16,6 +16,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
+import com.akaxin.common.utils.PrintUtils;
 import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.config.JdbcConst;
 import com.akaxin.site.storage.dao.mysql.manager.InitDatabaseConnection;
@@ -112,11 +113,12 @@ public class MigrateUtils {
 	// table.1 : site_config_info
 	private static boolean doSiteConfigInfoTable() throws MigrateDatabaseException {
 		// 迁移表1.
+		String table = "site_config_info";
 		String sql = "id,config_key,config_value";
 		String fromSql = "SELECT " + sql + " from site_config_info;";
 		String toSql = "INSERT INTO site_config_info(" + sql + ") VALUES(?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteConfigInfoRS");
+		return doMigrateWork(table, fromSql, toSql, "siteConfigInfoRS");
 	}
 
 	private static void siteConfigInfoRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -128,11 +130,12 @@ public class MigrateUtils {
 
 	// table.2 site_user_profile
 	private static boolean doSiteUserProfileTable() throws MigrateDatabaseException {
+		String table = "site_user_profile";
 		String sql = "id,site_user_id,global_user_id,site_login_id,login_id_lowercase,user_password,user_id_pubk,user_name,user_name_in_latin,user_photo,phone_id,self_introduce,apply_info,user_status,mute,register_time";
 		String fromSql = "SELECT " + sql + " FROM site_user_profile;";
 		String toSql = "INSERT INTO site_user_profile(" + sql + ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteUserProfileRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserProfileRS");
 	}
 
 	private static void siteUserProfileRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -157,11 +160,12 @@ public class MigrateUtils {
 
 	// table 3:site_user_session
 	private static boolean doSiteUserSessionTable() throws MigrateDatabaseException {
+		String table = "site_user_session";
 		String sql = "id,session_id,site_user_id,is_online,device_id,login_time";
 		String fromSql = "SELECT " + sql + " FROM site_user_session;";
 		String toSql = "INSERT INTO site_user_session(" + sql + ") VALUES(?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteUserSessionRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserSessionRS");
 	}
 
 	private static void siteUserSessionRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -176,11 +180,12 @@ public class MigrateUtils {
 
 	// table 4:site_user_friend
 	private static boolean doSiteUserFriendTable() throws MigrateDatabaseException {
+		String table = "site_user_friend";
 		String sql = "id,site_user_id,site_friend_id,alias_name,alias_name_in_latin,relation,mute,add_time";
 		String fromSql = "SELECT " + sql + " FROM site_user_friend;";
 		String toSql = "INSERT INTO site_user_friend(" + sql + ") VALUES(?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteUserFriendRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserFriendRS");
 	}
 
 	private static void siteUserFriendRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -197,11 +202,12 @@ public class MigrateUtils {
 
 	// table 5:site_friend_apply
 	private static boolean doSiteFriendAapplyTable() throws MigrateDatabaseException {
+		String table = "site_friend_apply";
 		String sql = "id,site_user_id,site_friend_id,apply_reason,apply_time";
 		String fromSql = "SELECT " + sql + " FROM site_friend_apply;";
 		String toSql = "INSERT INTO site_friend_apply(" + sql + ") VALUES(?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteFriendApplyRS");
+		return doMigrateWork(table, fromSql, toSql, "siteFriendApplyRS");
 	}
 
 	private static void siteFriendApplyRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -215,11 +221,12 @@ public class MigrateUtils {
 
 	// table 6:site_user_message
 	private static boolean doSiteUserMessageTable() throws MigrateDatabaseException {
+		String table = "site_user_message";
 		String sql = "id,site_user_id,msg_id,send_user_id,receive_user_id,msg_type,content,device_id,ts_key,msg_time";
 		String fromSql = "select " + sql + " from site_user_message;";
 		String toSql = "INSERT INTO site_user_message(" + sql + ") VALUES(?,?,?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteUserMessageRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserMessageRS");
 	}
 
 	private static void siteUserMessageRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -242,11 +249,12 @@ public class MigrateUtils {
 
 	// table 7:site_message_pointer
 	private static boolean doSiteMessagePointerTable() throws MigrateDatabaseException {
+		String table = "site_message_pointer";
 		String sql = "id,site_user_id,device_id,pointer";
 		String fromSql = "SELECT " + sql + " FROM site_message_pointer;";
 		String toSql = "INSERT INTO site_message_pointer(" + sql + ") values(?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteMessagePointerRS");
+		return doMigrateWork(table, fromSql, toSql, "siteMessagePointerRS");
 	}
 
 	private static void siteMessagePointerRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -259,11 +267,12 @@ public class MigrateUtils {
 
 	// table 8:site_user_group
 	private static boolean doSiteUserGroupTable() throws MigrateDatabaseException {
+		String table = "site_user_group";
 		String sql = "id,site_user_id,site_group_id,user_role,mute,add_time";
 		String fromSql = "SELECT " + sql + " FROM site_user_group;";
 		String toSql = "INSERT INTO site_user_group(" + sql + ") VALUES(?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteUserGroupRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserGroupRS");
 	}
 
 	private static void siteUserGroupRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -278,11 +287,12 @@ public class MigrateUtils {
 
 	// table 9:site_group_profile
 	private static boolean doSiteGroupProfileTable() throws MigrateDatabaseException {
+		String table = "site_group_profile";
 		String sql = "id,site_group_id,create_user_id,group_name,group_photo,group_notice,ts_status,group_status,close_invite_group_chat,create_time";
-		String fromSql = "select " + sql + " from site_group_profile;";
-		String toSql = "insert into site_group_profile(" + sql + ") values(?,?,?,?,?,?,?,?,?,?);";
+		String fromSql = "SELECT " + sql + " FROM site_group_profile;";
+		String toSql = "INSERT INTO site_group_profile(" + sql + ") VALUES(?,?,?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteGroupProfileRS");
+		return doMigrateWork(table, fromSql, toSql, "siteGroupProfileRS");
 	}
 
 	private static void siteGroupProfileRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -301,11 +311,12 @@ public class MigrateUtils {
 
 	// table 10:site_group_message
 	private static boolean doSiteGroupMessageTable() throws MigrateDatabaseException {
+		String table = "site_group_message";
 		String sql = "id,site_group_id,msg_id,send_user_id,send_device_id,msg_type,content,msg_time";
-		String fromSql = "select " + sql + " from site_group_message;";
+		String fromSql = "SELECT " + sql + " FROM site_group_message;";
 		String toSql = "INSERT INTO site_group_message(" + sql + ") VALUES(?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteSiteGroupMessageRS");
+		return doMigrateWork(table, fromSql, toSql, "siteSiteGroupMessageRS");
 	}
 
 	private static void siteSiteGroupMessageRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -326,11 +337,12 @@ public class MigrateUtils {
 
 	// table 11:site_group_message_pointer
 	private static boolean doSiteGroupMessagePointerTable() throws MigrateDatabaseException {
+		String table = "site_group_message_pointer";
 		String sql = "id,site_group_id,site_user_id,device_id,pointer";
-		String fromSql = "select " + sql + " FROM site_group_message_pointer;";
-		String toSql = "insert into site_group_message_pointer(" + sql + ") values(?,?,?,?,?);";
+		String fromSql = "SELECT " + sql + " FROM site_group_message_pointer;";
+		String toSql = "INSERT INTO site_group_message_pointer(" + sql + ") VALUES(?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteGroupMessagePointerRS");
+		return doMigrateWork(table, fromSql, toSql, "siteGroupMessagePointerRS");
 	}
 
 	private static void siteGroupMessagePointerRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -344,11 +356,12 @@ public class MigrateUtils {
 
 	// table 12:site_user_device
 	private static boolean doSiteUserDeviceTable() throws MigrateDatabaseException {
+		String table = "site_user_device";
 		String sql = "id,site_user_id,device_id,user_device_pubk,device_uuid,user_token,device_name,device_ip,active_time,add_time";
 		String fromSql = "SELECT " + sql + " FROM site_user_device;";
 		String toSql = "INSERT INTO site_user_device(" + sql + ") VALUES(?,?,?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "siteUserDeviceRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserDeviceRS");
 	}
 
 	private static void siteUserDeviceRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -367,11 +380,12 @@ public class MigrateUtils {
 
 	// table 13:site_plugin_manager
 	private static boolean doSitePluginManagerTable() throws MigrateDatabaseException {
+		String table = "site_plugin_manager";
 		String sql = "id,name,icon,api_url,url_page,auth_key,allowed_ip,position,sort,display_mode,permission_status,add_time";
 		String fromSql = "SELECT " + sql + " FROM site_plugin_manager;";
 		String toSql = "INSERT INTO site_plugin_manager(" + sql + ") values(?,?,?,?,?,?,?,?,?,?,?,?);";
 
-		return doMigrateWork(fromSql, toSql, "sitePluginManagerRS");
+		return doMigrateWork(table, fromSql, toSql, "sitePluginManagerRS");
 	}
 
 	private static void sitePluginManagerRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -392,10 +406,11 @@ public class MigrateUtils {
 
 	// table 14:site_user_uic
 	private static boolean doSiteUserUicTable() throws MigrateDatabaseException {
+		String table = "site_user_uic";
 		String sql = "id,uic,site_user_id,status,create_time,use_time";
 		String fromSql = "SELECT " + sql + " FROM site_user_uic;";
 		String toSql = "INSERT INTO site_user_uic(" + sql + ") VALUES(?,?,?,?,?,?)";
-		return doMigrateWork(fromSql, toSql, "siteUserUicRS");
+		return doMigrateWork(table, fromSql, toSql, "siteUserUicRS");
 	}
 
 	private static void siteUserUicRS(PreparedStatement ps, ResultSet rs) throws SQLException {
@@ -407,17 +422,20 @@ public class MigrateUtils {
 		ps.setLong(6, rs.getLong(6));
 	}
 
-	private static boolean doMigrateWork(String fromSql, String toSql, final String rsMethodName)
+	private static boolean doMigrateWork(String tableName, String fromSql, String toSql, final String rsMethodName)
 			throws MigrateDatabaseException {
-		boolean result = false;
 
+		PrintUtils.print("migrating database table : {}", tableName);
+		PrintUtils.flush();
+
+		boolean result = false;
 		PreparedStatement fromPst = null;
 		ResultSet rs = null;
 		PreparedStatement toPst = null;
 		try {
 			fromPst = sqliteConnection.prepareStatement(fromSql);
 			rs = fromPst.executeQuery();
-//			mysqlConnection.setAutoCommit(false);
+			mysqlConnection.setAutoCommit(false);
 			try {
 				toPst = mysqlConnection.prepareStatement(toSql);
 				while (rs.next()) {
@@ -440,6 +458,8 @@ public class MigrateUtils {
 			DatabaseConnection.closePreparedStatement(toPst);
 		}
 
+		PrintUtils.print("migrate database table : {} finish,result={}", tableName, result ? "OK" : "ERROR");
+		PrintUtils.flush();
 		return result;
 	}
 

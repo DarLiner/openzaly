@@ -41,8 +41,8 @@ public class Helper {
 			Options options = new Options();
 			options.addOption("h", false, "help message list");
 			options.addOption("help", false, "help message list");
-			options.addOption("init", false, "init openzaly by loading site config and database config");
-			options.addOption("upgrade", false, "upgrade openzaly server");
+			options.addOption("TEAM", false, "specify openzaly TEAM edition and init database config");
+			options.addOption("upgrade", false, "upgrade openzaly server and database");
 			options.addOption("migrate", false, "migrate data from sqlite to mysql");
 			DefaultParser posixParser = new DefaultParser();
 			CommandLine commandLine = posixParser.parse(options, args);
@@ -61,7 +61,8 @@ public class Helper {
 				pw = new PrintWriter(System.out);
 				upgrade(pw);
 				return true;
-			} else if (commandLine.hasOption("init")) {
+			} else if (commandLine.hasOption("team") || commandLine.hasOption("TEAM")
+					|| commandLine.hasOption("Team")) {
 				pw = new PrintWriter(System.out);
 				initMysqlDatabase(pw);
 				return true;
