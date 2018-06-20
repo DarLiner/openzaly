@@ -10,7 +10,7 @@ import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.PushProto;
 import com.akaxin.proto.platform.ApiPushNotificationProto;
 import com.akaxin.site.message.dao.ImUserProfileDao;
-import com.akaxin.site.message.push.WritePackage;
+import com.akaxin.site.message.push.PushClient;
 import com.akaxin.site.message.threads.MultiPushThreadExecutor;
 import com.akaxin.site.message.utils.SiteConfigHelper;
 
@@ -82,7 +82,7 @@ public class PushNotification {
 						notification.setUserToken(userToken);
 						requestBuilder.setNotification(notification.build());
 						requestBuilder.setPushType(PushProto.PushType.PUSH_NOTICE);
-						WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
+						PushClient.asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
 								requestBuilder.build().toByteArray());
 					}
 				} catch (Exception e) {

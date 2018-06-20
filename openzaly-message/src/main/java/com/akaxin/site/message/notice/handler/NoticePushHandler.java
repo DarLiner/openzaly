@@ -29,7 +29,7 @@ import com.akaxin.proto.core.PushProto;
 import com.akaxin.proto.platform.ApiPushNotificationProto;
 import com.akaxin.site.message.dao.ImUserFriendDao;
 import com.akaxin.site.message.dao.ImUserProfileDao;
-import com.akaxin.site.message.push.WritePackage;
+import com.akaxin.site.message.push.PushClient;
 import com.akaxin.site.message.threads.MultiPushThreadExecutor;
 import com.akaxin.site.message.utils.SiteConfigHelper;
 
@@ -91,8 +91,7 @@ public class NoticePushHandler extends AbstractNoticeHandler<Command> {
 						requestBuilder.setNotification(notification.build());
 						requestBuilder.setPushType(PushProto.PushType.PUSH_APPLY_FRIEND_NOTICE);
 
-						WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
-								requestBuilder.build().toByteArray());
+						PushClient.asyncWrite(CommandConst.API_PUSH_NOTIFICATION, requestBuilder.build().toByteArray());
 						logger.debug("client={} siteUserId={} push to siteFriend={} content={}", command.getClientIp(),
 								command.getSiteUserId(), command.getSiteFriendId(), requestBuilder.toString());
 					} else {

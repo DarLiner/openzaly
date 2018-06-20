@@ -32,7 +32,7 @@ import com.akaxin.proto.platform.ApiPushNotificationsProto;
 import com.akaxin.proto.site.ImCtsMessageProto;
 import com.akaxin.site.message.dao.ImUserGroupDao;
 import com.akaxin.site.message.dao.ImUserProfileDao;
-import com.akaxin.site.message.push.WritePackage;
+import com.akaxin.site.message.push.PushClient;
 import com.akaxin.site.message.threads.MultiPushThreadExecutor;
 import com.akaxin.site.message.utils.SiteConfigHelper;
 import com.akaxin.site.storage.api.IGroupDao;
@@ -40,6 +40,12 @@ import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.service.GroupDaoService;
 import com.google.protobuf.ByteString;
 
+/**
+ * 群push处理handler
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-06-20 21:46:15
+ */
 public class GroupPushHandler extends AbstractGroupHandler<Command> {
 	private static final Logger logger = LoggerFactory.getLogger(GroupPushHandler.class);
 	private IGroupDao groupDao = new GroupDaoService();
@@ -133,8 +139,7 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 					logger.debug("client={} siteUserId={} push to groupId={} siteFriend={} content={}",
 							command.getClientIp(), command.getSiteUserId(), command.getSiteGroupId(),
 							command.getSiteFriendId(), requestBuilder.toString());
-					WritePackage.getInstance().asyncWrite(CommandConst.API_PUSH_NOTIFICATIONS,
-							requestBuilder.build().toByteArray());
+					PushClient.asyncWrite(CommandConst.API_PUSH_NOTIFICATIONS, requestBuilder.build().toByteArray());
 
 				} catch (Exception e) {
 					LogUtils.requestErrorLog(logger, command, GroupPushHandler.class, e);

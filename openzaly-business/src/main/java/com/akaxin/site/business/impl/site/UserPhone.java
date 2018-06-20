@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.proto.platform.ApiPhoneConfirmTokenProto;
-import com.akaxin.site.message.push.WritePackage;
+import com.akaxin.site.message.platform.PlatformClient;
 
 /**
  * 当注册方式为：实名用户，此时需要向平台验证手机号码是否正确
@@ -47,8 +47,9 @@ public class UserPhone {
 		try {
 			ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest request = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest
 					.newBuilder().setPhoneToken(phoneToken).build();
-			logger.debug("实名认证 获取用户手机信息 : phoneToken={} {}", phoneToken, request.getPhoneToken());
-			byte[] responseBytes = WritePackage.getInstance().syncWrite(CommandConst.API_PHONE_CONFIRETOKEN,
+			logger.debug("realname get phone from platform : phoneToken={} {}", phoneToken, request.getPhoneToken());
+			
+			byte[] responseBytes = PlatformClient.syncWrite(CommandConst.API_PHONE_CONFIRETOKEN,
 					request.toByteArray());
 
 			if (responseBytes != null) {
