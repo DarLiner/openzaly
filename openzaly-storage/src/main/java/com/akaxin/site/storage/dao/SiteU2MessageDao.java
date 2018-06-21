@@ -250,7 +250,7 @@ public class SiteU2MessageDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getSlaveConnection();
+			conn = DatabaseConnection.getConnection();
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 

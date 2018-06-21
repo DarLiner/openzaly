@@ -320,7 +320,7 @@ public class SiteGroupMessageDao {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getSlaveConnection();
+			conn = DatabaseConnection.getConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, groupId);
 

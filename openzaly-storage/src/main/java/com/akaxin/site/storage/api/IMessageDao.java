@@ -16,9 +16,9 @@ public interface IMessageDao {
 	// u2 message
 	public boolean saveU2Message(U2MessageBean u2Bean) throws SQLException;
 
-	public List<U2MessageBean> queryU2Message(String id, String deviceId, long start, long limit) throws SQLException;
-
 	public boolean updateU2Pointer(String id, String deviceId, long finish) throws SQLException;
+	
+	public List<U2MessageBean> queryU2Message(String id, String deviceId, long start, long limit) throws SQLException;
 
 	long queryU2Pointer(String userId, String deviceId) throws SQLException;
 
