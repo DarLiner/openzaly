@@ -30,13 +30,19 @@ import com.akaxin.common.constant.IErrorCode;
 import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.common.utils.StringHelper;
+import com.akaxin.common.utils.UserIdUtils;
+import com.akaxin.common.utils.ValidatorPattern;
 import com.akaxin.proto.core.UserProto;
+import com.akaxin.proto.site.ApiFriendProfileProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserProfileProto;
+import com.akaxin.proto.site.ApiUserSearchProto;
 import com.akaxin.proto.site.ApiUserUpdateMuteProto;
 import com.akaxin.proto.site.ApiUserUpdateProfileProto;
+import com.akaxin.site.business.dao.UserFriendDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
+import com.akaxin.site.storage.bean.UserFriendBean;
 import com.akaxin.site.storage.bean.UserProfileBean;
 
 /**
@@ -49,9 +55,90 @@ public class ApiUserService extends AbstractRequest {
 	private static final Logger logger = LoggerFactory.getLogger(ApiUserService.class);
 
 	/**
-	 * 获取用户个人资料信息
-	 *
-	 * 支持使用globalUserid与siteUserId
+	 * 用户输入siteLoginId | phoneId | userIdPubk 查找用户
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse search(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			ApiUserSearchProto.ApiUserSearchRequest request = ApiUserSearchProto.ApiUserSearchRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String id = StringUtils.trimToNull(request.getId());
+			LogUtils.requestDebugLog(logger, command, request.toString());
+
+			if (StringUtils.isEmpty(id)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			String siteFriendId = null;
+			if (id.length() > 100) {
+				String globalUserId = UserIdUtils.getV1GlobalUserId(id);
+				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalUserId);
+			} else if (ValidatorPattern.isPhoneId(id)) {
+				String phoneId = "+86:" + id;
+				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByPhone(phoneId);
+			} else {
+				// siteLoginId
+				String lowercaseLoginId = id.trim().toLowerCase();
+				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByLoginId(lowercaseLoginId);
+			}
+
+			if (StringUtils.isEmpty(siteFriendId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_USER_NOUSER);
+			}
+
+			UserFriendBean userBean = UserProfileDao.getInstance().getFriendProfileById(siteUserId, siteFriendId);
+
+			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {
+				UserProto.UserProfile.Builder friendProfileBuilder = UserProto.UserProfile.newBuilder();
+				friendProfileBuilder.setSiteUserId(userBean.getSiteUserId());
+
+				if (StringUtils.isNotEmpty(userBean.getAliasName())) {
+					friendProfileBuilder.setUserName(userBean.getAliasName());
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
+						friendProfileBuilder.setNickName(userBean.getUserName());
+					}
+				} else {
+					if (StringUtils.isNotEmpty(userBean.getUserName())) {
+						friendProfileBuilder.setUserName(userBean.getUserName());
+						friendProfileBuilder.setNickName(userBean.getUserName());
+					}
+				}
+
+				if (StringUtils.isNotEmpty(userBean.getSiteLoginId())) {
+					friendProfileBuilder.setSiteLoginId(userBean.getSiteLoginId());
+				}
+				if (StringUtils.isNotEmpty(userBean.getUserPhoto())) {
+					friendProfileBuilder.setUserPhoto(userBean.getUserPhoto());
+				}
+				friendProfileBuilder.setUserStatusValue(userBean.getUserStatus());
+				UserProto.UserProfile friendProfile = friendProfileBuilder.build();
+
+				// 查关系
+				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
+						userBean.getSiteUserId());
+				ApiFriendProfileProto.ApiFriendProfileResponse response = ApiFriendProfileProto.ApiFriendProfileResponse
+						.newBuilder().setProfile(friendProfile).setRelation(userRelation)
+						.setUserIdPubk(userBean.getUserIdPubk()).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			}
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+		return commandResponse.setErrCode(errCode);
+	}
+
+	/**
+	 * 获取用户个人资料信息,支持使用globalUserid与siteUserId
 	 * 
 	 * @param command
 	 * @return

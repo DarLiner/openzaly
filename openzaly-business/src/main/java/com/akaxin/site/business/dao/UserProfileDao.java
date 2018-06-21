@@ -51,6 +51,24 @@ public class UserProfileDao {
 		return null;
 	}
 
+	public String getSiteUserIdByPhone(String phoneId) {
+		try {
+			return userProfileDao.getSiteUserIdByPhone(phoneId);
+		} catch (SQLException e) {
+			logger.error("get siteUserId by phone error.", e);
+		}
+		return null;
+	}
+
+	public String getSiteUserIdByLoginId(String lowercaseLoginId) {
+		try {
+			return userProfileDao.getSiteUserIdByLowercaseLoginId(lowercaseLoginId);
+		} catch (SQLException e) {
+			logger.error("get siteUserId by lowercase siteLoginId error.", e);
+		}
+		return null;
+	}
+
 	public String getSiteLoginIdBySiteUserId(String siteUserId) {
 		try {
 			return userProfileDao.getSiteLoginIdBySiteUserId(siteUserId);
@@ -76,16 +94,6 @@ public class UserProfileDao {
 			userBean = userProfileDao.getSimpleProfileByGlobalUserId(globalUserId);
 		} catch (SQLException e) {
 			logger.error("get User Simple Profile by globalUserId error.", e);
-		}
-		return userBean;
-	}
-
-	public SimpleUserBean getSimpleProfileByPubk(String userIdPubk) {
-		SimpleUserBean userBean = new SimpleUserBean();
-		try {
-			userBean = userProfileDao.getSimpleProfileByPubk(userIdPubk);
-		} catch (SQLException e) {
-			logger.error("get User Simple Profile error.", e);
 		}
 		return userBean;
 	}
@@ -121,16 +129,6 @@ public class UserProfileDao {
 			logger.error("get user profile by userId error.", e);
 		}
 		return userBean;
-	}
-
-	public UserProfileBean getUserProfileByPubk(String userIdPubk) {
-		UserProfileBean userProfile = new UserProfileBean();
-		try {
-			userProfile = userProfileDao.getUserProfileByPubk(userIdPubk);
-		} catch (SQLException e) {
-			logger.error("get user profile by pubk", e);
-		}
-		return userProfile;
 	}
 
 	public boolean updateUserProfile(UserProfileBean userBean) {

@@ -14,7 +14,7 @@ public interface IUserProfileDao {
 
 	public String getSiteUserIdByGlobalUserId(String globalUserId) throws SQLException;
 
-	public String getSiteUserIdByPubk(String userIdPubk) throws SQLException;
+	public String getSiteUserIdByPhone(String phoneId) throws SQLException;
 
 	public String getSiteUserIdByLowercaseLoginId(String lowercaseLoginId) throws SQLException;
 
@@ -26,15 +26,11 @@ public interface IUserProfileDao {
 
 	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException;
 
-	public SimpleUserBean getSimpleProfileByPubk(String userId) throws SQLException;
-
 	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriend) throws SQLException;
 
 	public UserProfileBean getUserProfileById(String siteUserId) throws SQLException;
 
 	public UserProfileBean getUserProfileByGlobalUserId(String userId) throws SQLException;
-
-	public UserProfileBean getUserProfileByPubk(String userIdPubk) throws SQLException;
 
 	public int updateProfile(UserProfileBean userBean) throws SQLException;
 

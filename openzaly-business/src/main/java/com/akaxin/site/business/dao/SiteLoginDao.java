@@ -95,15 +95,6 @@ public class SiteLoginDao {
 		return null;
 	}
 
-	public String getSiteUserId(String userIdPubk) {
-		try {
-			return userProfileDao.getSiteUserIdByPubk(userIdPubk);
-		} catch (SQLException e) {
-			logger.error("get site user id error.", e);
-		}
-		return null;
-	}
-
 	public boolean deleteSession(String siteUserId, String deviceId) {
 		try {
 			return userSessionDao.deleteUserSession(siteUserId, deviceId);

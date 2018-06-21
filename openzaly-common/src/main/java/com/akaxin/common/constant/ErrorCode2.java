@@ -53,7 +53,7 @@ public enum ErrorCode2 implements IErrorCode {
 
 	ERROR2_MESSAGE_SEND_FAIL("error.alert", "消息发送失败"), //
 
-	ERROR2_USER_NOUSER("error.alert", "无该用户信息"), //
+	ERROR2_USER_NOUSER("error.nouser", "无该用户信息"), //
 	ERROR2_USER_SAVE_PUSHTOKEN("error.alert", "保存数据失败"), //
 	ERROR2_USER_UPDATE_PROFILE("error.alert", "更新数据库用户身份失败"), //
 	ERROR2_USER_NOLIST("error.alert", "暂无用户"), //

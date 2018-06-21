@@ -43,8 +43,8 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public String getSiteUserIdByPubk(String userIdPubk) throws SQLException {
-		return SiteUserProfileDao.getInstance().querySiteUserIdByPubk(userIdPubk);
+	public String getSiteUserIdByPhone(String phoneId) throws SQLException {
+		return SiteUserProfileDao.getInstance().querySiteUserIdPhone(phoneId);
 	}
 
 	@Override
@@ -73,11 +73,6 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public SimpleUserBean getSimpleProfileByPubk(String userIdPubk) throws SQLException {
-		return SiteUserProfileDao.getInstance().querySimpleProfileByPubk(userIdPubk);
-	}
-
-	@Override
 	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriendId) throws SQLException {
 		return SiteUserProfileDao.getInstance().queryFriendProfileById(siteUserId, siteFriendId);
 	}
@@ -90,11 +85,6 @@ public class UserProfileDaoService implements IUserProfileDao {
 	@Override
 	public UserProfileBean getUserProfileByGlobalUserId(String globalUserId) throws SQLException {
 		return SiteUserProfileDao.getInstance().queryUserProfileByGlobalUserId(globalUserId);
-	}
-
-	@Override
-	public UserProfileBean getUserProfileByPubk(String userIdPubk) throws SQLException {
-		return SiteUserProfileDao.getInstance().queryUserProfileByPubk(userIdPubk);
 	}
 
 	@Override

@@ -20,21 +20,21 @@ public final class ApiUserSearchProto {
 
     /**
      * <pre>
-     *用户身份的公钥
+     *site_login_id | phone_id | userIdPubk
      * </pre>
      *
-     * <code>optional string user_id_pubk = 1;</code>
+     * <code>optional string id = 1;</code>
      */
-    java.lang.String getUserIdPubk();
+    java.lang.String getId();
     /**
      * <pre>
-     *用户身份的公钥
+     *site_login_id | phone_id | userIdPubk
      * </pre>
      *
-     * <code>optional string user_id_pubk = 1;</code>
+     * <code>optional string id = 1;</code>
      */
     com.google.protobuf.ByteString
-        getUserIdPubkBytes();
+        getIdBytes();
   }
   /**
    * Protobuf type {@code site.ApiUserSearchRequest}
@@ -48,7 +48,7 @@ public final class ApiUserSearchProto {
       super(builder);
     }
     private ApiUserSearchRequest() {
-      userIdPubk_ = "";
+      id_ = "";
     }
 
     @java.lang.Override
@@ -79,7 +79,7 @@ public final class ApiUserSearchProto {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              userIdPubk_ = s;
+              id_ = s;
               break;
             }
           }
@@ -105,42 +105,42 @@ public final class ApiUserSearchProto {
               com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest.class, com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest.Builder.class);
     }
 
-    public static final int USER_ID_PUBK_FIELD_NUMBER = 1;
-    private volatile java.lang.Object userIdPubk_;
+    public static final int ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object id_;
     /**
      * <pre>
-     *用户身份的公钥
+     *site_login_id | phone_id | userIdPubk
      * </pre>
      *
-     * <code>optional string user_id_pubk = 1;</code>
+     * <code>optional string id = 1;</code>
      */
-    public java.lang.String getUserIdPubk() {
-      java.lang.Object ref = userIdPubk_;
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        userIdPubk_ = s;
+        id_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     *用户身份的公钥
+     *site_login_id | phone_id | userIdPubk
      * </pre>
      *
-     * <code>optional string user_id_pubk = 1;</code>
+     * <code>optional string id = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getUserIdPubkBytes() {
-      java.lang.Object ref = userIdPubk_;
+        getIdBytes() {
+      java.lang.Object ref = id_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        userIdPubk_ = b;
+        id_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -159,8 +159,8 @@ public final class ApiUserSearchProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getUserIdPubkBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userIdPubk_);
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
       }
     }
 
@@ -169,8 +169,8 @@ public final class ApiUserSearchProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!getUserIdPubkBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userIdPubk_);
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
       }
       memoizedSize = size;
       return size;
@@ -188,8 +188,8 @@ public final class ApiUserSearchProto {
       com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest other = (com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest) obj;
 
       boolean result = true;
-      result = result && getUserIdPubk()
-          .equals(other.getUserIdPubk());
+      result = result && getId()
+          .equals(other.getId());
       return result;
     }
 
@@ -200,8 +200,8 @@ public final class ApiUserSearchProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptorForType().hashCode();
-      hash = (37 * hash) + USER_ID_PUBK_FIELD_NUMBER;
-      hash = (53 * hash) + getUserIdPubk().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -320,7 +320,7 @@ public final class ApiUserSearchProto {
       }
       public Builder clear() {
         super.clear();
-        userIdPubk_ = "";
+        id_ = "";
 
         return this;
       }
@@ -344,7 +344,7 @@ public final class ApiUserSearchProto {
 
       public com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest buildPartial() {
         com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest result = new com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest(this);
-        result.userIdPubk_ = userIdPubk_;
+        result.id_ = id_;
         onBuilt();
         return result;
       }
@@ -386,8 +386,8 @@ public final class ApiUserSearchProto {
 
       public Builder mergeFrom(com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest other) {
         if (other == com.akaxin.proto.site.ApiUserSearchProto.ApiUserSearchRequest.getDefaultInstance()) return this;
-        if (!other.getUserIdPubk().isEmpty()) {
-          userIdPubk_ = other.userIdPubk_;
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
           onChanged();
         }
         onChanged();
@@ -416,21 +416,21 @@ public final class ApiUserSearchProto {
         return this;
       }
 
-      private java.lang.Object userIdPubk_ = "";
+      private java.lang.Object id_ = "";
       /**
        * <pre>
-       *用户身份的公钥
+       *site_login_id | phone_id | userIdPubk
        * </pre>
        *
-       * <code>optional string user_id_pubk = 1;</code>
+       * <code>optional string id = 1;</code>
        */
-      public java.lang.String getUserIdPubk() {
-        java.lang.Object ref = userIdPubk_;
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          userIdPubk_ = s;
+          id_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -438,19 +438,19 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *用户身份的公钥
+       *site_login_id | phone_id | userIdPubk
        * </pre>
        *
-       * <code>optional string user_id_pubk = 1;</code>
+       * <code>optional string id = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getUserIdPubkBytes() {
-        java.lang.Object ref = userIdPubk_;
+          getIdBytes() {
+        java.lang.Object ref = id_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          userIdPubk_ = b;
+          id_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -458,49 +458,49 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *用户身份的公钥
+       *site_login_id | phone_id | userIdPubk
        * </pre>
        *
-       * <code>optional string user_id_pubk = 1;</code>
+       * <code>optional string id = 1;</code>
        */
-      public Builder setUserIdPubk(
+      public Builder setId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        userIdPubk_ = value;
+        id_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *用户身份的公钥
+       *site_login_id | phone_id | userIdPubk
        * </pre>
        *
-       * <code>optional string user_id_pubk = 1;</code>
+       * <code>optional string id = 1;</code>
        */
-      public Builder clearUserIdPubk() {
+      public Builder clearId() {
         
-        userIdPubk_ = getDefaultInstance().getUserIdPubk();
+        id_ = getDefaultInstance().getId();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       *用户身份的公钥
+       *site_login_id | phone_id | userIdPubk
        * </pre>
        *
-       * <code>optional string user_id_pubk = 1;</code>
+       * <code>optional string id = 1;</code>
        */
-      public Builder setUserIdPubkBytes(
+      public Builder setIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        userIdPubk_ = value;
+        id_ = value;
         onChanged();
         return this;
       }
@@ -559,7 +559,7 @@ public final class ApiUserSearchProto {
 
     /**
      * <pre>
-     *查询到的用户个人信息
+     *用户好友的信息
      * </pre>
      *
      * <code>optional .core.UserProfile profile = 1;</code>
@@ -567,7 +567,7 @@ public final class ApiUserSearchProto {
     boolean hasProfile();
     /**
      * <pre>
-     *查询到的用户个人信息
+     *用户好友的信息
      * </pre>
      *
      * <code>optional .core.UserProfile profile = 1;</code>
@@ -575,12 +575,47 @@ public final class ApiUserSearchProto {
     com.akaxin.proto.core.UserProto.UserProfile getProfile();
     /**
      * <pre>
-     *查询到的用户个人信息
+     *用户好友的信息
      * </pre>
      *
      * <code>optional .core.UserProfile profile = 1;</code>
      */
     com.akaxin.proto.core.UserProto.UserProfileOrBuilder getProfileOrBuilder();
+
+    /**
+     * <pre>
+     *用户之间的关系
+     * </pre>
+     *
+     * <code>optional .core.UserRelation relation = 2;</code>
+     */
+    int getRelationValue();
+    /**
+     * <pre>
+     *用户之间的关系
+     * </pre>
+     *
+     * <code>optional .core.UserRelation relation = 2;</code>
+     */
+    com.akaxin.proto.core.UserProto.UserRelation getRelation();
+
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    java.lang.String getUserIdPubk();
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdPubkBytes();
   }
   /**
    * Protobuf type {@code site.ApiUserSearchResponse}
@@ -594,6 +629,8 @@ public final class ApiUserSearchProto {
       super(builder);
     }
     private ApiUserSearchResponse() {
+      relation_ = 0;
+      userIdPubk_ = "";
     }
 
     @java.lang.Override
@@ -634,6 +671,18 @@ public final class ApiUserSearchProto {
 
               break;
             }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              relation_ = rawValue;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              userIdPubk_ = s;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -661,7 +710,7 @@ public final class ApiUserSearchProto {
     private com.akaxin.proto.core.UserProto.UserProfile profile_;
     /**
      * <pre>
-     *查询到的用户个人信息
+     *用户好友的信息
      * </pre>
      *
      * <code>optional .core.UserProfile profile = 1;</code>
@@ -671,7 +720,7 @@ public final class ApiUserSearchProto {
     }
     /**
      * <pre>
-     *查询到的用户个人信息
+     *用户好友的信息
      * </pre>
      *
      * <code>optional .core.UserProfile profile = 1;</code>
@@ -681,13 +730,79 @@ public final class ApiUserSearchProto {
     }
     /**
      * <pre>
-     *查询到的用户个人信息
+     *用户好友的信息
      * </pre>
      *
      * <code>optional .core.UserProfile profile = 1;</code>
      */
     public com.akaxin.proto.core.UserProto.UserProfileOrBuilder getProfileOrBuilder() {
       return getProfile();
+    }
+
+    public static final int RELATION_FIELD_NUMBER = 2;
+    private int relation_;
+    /**
+     * <pre>
+     *用户之间的关系
+     * </pre>
+     *
+     * <code>optional .core.UserRelation relation = 2;</code>
+     */
+    public int getRelationValue() {
+      return relation_;
+    }
+    /**
+     * <pre>
+     *用户之间的关系
+     * </pre>
+     *
+     * <code>optional .core.UserRelation relation = 2;</code>
+     */
+    public com.akaxin.proto.core.UserProto.UserRelation getRelation() {
+      com.akaxin.proto.core.UserProto.UserRelation result = com.akaxin.proto.core.UserProto.UserRelation.valueOf(relation_);
+      return result == null ? com.akaxin.proto.core.UserProto.UserRelation.UNRECOGNIZED : result;
+    }
+
+    public static final int USER_ID_PUBK_FIELD_NUMBER = 3;
+    private volatile java.lang.Object userIdPubk_;
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    public java.lang.String getUserIdPubk() {
+      java.lang.Object ref = userIdPubk_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userIdPubk_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户公钥
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdPubkBytes() {
+      java.lang.Object ref = userIdPubk_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userIdPubk_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -705,6 +820,12 @@ public final class ApiUserSearchProto {
       if (profile_ != null) {
         output.writeMessage(1, getProfile());
       }
+      if (relation_ != com.akaxin.proto.core.UserProto.UserRelation.RELATION_NONE.getNumber()) {
+        output.writeEnum(2, relation_);
+      }
+      if (!getUserIdPubkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, userIdPubk_);
+      }
     }
 
     public int getSerializedSize() {
@@ -715,6 +836,13 @@ public final class ApiUserSearchProto {
       if (profile_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getProfile());
+      }
+      if (relation_ != com.akaxin.proto.core.UserProto.UserRelation.RELATION_NONE.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, relation_);
+      }
+      if (!getUserIdPubkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, userIdPubk_);
       }
       memoizedSize = size;
       return size;
@@ -737,6 +865,9 @@ public final class ApiUserSearchProto {
         result = result && getProfile()
             .equals(other.getProfile());
       }
+      result = result && relation_ == other.relation_;
+      result = result && getUserIdPubk()
+          .equals(other.getUserIdPubk());
       return result;
     }
 
@@ -751,6 +882,10 @@ public final class ApiUserSearchProto {
         hash = (37 * hash) + PROFILE_FIELD_NUMBER;
         hash = (53 * hash) + getProfile().hashCode();
       }
+      hash = (37 * hash) + RELATION_FIELD_NUMBER;
+      hash = (53 * hash) + relation_;
+      hash = (37 * hash) + USER_ID_PUBK_FIELD_NUMBER;
+      hash = (53 * hash) + getUserIdPubk().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -875,6 +1010,10 @@ public final class ApiUserSearchProto {
           profile_ = null;
           profileBuilder_ = null;
         }
+        relation_ = 0;
+
+        userIdPubk_ = "";
+
         return this;
       }
 
@@ -902,6 +1041,8 @@ public final class ApiUserSearchProto {
         } else {
           result.profile_ = profileBuilder_.build();
         }
+        result.relation_ = relation_;
+        result.userIdPubk_ = userIdPubk_;
         onBuilt();
         return result;
       }
@@ -946,6 +1087,13 @@ public final class ApiUserSearchProto {
         if (other.hasProfile()) {
           mergeProfile(other.getProfile());
         }
+        if (other.relation_ != 0) {
+          setRelationValue(other.getRelationValue());
+        }
+        if (!other.getUserIdPubk().isEmpty()) {
+          userIdPubk_ = other.userIdPubk_;
+          onChanged();
+        }
         onChanged();
         return this;
       }
@@ -977,7 +1125,7 @@ public final class ApiUserSearchProto {
           com.akaxin.proto.core.UserProto.UserProfile, com.akaxin.proto.core.UserProto.UserProfile.Builder, com.akaxin.proto.core.UserProto.UserProfileOrBuilder> profileBuilder_;
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -987,7 +1135,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1001,7 +1149,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1021,7 +1169,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1039,7 +1187,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1061,7 +1209,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1079,7 +1227,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1091,7 +1239,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1106,7 +1254,7 @@ public final class ApiUserSearchProto {
       }
       /**
        * <pre>
-       *查询到的用户个人信息
+       *用户好友的信息
        * </pre>
        *
        * <code>optional .core.UserProfile profile = 1;</code>
@@ -1123,6 +1271,159 @@ public final class ApiUserSearchProto {
           profile_ = null;
         }
         return profileBuilder_;
+      }
+
+      private int relation_ = 0;
+      /**
+       * <pre>
+       *用户之间的关系
+       * </pre>
+       *
+       * <code>optional .core.UserRelation relation = 2;</code>
+       */
+      public int getRelationValue() {
+        return relation_;
+      }
+      /**
+       * <pre>
+       *用户之间的关系
+       * </pre>
+       *
+       * <code>optional .core.UserRelation relation = 2;</code>
+       */
+      public Builder setRelationValue(int value) {
+        relation_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户之间的关系
+       * </pre>
+       *
+       * <code>optional .core.UserRelation relation = 2;</code>
+       */
+      public com.akaxin.proto.core.UserProto.UserRelation getRelation() {
+        com.akaxin.proto.core.UserProto.UserRelation result = com.akaxin.proto.core.UserProto.UserRelation.valueOf(relation_);
+        return result == null ? com.akaxin.proto.core.UserProto.UserRelation.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *用户之间的关系
+       * </pre>
+       *
+       * <code>optional .core.UserRelation relation = 2;</code>
+       */
+      public Builder setRelation(com.akaxin.proto.core.UserProto.UserRelation value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        relation_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户之间的关系
+       * </pre>
+       *
+       * <code>optional .core.UserRelation relation = 2;</code>
+       */
+      public Builder clearRelation() {
+        
+        relation_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object userIdPubk_ = "";
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public java.lang.String getUserIdPubk() {
+        java.lang.Object ref = userIdPubk_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          userIdPubk_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIdPubkBytes() {
+        java.lang.Object ref = userIdPubk_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userIdPubk_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public Builder setUserIdPubk(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        userIdPubk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public Builder clearUserIdPubk() {
+        
+        userIdPubk_ = getDefaultInstance().getUserIdPubk();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户公钥
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 3;</code>
+       */
+      public Builder setUserIdPubkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        userIdPubk_ = value;
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1193,13 +1494,14 @@ public final class ApiUserSearchProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\032site/api_user_search.proto\022\004site\032\017core" +
-      "/user.proto\",\n\024ApiUserSearchRequest\022\024\n\014u" +
-      "ser_id_pubk\030\001 \001(\t\";\n\025ApiUserSearchRespon" +
-      "se\022\"\n\007profile\030\001 \001(\0132\021.core.UserProfile2Y" +
-      "\n\024ApiUserSearchService\022A\n\006search\022\032.site." +
-      "ApiUserSearchRequest\032\033.site.ApiUserSearc" +
-      "hResponseB+\n\025com.akaxin.proto.siteB\022ApiU" +
-      "serSearchProtob\006proto3"
+      "/user.proto\"\"\n\024ApiUserSearchRequest\022\n\n\002i" +
+      "d\030\001 \001(\t\"w\n\025ApiUserSearchResponse\022\"\n\007prof" +
+      "ile\030\001 \001(\0132\021.core.UserProfile\022$\n\010relation" +
+      "\030\002 \001(\0162\022.core.UserRelation\022\024\n\014user_id_pu" +
+      "bk\030\003 \001(\t2Y\n\024ApiUserSearchService\022A\n\006sear" +
+      "ch\022\032.site.ApiUserSearchRequest\032\033.site.Ap" +
+      "iUserSearchResponseB+\n\025com.akaxin.proto." +
+      "siteB\022ApiUserSearchProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1219,13 +1521,13 @@ public final class ApiUserSearchProto {
     internal_static_site_ApiUserSearchRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiUserSearchRequest_descriptor,
-        new java.lang.String[] { "UserIdPubk", });
+        new java.lang.String[] { "Id", });
     internal_static_site_ApiUserSearchResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_site_ApiUserSearchResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiUserSearchResponse_descriptor,
-        new java.lang.String[] { "Profile", });
+        new java.lang.String[] { "Profile", "Relation", "UserIdPubk", });
     com.akaxin.proto.core.UserProto.getDescriptor();
   }
 

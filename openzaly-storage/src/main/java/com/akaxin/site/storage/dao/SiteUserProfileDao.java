@@ -132,11 +132,11 @@ public class SiteUserProfileDao {
 		return siteUserId;
 	}
 
-	// userIdPubk -> siteUserId
-	public String querySiteUserIdByPubk(String userIdPubk) throws SQLException {
+	// phoneId -> siteUserId
+	public String querySiteUserIdPhone(String phoneId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String siteUserId = null;
-		String sql = "SELECT site_user_id FROM " + SQLConst.SITE_USER_PROFILE + " WHERE user_id_pubk=?;";
+		String sql = "SELECT site_user_id FROM " + SQLConst.SITE_USER_PROFILE + " WHERE phone_id=?;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -144,7 +144,7 @@ public class SiteUserProfileDao {
 		try {
 			conn = DatabaseConnection.getSlaveConnection();
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, userIdPubk);
+			pst.setString(1, phoneId);
 
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -156,7 +156,7 @@ public class SiteUserProfileDao {
 			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
-		LogUtils.dbDebugLog(logger, startTime, siteUserId, sql, userIdPubk);
+		LogUtils.dbDebugLog(logger, startTime, siteUserId, sql, phoneId);
 		return siteUserId;
 	}
 
@@ -310,38 +310,6 @@ public class SiteUserProfileDao {
 		return userBean;
 	}
 
-	// userIdPubk -> Simple Profile
-	public SimpleUserBean querySimpleProfileByPubk(String userIdPubk) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
-				+ " WHERE user_id_pubk=?;";
-
-		SimpleUserBean userBean = null;
-
-		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			conn = DatabaseConnection.getSlaveConnection();
-			pst = conn.prepareStatement(sql);
-			pst.setString(1, userIdPubk);
-
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				userBean = new SimpleUserBean();
-				userBean.setUserId(rs.getString(1));
-				userBean.setUserName(rs.getString(2));
-				userBean.setUserPhoto(rs.getString(3));
-				userBean.setUserStatus(rs.getInt(4));
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-
-		LogUtils.dbDebugLog(logger, startTime, userBean, sql, userIdPubk);
-		return userBean;
-	}
-
 	// siteUserId -> Full Profile
 	public UserProfileBean queryUserProfileById(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
@@ -378,6 +346,44 @@ public class SiteUserProfileDao {
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId);
+		return userBean;
+	}
+
+	// globalUserId -> Full Profile
+	public UserProfileBean queryUserProfileByGlobalUserId(String globalUserId) throws SQLException {
+		long startTime = System.currentTimeMillis();
+		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
+				+ USER_PROFILE_TABLE + " WHERE global_user_id=?;";
+
+		UserProfileBean userBean = null;
+
+		Connection conn = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseConnection.getSlaveConnection();
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, globalUserId);
+
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				userBean = new UserProfileBean();
+				userBean.setSiteUserId(rs.getString(1));
+				userBean.setSiteLoginId(rs.getString(2));
+				userBean.setUserIdPubk(rs.getString(3));
+				userBean.setUserName(rs.getString(4));
+				userBean.setUserPhoto(rs.getString(5));
+				userBean.setSelfIntroduce(rs.getString(6));
+				userBean.setUserStatus(rs.getInt(7));
+				userBean.setRegisterTime(rs.getLong(8));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DatabaseConnection.returnConnection(conn, pst, rs);
+		}
+
+		LogUtils.dbDebugLog(logger, startTime, userBean, sql, globalUserId);
 		return userBean;
 	}
 
@@ -424,82 +430,6 @@ public class SiteUserProfileDao {
 		}
 
 		LogUtils.dbDebugLog(logger, startTime, userBean, sql, siteUserId, siteFriendId);
-		return userBean;
-	}
-
-	// globalUserId -> Full Profile
-	public UserProfileBean queryUserProfileByGlobalUserId(String globalUserId) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,self_introduce,user_status,register_time FROM "
-				+ USER_PROFILE_TABLE + " WHERE global_user_id=?;";
-
-		UserProfileBean userBean = null;
-
-		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			conn = DatabaseConnection.getSlaveConnection();
-			pst = conn.prepareStatement(sql);
-			pst.setString(1, globalUserId);
-
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				userBean = new UserProfileBean();
-				userBean.setSiteUserId(rs.getString(1));
-				userBean.setSiteLoginId(rs.getString(2));
-				userBean.setUserIdPubk(rs.getString(3));
-				userBean.setUserName(rs.getString(4));
-				userBean.setUserPhoto(rs.getString(5));
-				userBean.setSelfIntroduce(rs.getString(6));
-				userBean.setUserStatus(rs.getInt(7));
-				userBean.setRegisterTime(rs.getLong(8));
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			DatabaseConnection.returnConnection(conn, pst, rs);
-		}
-
-		LogUtils.dbDebugLog(logger, startTime, userBean, sql, globalUserId);
-		return userBean;
-	}
-
-	// userIdPubk -> Full Profile
-	public UserProfileBean queryUserProfileByPubk(String userIdPubk) throws SQLException {
-		long startTime = System.currentTimeMillis();
-		String sql = "SELECT site_user_id,site_login_id,user_id_pubk,user_name,user_photo,user_status,self_introduce,register_time FROM "
-				+ USER_PROFILE_TABLE + " WHERE user_id_pubk=?;";
-
-		UserProfileBean userBean = null;
-
-		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			conn = DatabaseConnection.getSlaveConnection();
-			pst = conn.prepareStatement(sql);
-			pst.setString(1, userIdPubk);
-
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				userBean = new UserProfileBean();
-				userBean.setSiteUserId(rs.getString(1));
-				userBean.setSiteLoginId(rs.getString(2));
-				userBean.setUserIdPubk(rs.getString(3));
-				userBean.setUserName(rs.getString(4));
-				userBean.setUserPhoto(rs.getString(5));
-				userBean.setUserStatus(rs.getInt(6));
-				userBean.setSelfIntroduce(rs.getString(7));
-				userBean.setRegisterTime(rs.getLong(8));
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			DatabaseConnection.returnConnection(conn, pst, rs);
-		}
-
-		LogUtils.dbDebugLog(logger, startTime, userBean, sql, userIdPubk);
 		return userBean;
 	}
 
