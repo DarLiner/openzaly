@@ -9,18 +9,18 @@ import io.netty.handler.ssl.SslContextBuilder;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-06-20 21:04:43
  */
-public class PlatformSSLContext {
+public class ZalySSLContext {
 
 	private static SslContext sslContext;
 
-	private PlatformSSLContext() {
+	private ZalySSLContext() {
 
 	}
 
 	public static SslContext getSSLContext() {
 		try {
 			if (sslContext == null) {
-				sslContext = SslContextBuilder.forClient().trustManager(PlatformTrustManagerFactory.INSTANCE).build();
+				sslContext = SslContextBuilder.forClient().trustManager(ZalyTrustManagerFactory.INSTANCE).build();
 			}
 		} catch (Exception e) {
 			throw new Error("Failed to initialize platform SSLContext", e);

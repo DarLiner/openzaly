@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.akaxin.common.command.RedisCommand;
 import com.akaxin.common.netty.codec.MessageDecoder;
 import com.akaxin.common.netty.codec.MessageEncoder;
-import com.akaxin.common.ssl.PlatformSSLContext;
+import com.akaxin.common.ssl.ZalySSLContext;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -61,6 +61,9 @@ public class PlatformSSLClient {
 	private static final Exception CONNECT_EXCEPTION = new Exception("client connect to server error");
 	private PlatformClientHandler nettyClientHandler;
 
+	private String peerHost;
+	private int peerPort;
+
 	public PlatformSSLClient() {
 		try {
 			clientBoot.option(ChannelOption.TCP_NODELAY, true);
@@ -72,8 +75,8 @@ public class PlatformSSLClient {
 				@Override
 				protected void initChannel(Channel channel) throws Exception {
 					// use ssl
-					SslContext sslContext = PlatformSSLContext.getSSLContext();
-					SSLEngine sslEngine = sslContext.newEngine(channel.alloc());
+					SslContext sslContext = ZalySSLContext.getSSLContext();
+					SSLEngine sslEngine = sslContext.newEngine(channel.alloc(), peerHost, peerPort);
 					channel.pipeline().addLast(new SslHandler(sslEngine));
 
 					channel.pipeline().addLast(new MessageEncoder());
@@ -94,6 +97,9 @@ public class PlatformSSLClient {
 
 	public Future<Void> connect(String address, int port) {
 		final Future<Void> connectionFuture;
+		this.peerHost = address;
+		this.peerPort = port;
+		
 		synchronized (clientBoot) {
 			if (this.channelPromise == null) {
 				try {
@@ -105,11 +111,6 @@ public class PlatformSSLClient {
 				}
 
 			}
-			// if (this.channelPromise != null) {
-			// logger.info("Finish this APNs connect isSuccess={} AND its channel
-			// isActive={}",
-			// this.channelPromise.isSuccess(), this.channelPromise.channel().isActive());
-			// }
 			connectionFuture = this.channelPromise;
 		}
 		// logger.info("connect to server connectionFuture={}", connectionFuture);
@@ -122,7 +123,6 @@ public class PlatformSSLClient {
 				eventLoopGroup.shutdownGracefully();
 				eventLoopGroup.terminationFuture().sync();
 			}
-			// logger.info("=========shut down gracefully==========");
 		} catch (InterruptedException e) {
 			logger.error("shutdown netty client error.", e);
 		}
@@ -130,9 +130,6 @@ public class PlatformSSLClient {
 
 	public Future<IRedisCommandResponse> sendRedisCommand(final RedisCommand redisCommand) {
 		final Future<IRedisCommandResponse> responseFuture;
-		// logger.info("send push message {} {} {}", channelPromise,
-		// channelPromise.isSuccess(),
-		// channelPromise.channel().isActive());
 		if (channelPromise != null) {
 			final ChannelPromise readyPromise = this.channelPromise;
 
