@@ -41,7 +41,7 @@ public class Helper {
 			Options options = new Options();
 			options.addOption("h", false, "help message list");
 			options.addOption("help", false, "help message list");
-			options.addOption("TEAM", false, "specify openzaly TEAM edition and init database config");
+			options.addOption("team", false, "specify openzaly TEAM edition and init database config");
 			options.addOption("upgrade", false, "upgrade openzaly server and database");
 			options.addOption("migrate", false, "migrate data from sqlite to mysql");
 			DefaultParser posixParser = new DefaultParser();
