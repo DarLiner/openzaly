@@ -176,7 +176,9 @@ public class ApiFriendService extends AbstractRequest {
 							friendBuilder.setUsernameInLatin(friendBean.getAliasNameInLatin());
 						}
 					} else {
-						friendBuilder.setUserName(friendBean.getUserName());
+						if (StringUtils.isNotEmpty(friendBean.getUserName())) {
+							friendBuilder.setUserName(friendBean.getUserName());
+						}
 						if (StringUtils.isNotEmpty(friendBean.getUserNameInLatin())) {
 							friendBuilder.setUsernameInLatin(friendBean.getUserNameInLatin());
 						}
