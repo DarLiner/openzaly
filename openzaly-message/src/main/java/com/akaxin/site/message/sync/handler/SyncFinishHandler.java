@@ -82,7 +82,7 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 				if (groupFinishPointer > maxGroupMsgPointer) {
 					groupFinishPointer = maxGroupMsgPointer;
 				} else if (groupFinishPointer < maxGroupMsgPointer) {
-					goOnPSN = true;
+//					goOnPSN = true;
 				}
 
 				syncDao.updateGroupPointer(siteGroupId, siteUserId, deviceId, groupFinishPointer);
