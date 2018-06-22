@@ -96,7 +96,7 @@ public class ApiUserService extends AbstractRequest {
 			if (userBean != null && StringUtils.isNotBlank(userBean.getSiteUserId())) {
 				UserProto.UserProfile.Builder friendProfileBuilder = UserProto.UserProfile.newBuilder();
 				friendProfileBuilder.setSiteUserId(userBean.getSiteUserId());
-
+				friendProfileBuilder.setUserIdPubk(userBean.getUserIdPubk());
 				if (StringUtils.isNotEmpty(userBean.getAliasName())) {
 					friendProfileBuilder.setUserName(userBean.getAliasName());
 					if (StringUtils.isNotEmpty(userBean.getUserName())) {
@@ -121,9 +121,8 @@ public class ApiUserService extends AbstractRequest {
 				// 查关系
 				UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
 						userBean.getSiteUserId());
-				ApiFriendProfileProto.ApiFriendProfileResponse response = ApiFriendProfileProto.ApiFriendProfileResponse
-						.newBuilder().setProfile(friendProfile).setRelation(userRelation)
-						.setUserIdPubk(userBean.getUserIdPubk()).build();
+				ApiUserSearchProto.ApiUserSearchResponse response = ApiUserSearchProto.ApiUserSearchResponse
+						.newBuilder().setProfile(friendProfile).setRelation(userRelation).build();
 				commandResponse.setParams(response.toByteArray());
 				errCode = ErrorCode2.SUCCESS;
 			}

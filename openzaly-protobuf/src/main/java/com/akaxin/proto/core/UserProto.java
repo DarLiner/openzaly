@@ -399,10 +399,28 @@ public final class UserProto {
      */
     com.google.protobuf.ByteString
         getUsernameInLatinBytes();
+
+    /**
+     * <pre>
+     *用户公钥 SimpleUserProfile 不需要
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 10;</code>
+     */
+    java.lang.String getUserIdPubk();
+    /**
+     * <pre>
+     *用户公钥 SimpleUserProfile 不需要
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 10;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdPubkBytes();
   }
   /**
    * <pre>
-   *最简单的用户信息，用于给别人呈现
+   *获取用户的详细信息
    * </pre>
    *
    * Protobuf type {@code core.UserProfile}
@@ -425,6 +443,7 @@ public final class UserProto {
       siteLoginId_ = "";
       nickName_ = "";
       usernameInLatin_ = "";
+      userIdPubk_ = "";
     }
 
     @java.lang.Override
@@ -503,6 +522,12 @@ public final class UserProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               usernameInLatin_ = s;
+              break;
+            }
+            case 82: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              userIdPubk_ = s;
               break;
             }
           }
@@ -823,6 +848,48 @@ public final class UserProto {
       }
     }
 
+    public static final int USER_ID_PUBK_FIELD_NUMBER = 10;
+    private volatile java.lang.Object userIdPubk_;
+    /**
+     * <pre>
+     *用户公钥 SimpleUserProfile 不需要
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 10;</code>
+     */
+    public java.lang.String getUserIdPubk() {
+      java.lang.Object ref = userIdPubk_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userIdPubk_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *用户公钥 SimpleUserProfile 不需要
+     * </pre>
+     *
+     * <code>optional string user_id_pubk = 10;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdPubkBytes() {
+      java.lang.Object ref = userIdPubk_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userIdPubk_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -862,6 +929,9 @@ public final class UserProto {
       if (!getUsernameInLatinBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, usernameInLatin_);
       }
+      if (!getUserIdPubkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, userIdPubk_);
+      }
     }
 
     public int getSerializedSize() {
@@ -898,6 +968,9 @@ public final class UserProto {
       if (!getUsernameInLatinBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, usernameInLatin_);
       }
+      if (!getUserIdPubkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, userIdPubk_);
+      }
       memoizedSize = size;
       return size;
     }
@@ -931,6 +1004,8 @@ public final class UserProto {
           .equals(other.getNickName());
       result = result && getUsernameInLatin()
           .equals(other.getUsernameInLatin());
+      result = result && getUserIdPubk()
+          .equals(other.getUserIdPubk());
       return result;
     }
 
@@ -960,6 +1035,8 @@ public final class UserProto {
       hash = (53 * hash) + getNickName().hashCode();
       hash = (37 * hash) + USERNAME_IN_LATIN_FIELD_NUMBER;
       hash = (53 * hash) + getUsernameInLatin().hashCode();
+      hash = (37 * hash) + USER_ID_PUBK_FIELD_NUMBER;
+      hash = (53 * hash) + getUserIdPubk().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1044,7 +1121,7 @@ public final class UserProto {
     }
     /**
      * <pre>
-     *最简单的用户信息，用于给别人呈现
+     *获取用户的详细信息
      * </pre>
      *
      * Protobuf type {@code core.UserProfile}
@@ -1100,6 +1177,8 @@ public final class UserProto {
 
         usernameInLatin_ = "";
 
+        userIdPubk_ = "";
+
         return this;
       }
 
@@ -1131,6 +1210,7 @@ public final class UserProto {
         result.siteLoginId_ = siteLoginId_;
         result.nickName_ = nickName_;
         result.usernameInLatin_ = usernameInLatin_;
+        result.userIdPubk_ = userIdPubk_;
         onBuilt();
         return result;
       }
@@ -1204,6 +1284,10 @@ public final class UserProto {
         }
         if (!other.getUsernameInLatin().isEmpty()) {
           usernameInLatin_ = other.usernameInLatin_;
+          onChanged();
+        }
+        if (!other.getUserIdPubk().isEmpty()) {
+          userIdPubk_ = other.userIdPubk_;
           onChanged();
         }
         onChanged();
@@ -1864,6 +1948,95 @@ public final class UserProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object userIdPubk_ = "";
+      /**
+       * <pre>
+       *用户公钥 SimpleUserProfile 不需要
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 10;</code>
+       */
+      public java.lang.String getUserIdPubk() {
+        java.lang.Object ref = userIdPubk_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          userIdPubk_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户公钥 SimpleUserProfile 不需要
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 10;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIdPubkBytes() {
+        java.lang.Object ref = userIdPubk_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userIdPubk_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *用户公钥 SimpleUserProfile 不需要
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 10;</code>
+       */
+      public Builder setUserIdPubk(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        userIdPubk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户公钥 SimpleUserProfile 不需要
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 10;</code>
+       */
+      public Builder clearUserIdPubk() {
+        
+        userIdPubk_ = getDefaultInstance().getUserIdPubk();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *用户公钥 SimpleUserProfile 不需要
+       * </pre>
+       *
+       * <code>optional string user_id_pubk = 10;</code>
+       */
+      public Builder setUserIdPubkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        userIdPubk_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -2019,6 +2192,10 @@ public final class UserProto {
         getUsernameInLatinBytes();
   }
   /**
+   * <pre>
+   *获取用户的简单信息，一般用户展示列表等，例如用户好友列表
+   * </pre>
+   *
    * Protobuf type {@code core.SimpleUserProfile}
    */
   public  static final class SimpleUserProfile extends
@@ -2579,6 +2756,10 @@ public final class UserProto {
       return builder;
     }
     /**
+     * <pre>
+     *获取用户的简单信息，一般用户展示列表等，例如用户好友列表
+     * </pre>
+     *
      * Protobuf type {@code core.SimpleUserProfile}
      */
     public static final class Builder extends
@@ -4811,27 +4992,27 @@ public final class UserProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017core/user.proto\022\004core\"\345\001\n\013UserProfile\022" +
+      "\n\017core/user.proto\022\004core\"\373\001\n\013UserProfile\022" +
       "\024\n\014site_user_id\030\001 \001(\t\022\021\n\tuser_name\030\002 \001(\t" +
       "\022\022\n\nuser_photo\030\003 \001(\t\022\026\n\016self_introduce\030\004" +
       " \001(\t\022%\n\013user_status\030\005 \001(\0162\020.core.UserSta" +
       "tus\022\025\n\rregister_time\030\006 \001(\003\022\025\n\rsite_login" +
       "_id\030\007 \001(\t\022\021\n\tnick_name\030\010 \001(\t\022\031\n\021username" +
-      "_in_latin\030\t \001(\t\"\274\001\n\021SimpleUserProfile\022\024\n" +
-      "\014site_user_id\030\001 \001(\t\022\021\n\tuser_name\030\002 \001(\t\022\022" +
-      "\n\nuser_photo\030\003 \001(\t\022%\n\013user_status\030\004 \001(\0162" +
-      "\020.core.UserStatus\022\025\n\rsite_login_id\030\005 \001(\t",
-      "\022\021\n\tnick_name\030\006 \001(\t\022\031\n\021username_in_latin" +
-      "\030\007 \001(\t\"M\n\020ApplyUserProfile\022$\n\tapplyUser\030" +
-      "\001 \001(\0132\021.core.UserProfile\022\023\n\013applyReason\030" +
-      "\002 \001(\t\"e\n\023UserRelationProfile\022(\n\007profile\030" +
-      "\001 \001(\0132\027.core.SimpleUserProfile\022$\n\010relati" +
-      "on\030\002 \001(\0162\022.core.UserRelation*$\n\nUserStat" +
-      "us\022\n\n\006NORMAL\020\000\022\n\n\006SEALUP\020\001*\\\n\014UserRelati" +
-      "on\022\021\n\rRELATION_NONE\020\000\022\023\n\017RELATION_FRIEND" +
-      "\020\001\022\021\n\rRELATION_CARE\020\002\022\021\n\rRELATION_FANS\020\003" +
-      "B\"\n\025com.akaxin.proto.coreB\tUserProtob\006pr",
-      "oto3"
+      "_in_latin\030\t \001(\t\022\024\n\014user_id_pubk\030\n \001(\t\"\274\001" +
+      "\n\021SimpleUserProfile\022\024\n\014site_user_id\030\001 \001(" +
+      "\t\022\021\n\tuser_name\030\002 \001(\t\022\022\n\nuser_photo\030\003 \001(\t" +
+      "\022%\n\013user_status\030\004 \001(\0162\020.core.UserStatus\022",
+      "\025\n\rsite_login_id\030\005 \001(\t\022\021\n\tnick_name\030\006 \001(" +
+      "\t\022\031\n\021username_in_latin\030\007 \001(\t\"M\n\020ApplyUse" +
+      "rProfile\022$\n\tapplyUser\030\001 \001(\0132\021.core.UserP" +
+      "rofile\022\023\n\013applyReason\030\002 \001(\t\"e\n\023UserRelat" +
+      "ionProfile\022(\n\007profile\030\001 \001(\0132\027.core.Simpl" +
+      "eUserProfile\022$\n\010relation\030\002 \001(\0162\022.core.Us" +
+      "erRelation*$\n\nUserStatus\022\n\n\006NORMAL\020\000\022\n\n\006" +
+      "SEALUP\020\001*\\\n\014UserRelation\022\021\n\rRELATION_NON" +
+      "E\020\000\022\023\n\017RELATION_FRIEND\020\001\022\021\n\rRELATION_CAR" +
+      "E\020\002\022\021\n\rRELATION_FANS\020\003B\"\n\025com.akaxin.pro",
+      "to.coreB\tUserProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4850,7 +5031,7 @@ public final class UserProto {
     internal_static_core_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_UserProfile_descriptor,
-        new java.lang.String[] { "SiteUserId", "UserName", "UserPhoto", "SelfIntroduce", "UserStatus", "RegisterTime", "SiteLoginId", "NickName", "UsernameInLatin", });
+        new java.lang.String[] { "SiteUserId", "UserName", "UserPhoto", "SelfIntroduce", "UserStatus", "RegisterTime", "SiteLoginId", "NickName", "UsernameInLatin", "UserIdPubk", });
     internal_static_core_SimpleUserProfile_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_core_SimpleUserProfile_fieldAccessorTable = new

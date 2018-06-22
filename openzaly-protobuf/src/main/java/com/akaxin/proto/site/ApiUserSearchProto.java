@@ -598,24 +598,6 @@ public final class ApiUserSearchProto {
      * <code>optional .core.UserRelation relation = 2;</code>
      */
     com.akaxin.proto.core.UserProto.UserRelation getRelation();
-
-    /**
-     * <pre>
-     *用户公钥
-     * </pre>
-     *
-     * <code>optional string user_id_pubk = 3;</code>
-     */
-    java.lang.String getUserIdPubk();
-    /**
-     * <pre>
-     *用户公钥
-     * </pre>
-     *
-     * <code>optional string user_id_pubk = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getUserIdPubkBytes();
   }
   /**
    * Protobuf type {@code site.ApiUserSearchResponse}
@@ -630,7 +612,6 @@ public final class ApiUserSearchProto {
     }
     private ApiUserSearchResponse() {
       relation_ = 0;
-      userIdPubk_ = "";
     }
 
     @java.lang.Override
@@ -675,12 +656,6 @@ public final class ApiUserSearchProto {
               int rawValue = input.readEnum();
 
               relation_ = rawValue;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              userIdPubk_ = s;
               break;
             }
           }
@@ -763,48 +738,6 @@ public final class ApiUserSearchProto {
       return result == null ? com.akaxin.proto.core.UserProto.UserRelation.UNRECOGNIZED : result;
     }
 
-    public static final int USER_ID_PUBK_FIELD_NUMBER = 3;
-    private volatile java.lang.Object userIdPubk_;
-    /**
-     * <pre>
-     *用户公钥
-     * </pre>
-     *
-     * <code>optional string user_id_pubk = 3;</code>
-     */
-    public java.lang.String getUserIdPubk() {
-      java.lang.Object ref = userIdPubk_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        userIdPubk_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *用户公钥
-     * </pre>
-     *
-     * <code>optional string user_id_pubk = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getUserIdPubkBytes() {
-      java.lang.Object ref = userIdPubk_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        userIdPubk_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -823,9 +756,6 @@ public final class ApiUserSearchProto {
       if (relation_ != com.akaxin.proto.core.UserProto.UserRelation.RELATION_NONE.getNumber()) {
         output.writeEnum(2, relation_);
       }
-      if (!getUserIdPubkBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, userIdPubk_);
-      }
     }
 
     public int getSerializedSize() {
@@ -840,9 +770,6 @@ public final class ApiUserSearchProto {
       if (relation_ != com.akaxin.proto.core.UserProto.UserRelation.RELATION_NONE.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, relation_);
-      }
-      if (!getUserIdPubkBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, userIdPubk_);
       }
       memoizedSize = size;
       return size;
@@ -866,8 +793,6 @@ public final class ApiUserSearchProto {
             .equals(other.getProfile());
       }
       result = result && relation_ == other.relation_;
-      result = result && getUserIdPubk()
-          .equals(other.getUserIdPubk());
       return result;
     }
 
@@ -884,8 +809,6 @@ public final class ApiUserSearchProto {
       }
       hash = (37 * hash) + RELATION_FIELD_NUMBER;
       hash = (53 * hash) + relation_;
-      hash = (37 * hash) + USER_ID_PUBK_FIELD_NUMBER;
-      hash = (53 * hash) + getUserIdPubk().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1012,8 +935,6 @@ public final class ApiUserSearchProto {
         }
         relation_ = 0;
 
-        userIdPubk_ = "";
-
         return this;
       }
 
@@ -1042,7 +963,6 @@ public final class ApiUserSearchProto {
           result.profile_ = profileBuilder_.build();
         }
         result.relation_ = relation_;
-        result.userIdPubk_ = userIdPubk_;
         onBuilt();
         return result;
       }
@@ -1089,10 +1009,6 @@ public final class ApiUserSearchProto {
         }
         if (other.relation_ != 0) {
           setRelationValue(other.getRelationValue());
-        }
-        if (!other.getUserIdPubk().isEmpty()) {
-          userIdPubk_ = other.userIdPubk_;
-          onChanged();
         }
         onChanged();
         return this;
@@ -1336,95 +1252,6 @@ public final class ApiUserSearchProto {
         onChanged();
         return this;
       }
-
-      private java.lang.Object userIdPubk_ = "";
-      /**
-       * <pre>
-       *用户公钥
-       * </pre>
-       *
-       * <code>optional string user_id_pubk = 3;</code>
-       */
-      public java.lang.String getUserIdPubk() {
-        java.lang.Object ref = userIdPubk_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          userIdPubk_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       *用户公钥
-       * </pre>
-       *
-       * <code>optional string user_id_pubk = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getUserIdPubkBytes() {
-        java.lang.Object ref = userIdPubk_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          userIdPubk_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *用户公钥
-       * </pre>
-       *
-       * <code>optional string user_id_pubk = 3;</code>
-       */
-      public Builder setUserIdPubk(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        userIdPubk_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *用户公钥
-       * </pre>
-       *
-       * <code>optional string user_id_pubk = 3;</code>
-       */
-      public Builder clearUserIdPubk() {
-        
-        userIdPubk_ = getDefaultInstance().getUserIdPubk();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *用户公钥
-       * </pre>
-       *
-       * <code>optional string user_id_pubk = 3;</code>
-       */
-      public Builder setUserIdPubkBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        userIdPubk_ = value;
-        onChanged();
-        return this;
-      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return this;
@@ -1495,13 +1322,13 @@ public final class ApiUserSearchProto {
     java.lang.String[] descriptorData = {
       "\n\032site/api_user_search.proto\022\004site\032\017core" +
       "/user.proto\"\"\n\024ApiUserSearchRequest\022\n\n\002i" +
-      "d\030\001 \001(\t\"w\n\025ApiUserSearchResponse\022\"\n\007prof" +
+      "d\030\001 \001(\t\"a\n\025ApiUserSearchResponse\022\"\n\007prof" +
       "ile\030\001 \001(\0132\021.core.UserProfile\022$\n\010relation" +
-      "\030\002 \001(\0162\022.core.UserRelation\022\024\n\014user_id_pu" +
-      "bk\030\003 \001(\t2Y\n\024ApiUserSearchService\022A\n\006sear" +
-      "ch\022\032.site.ApiUserSearchRequest\032\033.site.Ap" +
-      "iUserSearchResponseB+\n\025com.akaxin.proto." +
-      "siteB\022ApiUserSearchProtob\006proto3"
+      "\030\002 \001(\0162\022.core.UserRelation2Y\n\024ApiUserSea" +
+      "rchService\022A\n\006search\022\032.site.ApiUserSearc" +
+      "hRequest\032\033.site.ApiUserSearchResponseB+\n" +
+      "\025com.akaxin.proto.siteB\022ApiUserSearchPro" +
+      "tob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1527,7 +1354,7 @@ public final class ApiUserSearchProto {
     internal_static_site_ApiUserSearchResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_site_ApiUserSearchResponse_descriptor,
-        new java.lang.String[] { "Profile", "Relation", "UserIdPubk", });
+        new java.lang.String[] { "Profile", "Relation", });
     com.akaxin.proto.core.UserProto.getDescriptor();
   }
 
