@@ -77,6 +77,7 @@ public class ApiUserService extends AbstractRequest {
 			String siteFriendId = null;
 			if (id.length() > 100) {
 				String globalUserId = UserIdUtils.getV1GlobalUserId(id);
+				logger.info("api.user.search globalUserId={} pubk={}", globalUserId, id);
 				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalUserId);
 			} else if (ValidatorPattern.isPhoneId(id)) {
 				String phoneId = "+86:" + id;
