@@ -89,8 +89,7 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 			}
 
 			if (goOnPSN) {
-				logger.info("---------------------go on psn dbMaxPointer={} request={}", maxU2MessageId,
-						request.toString());
+				logger.debug("go on psn dbMaxPointer={} request={}", maxU2MessageId, request.toString());
 				writePsn(deviceId);
 			}
 

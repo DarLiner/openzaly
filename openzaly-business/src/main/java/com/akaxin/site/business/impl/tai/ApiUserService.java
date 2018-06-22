@@ -33,7 +33,6 @@ import com.akaxin.common.utils.StringHelper;
 import com.akaxin.common.utils.UserIdUtils;
 import com.akaxin.common.utils.ValidatorPattern;
 import com.akaxin.proto.core.UserProto;
-import com.akaxin.proto.site.ApiFriendProfileProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserProfileProto;
 import com.akaxin.proto.site.ApiUserSearchProto;
@@ -76,9 +75,10 @@ public class ApiUserService extends AbstractRequest {
 
 			String siteFriendId = null;
 			if (id.length() > 100) {
-				String globalUserId = UserIdUtils.getV1GlobalUserId(id);
-				logger.info("api.user.search globalUserId={} pubk={}", globalUserId, id);
-				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalUserId);
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+//				String globalUserId = UserIdUtils.getV1GlobalUserId(id);
+//				logger.info("api.user.search globalUserId={} pubk={}", globalUserId, id);
+//				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalUserId);
 			} else if (ValidatorPattern.isPhoneId(id)) {
 				String phoneId = "+86:" + id;
 				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByPhone(phoneId);
