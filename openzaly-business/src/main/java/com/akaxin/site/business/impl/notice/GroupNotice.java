@@ -84,6 +84,11 @@ public class GroupNotice {
 					}
 				}
 			}
+
+			if (noticeText.length() == 0) {
+				noticeText.append("新人");
+			}
+
 			noticeText.append(NoticeText.USER_ADD_GROUP);
 			this.groupMsgNotice(siteUserId, groupId, noticeText.toString());
 		} catch (Exception e) {
