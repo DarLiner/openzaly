@@ -22,6 +22,10 @@ public class DatabaseConnection {
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 	private static final DBType DATABASE_TYPE = DBType.getDBType(System.getProperty("database"));
 
+	public static Connection getConnection(boolean isMaster) throws SQLException {
+		return isMaster ? getConnection() : getSlaveConnection();
+	}
+
 	public static Connection getConnection() throws SQLException {
 		switch (DATABASE_TYPE) {
 		case PERSONAL:

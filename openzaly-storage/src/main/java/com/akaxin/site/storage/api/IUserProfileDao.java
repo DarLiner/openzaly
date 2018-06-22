@@ -24,7 +24,7 @@ public interface IUserProfileDao {
 
 	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException;
 
-	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException;
+	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId, boolean isMaster) throws SQLException;
 
 	public UserFriendBean getFriendProfileById(String siteUserId, String siteFriend) throws SQLException;
 

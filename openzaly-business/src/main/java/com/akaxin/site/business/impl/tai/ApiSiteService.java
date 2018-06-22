@@ -336,8 +336,8 @@ public class ApiSiteService extends AbstractRequest {
 			// 用户身份校验成功，方可执行登陆操作
 			if (userSignResult) {
 				String globalUserId = UserIdUtils.getV1GlobalUserId(userIdPubk);
-				// 判断用户，是否已经注册
-				SimpleUserBean subean = UserProfileDao.getInstance().getSimpleProfileByGlobalUserId(globalUserId);
+				// 判断用户，是否已经注册,从主库中查找
+				SimpleUserBean subean = UserProfileDao.getInstance().getSimpleProfileByGlobalUserId(globalUserId, true);
 				if (subean == null || StringUtils.isEmpty(subean.getUserId())) {
 					logger.info("login site: new user need to register before login site");
 					errCode = ErrorCode2.ERROR2_LOGGIN_NOREGISTER;// 未注册,告知用户执行注册行为

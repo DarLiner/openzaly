@@ -68,8 +68,8 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
-	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) throws SQLException {
-		return SiteUserProfileDao.getInstance().querySimpleProfileByGlobalUserId(globalUserId);
+	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId, boolean isMaster) throws SQLException {
+		return SiteUserProfileDao.getInstance().querySimpleProfileByGlobalUserId(globalUserId, isMaster);
 	}
 
 	@Override

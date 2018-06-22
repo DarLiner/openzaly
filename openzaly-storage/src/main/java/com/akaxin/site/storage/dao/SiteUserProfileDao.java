@@ -279,7 +279,7 @@ public class SiteUserProfileDao {
 	}
 
 	// globalUserId -> Simple Profile
-	public SimpleUserBean querySimpleProfileByGlobalUserId(String globalUserId) throws SQLException {
+	public SimpleUserBean querySimpleProfileByGlobalUserId(String globalUserId, boolean isMaster) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		SimpleUserBean userBean = new SimpleUserBean();
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
@@ -289,7 +289,7 @@ public class SiteUserProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getSlaveConnection();
+			conn = DatabaseConnection.getConnection(isMaster);
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, globalUserId);
 

@@ -89,9 +89,13 @@ public class UserProfileDao {
 	}
 
 	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId) {
+		return getSimpleProfileByGlobalUserId(globalUserId, false);
+	}
+
+	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId, boolean isMaster) {
 		SimpleUserBean userBean = new SimpleUserBean();
 		try {
-			userBean = userProfileDao.getSimpleProfileByGlobalUserId(globalUserId);
+			userBean = userProfileDao.getSimpleProfileByGlobalUserId(globalUserId, isMaster);
 		} catch (SQLException e) {
 			logger.error("get User Simple Profile by globalUserId error.", e);
 		}
