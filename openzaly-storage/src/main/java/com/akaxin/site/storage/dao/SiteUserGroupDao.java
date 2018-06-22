@@ -433,7 +433,7 @@ public class SiteUserGroupDao {
 		int startNum = (pageNum - 1) * pageSize;
 		String sql = "SELECT a.site_friend_id,b.user_name,b.user_photo FROM " + SQLConst.SITE_USER_FRIEND
 				+ " AS a LEFT JOIN " + SQLConst.SITE_USER_PROFILE
-				+ " AS b WHERE a.site_friend_id=b.site_user_id AND a.site_user_id=? AND a.site_friend_id NOT IN (SELECT DISTINCT site_user_id FROM "
+				+ " AS b ON a.site_friend_id=b.site_user_id WHERE a.site_user_id=? AND a.site_friend_id NOT IN (SELECT DISTINCT site_user_id FROM "
 				+ SQLConst.SITE_USER_GROUP + " WHERE site_group_id=?) LIMIT ?,?;";
 
 		Connection conn = null;
