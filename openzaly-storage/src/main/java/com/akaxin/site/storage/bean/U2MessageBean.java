@@ -1,5 +1,7 @@
 package com.akaxin.site.storage.bean;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.akaxin.common.utils.GsonUtils;
 
 public class U2MessageBean {
@@ -47,7 +49,7 @@ public class U2MessageBean {
 	}
 
 	public String getReceiveUserId() {
-		return receiveUserId;
+		return StringUtils.isNotEmpty(receiveUserId) ? receiveUserId : this.siteUserId;
 	}
 
 	public void setReceiveUserId(String receiveUserId) {
