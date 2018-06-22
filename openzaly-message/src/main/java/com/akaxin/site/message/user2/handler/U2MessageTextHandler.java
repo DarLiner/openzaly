@@ -68,9 +68,9 @@ public class U2MessageTextHandler extends AbstractU2Handler<Command> {
 
 				boolean success = messageDao.saveU2Message(u2Bean);
 
-				if (command.isProxy()) {
+				if (success && command.isProxy()) {
 					U2MessageBean proxyBean = new U2MessageBean();
-					proxyBean.setMsgId(msgId);
+					proxyBean.setMsgId(buildU2MsgId(proxySiteUserId));
 					proxyBean.setMsgType(type);
 					proxyBean.setSiteUserId(proxySiteUserId);
 					proxyBean.setSendUserId(proxySiteUserId);
