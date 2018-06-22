@@ -75,17 +75,15 @@ public class RSACrypto {
 		try {
 			pemWriter.writeObject(key);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
+			logger.error("get pem from rsa key error.", e);
 		} finally {
 			try {
 				if (pemWriter != null) {
 					pemWriter.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("close pemwriter error.", e);
 			}
-
 		}
 		return pemStrWriter.toString();
 	}
@@ -129,5 +127,4 @@ public class RSACrypto {
 		}
 		return key;
 	}
-
 }
