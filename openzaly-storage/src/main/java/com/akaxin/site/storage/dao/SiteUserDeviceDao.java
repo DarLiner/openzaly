@@ -170,7 +170,7 @@ public class SiteUserDeviceDao {
 		UserDeviceBean deviceBean = new UserDeviceBean();
 		String sql = "SELECT a.site_user_id,a.device_id,a.login_time,b.device_name,b.device_ip,b.active_time,b.add_time from "
 				+ USER_SESSION_TABLE + " AS a LEFT JOIN " + USER_DEVICE_TABLE
-				+ " AS b WHERE a.site_user_id=b.site_user_id AND a.device_id=b.device_id AND a.site_user_id=? AND a.device_id=?;";
+				+ " AS b ON a.site_user_id=b.site_user_id AND a.device_id=b.device_id WHERE a.site_user_id=? AND a.device_id=?;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
