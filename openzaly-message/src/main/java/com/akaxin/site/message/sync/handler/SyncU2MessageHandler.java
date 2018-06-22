@@ -68,7 +68,6 @@ public class SyncU2MessageHandler extends AbstractSyncHandler<Command> {
 			long u2Pointer = syncDao.queryU2Pointer(siteUserId, deviceId);
 			long startPointer = NumUtils.getMax(clientU2Pointer, u2Pointer);
 			int syncTotalCount = 0;
-
 			while (true) {
 				// 批量一次查询100条U2消息
 				List<U2MessageBean> u2MessageList = syncDao.queryU2Message(siteUserId, deviceId, startPointer,

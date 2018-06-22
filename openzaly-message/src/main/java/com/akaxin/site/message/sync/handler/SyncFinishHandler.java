@@ -52,16 +52,17 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			boolean goOnPSN = false;
+
+			long maxU2Pointer = syncDao.queryMaxU2Pointer(siteUserId);// 查从库
+			if (u2Pointer < maxU2Pointer) {
+				u2Pointer = maxU2Pointer;
+			}
 			// 如果客户端上传的游标大于数据库里个人消息id的最大值，游标错误，使用消息最大id矫正
 			long maxU2MessageId = syncDao.queryMaxU2MessageId(siteUserId);// 查主库
 			if (u2Pointer > maxU2MessageId) {
 				u2Pointer = maxU2MessageId;
 			} else if (u2Pointer < maxU2MessageId) {
 				goOnPSN = true;
-			}
-			long maxU2Pointer = syncDao.queryMaxU2Pointer(siteUserId);// 查从库
-			if (u2Pointer < maxU2Pointer) {
-				u2Pointer = maxU2Pointer;
 			}
 
 			syncDao.updateU2Pointer(siteUserId, deviceId, u2Pointer);
@@ -71,17 +72,17 @@ public class SyncFinishHandler extends AbstractSyncHandler<Command> {
 				String siteGroupId = gidEntry.getKey();
 				long groupFinishPointer = gidEntry.getValue();
 
+				long maxUserGroupPointer = syncDao.queryMaxUserGroupPointer(siteGroupId, siteUserId);// 从库
+				if (groupFinishPointer < maxUserGroupPointer) {
+					groupFinishPointer = maxUserGroupPointer;
+				}
+
 				// 群游标结束值 > 用户群组的最大消息id，说明此值错误，使用最大消息id矫正
 				long maxGroupMsgPointer = syncDao.queryMaxGroupPointer(siteGroupId);// 查主库
 				if (groupFinishPointer > maxGroupMsgPointer) {
 					groupFinishPointer = maxGroupMsgPointer;
 				} else if (groupFinishPointer < maxGroupMsgPointer) {
 					goOnPSN = true;
-				}
-
-				long maxUserGroupPointer = syncDao.queryMaxUserGroupPointer(siteGroupId, siteUserId);// 从库
-				if (groupFinishPointer < maxUserGroupPointer) {
-					groupFinishPointer = maxUserGroupPointer;
 				}
 
 				syncDao.updateGroupPointer(siteGroupId, siteUserId, deviceId, groupFinishPointer);
