@@ -296,7 +296,7 @@ public class ApiSiteService extends AbstractRequest {
 	 */
 	public CommandResponse login(Command command) {
 		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
-		ErrorCode2 errCode = ErrorCode2.ERROR;
+		IErrorCode errCode = ErrorCode2.ERROR;
 		try {
 			ApiSiteLoginProto.ApiSiteLoginRequest loginRequest = ApiSiteLoginProto.ApiSiteLoginRequest
 					.parseFrom(command.getParams());
@@ -309,18 +309,15 @@ public class ApiSiteService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, loginRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userIdSignBase64)) {
-				errCode = ErrorCode2.ERROR2_LOGGIN_USERID_EMPTY;
-				return commandResponse.setErrCode2(errCode);
+				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_USERID_EMPTY);
 			}
 
 			if (StringUtils.isAnyEmpty(userDeviceIdPubk, userDeviceIdSignBase64)) {
-				errCode = ErrorCode2.ERROR2_LOGGIN_DEVICEID_EMPTY;
-				return commandResponse.setErrCode2(errCode);
+				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_DEVICEID_EMPTY);
 			}
 
 			if (StringUtils.isEmpty(userToken)) {
-				errCode = ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY;
-				return commandResponse.setErrCode2(errCode);
+				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY);
 			}
 
 			PublicKey userPubKey = RSACrypto.getRSAPubKeyFromPem(userIdPubk);// 个人身份公钥，解密Sign签名，解密Key
@@ -346,13 +343,13 @@ public class ApiSiteService extends AbstractRequest {
 				if (subean == null || StringUtils.isEmpty(subean.getUserId())) {
 					logger.info("login site: new user need to register before login site");
 					errCode = ErrorCode2.ERROR2_LOGGIN_NOREGISTER;// 未注册,告知用户执行注册行为
-					return commandResponse.setErrCode2(errCode);
+					return commandResponse.setErrCode(errCode);
 				}
 
 				if (subean.getUserStatus() == UserProto.UserStatus.SEALUP_VALUE) {
 					logger.info("login site:	 user no permision as seal up");
 					errCode = ErrorCode2.ERROR2_LOGGIN_SEALUPUSER;// 禁封用户禁止登陆
-					return commandResponse.setErrCode2(errCode);
+					return commandResponse.setErrCode(errCode);
 				}
 
 				String siteUserId = subean.getUserId();
@@ -406,11 +403,14 @@ public class ApiSiteService extends AbstractRequest {
 			} else {
 				errCode = ErrorCode2.ERROR2_LOGGIN_ERRORSIGN;
 			}
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
 		} catch (Exception e) {
 			errCode = ErrorCode2.ERROR_SYSTEMERROR;
 			LogUtils.requestErrorLog(logger, command, e);
 		}
-		return commandResponse.setErrCode2(errCode);
+		return commandResponse.setErrCode(errCode);
 	}
 
 	// 控制用户的设备数量
