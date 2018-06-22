@@ -80,7 +80,7 @@ public class SiteUserFriendDao {
 		long startTime = System.currentTimeMillis();
 		List<SimpleUserBean> userFriendList = new ArrayList<SimpleUserBean>();
 		String sql = "SELECT a.site_friend_id,a.alias_name,a.alias_name_in_latin,b.user_name,b.user_name_in_latin,b.user_photo FROM "
-				+ USER_FRIEND_TABLE + " AS a LEFT JOIN " + USER_PROFILE_TABLE
+				+ USER_FRIEND_TABLE + " AS a RIGHT JOIN " + USER_PROFILE_TABLE
 				+ " AS b ON a.site_friend_id=b.site_user_id WHERE a.site_user_id=?;";
 
 		Connection conn = null;
