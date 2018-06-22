@@ -3020,6 +3020,15 @@ public final class CoreProto {
      * <code>optional int64 msg_server_time = 3;</code>
      */
     long getMsgServerTime();
+
+    /**
+     * <pre>
+     * &#64;since v6
+     * </pre>
+     *
+     * <code>optional int32 msg_pointer = 4;</code>
+     */
+    int getMsgPointer();
   }
   /**
    * <pre>
@@ -3044,6 +3053,7 @@ public final class CoreProto {
       msgId_ = "";
       msgStatus_ = 0;
       msgServerTime_ = 0L;
+      msgPointer_ = 0;
     }
 
     @java.lang.Override
@@ -3085,6 +3095,11 @@ public final class CoreProto {
             case 24: {
 
               msgServerTime_ = input.readInt64();
+              break;
+            }
+            case 32: {
+
+              msgPointer_ = input.readInt32();
               break;
             }
           }
@@ -3171,6 +3186,19 @@ public final class CoreProto {
       return msgServerTime_;
     }
 
+    public static final int MSG_POINTER_FIELD_NUMBER = 4;
+    private int msgPointer_;
+    /**
+     * <pre>
+     * &#64;since v6
+     * </pre>
+     *
+     * <code>optional int32 msg_pointer = 4;</code>
+     */
+    public int getMsgPointer() {
+      return msgPointer_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3192,6 +3220,9 @@ public final class CoreProto {
       if (msgServerTime_ != 0L) {
         output.writeInt64(3, msgServerTime_);
       }
+      if (msgPointer_ != 0) {
+        output.writeInt32(4, msgPointer_);
+      }
     }
 
     public int getSerializedSize() {
@@ -3209,6 +3240,10 @@ public final class CoreProto {
       if (msgServerTime_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(3, msgServerTime_);
+      }
+      if (msgPointer_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, msgPointer_);
       }
       memoizedSize = size;
       return size;
@@ -3232,6 +3267,8 @@ public final class CoreProto {
           == other.getMsgStatus());
       result = result && (getMsgServerTime()
           == other.getMsgServerTime());
+      result = result && (getMsgPointer()
+          == other.getMsgPointer());
       return result;
     }
 
@@ -3249,6 +3286,8 @@ public final class CoreProto {
       hash = (37 * hash) + MSG_SERVER_TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getMsgServerTime());
+      hash = (37 * hash) + MSG_POINTER_FIELD_NUMBER;
+      hash = (53 * hash) + getMsgPointer();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3381,6 +3420,8 @@ public final class CoreProto {
 
         msgServerTime_ = 0L;
 
+        msgPointer_ = 0;
+
         return this;
       }
 
@@ -3406,6 +3447,7 @@ public final class CoreProto {
         result.msgId_ = msgId_;
         result.msgStatus_ = msgStatus_;
         result.msgServerTime_ = msgServerTime_;
+        result.msgPointer_ = msgPointer_;
         onBuilt();
         return result;
       }
@@ -3456,6 +3498,9 @@ public final class CoreProto {
         }
         if (other.getMsgServerTime() != 0L) {
           setMsgServerTime(other.getMsgServerTime());
+        }
+        if (other.getMsgPointer() != 0) {
+          setMsgPointer(other.getMsgPointer());
         }
         onChanged();
         return this;
@@ -3627,6 +3672,44 @@ public final class CoreProto {
       public Builder clearMsgServerTime() {
         
         msgServerTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int msgPointer_ ;
+      /**
+       * <pre>
+       * &#64;since v6
+       * </pre>
+       *
+       * <code>optional int32 msg_pointer = 4;</code>
+       */
+      public int getMsgPointer() {
+        return msgPointer_;
+      }
+      /**
+       * <pre>
+       * &#64;since v6
+       * </pre>
+       *
+       * <code>optional int32 msg_pointer = 4;</code>
+       */
+      public Builder setMsgPointer(int value) {
+        
+        msgPointer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * &#64;since v6
+       * </pre>
+       *
+       * <code>optional int32 msg_pointer = 4;</code>
+       */
+      public Builder clearMsgPointer() {
+        
+        msgPointer_ = 0;
         onChanged();
         return this;
       }
@@ -33896,111 +33979,111 @@ public final class CoreProto {
       ".core.ErrorInfo\022\014\n\004data\030\002 \001(\014\0226\n\006header\030" +
       "\003 \003(\0132&.core.TransportPackageData.Header" +
       "Entry\032-\n\013HeaderEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005val" +
-      "ue\030\002 \001(\t:\0028\001\"H\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(" +
+      "ue\030\002 \001(\t:\0028\001\"]\n\tMsgStatus\022\016\n\006msg_id\030\001 \001(" +
       "\t\022\022\n\nmsg_status\030\002 \001(\005\022\027\n\017msg_server_time" +
-      "\030\003 \001(\003\"c\n\007MsgText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014sit" +
-      "e_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022",
-      "\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\"\226\001\n\rMsgSecre" +
-      "tText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 " +
-      "\001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(" +
-      "\014\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id" +
-      "\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"}\n\tGroupText\022\016\n\006msg" +
-      "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_" +
-      "group_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004time\030\005 \001" +
-      "(\003\022\027\n\017at_site_user_id\030\006 \001(\t\"\227\001\n\017GroupSec" +
-      "retText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030" +
-      "\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004text\030\004 \001",
-      "(\014\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_device_i" +
-      "d\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgImage\022\016\n\006msg" +
-      "_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_" +
-      "friend_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004time" +
-      "\030\007 \001(\003\"\232\001\n\016MsgSecretImage\022\016\n\006msg_id\030\001 \001(" +
-      "\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_i" +
-      "d\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\025\n\rbase64_ts_ke" +
-      "y\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 " +
-      "\001(\003\"h\n\nGroupImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014sit" +
-      "e_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017",
-      "\n\007imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupS" +
-      "ecretImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_" +
-      "id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007image" +
-      "Id\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_de" +
-      "vice_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"g\n\010MsgVoice\022" +
-      "\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n" +
-      "\016site_friend_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014" +
-      "\n\004time\030\007 \001(\003\"\232\001\n\016MsgSecretVoice\022\016\n\006msg_i" +
-      "d\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_fr" +
-      "iend_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\025\n\rbase64",
-      "_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004t" +
-      "ime\030\007 \001(\003\"h\n\nGroupVoice\022\016\n\006msg_id\030\001 \001(\t\022" +
-      "\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003" +
-      " \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020" +
-      "GroupSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site" +
-      "_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n" +
-      "\007voiceId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n" +
-      "\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"m\n\005U2M" +
-      "ap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t" +
-      "\022\026\n\016site_friend_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n",
-      "\003lat\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\256\001\n\013U2SecretMap" +
-      "\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026" +
-      "\n\016site_friend_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001" +
-      "(\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030" +
-      "\006 \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(" +
-      "\003\"o\n\010GroupMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
-      "er_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\013\n\003ln" +
-      "g\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016G" +
-      "roupSecretMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
-      "er_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\022\n\nba",
-      "se64_lng\030\004 \001(\t\022\022\n\nbase64_lat\030\005 \001(\t\022\025\n\rba" +
-      "se64_ts_key\030\006 \001(\t\022\024\n\014to_device_id\030\007 \001(\t\022" +
-      "\014\n\004time\030\010 \001(\003\"g\n\013U2MsgNotice\022\024\n\014site_use" +
-      "r_id\030\001 \001(\t\022\026\n\016site_friend_id\030\002 \001(\t\022\014\n\004te" +
-      "xt\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"i" +
-      "\n\016GroupMsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\025" +
-      "\n\rsite_group_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004t" +
-      "ime\030\004 \001(\003\022\016\n\006msg_id\030\005 \001(\t\"m\n\010U2Recall\022\016\n" +
-      "\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016s" +
-      "ite_friend_id\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001",
-      "(\t\022\014\n\004time\030\005 \001(\003\"o\n\013GroupRecall\022\016\n\006msg_i" +
+      "\030\003 \001(\003\022\023\n\013msg_pointer\030\004 \001(\005\"c\n\007MsgText\022\016" +
+      "\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016",
+      "site_friend_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\014\n\004ti" +
+      "me\030\005 \001(\003\"\226\001\n\rMsgSecretText\022\016\n\006msg_id\030\001 \001" +
+      "(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_" +
+      "id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\025\n\rbase64_ts_key\030" +
+      "\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(" +
+      "\003\"}\n\tGroupText\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_u" +
+      "ser_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\014\n\004t" +
+      "ext\030\004 \001(\014\022\014\n\004time\030\005 \001(\003\022\027\n\017at_site_user_" +
+      "id\030\006 \001(\t\"\227\001\n\017GroupSecretText\022\016\n\006msg_id\030\001" +
+      " \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_group",
+      "_id\030\003 \001(\t\022\014\n\004text\030\004 \001(\014\022\025\n\rbase64_ts_key" +
+      "\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001" +
+      "(\003\"g\n\010MsgImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_u" +
+      "ser_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007" +
+      "imageId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\232\001\n\016MsgSecre" +
+      "tImage\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002" +
+      " \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007imageId\030" +
+      "\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to_devic" +
+      "e_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroupImage\022\016" +
+      "\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\r",
+      "site_group_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\014\n\004" +
+      "time\030\007 \001(\003\"\233\001\n\020GroupSecretImage\022\016\n\006msg_i" +
       "d\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite_gr" +
-      "oup_id\030\003 \001(\t\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004t" +
-      "ime\030\005 \001(\003\"\226\001\n\005U2Web\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014s" +
-      "ite_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(" +
-      "\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006he" +
-      "ight\030\006 \001(\005\022\014\n\004time\030\007 \001(\003\022\020\n\010href_url\030\010 \001" +
-      "(\t\"\230\001\n\010GroupWeb\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_" +
-      "user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\020\n\010" +
-      "web_code\030\004 \001(\t\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030",
-      "\006 \001(\005\022\014\n\004time\030\007 \001(\003\022\020\n\010href_url\030\010 \001(\t\"\215\001" +
-      "\n\013U2WebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_us" +
-      "er_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\020\n\010w" +
-      "eb_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010href_url\030" +
-      "\006 \001(\t\022\016\n\006height\030\007 \001(\005\"\217\001\n\016GroupWebNotice" +
-      "\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025" +
-      "\n\rsite_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022" +
-      "\014\n\004time\030\005 \001(\003\022\020\n\010href_url\030\006 \001(\t\022\016\n\006heigh" +
-      "t\030\007 \001(\005*\204\003\n\tHeaderKey\022\031\n\025CLIENT_SOCKET_V" +
-      "ERSION\020\000\022!\n\035CLIENT_SOCKET_SITE_SESSION_I",
-      "D\020\001\022%\n!CLIENT_SOCKET_PLATFORM_SESSION_ID" +
-      "\020\002\022\033\n\027CLIENT_SOCKET_DEVICE_ID\020\003\022\032\n\026CLIEN" +
-      "T_SOCKET_LANGUAGE\020\004\022\026\n\022CLIENT_SOCKET_TYP" +
-      "E\020\005\022\033\n\026CLIENT_REQUEST_REFERER\020\365\003\022\037\n\032CLIE" +
-      "NT_REQUEST_SERVER_HOST\020\366\003\022\037\n\032CLIENT_REQU" +
-      "EST_SERVER_PORT\020\367\003\022\030\n\023SITE_SERVER_VERSIO" +
-      "N\020\351\007\022\025\n\020SITE_SERVER_HOST\020\352\007\022\025\n\020SITE_SERV" +
-      "ER_PORT\020\353\007\022\032\n\025PLUGIN_CLIENT_REFERER\020\271\027*\275" +
-      "\003\n\007MsgType\022\n\n\006NOTICE\020\000\022\016\n\nMSG_STATUS\020\001\022\010" +
-      "\n\004TEXT\020\003\022\017\n\013SECRET_TEXT\020\004\022\016\n\nGROUP_TEXT\020",
-      "\005\022\025\n\021GROUP_SECRET_TEXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014S" +
-      "ECRET_IMAGE\020\010\022\017\n\013GROUP_IMAGE\020\t\022\026\n\022GROUP_" +
-      "SECRET_IMAGE\020\n\022\t\n\005VOICE\020\013\022\020\n\014SECRET_VOIC" +
-      "E\020\014\022\017\n\013GROUP_VOICE\020\r\022\026\n\022GROUP_SECRET_VOI" +
-      "CE\020\016\022\n\n\006U2_MAP\020\017\022\021\n\rU2_SECRET_MAP\020\020\022\r\n\tG" +
-      "ROUP_MAP\020\021\022\024\n\020GROUP_SECRET_MAP\020\022\022\r\n\tU2_N" +
-      "OTICE\020\023\022\020\n\014GROUP_NOTICE\020\024\022\r\n\tU2_RECALL\020\025" +
-      "\022\020\n\014GROUP_RECALL\020\026\022\n\n\006U2_WEB\020\027\022\r\n\tGROUP_" +
-      "WEB\020\030\022\021\n\rU2_WEB_NOTICE\020\031\022\024\n\020GROUP_WEB_NO" +
-      "TICE\020\032B\"\n\025com.akaxin.proto.coreB\tCorePro",
-      "tob\006proto3"
+      "oup_id\030\003 \001(\t\022\017\n\007imageId\030\004 \001(\t\022\025\n\rbase64_" +
+      "ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t\022\014\n\004ti" +
+      "me\030\007 \001(\003\"g\n\010MsgVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014" +
+      "site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001" +
+      "(\t\022\017\n\007voiceId\030\004 \001(\t\022\014\n\004time\030\007 \001(\003\"\232\001\n\016Ms" +
+      "gSecretVoice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_use" +
+      "r_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t\022\017\n\007vo",
+      "iceId\030\004 \001(\t\022\025\n\rbase64_ts_key\030\005 \001(\t\022\024\n\014to" +
+      "_device_id\030\006 \001(\t\022\014\n\004time\030\007 \001(\003\"h\n\nGroupV" +
+      "oice\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001" +
+      "(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001" +
+      "(\t\022\014\n\004time\030\007 \001(\003\"\233\001\n\020GroupSecretVoice\022\016\n" +
+      "\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rs" +
+      "ite_group_id\030\003 \001(\t\022\017\n\007voiceId\030\004 \001(\t\022\025\n\rb" +
+      "ase64_ts_key\030\005 \001(\t\022\024\n\014to_device_id\030\006 \001(\t" +
+      "\022\014\n\004time\030\007 \001(\003\"m\n\005U2Map\022\016\n\006msg_id\030\001 \001(\t\022" +
+      "\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030",
+      "\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat\030\005 \001(\t\022\014\n\004time\030" +
+      "\006 \001(\003\"\256\001\n\013U2SecretMap\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
+      "\014site_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 " +
+      "\001(\t\022\022\n\nbase64_lng\030\004 \001(\t\022\022\n\nbase64_lat\030\005 " +
+      "\001(\t\022\025\n\rbase64_ts_key\030\006 \001(\t\022\024\n\014to_device_" +
+      "id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"o\n\010GroupMap\022\016\n\006ms" +
+      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite" +
+      "_group_id\030\003 \001(\t\022\013\n\003lng\030\004 \001(\t\022\013\n\003lat\030\005 \001(" +
+      "\t\022\014\n\004time\030\006 \001(\003\"\260\001\n\016GroupSecretMap\022\016\n\006ms" +
+      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsite",
+      "_group_id\030\003 \001(\t\022\022\n\nbase64_lng\030\004 \001(\t\022\022\n\nb" +
+      "ase64_lat\030\005 \001(\t\022\025\n\rbase64_ts_key\030\006 \001(\t\022\024" +
+      "\n\014to_device_id\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"g\n\013U2" +
+      "MsgNotice\022\024\n\014site_user_id\030\001 \001(\t\022\026\n\016site_" +
+      "friend_id\030\002 \001(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 " +
+      "\001(\003\022\016\n\006msg_id\030\005 \001(\t\"i\n\016GroupMsgNotice\022\024\n" +
+      "\014site_user_id\030\001 \001(\t\022\025\n\rsite_group_id\030\002 \001" +
+      "(\t\022\014\n\004text\030\003 \001(\014\022\014\n\004time\030\004 \001(\003\022\016\n\006msg_id" +
+      "\030\005 \001(\t\"m\n\010U2Recall\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014si" +
+      "te_user_id\030\002 \001(\t\022\026\n\016site_friend_id\030\003 \001(\t",
+      "\022\025\n\rrecall_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"o\n" +
+      "\013GroupRecall\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_use" +
+      "r_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001(\t\022\025\n\rrec" +
+      "all_msg_id\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\"\226\001\n\005U2Web" +
+      "\022\016\n\006msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026" +
+      "\n\016site_friend_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t" +
+      "\022\r\n\005width\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014\n\004time\030" +
+      "\007 \001(\003\022\020\n\010href_url\030\010 \001(\t\"\230\001\n\010GroupWeb\022\016\n\006" +
+      "msg_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\025\n\rsi" +
+      "te_group_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\r\n\005w",
+      "idth\030\005 \001(\005\022\016\n\006height\030\006 \001(\005\022\014\n\004time\030\007 \001(\003" +
+      "\022\020\n\010href_url\030\010 \001(\t\"\215\001\n\013U2WebNotice\022\016\n\006ms" +
+      "g_id\030\001 \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016site" +
+      "_friend_id\030\003 \001(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004ti" +
+      "me\030\005 \001(\003\022\020\n\010href_url\030\006 \001(\t\022\016\n\006height\030\007 \001" +
+      "(\005\"\217\001\n\016GroupWebNotice\022\016\n\006msg_id\030\001 \001(\t\022\024\n" +
+      "\014site_user_id\030\002 \001(\t\022\025\n\rsite_group_id\030\003 \001" +
+      "(\t\022\020\n\010web_code\030\004 \001(\t\022\014\n\004time\030\005 \001(\003\022\020\n\010hr" +
+      "ef_url\030\006 \001(\t\022\016\n\006height\030\007 \001(\005*\204\003\n\tHeaderK" +
+      "ey\022\031\n\025CLIENT_SOCKET_VERSION\020\000\022!\n\035CLIENT_",
+      "SOCKET_SITE_SESSION_ID\020\001\022%\n!CLIENT_SOCKE" +
+      "T_PLATFORM_SESSION_ID\020\002\022\033\n\027CLIENT_SOCKET" +
+      "_DEVICE_ID\020\003\022\032\n\026CLIENT_SOCKET_LANGUAGE\020\004" +
+      "\022\026\n\022CLIENT_SOCKET_TYPE\020\005\022\033\n\026CLIENT_REQUE" +
+      "ST_REFERER\020\365\003\022\037\n\032CLIENT_REQUEST_SERVER_H" +
+      "OST\020\366\003\022\037\n\032CLIENT_REQUEST_SERVER_PORT\020\367\003\022" +
+      "\030\n\023SITE_SERVER_VERSION\020\351\007\022\025\n\020SITE_SERVER" +
+      "_HOST\020\352\007\022\025\n\020SITE_SERVER_PORT\020\353\007\022\032\n\025PLUGI" +
+      "N_CLIENT_REFERER\020\271\027*\275\003\n\007MsgType\022\n\n\006NOTIC" +
+      "E\020\000\022\016\n\nMSG_STATUS\020\001\022\010\n\004TEXT\020\003\022\017\n\013SECRET_",
+      "TEXT\020\004\022\016\n\nGROUP_TEXT\020\005\022\025\n\021GROUP_SECRET_T" +
+      "EXT\020\006\022\t\n\005IMAGE\020\007\022\020\n\014SECRET_IMAGE\020\010\022\017\n\013GR" +
+      "OUP_IMAGE\020\t\022\026\n\022GROUP_SECRET_IMAGE\020\n\022\t\n\005V" +
+      "OICE\020\013\022\020\n\014SECRET_VOICE\020\014\022\017\n\013GROUP_VOICE\020" +
+      "\r\022\026\n\022GROUP_SECRET_VOICE\020\016\022\n\n\006U2_MAP\020\017\022\021\n" +
+      "\rU2_SECRET_MAP\020\020\022\r\n\tGROUP_MAP\020\021\022\024\n\020GROUP" +
+      "_SECRET_MAP\020\022\022\r\n\tU2_NOTICE\020\023\022\020\n\014GROUP_NO" +
+      "TICE\020\024\022\r\n\tU2_RECALL\020\025\022\020\n\014GROUP_RECALL\020\026\022" +
+      "\n\n\006U2_WEB\020\027\022\r\n\tGROUP_WEB\020\030\022\021\n\rU2_WEB_NOT" +
+      "ICE\020\031\022\024\n\020GROUP_WEB_NOTICE\020\032B\"\n\025com.akaxi",
+      "n.proto.coreB\tCoreProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34043,7 +34126,7 @@ public final class CoreProto {
     internal_static_core_MsgStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_MsgStatus_descriptor,
-        new java.lang.String[] { "MsgId", "MsgStatus", "MsgServerTime", });
+        new java.lang.String[] { "MsgId", "MsgStatus", "MsgServerTime", "MsgPointer", });
     internal_static_core_MsgText_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_core_MsgText_fieldAccessorTable = new
