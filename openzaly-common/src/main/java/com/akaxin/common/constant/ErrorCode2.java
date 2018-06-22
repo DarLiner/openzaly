@@ -75,6 +75,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR_GROUP_MEMBERLESS3("error.alert", "创建群成员少于三人"), //
 
 	ERROR2_LOGGIN_USERID_EMPTY("error.alert", "用户身份为空"), // 用户身份校验失败
+	ERROR2_LOGGIN_USERTOKEN_EMPTY("error.alert", "用户身份token为空"), // 用户usertoken
 	ERROR2_LOGGIN_DEVICEID_EMPTY("error.alert", "设备身份为空"), // 用户身份校验失败
 	ERROR2_LOGGIN_UPDATE_DEVICE("error.alert", "更新设备失败"), // 更新设备失败
 	ERROR2_LOGGIN_UPDATE_SESSION("error.alert", "保存session失败"), // 保存session

@@ -318,6 +318,11 @@ public class ApiSiteService extends AbstractRequest {
 				return commandResponse.setErrCode2(errCode);
 			}
 
+			if (StringUtils.isEmpty(userToken)) {
+				errCode = ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY;
+				return commandResponse.setErrCode2(errCode);
+			}
+
 			PublicKey userPubKey = RSACrypto.getRSAPubKeyFromPem(userIdPubk);// 个人身份公钥，解密Sign签名，解密Key
 			Signature userSign = Signature.getInstance("SHA512withRSA");
 			userSign.initVerify(userPubKey);
