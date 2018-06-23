@@ -51,8 +51,8 @@ public class FriendApplyDaoService implements IFriendApplyDao {
 	}
 
 	@Override
-	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId) throws SQLException {
-		return SiteFriendApplyDao.getInstance().getApplyInfo(siteUserId, siteFriendId);
+	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId, boolean isMaster) throws SQLException {
+		return SiteFriendApplyDao.getInstance().getApplyInfo(siteUserId, siteFriendId, isMaster);
 	}
 
 	@Override

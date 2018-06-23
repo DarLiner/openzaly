@@ -218,6 +218,26 @@ public class UserGroupDao {
 		return false;
 	}
 
+	public boolean addDefaultGroupMember(String defaultGroupId, String siteUserId) {
+		try {
+			// 1.获取当前，群消息最大游标
+			long maxPointer = messageDao.queryMaxGroupPointer(defaultGroupId);
+			// 2.设置个人默认游标
+			// 3.增加群成员
+			messageDao.updateGroupPointer(defaultGroupId, siteUserId, null, maxPointer);
+			int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
+			if (!groupDao.addGroupMember(siteUserId, defaultGroupId, status)) {
+				return false;
+			}
+			// 添加完用户，向群消息中添加GroupMsgNotice
+			new GroupNotice().addDefaultGroupMemberNotice(defaultGroupId, siteUserId);
+			return true;
+		} catch (Exception e) {
+			logger.error("add group member error.", e);
+		}
+		return false;
+	}
+
 	public GroupProfileBean getGroupProfile(String groupId) {
 		GroupProfileBean profileBean = null;
 		try {

@@ -347,7 +347,7 @@ public class ApiFriendService extends AbstractRequest {
 
 				if (ErrorCode2.SUCCESS.equals(errCode) && result) {
 					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
-							siteFriendId);
+							siteFriendId, false);
 					// xxx 同意了你的好友申请 ,发送push
 					PushNotification.agreeAddFriend(siteUserId, siteFriendId);
 

@@ -163,11 +163,8 @@ public class SiteFriendApplyDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId) throws SQLException {
+	public ApplyFriendBean getApplyInfo(String siteUserId, String siteFriendId, boolean isMaster) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		// String sql = "SELECT site_user_id,site_friend_id,apply_reason,MAX(apply_time)
-		// FROM " + FRIEND_APPLY_TABLE
-		// + " WHERE site_user_id=? AND site_friend_id=?;";
 		String sql = "SELECT a.site_user_id,a.site_friend_id,a.apply_reason,a.apply_time from " + FRIEND_APPLY_TABLE
 				+ " a INNER JOIN (select site_friend_id,max(apply_time) apply_time from " + FRIEND_APPLY_TABLE
 				+ " WHERE site_user_id=? and site_friend_id=? GROUP BY site_friend_id) AS b ON a.site_friend_id=b.site_friend_id AND a.apply_time=b.apply_time WHERE a.site_user_id=?;";
@@ -177,7 +174,7 @@ public class SiteFriendApplyDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getSlaveConnection();
+			conn = DatabaseConnection.getConnection(isMaster);
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);

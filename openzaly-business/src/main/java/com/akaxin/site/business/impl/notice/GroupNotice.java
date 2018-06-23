@@ -85,15 +85,26 @@ public class GroupNotice {
 				}
 			}
 
-			if (noticeText.length() == 0) {
-				noticeText.append("新人");
-			}
-
 			noticeText.append(NoticeText.USER_ADD_GROUP);
 			this.groupMsgNotice(siteUserId, groupId, noticeText.toString());
 		} catch (Exception e) {
 			logger.error("new group member notice error. notice=" + noticeText.toString(), e);
 		}
+	}
+
+	// 新用户登陆站点，添加至默认群组中的消息通知
+	public void addDefaultGroupMemberNotice(String groupId, String siteUserId) {
+		SimpleUserBean userBean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId, true);
+
+		if (userBean == null || StringUtils.isEmpty(userBean.getUserName())) {
+			logger.error("add defaultgroup member error, user={}", userBean);
+			return;
+		}
+
+		StringBuilder noticeText = new StringBuilder();
+		noticeText.append(userBean.getUserName());
+		noticeText.append(NoticeText.USER_ADD_GROUP);
+		this.groupMsgNotice(siteUserId, groupId, noticeText.toString());
 	}
 
 	/**

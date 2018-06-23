@@ -22,7 +22,7 @@ public interface IUserProfileDao {
 
 	public String getSiteLoginIdBySiteUserId(String siteUserId) throws SQLException;
 
-	public SimpleUserBean getSimpleProfileById(String userId) throws SQLException;
+	public SimpleUserBean getSimpleProfileById(String siteUserId, boolean isMaster) throws SQLException;
 
 	public SimpleUserBean getSimpleProfileByGlobalUserId(String globalUserId, boolean isMaster) throws SQLException;
 

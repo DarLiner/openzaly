@@ -114,10 +114,10 @@ public class UserFriendDao {
 		return result;
 	}
 
-	public ApplyFriendBean agreeApplyWithClear(String siteUserId, String siteFriendId) {
+	public ApplyFriendBean agreeApplyWithClear(String siteUserId, String siteFriendId, boolean isMaster) {
 		ApplyFriendBean bean = null;
 		try {
-			bean = friendApplyDao.getApplyInfo(siteUserId, siteFriendId);
+			bean = friendApplyDao.getApplyInfo(siteUserId, siteFriendId, isMaster);
 			friendApplyDao.deleteApply(siteFriendId, siteUserId);
 			friendApplyDao.deleteApply(siteUserId, siteFriendId);
 		} catch (SQLException e) {

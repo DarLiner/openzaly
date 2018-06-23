@@ -49,7 +49,7 @@ public class ImUserProfileDao {
 
 	public SimpleUserBean getSimpleUserProfile(String siteUserId) {
 		try {
-			return userProfileDao.getSimpleProfileById(siteUserId);
+			return userProfileDao.getSimpleProfileById(siteUserId, false);
 		} catch (SQLException e) {
 			logger.error("get simple user profile error", e);
 		}

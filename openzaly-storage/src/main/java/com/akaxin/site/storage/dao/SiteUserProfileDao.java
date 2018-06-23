@@ -245,7 +245,7 @@ public class SiteUserProfileDao {
 	}
 
 	// siteUserId -> Simple Profile
-	public SimpleUserBean querySimpleProfileById(String siteUserId) throws SQLException {
+	public SimpleUserBean querySimpleProfileById(String siteUserId, boolean isMaster) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String sql = "SELECT site_user_id,user_name,user_photo,user_status FROM " + USER_PROFILE_TABLE
 				+ " WHERE site_user_id=?;";
@@ -256,7 +256,7 @@ public class SiteUserProfileDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getSlaveConnection();
+			conn = DatabaseConnection.getConnection(isMaster);
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 

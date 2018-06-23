@@ -17,7 +17,6 @@ package com.akaxin.site.business.impl.tai;
 
 import java.security.PublicKey;
 import java.security.Signature;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Set;
@@ -237,7 +236,7 @@ public class ApiSiteService extends AbstractRequest {
 					UserFriendDao.getInstance().saveFriendApply(siteFriendId, siteUserId, "我已成为你的好友，给我发消息试试吧");
 					UserFriendDao.getInstance().agreeApply(siteUserId, siteFriendId, true);
 					ApplyFriendBean applyBean = UserFriendDao.getInstance().agreeApplyWithClear(siteUserId,
-							siteFriendId);
+							siteFriendId, true);
 					new User2Notice().addFriendTextMessage(applyBean);
 				}
 			}
@@ -250,7 +249,7 @@ public class ApiSiteService extends AbstractRequest {
 			Set<String> defaultGroups = SiteConfig.getUserDefaultGroups();
 			if (defaultGroups != null && defaultGroups.size() > 0) {
 				for (String groupId : defaultGroups) {
-					UserGroupDao.getInstance().addGroupMember(null, groupId, Arrays.asList(siteUserId));
+					UserGroupDao.getInstance().addDefaultGroupMember(groupId, siteUserId);
 				}
 			}
 			logger.debug("{} add default groups={}", siteUserId, defaultGroups);
@@ -316,9 +315,9 @@ public class ApiSiteService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_DEVICEID_EMPTY);
 			}
 
-//			if (StringUtils.isEmpty(userToken)) {
-//				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY);
-//			}
+			// if (StringUtils.isEmpty(userToken)) {
+			// throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY);
+			// }
 
 			PublicKey userPubKey = RSACrypto.getRSAPubKeyFromPem(userIdPubk);// 个人身份公钥，解密Sign签名，解密Key
 			Signature userSign = Signature.getInstance("SHA512withRSA");
