@@ -123,7 +123,7 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 			command.setProxySiteUserId(siteUserId);
 			command.setSiteFriendId(siteFriendId);
 
-			if (checkUser(siteUserId, siteFriendId)) {
+			if (checkUser(siteUserId, siteFriendId, command.isMasterDB())) {
 				return true;
 			} else {
 				logger.warn("users arent friend relation.siteUserId:{},siteFriendId:{}", siteUserId, siteFriendId);
@@ -149,10 +149,10 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 	 * @param siteFriendId
 	 * @return
 	 */
-	private boolean checkUser(String siteUserId, String siteFriendId) {
+	private boolean checkUser(String siteUserId, String siteFriendId, boolean isMaster) {
 		try {
 			// 检测发送者的状态
-			SimpleUserBean userBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId);
+			SimpleUserBean userBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteUserId, isMaster);
 			if (userBean != null) {
 				if (userBean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
 					return false;
@@ -162,7 +162,7 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 			}
 
 			// 检测接受者的状态
-			SimpleUserBean friendBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFriendId);
+			SimpleUserBean friendBean = ImUserProfileDao.getInstance().getSimpleUserProfile(siteFriendId, isMaster);
 			if (friendBean != null) {
 				if (friendBean.getUserStatus() != UserProto.UserStatus.NORMAL_VALUE) {
 					return false;
@@ -172,7 +172,7 @@ public class UserDetectionHandler extends AbstractU2Handler<Command> {
 			}
 
 			// 检测是否为好友关系
-			if (!ImUserFriendDao.getInstance().isFriend(siteUserId, siteFriendId)) {
+			if (!ImUserFriendDao.getInstance().isFriend(siteUserId, siteFriendId, isMaster)) {
 				return false;
 			}
 			return true;

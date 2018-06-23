@@ -87,6 +87,7 @@ public class User2Notice {
 			command.setSiteUserId(bean.getSiteUserId());
 			command.setSiteFriendId(bean.getSiteFriendId());
 			command.setParams(request.toByteArray());
+			command.setMasterDB(true);// 检测过程使用主库
 
 			boolean result = imService.execute(command);
 			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", bean.getSiteUserId(),
@@ -116,6 +117,7 @@ public class User2Notice {
 			command.setSiteUserId(bean.getSiteFriendId());
 			command.setSiteFriendId(bean.getSiteUserId());
 			command.setParams(request.toByteArray());
+			command.setMasterDB(true);// 检测过程使用主库
 
 			boolean result = imService.execute(command);
 			logger.debug("add friend Text message siteUserId={} siteFriendId={} result={}", bean.getSiteFriendId(),

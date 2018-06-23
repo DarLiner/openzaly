@@ -33,6 +33,8 @@ public interface CommandConst {
 
 	public String IS_PROXY = "is_proxy";
 
+	public String IS_MASTER_DB = "is_master_db";
+
 	// plugin
 	public String PLUGIN_AUTH_KEY = "plugin_auth_key";
 	public String PLUGIN_ID = "plugin_id";

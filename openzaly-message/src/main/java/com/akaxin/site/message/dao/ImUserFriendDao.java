@@ -39,8 +39,12 @@ public class ImUserFriendDao {
 	}
 
 	public boolean isFriend(String siteUserId, String siteFriendId) {
+		return isFriend(siteUserId, siteFriendId, false);
+	}
+
+	public boolean isFriend(String siteUserId, String siteFriendId, boolean isMaster) {
 		try {
-			return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId);
+			return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId, isMaster);
 		} catch (SQLException e) {
 			logger.error("query is friend relation error.", e);
 		}

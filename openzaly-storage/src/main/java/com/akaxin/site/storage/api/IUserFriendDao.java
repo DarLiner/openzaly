@@ -18,7 +18,7 @@ public interface IUserFriendDao {
 
 	int queryRelation(String siteUserId, String siteFriendId) throws SQLException;
 
-	boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException;
+	boolean queryIsFriendRelation(String siteUserId, String siteFriendId, boolean isMaster) throws SQLException;
 
 	boolean deleteRelation(String siteUserId, String siteFriendId) throws SQLException;
 

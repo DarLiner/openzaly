@@ -275,6 +275,16 @@ public class Command {
 		this.proxy = proxy;
 	}
 
+	public Command setMasterDB(boolean isMaster) {
+		this.fields.put(CommandConst.IS_MASTER_DB, isMaster);
+		return this;
+	}
+
+	public boolean isMasterDB() {
+		Boolean isMaster = this.getField(CommandConst.IS_MASTER_DB, Boolean.class);
+		return isMaster == null ? false : isMaster;
+	}
+
 	public Command setChannelSession(ChannelSession channelSession) {
 		this.fields.put(CommandConst.CHAHHEL_SESSION, channelSession);
 		return this;

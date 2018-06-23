@@ -89,7 +89,7 @@ public class UserFriendDao {
 
 	// 查询二者是否为好友
 	public boolean isFriend(String siteUserId, String siteFriendId) throws SQLException {
-		return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId);
+		return userFriendDao.queryIsFriendRelation(siteUserId, siteFriendId, false);
 	}
 
 	public boolean isNotFriend(String siteUserId, String siteFriendId) throws SQLException {

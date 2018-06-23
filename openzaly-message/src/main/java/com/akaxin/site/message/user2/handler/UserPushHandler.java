@@ -64,7 +64,7 @@ public class UserPushHandler extends AbstractU2Handler<Command> {
 
 					// 一、用户对站点是否消息免打扰
 					// 二、用户对该好友是否消息免打扰
-					if (ImUserProfileDao.getInstance().isMute(toSiteUserId)
+					if (StringUtils.isEmpty(toGlobalUserId) || ImUserProfileDao.getInstance().isMute(toSiteUserId)
 							|| ImUserFriendDao.getInstance().isMesageMute(toSiteUserId, fromSiteUserId)) {
 						return;
 					}

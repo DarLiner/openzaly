@@ -48,10 +48,14 @@ public class ImUserProfileDao {
 	}
 
 	public SimpleUserBean getSimpleUserProfile(String siteUserId) {
+		return getSimpleUserProfile(siteUserId, false);
+	}
+
+	public SimpleUserBean getSimpleUserProfile(String siteUserId, boolean isMaster) {
 		try {
-			return userProfileDao.getSimpleProfileById(siteUserId, false);
+			return userProfileDao.getSimpleProfileById(siteUserId, isMaster);
 		} catch (SQLException e) {
-			logger.error("get simple user profile error", e);
+			logger.error("get simple user profile by siteUserId error", e);
 		}
 		return null;
 	}

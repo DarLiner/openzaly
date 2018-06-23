@@ -236,7 +236,7 @@ public class SiteUserFriendDao {
 		return relation;
 	}
 
-	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException {
+	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId, boolean isMaster) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		boolean relation = false;
 		String sql = "SELECT a.relation,b.relation FROM " + USER_FRIEND_TABLE + " AS a INNER JOIN " + USER_FRIEND_TABLE
@@ -246,7 +246,7 @@ public class SiteUserFriendDao {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
-			conn = DatabaseConnection.getSlaveConnection();
+			conn = DatabaseConnection.getConnection(isMaster);
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, siteUserId);
 			pst.setString(2, siteFriendId);

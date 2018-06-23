@@ -56,8 +56,8 @@ public class UserFriendDaoService implements IUserFriendDao {
 	}
 
 	@Override
-	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId) throws SQLException {
-		return SiteUserFriendDao.getInstance().queryIsFriendRelation(siteUserId, siteFriendId);
+	public boolean queryIsFriendRelation(String siteUserId, String siteFriendId, boolean isMaster) throws SQLException {
+		return SiteUserFriendDao.getInstance().queryIsFriendRelation(siteUserId, siteFriendId, isMaster);
 	}
 
 	@Override
@@ -93,8 +93,7 @@ public class UserFriendDaoService implements IUserFriendDao {
 	@Override
 	public boolean remarkFriend(String siteUserId, String siteFriendId, String aliasName, String aliasNameInLatin)
 			throws SQLException {
-		return SiteUserFriendDao.getInstance().updateFriendAlias(siteUserId, siteFriendId, aliasName,
-				aliasNameInLatin);
+		return SiteUserFriendDao.getInstance().updateFriendAlias(siteUserId, siteFriendId, aliasName, aliasNameInLatin);
 	}
 
 	@Override
