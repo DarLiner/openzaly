@@ -316,9 +316,9 @@ public class ApiSiteService extends AbstractRequest {
 				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_DEVICEID_EMPTY);
 			}
 
-			if (StringUtils.isEmpty(userToken)) {
-				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY);
-			}
+//			if (StringUtils.isEmpty(userToken)) {
+//				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_USERTOKEN_EMPTY);
+//			}
 
 			PublicKey userPubKey = RSACrypto.getRSAPubKeyFromPem(userIdPubk);// 个人身份公钥，解密Sign签名，解密Key
 			Signature userSign = Signature.getInstance("SHA512withRSA");
