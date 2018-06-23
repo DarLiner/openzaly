@@ -35,7 +35,6 @@ import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
 import com.akaxin.site.storage.connection.DatabaseConnection;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
 import com.akaxin.site.storage.util.SqlUtils;
 
 /**
@@ -94,7 +93,8 @@ public class SiteGroupProfileDao {
 				+ "(site_group_id,group_name,group_photo,group_notice,group_status,create_user_id,close_invite_group_chat,create_time) VALUES(?,?,?,?,1,?,?,?);";
 
 		if (bean.getGroupId() == null) {
-			bean.setGroupId(UUID.randomUUID().toString());
+			String siteGroupId = UUID.randomUUID().toString();
+			bean.setGroupId(siteGroupId.replace("-", ""));
 		}
 
 		int result = 0;
