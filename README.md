@@ -76,14 +76,14 @@ openzaly Team版本 命令：
     
     * 修改配置文件: 上一步会生成 openzaly-server.config 与 openzaly-mysql.sql 两个文件
                 如果使用mysql数据库需在openzaly-server.config配置文件中配置mysql参数：
-                主库：
+                主库（数据库编码需要设置utf8mb4）：
                     openzaly.mysql.host=localhost //数据库的地址
                     openzaly.mysql.port=3306        //数据库端口
                     openzaly.mysql.database=openzaly    //数据库名称
                     openzaly.mysql.username=root        //mysql数据库访问用户
                     openzaly.mysql.password=1234567890  //mysql数据库密码
                 
-                从库（如果需要使用主从模式，配置这里，不需要从库则不需要配置）：
+                从库（如果需要使用主从模式，配置这里，不需要从库则不需要配置）数据库编码需要设置utf8mb4：
                     openzaly.mysql.slave.host=localhost
                     openzaly.mysql.slave.port=3306
                     openzaly.mysql.slave.database=openzaly
