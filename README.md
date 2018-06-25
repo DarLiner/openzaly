@@ -74,8 +74,7 @@ openzaly Team版本 命令：
     
     * 生成Team版本所需配置模版：`java -jar openzaly-server.jar -team`
     
-    * 修改配置文件: 上一步会生成 openzaly-server.config 与 openzaly-mysql.sql 两个文件
-                如果使用mysql数据库需在openzaly-server.config配置文件中配置mysql参数：
+    * 修改配置文件: 上一步会生成 openzaly-server.config 使用mysql数据库需在openzaly-server.config配置文件中配置mysql参数：
                 主库（数据库编码需要设置utf8mb4）：
                     openzaly.mysql.host=localhost //数据库的地址
                     openzaly.mysql.port=3306        //数据库端口
