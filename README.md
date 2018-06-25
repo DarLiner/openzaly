@@ -65,14 +65,16 @@ openzlay 0.10.6开始支持Personal（个人版）与Team版，默认状态下�
 支持的启动参数：`java -jar openzaly-server.jar -h`
 
 openzaly Personal版本 命令：
-    启动命令：`java -jar openzaly-server.jar`
 
-    版本升级：`java -jar openzaly-server.jar -upgrade`
+    * 启动命令：`java -jar openzaly-server.jar`
+
+    * 版本升级：`java -jar openzaly-server.jar -upgrade`
     
 openzaly Team版本 命令：
-    启动Team版本命令：`java -jar openzaly-server.jar -team`
     
-    修改配置文件: 上一步会生成 openzaly-server.config 与 openzaly-mysql.sql 两个文件
+    * 启动Team版本命令：`java -jar openzaly-server.jar -team`
+    
+    * 修改配置文件: 上一步会生成 openzaly-server.config 与 openzaly-mysql.sql 两个文件
                 如果使用mysql数据库需在openzaly-server.config配置文件中配置mysql参数：
                 主库：
                     openzaly.mysql.host=localhost //数据库的地址
@@ -87,17 +89,17 @@ openzaly Team版本 命令：
                     openzaly.mysql.slave.database=openzaly
                     openzaly.mysql.slave.username=root
                     openzaly.mysql.slave.password=1234567890
-
+                
                 其他mysql参数为使用mysql连接池的配置参数，如若涉及性能优化可开启配置项。
                 
-        迁移数据库命令：openzaly支持使用者把Personal版本的sqlite中的数据迁移到Team版本的mysql数据库
+     * 迁移数据库命令：openzaly支持使用者把Personal版本的sqlite中的数据迁移到Team版本的mysql数据库
                      如果执行这一步需要在openzaly-server.config配置文件中配置：
                         `openzaly.sqlite.url=openzalyDB.sqlite3` 这里指定sqlite数据库文件的位置
                      
                      继续执行迁移命令：
                         `java -jar openzaly-server.jar -migrate`
         
-        启动命令：`java -jar openzaly-server.jar`      
+     * 启动命令：`java -jar openzaly-server.jar`      
         
 
 **2. 下载客户端**
