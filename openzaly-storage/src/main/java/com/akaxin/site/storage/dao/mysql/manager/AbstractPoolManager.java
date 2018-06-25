@@ -47,6 +47,38 @@ public abstract class AbstractPoolManager {
 		}
 	}
 
+	public static String getDBUrlWithoutDBName(Properties pro) throws Exception {
+		String host = trimToNull(pro, JdbcConst.MYSQL_HOST);
+		String port = trimToNull(pro, JdbcConst.MYSQL_PORT);
+
+		// "jdbc:mysql://localhost:3306/mysql?";
+		String url = "jdbc:mysql://" + host + ":" + port;
+
+		if (StringUtils.isAnyEmpty(host, port)) {
+			throw new Exception("jdbc url=" + url + " is invalid");
+		}
+
+		String useUnicode = trimToNull(pro, JdbcConst.MYSQL_USE_UNICODE, "true");
+		String characterEncoding = trimToNull(pro, JdbcConst.MYSQL_CHARACTER_ENCODING, "utf-8");
+		String verifyServerCertificate = trimToNull(pro, JdbcConst.MYSQL_VERIFY_SERVER_CERTIFICATE, "false");
+		String useSSL = trimToNull(pro, JdbcConst.MYSQL_USE_SSL, "true");
+
+		StringBuilder sb = new StringBuilder(url);
+		sb.append("?useUnicode=");
+		sb.append(useUnicode);
+
+		sb.append("&characterEncoding=");
+		sb.append(characterEncoding);
+
+		sb.append("&verifyServerCertificate=");
+		sb.append(verifyServerCertificate);
+
+		sb.append("&useSSL=");
+		sb.append(useSSL);
+
+		return sb.toString();
+	}
+
 	public static String getDBUrl(Properties pro) throws Exception {
 		String host = trimToNull(pro, JdbcConst.MYSQL_HOST);
 		String port = trimToNull(pro, JdbcConst.MYSQL_PORT);

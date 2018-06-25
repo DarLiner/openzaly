@@ -96,12 +96,6 @@ public class DataSourceManager {
 		if (!configFile.exists()) {
 			writeResourceToFile("/" + OPENZALY_DATABASE_CONFIG, configFile);
 		}
-		// 加载数据库sql执行脚本
-		File fileSql = new File(OPENZALY_MYSQL_SQL);
-		if (!fileSql.exists()) {
-			writeResourceToFile("/" + OPENZALY_MYSQL_SQL, fileSql);
-		}
-
 	}
 
 	// 手动升级数据库

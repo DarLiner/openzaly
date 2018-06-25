@@ -72,7 +72,7 @@ openzaly Personal版本 命令：
     
 openzaly Team版本 命令：
     
-    * 启动Team版本命令：`java -jar openzaly-server.jar -team`
+    * 生成Team版本所需配置模版：`java -jar openzaly-server.jar -team`
     
     * 修改配置文件: 上一步会生成 openzaly-server.config 与 openzaly-mysql.sql 两个文件
                 如果使用mysql数据库需在openzaly-server.config配置文件中配置mysql参数：

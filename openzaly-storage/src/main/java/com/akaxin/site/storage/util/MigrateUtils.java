@@ -1,6 +1,5 @@
 package com.akaxin.site.storage.util;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -12,9 +11,6 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.support.EncodedResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import com.akaxin.common.utils.PrintUtils;
 import com.akaxin.site.storage.connection.DatabaseConnection;
@@ -34,7 +30,6 @@ import com.akaxin.site.storage.exception.NeedInitMysqlException;
 public class MigrateUtils {
 	private static final Logger logger = LoggerFactory.getLogger(MigrateUtils.class);
 
-	private static final String OPENZALY_MYSQL_SQL = "openzaly-mysql.sql";
 	private static Connection sqliteConnection;
 	private static Connection mysqlConnection;
 
@@ -59,27 +54,12 @@ public class MigrateUtils {
 				throw new MigrateDatabaseException("load sqlite url={} error", sqliteUrl);
 			}
 
-			// Setp2.检测mysql database and tables
+			// Setp2. check mysql database and tables and return conn
 			try {
-				mysqlConnection = InitDatabaseConnection.getInitConnection(prop);
-				// 初始化数据库表
-				File file = new File(OPENZALY_MYSQL_SQL);
-				if (!file.exists()) {
-					throw new NeedInitMysqlException("check mysql with sql script file is not exists");
-				}
-
-				FileSystemResource rc = new FileSystemResource(file);
-				EncodedResource encodeRes = new EncodedResource(rc, "GBK");
-				ScriptUtils.executeSqlScript(mysqlConnection, encodeRes);
+				mysqlConnection = InitDatabaseConnection.initAndGetConnection(prop);
 			} catch (Exception e) {
-				throw new MigrateDatabaseException("check mysql database tables error,msg={}", e.getMessage());
-			}
-
-			// Step3.加载mysql
-			try {
-				mysqlConnection = InitDatabaseConnection.getConnection(prop);
-			} catch (Exception e) {
-				throw new MigrateDatabaseException("load mysql connection error,msg={}", e.getMessage());
+				throw new MigrateDatabaseException("init and get mysql database connection error,msg={}",
+						e.getMessage());
 			}
 
 			if (sqliteConnection != null && mysqlConnection != null) {
