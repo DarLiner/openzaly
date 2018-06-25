@@ -346,8 +346,8 @@ public class SiteUserDeviceDao {
 	public String queryUserToken(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String userToken = null;
-		String sql = "SELECT user_token,max(active_time) FROM " + SQLConst.SITE_USER_DEVICE
-				+ " WHERE site_user_id=? GROUP BY user_token LIMIT 1;";
+		String sql = "SELECT user_token,active_time FROM " + SQLConst.SITE_USER_DEVICE
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT 1;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
