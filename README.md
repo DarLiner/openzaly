@@ -50,20 +50,55 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
 
 **1. 启动服务器**
 
-  * **最新版本: openzaly-0.9.5.jar**
+  * **最新版本: openzaly-0.10.6.jar**
     * 国内镜像：https://cdn-akaxin-1255552447.cos.ap-beijing.myqcloud.com/openzaly/openzaly-server.jar
     * Github下载: https://github.com/akaxincom/openzaly/releases/
 
   * **Changelog**
-    * 支持好友备注。
-    * 增加扩展模式——浮屏。
-    * 重构PluginAPI，功能更强大、使用更简单！
-
-启动命令：`java -jar openzaly-server.jar`
-
-版本升级：`java -jar openzaly-server.jar -upgrade`
+    * openzaly发布team版本，通知支持个人版与team版。
+    * team 版本支持使用mysql数据库，并且可配置主从库。
+    * openzaly使用ssl与平台交互增加了信息传输的安全性。
+    
+    
+openzlay 0.10.6开始支持Personal（个人版）与Team版，默认状态下使用Personal
 
 支持的启动参数：`java -jar openzaly-server.jar -h`
+
+openzaly Personal版本 命令：
+    启动命令：`java -jar openzaly-server.jar`
+
+    版本升级：`java -jar openzaly-server.jar -upgrade`
+    
+openzaly Team版本 命令：
+    启动Team版本命令：`java -jar openzaly-server.jar -team`
+    
+    修改配置文件: 上一步会生成 openzaly-server.config 与 openzaly-mysql.sql 两个文件
+                如果使用mysql数据库需在openzaly-server.config配置文件中配置mysql参数：
+                主库：
+                    openzaly.mysql.host=localhost //数据库的地址
+                    openzaly.mysql.port=3306        //数据库端口
+                    openzaly.mysql.database=openzaly    //数据库名称
+                    openzaly.mysql.username=root        //mysql数据库访问用户
+                    openzaly.mysql.password=1234567890  //mysql数据库密码
+                
+                从库（如果需要使用主从模式，配置这里，不需要从库则不需要配置）：
+                    openzaly.mysql.slave.host=localhost
+                    openzaly.mysql.slave.port=3306
+                    openzaly.mysql.slave.database=openzaly
+                    openzaly.mysql.slave.username=root
+                    openzaly.mysql.slave.password=1234567890
+
+                其他mysql参数为使用mysql连接池的配置参数，如若涉及性能优化可开启配置项。
+                
+        迁移数据库命令：openzaly支持使用者把Personal版本的sqlite中的数据迁移到Team版本的mysql数据库
+                     如果执行这一步需要在openzaly-server.config配置文件中配置：
+                        `openzaly.sqlite.url=openzalyDB.sqlite3` 这里指定sqlite数据库文件的位置
+                     
+                     继续执行迁移命令：
+                        `java -jar openzaly-server.jar -migrate`
+        
+        启动命令：`java -jar openzaly-server.jar`      
+        
 
 **2. 下载客户端**
 
