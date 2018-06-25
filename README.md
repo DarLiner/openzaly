@@ -66,9 +66,9 @@ openzlay 0.10.6开始支持Personal（个人版）与Team版，默认状态下�
 
 openzaly Personal版本 命令：
 
-    * 启动命令：`java -jar openzaly-server.jar`
+    * 版本升级：`java -jar openzaly-server.jar -upgrade` ，此命令在服务与sqlite数据库版本不一致时执行，正常情况无需执行
 
-    * 版本升级：`java -jar openzaly-server.jar -upgrade`
+    * 启动命令：`java -jar openzaly-server.jar`
     
 openzaly Team版本 命令：
     
