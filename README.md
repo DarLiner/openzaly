@@ -55,7 +55,7 @@ Akaxin 是一款开源免费的私有聊天软件，可以部署在任意服务�
     * Github下载: https://github.com/akaxincom/openzaly/releases/
 
   * **Changelog**
-    * openzaly发布team版本，通知支持个人版与team版。
+    * openzaly发布team版本，同时支持个人版与team版。
     * team 版本支持使用mysql数据库，并且可配置主从库。
     * openzaly使用ssl与平台交互增加了信息传输的安全性。
     
