@@ -1,4 +1,6 @@
 
+SET NAMES utf8mb4;
+
 CREATE TABLE IF NOT EXISTS site_config_info(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             config_key INTEGER UNIQUE NOT NULL,
             config_value TEXT
@@ -62,7 +64,7 @@ CREATE TABLE IF NOT EXISTS site_user_message(id INTEGER PRIMARY KEY NOT NULL AUT
             ts_key TEXT, 
             msg_time BIGINT,
             INDEX(site_user_id)
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户消息表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '用户消息表';
             
 ALTER TABLE site_user_message CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
@@ -107,7 +109,7 @@ CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AU
             content TEXT, 
             msg_time BIGINT,
             INDEX(site_group_id)
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组消息表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '群组消息表';
             
 ALTER TABLE site_group_message CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
