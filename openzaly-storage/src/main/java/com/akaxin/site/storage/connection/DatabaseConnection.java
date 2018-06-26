@@ -31,7 +31,9 @@ public class DatabaseConnection {
 		case PERSONAL:
 			return SQLiteJDBCManager.getConnection();
 		case TEAM:
-			return MysqlManager.getConnection();
+			Connection conn =  MysqlManager.getConnection();
+			conn.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
+			return conn;
 		}
 		return null;
 	}
@@ -41,7 +43,9 @@ public class DatabaseConnection {
 		case PERSONAL:
 			return SQLiteJDBCManager.getConnection();
 		case TEAM:
-			return MysqlManager.getSalveConnection();
+			Connection conn =  MysqlManager.getSalveConnection();
+			conn.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
+			return conn;
 		}
 		return null;
 	}
