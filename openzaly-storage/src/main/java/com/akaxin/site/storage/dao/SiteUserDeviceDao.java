@@ -354,7 +354,7 @@ public class SiteUserDeviceDao {
 			pst.setString(1, siteUserId);
 
 			rs = pst.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				String userToken = rs.getString(1);
 				if (StringUtils.isNotEmpty(userToken)) {
 					userTokens.add(userToken);
