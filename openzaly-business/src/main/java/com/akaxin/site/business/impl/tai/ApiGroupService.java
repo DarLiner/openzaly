@@ -129,6 +129,10 @@ public class ApiGroupService extends AbstractRequest {
 			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
+			if (!SiteConfig.allowAddGroups()) {
+				throw new ZalyException(ErrorCode2.ERROR2_GROUP_NOTALLOW);
+			}
+
 			if (StringUtils.isAnyEmpty(siteUserId, groupName) || groupMemberIds == null) {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}

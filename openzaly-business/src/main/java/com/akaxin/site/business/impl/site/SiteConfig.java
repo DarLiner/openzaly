@@ -259,6 +259,24 @@ public class SiteConfig {
 		return ConfigProto.U2EncryptionConfig.U2_CLOSE;
 	}
 
+	public static boolean allowAddFriends() {
+		Map<Integer, String> map = getConfigMap();
+		if (map != null) {
+			String value = map.get(ConfigProto.ConfigKey.ALLOW_ADD_FRIENDS_VALUE);
+			return !String.valueOf(ConfigProto.AllowAddFriends.NO_ADD_FRIENDS_VALUE).equals(value);
+		}
+		return true;
+	}
+
+	public static boolean allowAddGroups() {
+		Map<Integer, String> map = getConfigMap();
+		if (map != null) {
+			String value = map.get(ConfigProto.ConfigKey.ALLOW_ADD_GROUPS_VALUE);
+			return !String.valueOf(ConfigProto.AllowAddGroups.NO_ADD_GROUPS_VALUE).equals(value);
+		}
+		return true;
+	}
+
 	public static String getSiteLogo() {
 		try {
 			Map<Integer, String> map = getConfigMap();

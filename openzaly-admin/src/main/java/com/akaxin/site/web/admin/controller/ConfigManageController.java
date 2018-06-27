@@ -98,6 +98,7 @@ public class ConfigManageController extends AbstractController {
 				model.put("manager_type", "site_manager");
 			}
 
+			// 设置默认值
 			model.put("uic_status", "0");
 			model.put("pic_size", "1");
 			model.put("pic_path", "/akaxin");
@@ -105,6 +106,9 @@ public class ConfigManageController extends AbstractController {
 			model.put("u2_encryption_status", "1");
 			model.put("push_client_status", "0");
 			model.put("log_level", "INFO");
+			model.put("add_friends_status", "1");
+			model.put("add_groups_status", "1");
+
 			Map<Integer, String> map = configManageService.getSiteConfig();
 			Set<Integer> integers = map.keySet();
 			String site_prot = "";
@@ -161,6 +165,12 @@ public class ConfigManageController extends AbstractController {
 					break;
 				case ConfigKey.SITE_MANAGER_VALUE:
 					model.put("subgenus_admin", res);
+					break;
+				case ConfigKey.ALLOW_ADD_FRIENDS_VALUE:
+					model.put("add_friends_status", res);
+					break;
+				case ConfigKey.ALLOW_ADD_GROUPS_VALUE:
+					model.put("add_groups_status", res);
 					break;
 				}
 
@@ -220,6 +230,15 @@ public class ConfigManageController extends AbstractController {
 			if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
 				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE, dataMap.get("u2_encryption_status"));
 			}
+
+			if (StringUtils.isNotEmpty(dataMap.get("add_friends_status"))) {
+				configMap.put(ConfigProto.ConfigKey.ALLOW_ADD_FRIENDS_VALUE, dataMap.get("add_friends_status"));
+			}
+
+			if (StringUtils.isNotEmpty(dataMap.get("add_groups_status"))) {
+				configMap.put(ConfigProto.ConfigKey.ALLOW_ADD_GROUPS_VALUE, dataMap.get("add_groups_status"));
+			}
+
 			if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {
 				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
 			}

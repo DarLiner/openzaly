@@ -66,6 +66,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_FRIEND_APPLYSELF("error.alert", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alert", "添加好友最多为5次"), //
 	ERROR2_FRIEND_sealUped("error.alert", "你已经被封禁,无法执行操作"), //
+	ERROR2_FRIEND_NOTALLOW("error.alert", "站点不支持添加好友功能"), //
 
 	ERROR_GROUP_DELETED("error.group.deleted", "该群聊不存在"), //
 	ERROR_GROUP_WHEN_CREATE("error.alert", "创建群聊出错，请稍后重试"), //
@@ -73,6 +74,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR_GROUP_INVITE_CHAT_CLOSE("error.alert", "群主已关闭邀请群聊功能"), //
 	ERROR_GROUP_MAXMEMBERCOUNT("error.alert", "超过群人数上限"), // 添加群成员，人数超过上限
 	ERROR_GROUP_MEMBERLESS3("error.alert", "创建群成员少于三人"), //
+	ERROR2_GROUP_NOTALLOW("error.alert", "站点不支持创建群组功能"), //
 
 	ERROR2_LOGGIN_USERID_EMPTY("error.alert", "用户身份为空"), // 用户身份校验失败
 	ERROR2_LOGGIN_USERTOKEN_EMPTY("error.alert", "用户身份token为空"), // 用户usertoken

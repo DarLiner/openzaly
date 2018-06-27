@@ -696,6 +696,22 @@ public final class ConfigProto {
      * <code>DEFAULT_USER_GROUPS = 22;</code>
      */
     DEFAULT_USER_GROUPS(22),
+    /**
+     * <pre>
+     *是否允许添加还有
+     * </pre>
+     *
+     * <code>ALLOW_ADD_FRIENDS = 23;</code>
+     */
+    ALLOW_ADD_FRIENDS(23),
+    /**
+     * <pre>
+     *是否允许添加群组
+     * </pre>
+     *
+     * <code>ALLOW_ADD_GROUPS = 24;</code>
+     */
+    ALLOW_ADD_GROUPS(24),
     UNRECOGNIZED(-1),
     ;
 
@@ -883,6 +899,22 @@ public final class ConfigProto {
      * <code>DEFAULT_USER_GROUPS = 22;</code>
      */
     public static final int DEFAULT_USER_GROUPS_VALUE = 22;
+    /**
+     * <pre>
+     *是否允许添加还有
+     * </pre>
+     *
+     * <code>ALLOW_ADD_FRIENDS = 23;</code>
+     */
+    public static final int ALLOW_ADD_FRIENDS_VALUE = 23;
+    /**
+     * <pre>
+     *是否允许添加群组
+     * </pre>
+     *
+     * <code>ALLOW_ADD_GROUPS = 24;</code>
+     */
+    public static final int ALLOW_ADD_GROUPS_VALUE = 24;
 
 
     public final int getNumber() {
@@ -926,6 +958,8 @@ public final class ConfigProto {
         case 20: return INVITE_CODE_STATUS;
         case 21: return DEFAULT_USER_FRIENDS;
         case 22: return DEFAULT_USER_GROUPS;
+        case 23: return ALLOW_ADD_FRIENDS;
+        case 24: return ALLOW_ADD_GROUPS;
         default: return null;
       }
     }
@@ -1111,6 +1145,242 @@ public final class ConfigProto {
     }
 
     // @@protoc_insertion_point(enum_scope:core.PushClientStatus)
+  }
+
+  /**
+   * <pre>
+   *是否允许用户加好友
+   * </pre>
+   *
+   * Protobuf enum {@code core.AllowAddFriends}
+   */
+  public enum AllowAddFriends
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *禁止添加好友功能
+     * </pre>
+     *
+     * <code>NO_ADD_FRIENDS = 0;</code>
+     */
+    NO_ADD_FRIENDS(0),
+    /**
+     * <pre>
+     *允许添加好友功能
+     * </pre>
+     *
+     * <code>YES_ADD_FRIENDS = 1;</code>
+     */
+    YES_ADD_FRIENDS(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *禁止添加好友功能
+     * </pre>
+     *
+     * <code>NO_ADD_FRIENDS = 0;</code>
+     */
+    public static final int NO_ADD_FRIENDS_VALUE = 0;
+    /**
+     * <pre>
+     *允许添加好友功能
+     * </pre>
+     *
+     * <code>YES_ADD_FRIENDS = 1;</code>
+     */
+    public static final int YES_ADD_FRIENDS_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static AllowAddFriends valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static AllowAddFriends forNumber(int value) {
+      switch (value) {
+        case 0: return NO_ADD_FRIENDS;
+        case 1: return YES_ADD_FRIENDS;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AllowAddFriends>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        AllowAddFriends> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<AllowAddFriends>() {
+            public AllowAddFriends findValueByNumber(int number) {
+              return AllowAddFriends.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(6);
+    }
+
+    private static final AllowAddFriends[] VALUES = values();
+
+    public static AllowAddFriends valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private AllowAddFriends(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.AllowAddFriends)
+  }
+
+  /**
+   * <pre>
+   *是否允许用户加群组
+   * </pre>
+   *
+   * Protobuf enum {@code core.AllowAddGroups}
+   */
+  public enum AllowAddGroups
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     *禁止添加群组功能
+     * </pre>
+     *
+     * <code>NO_ADD_GROUPS = 0;</code>
+     */
+    NO_ADD_GROUPS(0),
+    /**
+     * <pre>
+     *允许添加群组功能
+     * </pre>
+     *
+     * <code>YES_ADD_GROUPS = 1;</code>
+     */
+    YES_ADD_GROUPS(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     *禁止添加群组功能
+     * </pre>
+     *
+     * <code>NO_ADD_GROUPS = 0;</code>
+     */
+    public static final int NO_ADD_GROUPS_VALUE = 0;
+    /**
+     * <pre>
+     *允许添加群组功能
+     * </pre>
+     *
+     * <code>YES_ADD_GROUPS = 1;</code>
+     */
+    public static final int YES_ADD_GROUPS_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static AllowAddGroups valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static AllowAddGroups forNumber(int value) {
+      switch (value) {
+        case 0: return NO_ADD_GROUPS;
+        case 1: return YES_ADD_GROUPS;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AllowAddGroups>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        AllowAddGroups> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<AllowAddGroups>() {
+            public AllowAddGroups findValueByNumber(int number) {
+              return AllowAddGroups.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(7);
+    }
+
+    private static final AllowAddGroups[] VALUES = values();
+
+    public static AllowAddGroups valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private AllowAddGroups(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.AllowAddGroups)
   }
 
   public interface SiteConfigOrBuilder extends
@@ -4015,7 +4285,7 @@ public final class ConfigProto {
       "\001\022\023\n\017REALNAME_YES_NO\020\002*+\n\020InviteCodeConf" +
       "ig\022\n\n\006UIC_NO\020\000\022\013\n\007UIC_YES\020\001*\'\n\020SiteStatu" +
       "sConfig\022\t\n\005CLOSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2Encryp" +
-      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\312\003" +
+      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\367\003" +
       "\n\tConfigKey\022\020\n\014SITE_ADDRESS\020\000\022\r\n\tSITE_PO",
       "RT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tSITE_LOGO\020\003\022\020\n\014SI" +
       "TE_VERSION\020\004\022\025\n\021SITE_INTRODUCTION\020\005\022\023\n\017R" +
@@ -4027,10 +4297,14 @@ public final class ConfigProto {
       "PATH\020\020\022\026\n\022PUSH_CLIENT_STATUS\020\021\022\r\n\tLOG_LE" +
       "VEL\020\022\022\020\n\014SITE_MANAGER\020\023\022\026\n\022INVITE_CODE_S" +
       "TATUS\020\024\022\030\n\024DEFAULT_USER_FRIENDS\020\025\022\027\n\023DEF",
-      "AULT_USER_GROUPS\020\026*L\n\020PushClientStatus\022\013" +
-      "\n\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUS" +
-      "H_DISPLAY_TEXT\020\002B$\n\025com.akaxin.proto.cor" +
-      "eB\013ConfigProtob\006proto3"
+      "AULT_USER_GROUPS\020\026\022\025\n\021ALLOW_ADD_FRIENDS\020" +
+      "\027\022\024\n\020ALLOW_ADD_GROUPS\020\030*L\n\020PushClientSta" +
+      "tus\022\013\n\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025" +
+      "\n\021PUSH_DISPLAY_TEXT\020\002*:\n\017AllowAddFriends" +
+      "\022\022\n\016NO_ADD_FRIENDS\020\000\022\023\n\017YES_ADD_FRIENDS\020" +
+      "\001*7\n\016AllowAddGroups\022\021\n\rNO_ADD_GROUPS\020\000\022\022" +
+      "\n\016YES_ADD_GROUPS\020\001B$\n\025com.akaxin.proto.c" +
+      "oreB\013ConfigProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
