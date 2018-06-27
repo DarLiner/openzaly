@@ -15,6 +15,8 @@
  */
 package com.akaxin.site.message.notice.handler;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,9 +87,10 @@ public class NoticePushHandler extends AbstractNoticeHandler<Command> {
 							notification.setPushAlert("你收到一条好友添加请求");
 						}
 					}
-					String userToken = ImUserProfileDao.getInstance().getUserToken(siteFriendId);
-					if (StringUtils.isNotBlank(userToken)) {
-						notification.setUserToken(userToken);
+					List<String> userTokens = ImUserProfileDao.getInstance().getUserToken(siteFriendId);
+
+					if (userTokens != null && userTokens.size() > 0) {
+						notification.addAllUserTokens(userTokens);
 						requestBuilder.setNotification(notification.build());
 						requestBuilder.setPushType(PushProto.PushType.PUSH_APPLY_FRIEND_NOTICE);
 
@@ -96,7 +99,7 @@ public class NoticePushHandler extends AbstractNoticeHandler<Command> {
 								command.getSiteUserId(), command.getSiteFriendId(), requestBuilder.toString());
 					} else {
 						logger.warn("client={} siteUserId={} push to siteFriend={} error as userToken={}",
-								command.getClientIp(), command.getSiteUserId(), command.getSiteFriendId(), userToken);
+								command.getClientIp(), command.getSiteUserId(), command.getSiteFriendId(), userTokens);
 					}
 				} catch (Exception e) {
 					LogUtils.requestErrorLog(logger, command, NoticePushHandler.class, e);

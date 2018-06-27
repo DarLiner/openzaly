@@ -72,8 +72,8 @@ public class DeviceDaoService implements IUserDeviceDao {
 	}
 
 	@Override
-	public String getUserToken(String siteUserId) throws SQLException {
-		return SiteUserDeviceDao.getInstance().queryUserToken(siteUserId);
+	public List<String> getUserTokens(String siteUserId) throws SQLException {
+		return SiteUserDeviceDao.getInstance().queryUserTokens(siteUserId);
 	}
 
 	@Override

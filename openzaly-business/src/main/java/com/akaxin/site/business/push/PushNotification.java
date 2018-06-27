@@ -1,5 +1,7 @@
 package com.akaxin.site.business.push;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,13 +79,12 @@ public class PushNotification {
 					notification.setPushAlert(pushContent);
 					notification.setPushGoto(pushGoto);
 
-					String userToken = ImUserProfileDao.getInstance().getUserToken(siteFriendId);
-					if (StringUtils.isNotBlank(userToken)) {
-						notification.setUserToken(userToken);
+					List<String> userTokens = ImUserProfileDao.getInstance().getUserToken(siteFriendId);
+					if (userTokens != null && userTokens.size() > 0) {
+						notification.addAllUserTokens(userTokens);
 						requestBuilder.setNotification(notification.build());
 						requestBuilder.setPushType(PushProto.PushType.PUSH_NOTICE);
-						PushClient.asyncWrite(CommandConst.API_PUSH_NOTIFICATION,
-								requestBuilder.build().toByteArray());
+						PushClient.asyncWrite(CommandConst.API_PUSH_NOTIFICATION, requestBuilder.build().toByteArray());
 					}
 				} catch (Exception e) {
 					logger.error(StringHelper.format("siteUserId={} siteFriendId={} subtitle={} content={}", siteUserId,
