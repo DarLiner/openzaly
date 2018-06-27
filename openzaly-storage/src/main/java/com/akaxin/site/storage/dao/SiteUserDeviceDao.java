@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -338,11 +339,11 @@ public class SiteUserDeviceDao {
 		return devicesBean;
 	}
 
-	public String queryUserToken(String siteUserId) throws SQLException {
+	public List<String> queryUserTokens(String siteUserId) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		String userToken = null;
+		List<String> userTokens = new ArrayList<String>();
 		String sql = "SELECT user_token,active_time FROM " + SQLConst.SITE_USER_DEVICE
-				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT 1;";
+				+ " WHERE site_user_id=? ORDER BY active_time DESC LIMIT 4;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -353,8 +354,11 @@ public class SiteUserDeviceDao {
 			pst.setString(1, siteUserId);
 
 			rs = pst.executeQuery();
-			if (rs.next()) {
-				userToken = rs.getString(1);
+			while (rs.next()) {
+				String userToken = rs.getString(1);
+				if (StringUtils.isNotEmpty(userToken)) {
+					userTokens.add(userToken);
+				}
 			}
 		} catch (Exception e) {
 			throw e;
@@ -362,8 +366,8 @@ public class SiteUserDeviceDao {
 			DatabaseConnection.returnConnection(conn, pst, rs);
 		}
 
-		LogUtils.dbDebugLog(logger, startTime, userToken, sql, siteUserId);
-		return userToken;
+		LogUtils.dbDebugLog(logger, startTime, userTokens, sql, siteUserId);
+		return userTokens;
 	}
 
 	/**

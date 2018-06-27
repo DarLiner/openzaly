@@ -125,9 +125,9 @@ public class GroupPushHandler extends AbstractGroupHandler<Command> {
 							PushProto.PushToUser.Builder pushToUser = PushProto.PushToUser.newBuilder();
 							pushToUser.setGlobalUserId(globalUserId);
 
-							String userToken = ImUserProfileDao.getInstance().getUserToken(memberUserId);
-							if (StringUtils.isNotBlank(userToken)) {
-								pushToUser.setUserToken(userToken);
+							List<String> userTokens = ImUserProfileDao.getInstance().getUserToken(memberUserId);
+							if (userTokens != null && userTokens.size() > 0) {
+								pushToUser.addAllUserTokens(userTokens);
 								requestBuilder.addPushToUser(pushToUser.build());
 							} else {
 								logger.error("siteUserId={} with no userToken", memberUserId);

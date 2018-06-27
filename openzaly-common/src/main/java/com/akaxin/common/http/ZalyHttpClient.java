@@ -25,6 +25,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 public class ZalyHttpClient {
 	private static final Logger logger = LoggerFactory.getLogger(ZalyHttpClient.class);
@@ -40,50 +41,64 @@ public class ZalyHttpClient {
 		return instance;
 	}
 
-	public byte[] run(String url) throws Exception {
-		Request request = new Request.Builder().url(url).build();
-		Response response = httpClient.newCall(request).execute();
-
-		if (response.isSuccessful()) {
-			return response.body().bytes();
-		} else {
-			logger.error("http post error.{}", response.message());
-		}
-
-		return null;
-	}
-
 	public byte[] get(String url) throws Exception {
-		Request request = new Request.Builder().url(url).build();
-		Response response = httpClient.newCall(request).execute();
-		if (response.isSuccessful()) {
-			return response.body().bytes();
-		} else {
-			logger.error("http get url={} error.{}", url, response.message());
+		ResponseBody body = null;
+		try {
+			Request request = new Request.Builder().url(url).build();
+			Response response = httpClient.newCall(request).execute();
+			if (response.isSuccessful()) {
+				body = response.body();
+				byte[] res = body.bytes();
+				return res;
+			} else {
+				logger.error("http get url={} error.{}", url, response.message());
+			}
+		} finally {
+			if (body != null) {
+				body.close();
+			}
 		}
 		return null;
 	}
 
 	public byte[] postString(String url, String json) throws IOException {
-		RequestBody postBody = RequestBody.create(JSON, json);
-		Request request = new Request.Builder().url(url).post(postBody).build();
-		Response response = httpClient.newCall(request).execute();
-		if (response.isSuccessful()) {
-			return response.body().bytes();
-		} else {
-			logger.error("http post error.{}", response.message());
+		ResponseBody body = null;
+		try {
+			RequestBody postBody = RequestBody.create(JSON, json);
+			Request request = new Request.Builder().url(url).post(postBody).build();
+			Response response = httpClient.newCall(request).execute();
+			if (response.isSuccessful()) {
+				body = response.body();
+				byte[] res = body.bytes();
+				return res;
+			} else {
+				logger.error("http post error.{}", response.message());
+			}
+		} finally {
+			if (body != null) {
+				body.close();
+			}
 		}
 		return null;
 	}
 
 	public byte[] postBytes(String url, byte[] bytes) throws IOException {
-		RequestBody postBody = RequestBody.create(JSON, bytes);
-		Request request = new Request.Builder().url(url).post(postBody).build();
-		Response response = httpClient.newCall(request).execute();
-		if (response.isSuccessful()) {
-			return response.body().bytes();
-		} else {
-			logger.error("http post error.{}", response.message());
+		ResponseBody body = null;
+		try {
+			RequestBody postBody = RequestBody.create(JSON, bytes);
+			Request request = new Request.Builder().url(url).post(postBody).build();
+			Response response = httpClient.newCall(request).execute();
+			if (response.isSuccessful()) {
+				body = response.body();
+				byte[] res = body.bytes();
+				return res;
+			} else {
+				logger.error("http post error.{}", response.message());
+			}
+		} finally {
+			if (body != null) {
+				body.close();
+			}
 		}
 		return null;
 	}

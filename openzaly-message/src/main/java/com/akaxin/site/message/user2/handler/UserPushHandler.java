@@ -16,6 +16,7 @@
 package com.akaxin.site.message.user2.handler;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -93,9 +94,9 @@ public class UserPushHandler extends AbstractU2Handler<Command> {
 							notification.setPushFromName(bean.getUserName());
 						}
 					}
-					String userToken = ImUserProfileDao.getInstance().getUserToken(toSiteUserId);
-					if (StringUtils.isNotBlank(userToken)) {
-						notification.setUserToken(userToken);
+					List<String> userTokens = ImUserProfileDao.getInstance().getUserToken(toSiteUserId);
+					if (userTokens != null && userTokens.size() > 0) {
+						notification.addAllUserTokens(userTokens);
 						requestBuilder.setNotification(notification.build());
 						requestBuilder.setPushTypeValue(request.getType().getNumber());
 
@@ -104,7 +105,7 @@ public class UserPushHandler extends AbstractU2Handler<Command> {
 								command.getSiteUserId(), command.getSiteFriendId(), requestBuilder.toString());
 					} else {
 						logger.warn("client={} siteUserId={} push to siteFriend={} error as userToken={}",
-								command.getClientIp(), command.getSiteUserId(), command.getSiteFriendId(), userToken);
+								command.getClientIp(), command.getSiteUserId(), command.getSiteFriendId(), userTokens);
 					}
 				} catch (Exception e) {
 					LogUtils.requestErrorLog(logger, command, UserPushHandler.class, e);

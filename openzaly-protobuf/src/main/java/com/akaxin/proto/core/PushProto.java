@@ -455,7 +455,7 @@ public final class PushProto {
 
     /**
      * <pre>
-     *接受者用户的token
+     *接受者用户的token,给一个人发送使用
      * </pre>
      *
      * <code>optional string user_token = 8;</code>
@@ -463,7 +463,7 @@ public final class PushProto {
     java.lang.String getUserToken();
     /**
      * <pre>
-     *接受者用户的token
+     *接受者用户的token,给一个人发送使用
      * </pre>
      *
      * <code>optional string user_token = 8;</code>
@@ -506,6 +506,41 @@ public final class PushProto {
      */
     com.google.protobuf.ByteString
         getPushFromNameBytes();
+
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    java.util.List<java.lang.String>
+        getUserTokensList();
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    int getUserTokensCount();
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    java.lang.String getUserTokens(int index);
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserTokensBytes(int index);
   }
   /**
    * <pre>
@@ -533,6 +568,7 @@ public final class PushProto {
       userToken_ = "";
       pushFromId_ = "";
       pushFromName_ = "";
+      userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -619,6 +655,15 @@ public final class PushProto {
               pushFromName_ = s;
               break;
             }
+            case 90: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+                userTokens_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000400;
+              }
+              userTokens_.add(s);
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -627,6 +672,9 @@ public final class PushProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+          userTokens_ = userTokens_.getUnmodifiableView();
+        }
         makeExtensionsImmutable();
       }
     }
@@ -642,6 +690,7 @@ public final class PushProto {
               com.akaxin.proto.core.PushProto.Notification.class, com.akaxin.proto.core.PushProto.Notification.Builder.class);
     }
 
+    private int bitField0_;
     public static final int SITE_SERVER_FIELD_NUMBER = 1;
     private volatile java.lang.Object siteServer_;
     /**
@@ -911,7 +960,7 @@ public final class PushProto {
     private volatile java.lang.Object userToken_;
     /**
      * <pre>
-     *接受者用户的token
+     *接受者用户的token,给一个人发送使用
      * </pre>
      *
      * <code>optional string user_token = 8;</code>
@@ -930,7 +979,7 @@ public final class PushProto {
     }
     /**
      * <pre>
-     *接受者用户的token
+     *接受者用户的token,给一个人发送使用
      * </pre>
      *
      * <code>optional string user_token = 8;</code>
@@ -1033,6 +1082,51 @@ public final class PushProto {
       }
     }
 
+    public static final int USER_TOKENS_FIELD_NUMBER = 11;
+    private com.google.protobuf.LazyStringList userTokens_;
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getUserTokensList() {
+      return userTokens_;
+    }
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    public int getUserTokensCount() {
+      return userTokens_.size();
+    }
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    public java.lang.String getUserTokens(int index) {
+      return userTokens_.get(index);
+    }
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 11;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserTokensBytes(int index) {
+      return userTokens_.getByteString(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1075,6 +1169,9 @@ public final class PushProto {
       if (!getPushFromNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, pushFromName_);
       }
+      for (int i = 0; i < userTokens_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, userTokens_.getRaw(i));
+      }
     }
 
     public int getSerializedSize() {
@@ -1113,6 +1210,14 @@ public final class PushProto {
       if (!getPushFromNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, pushFromName_);
       }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userTokens_.size(); i++) {
+          dataSize += computeStringSizeNoTag(userTokens_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getUserTokensList().size();
+      }
       memoizedSize = size;
       return size;
     }
@@ -1149,6 +1254,8 @@ public final class PushProto {
           .equals(other.getPushFromId());
       result = result && getPushFromName()
           .equals(other.getPushFromName());
+      result = result && getUserTokensList()
+          .equals(other.getUserTokensList());
       return result;
     }
 
@@ -1179,6 +1286,10 @@ public final class PushProto {
       hash = (53 * hash) + getPushFromId().hashCode();
       hash = (37 * hash) + PUSH_FROM_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getPushFromName().hashCode();
+      if (getUserTokensCount() > 0) {
+        hash = (37 * hash) + USER_TOKENS_FIELD_NUMBER;
+        hash = (53 * hash) + getUserTokensList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1321,6 +1432,8 @@ public final class PushProto {
 
         pushFromName_ = "";
 
+        userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -1343,6 +1456,8 @@ public final class PushProto {
 
       public com.akaxin.proto.core.PushProto.Notification buildPartial() {
         com.akaxin.proto.core.PushProto.Notification result = new com.akaxin.proto.core.PushProto.Notification(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.siteServer_ = siteServer_;
         result.pushTitle_ = pushTitle_;
         result.pushAlert_ = pushAlert_;
@@ -1353,6 +1468,12 @@ public final class PushProto {
         result.userToken_ = userToken_;
         result.pushFromId_ = pushFromId_;
         result.pushFromName_ = pushFromName_;
+        if (((bitField0_ & 0x00000400) == 0x00000400)) {
+          userTokens_ = userTokens_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000400);
+        }
+        result.userTokens_ = userTokens_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1433,6 +1554,16 @@ public final class PushProto {
           pushFromName_ = other.pushFromName_;
           onChanged();
         }
+        if (!other.userTokens_.isEmpty()) {
+          if (userTokens_.isEmpty()) {
+            userTokens_ = other.userTokens_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            ensureUserTokensIsMutable();
+            userTokens_.addAll(other.userTokens_);
+          }
+          onChanged();
+        }
         onChanged();
         return this;
       }
@@ -1458,6 +1589,7 @@ public final class PushProto {
         }
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object siteServer_ = "";
       /**
@@ -2034,7 +2166,7 @@ public final class PushProto {
       private java.lang.Object userToken_ = "";
       /**
        * <pre>
-       *接受者用户的token
+       *接受者用户的token,给一个人发送使用
        * </pre>
        *
        * <code>optional string user_token = 8;</code>
@@ -2053,7 +2185,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者用户的token
+       *接受者用户的token,给一个人发送使用
        * </pre>
        *
        * <code>optional string user_token = 8;</code>
@@ -2073,7 +2205,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者用户的token
+       *接受者用户的token,给一个人发送使用
        * </pre>
        *
        * <code>optional string user_token = 8;</code>
@@ -2090,7 +2222,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者用户的token
+       *接受者用户的token,给一个人发送使用
        * </pre>
        *
        * <code>optional string user_token = 8;</code>
@@ -2103,7 +2235,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者用户的token
+       *接受者用户的token,给一个人发送使用
        * </pre>
        *
        * <code>optional string user_token = 8;</code>
@@ -2294,6 +2426,136 @@ public final class PushProto {
   checkByteStringIsUtf8(value);
         
         pushFromName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureUserTokensIsMutable() {
+        if (!((bitField0_ & 0x00000400) == 0x00000400)) {
+          userTokens_ = new com.google.protobuf.LazyStringArrayList(userTokens_);
+          bitField0_ |= 0x00000400;
+         }
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getUserTokensList() {
+        return userTokens_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public int getUserTokensCount() {
+        return userTokens_.size();
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public java.lang.String getUserTokens(int index) {
+        return userTokens_.get(index);
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserTokensBytes(int index) {
+        return userTokens_.getByteString(index);
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public Builder setUserTokens(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserTokensIsMutable();
+        userTokens_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public Builder addUserTokens(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserTokensIsMutable();
+        userTokens_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public Builder addAllUserTokens(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureUserTokensIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userTokens_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public Builder clearUserTokens() {
+        userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 11;</code>
+       */
+      public Builder addUserTokensBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureUserTokensIsMutable();
+        userTokens_.add(value);
         onChanged();
         return this;
       }
@@ -4750,7 +5012,7 @@ public final class PushProto {
 
     /**
      * <pre>
-     *接受者：用户的token
+     *接受者：单人用户的token
      * </pre>
      *
      * <code>optional string user_token = 2;</code>
@@ -4758,13 +5020,48 @@ public final class PushProto {
     java.lang.String getUserToken();
     /**
      * <pre>
-     *接受者：用户的token
+     *接受者：单人用户的token
      * </pre>
      *
      * <code>optional string user_token = 2;</code>
      */
     com.google.protobuf.ByteString
         getUserTokenBytes();
+
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    java.util.List<java.lang.String>
+        getUserTokensList();
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    int getUserTokensCount();
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    java.lang.String getUserTokens(int index);
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserTokensBytes(int index);
   }
   /**
    * Protobuf type {@code core.PushToUser}
@@ -4780,6 +5077,7 @@ public final class PushProto {
     private PushToUser() {
       globalUserId_ = "";
       userToken_ = "";
+      userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -4819,6 +5117,15 @@ public final class PushProto {
               userToken_ = s;
               break;
             }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                userTokens_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              userTokens_.add(s);
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -4827,6 +5134,9 @@ public final class PushProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          userTokens_ = userTokens_.getUnmodifiableView();
+        }
         makeExtensionsImmutable();
       }
     }
@@ -4842,6 +5152,7 @@ public final class PushProto {
               com.akaxin.proto.core.PushProto.PushToUser.class, com.akaxin.proto.core.PushProto.PushToUser.Builder.class);
     }
 
+    private int bitField0_;
     public static final int GLOBAL_USER_ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object globalUserId_;
     /**
@@ -4888,7 +5199,7 @@ public final class PushProto {
     private volatile java.lang.Object userToken_;
     /**
      * <pre>
-     *接受者：用户的token
+     *接受者：单人用户的token
      * </pre>
      *
      * <code>optional string user_token = 2;</code>
@@ -4907,7 +5218,7 @@ public final class PushProto {
     }
     /**
      * <pre>
-     *接受者：用户的token
+     *接受者：单人用户的token
      * </pre>
      *
      * <code>optional string user_token = 2;</code>
@@ -4924,6 +5235,51 @@ public final class PushProto {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int USER_TOKENS_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList userTokens_;
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getUserTokensList() {
+      return userTokens_;
+    }
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    public int getUserTokensCount() {
+      return userTokens_.size();
+    }
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    public java.lang.String getUserTokens(int index) {
+      return userTokens_.get(index);
+    }
+    /**
+     * <pre>
+     *接受者用户的tokens,给多人发送使用
+     * </pre>
+     *
+     * <code>repeated string user_tokens = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserTokensBytes(int index) {
+      return userTokens_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4944,6 +5300,9 @@ public final class PushProto {
       if (!getUserTokenBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, userToken_);
       }
+      for (int i = 0; i < userTokens_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, userTokens_.getRaw(i));
+      }
     }
 
     public int getSerializedSize() {
@@ -4956,6 +5315,14 @@ public final class PushProto {
       }
       if (!getUserTokenBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, userToken_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userTokens_.size(); i++) {
+          dataSize += computeStringSizeNoTag(userTokens_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getUserTokensList().size();
       }
       memoizedSize = size;
       return size;
@@ -4977,6 +5344,8 @@ public final class PushProto {
           .equals(other.getGlobalUserId());
       result = result && getUserToken()
           .equals(other.getUserToken());
+      result = result && getUserTokensList()
+          .equals(other.getUserTokensList());
       return result;
     }
 
@@ -4991,6 +5360,10 @@ public final class PushProto {
       hash = (53 * hash) + getGlobalUserId().hashCode();
       hash = (37 * hash) + USER_TOKEN_FIELD_NUMBER;
       hash = (53 * hash) + getUserToken().hashCode();
+      if (getUserTokensCount() > 0) {
+        hash = (37 * hash) + USER_TOKENS_FIELD_NUMBER;
+        hash = (53 * hash) + getUserTokensList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5113,6 +5486,8 @@ public final class PushProto {
 
         userToken_ = "";
 
+        userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -5135,8 +5510,16 @@ public final class PushProto {
 
       public com.akaxin.proto.core.PushProto.PushToUser buildPartial() {
         com.akaxin.proto.core.PushProto.PushToUser result = new com.akaxin.proto.core.PushProto.PushToUser(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.globalUserId_ = globalUserId_;
         result.userToken_ = userToken_;
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          userTokens_ = userTokens_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.userTokens_ = userTokens_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -5186,6 +5569,16 @@ public final class PushProto {
           userToken_ = other.userToken_;
           onChanged();
         }
+        if (!other.userTokens_.isEmpty()) {
+          if (userTokens_.isEmpty()) {
+            userTokens_ = other.userTokens_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureUserTokensIsMutable();
+            userTokens_.addAll(other.userTokens_);
+          }
+          onChanged();
+        }
         onChanged();
         return this;
       }
@@ -5211,6 +5604,7 @@ public final class PushProto {
         }
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object globalUserId_ = "";
       /**
@@ -5304,7 +5698,7 @@ public final class PushProto {
       private java.lang.Object userToken_ = "";
       /**
        * <pre>
-       *接受者：用户的token
+       *接受者：单人用户的token
        * </pre>
        *
        * <code>optional string user_token = 2;</code>
@@ -5323,7 +5717,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者：用户的token
+       *接受者：单人用户的token
        * </pre>
        *
        * <code>optional string user_token = 2;</code>
@@ -5343,7 +5737,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者：用户的token
+       *接受者：单人用户的token
        * </pre>
        *
        * <code>optional string user_token = 2;</code>
@@ -5360,7 +5754,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者：用户的token
+       *接受者：单人用户的token
        * </pre>
        *
        * <code>optional string user_token = 2;</code>
@@ -5373,7 +5767,7 @@ public final class PushProto {
       }
       /**
        * <pre>
-       *接受者：用户的token
+       *接受者：单人用户的token
        * </pre>
        *
        * <code>optional string user_token = 2;</code>
@@ -5386,6 +5780,136 @@ public final class PushProto {
   checkByteStringIsUtf8(value);
         
         userToken_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureUserTokensIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          userTokens_ = new com.google.protobuf.LazyStringArrayList(userTokens_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getUserTokensList() {
+        return userTokens_.getUnmodifiableView();
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public int getUserTokensCount() {
+        return userTokens_.size();
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public java.lang.String getUserTokens(int index) {
+        return userTokens_.get(index);
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserTokensBytes(int index) {
+        return userTokens_.getByteString(index);
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public Builder setUserTokens(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserTokensIsMutable();
+        userTokens_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public Builder addUserTokens(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserTokensIsMutable();
+        userTokens_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public Builder addAllUserTokens(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureUserTokensIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, userTokens_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public Builder clearUserTokens() {
+        userTokens_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *接受者用户的tokens,给多人发送使用
+       * </pre>
+       *
+       * <code>repeated string user_tokens = 3;</code>
+       */
+      public Builder addUserTokensBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureUserTokensIsMutable();
+        userTokens_.add(value);
         onChanged();
         return this;
       }
@@ -5467,34 +5991,35 @@ public final class PushProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017core/push.proto\022\004core\"\331\001\n\014Notification" +
+      "\n\017core/push.proto\022\004core\"\356\001\n\014Notification" +
       "\022\023\n\013site_server\030\001 \001(\t\022\022\n\npush_title\030\002 \001(" +
       "\t\022\022\n\npush_alert\030\003 \001(\t\022\021\n\tpush_goto\030\004 \001(\t" +
       "\022\022\n\npush_badge\030\005 \001(\005\022\022\n\npush_sound\030\006 \001(\t" +
       "\022\017\n\007user_id\030\007 \001(\t\022\022\n\nuser_token\030\010 \001(\t\022\024\n" +
       "\014push_from_id\030\t \001(\t\022\026\n\016push_from_name\030\n " +
-      "\001(\t\"\236\001\n\rNotifications\022\023\n\013site_server\030\001 \001" +
-      "(\t\022\022\n\npush_title\030\002 \001(\t\022\025\n\rpush_subtitle\030" +
-      "\003 \001(\t\022\022\n\npush_alert\030\004 \001(\t\022\021\n\tpush_goto\030\005" +
-      " \001(\t\022\022\n\npush_badge\030\006 \001(\005\022\022\n\npush_sound\030\007",
-      " \001(\t\"T\n\014PushFromUser\022\026\n\016global_user_id\030\001" +
-      " \001(\t\022\024\n\014site_user_id\030\002 \001(\t\022\026\n\016push_from_" +
-      "name\030\003 \001(\t\"8\n\nPushToUser\022\026\n\016global_user_" +
-      "id\030\001 \001(\t\022\022\n\nuser_token\030\002 \001(\t*\352\003\n\010PushTyp" +
-      "e\022\017\n\013PUSH_NOTICE\020\000\022\023\n\017PUSH_MSG_STATUS\020\001\022" +
-      "\023\n\017PUSH_MSG_FINISH\020\002\022\r\n\tPUSH_TEXT\020\003\022\024\n\020P" +
-      "USH_SECRET_TEXT\020\004\022\023\n\017PUSH_GROUP_TEXT\020\005\022\032" +
-      "\n\026PUSH_GROUP_SECRET_TEXT\020\006\022\016\n\nPUSH_IMAGE" +
-      "\020\007\022\025\n\021PUSH_SECRET_IMAGE\020\010\022\024\n\020PUSH_GROUP_" +
-      "IMAGE\020\t\022\033\n\027PUSH_GROUP_SECRET_IMAGE\020\n\022\016\n\n",
-      "PUSH_VOICE\020\013\022\025\n\021PUSH_SECRET_VOICE\020\014\022\024\n\020P" +
-      "USH_GROUP_VOICE\020\r\022\033\n\027PUSH_GROUP_SECRET_V" +
-      "OICE\020\016\022\014\n\010PUSH_MAP\020\017\022\023\n\017PUSH_SECRET_MAP\020" +
-      "\020\022\022\n\016PUSH_GROUP_MAP\020\021\022\031\n\025PUSH_GROUP_SECR" +
-      "ET_MAP\020\022\022\022\n\016PUSH_U2_NOTICE\020\023\022\025\n\021PUSH_GRO" +
-      "UP_NOTICE\020\024\022\034\n\030PUSH_APPLY_FRIEND_NOTICE\020" +
-      "dB\"\n\025com.akaxin.proto.coreB\tPushProtob\006p" +
-      "roto3"
+      "\001(\t\022\023\n\013user_tokens\030\013 \003(\t\"\236\001\n\rNotificatio" +
+      "ns\022\023\n\013site_server\030\001 \001(\t\022\022\n\npush_title\030\002 " +
+      "\001(\t\022\025\n\rpush_subtitle\030\003 \001(\t\022\022\n\npush_alert" +
+      "\030\004 \001(\t\022\021\n\tpush_goto\030\005 \001(\t\022\022\n\npush_badge\030",
+      "\006 \001(\005\022\022\n\npush_sound\030\007 \001(\t\"T\n\014PushFromUse" +
+      "r\022\026\n\016global_user_id\030\001 \001(\t\022\024\n\014site_user_i" +
+      "d\030\002 \001(\t\022\026\n\016push_from_name\030\003 \001(\t\"M\n\nPushT" +
+      "oUser\022\026\n\016global_user_id\030\001 \001(\t\022\022\n\nuser_to" +
+      "ken\030\002 \001(\t\022\023\n\013user_tokens\030\003 \003(\t*\352\003\n\010PushT" +
+      "ype\022\017\n\013PUSH_NOTICE\020\000\022\023\n\017PUSH_MSG_STATUS\020" +
+      "\001\022\023\n\017PUSH_MSG_FINISH\020\002\022\r\n\tPUSH_TEXT\020\003\022\024\n" +
+      "\020PUSH_SECRET_TEXT\020\004\022\023\n\017PUSH_GROUP_TEXT\020\005" +
+      "\022\032\n\026PUSH_GROUP_SECRET_TEXT\020\006\022\016\n\nPUSH_IMA" +
+      "GE\020\007\022\025\n\021PUSH_SECRET_IMAGE\020\010\022\024\n\020PUSH_GROU",
+      "P_IMAGE\020\t\022\033\n\027PUSH_GROUP_SECRET_IMAGE\020\n\022\016" +
+      "\n\nPUSH_VOICE\020\013\022\025\n\021PUSH_SECRET_VOICE\020\014\022\024\n" +
+      "\020PUSH_GROUP_VOICE\020\r\022\033\n\027PUSH_GROUP_SECRET" +
+      "_VOICE\020\016\022\014\n\010PUSH_MAP\020\017\022\023\n\017PUSH_SECRET_MA" +
+      "P\020\020\022\022\n\016PUSH_GROUP_MAP\020\021\022\031\n\025PUSH_GROUP_SE" +
+      "CRET_MAP\020\022\022\022\n\016PUSH_U2_NOTICE\020\023\022\025\n\021PUSH_G" +
+      "ROUP_NOTICE\020\024\022\034\n\030PUSH_APPLY_FRIEND_NOTIC" +
+      "E\020dB\"\n\025com.akaxin.proto.coreB\tPushProtob" +
+      "\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5513,7 +6038,7 @@ public final class PushProto {
     internal_static_core_Notification_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_Notification_descriptor,
-        new java.lang.String[] { "SiteServer", "PushTitle", "PushAlert", "PushGoto", "PushBadge", "PushSound", "UserId", "UserToken", "PushFromId", "PushFromName", });
+        new java.lang.String[] { "SiteServer", "PushTitle", "PushAlert", "PushGoto", "PushBadge", "PushSound", "UserId", "UserToken", "PushFromId", "PushFromName", "UserTokens", });
     internal_static_core_Notifications_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_core_Notifications_fieldAccessorTable = new
@@ -5531,7 +6056,7 @@ public final class PushProto {
     internal_static_core_PushToUser_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_core_PushToUser_descriptor,
-        new java.lang.String[] { "GlobalUserId", "UserToken", });
+        new java.lang.String[] { "GlobalUserId", "UserToken", "UserTokens", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

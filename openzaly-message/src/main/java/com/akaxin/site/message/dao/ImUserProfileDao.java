@@ -16,6 +16,7 @@
 package com.akaxin.site.message.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,9 +61,9 @@ public class ImUserProfileDao {
 		return null;
 	}
 
-	public String getUserToken(String siteUserId) {
+	public List<String> getUserToken(String siteUserId) {
 		try {
-			return deviceProfileDao.getUserToken(siteUserId);
+			return deviceProfileDao.getUserTokens(siteUserId);
 		} catch (SQLException e) {
 			logger.error("get user token error.", e);
 		}
