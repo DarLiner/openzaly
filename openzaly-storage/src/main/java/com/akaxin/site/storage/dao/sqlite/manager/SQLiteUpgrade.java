@@ -22,6 +22,12 @@ import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
+/**
+ * sqlite 数据库升级
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-06-28 11:47:07
+ */
 public class SQLiteUpgrade {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteUpgrade.class);
 

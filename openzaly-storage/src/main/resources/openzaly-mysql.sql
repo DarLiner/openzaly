@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS site_user_friend(id INTEGER PRIMARY KEY NOT NULL AUTO
             relation INTEGER,
             mute BOOLEAN,
             add_time BIGINT,
-            INDEX(site_user_id,site_friend_id)
+            UNIQUE INDEX(site_user_id,site_friend_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户好友关系表';
             
 CREATE TABLE IF NOT EXISTS site_friend_apply(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS site_user_group(id INTEGER PRIMARY KEY NOT NULL AUTO_
             user_role INTEGER, 
             mute BOOLEAN, 
             add_time BIGINT,
-            INDEX(site_user_id,site_group_id),
+            UNIQUE INDEX(site_user_id,site_group_id),
             INDEX(site_group_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户群组列表';
 
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL AU
             group_status INTEGER,
             close_invite_group_chat BOOLEAN,
             create_time BIGINT,
-            UNIQUE INDEX (site_group_id)
+            INDEX (site_group_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组资料表';
 
 CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS site_user_device(id INTEGER PRIMARY KEY NOT NULL AUTO
             device_ip VARCHAR(50),
             active_time BIGINT,
             add_time BIGINT,
-            INDEX(site_user_id,device_id)
+            UNIQUE INDEX(site_user_id,device_id)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户设备表';
 
 CREATE TABLE IF NOT EXISTS site_plugin_manager(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -157,5 +157,14 @@ CREATE TABLE IF NOT EXISTS site_user_uic(id INTEGER PRIMARY KEY NOT NULL AUTO_IN
             status INTEGER,
             create_time BIGINT,
             use_time BIGINT
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点邀请码表';
+            )ENGINE=InnoDB DEFAULT CHhARSET=utf8 COMMENT '站点邀请码表';
+            
+CREATE TABLE IF NOT EXISTS site_expire_token(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+            token VARCHAR(100) UNIQUE NOT NULL,
+            btype INTEGER,
+            status INTEGER,
+            create_time BIGINT,
+            expire_time BIGINT,
+            INDEX(token)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点令牌表';          
             

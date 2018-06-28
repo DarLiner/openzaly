@@ -15,11 +15,9 @@
  */
 package com.akaxin.site.storage;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -40,6 +38,7 @@ import com.akaxin.site.storage.exception.InitDatabaseException;
 import com.akaxin.site.storage.exception.MigrateDatabaseException;
 import com.akaxin.site.storage.exception.NeedInitMysqlException;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
+import com.akaxin.site.storage.util.FileUtils;
 import com.akaxin.site.storage.util.MigrateUtils;
 
 /**
@@ -52,7 +51,6 @@ public class DataSourceManager {
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
 
 	private static final String OPENZALY_DATABASE_CONFIG = "openzaly-server.config";
-	private static final String OPENZALY_MYSQL_SQL = "openzaly-mysql.sql";
 
 	private DataSourceManager() {
 	}
@@ -77,11 +75,12 @@ public class DataSourceManager {
 			case PERSONAL:
 				System.setProperty("database", dbType.getName());
 				SQLiteJDBCManager.initSqliteDB(config);
+				PrepareSiteConfigData.init(config);// 初始化数据库中初始数据
 				break;
 			case TEAM:
 				System.setProperty("database", dbType.getName());
 				MysqlManager.initMysqlDB(pro); // 初始化数据库以及数据库连接
-				PrepareSiteConfigData.init(config);// 初始化数据库中数据
+				PrepareSiteConfigData.init(config);// 初始化数据库中初始数据
 				break;
 			}
 		} catch (SQLException e) {
@@ -94,7 +93,7 @@ public class DataSourceManager {
 		// 生成配置文件
 		File configFile = new File(OPENZALY_DATABASE_CONFIG);
 		if (!configFile.exists()) {
-			writeResourceToFile("/" + OPENZALY_DATABASE_CONFIG, configFile);
+			FileUtils.writeResourceToFile("/" + OPENZALY_DATABASE_CONFIG, configFile);
 		}
 	}
 
@@ -141,29 +140,4 @@ public class DataSourceManager {
 		return properties;
 	}
 
-	private static void writeResourceToFile(String resourceName, File file) throws FileNotFoundException, IOException {
-		if (!file.exists()) {
-			new FileOutputStream(file).close();
-		}
-		InputStream is = MysqlManager.class.getResourceAsStream(resourceName);
-		BufferedInputStream bis = new BufferedInputStream(is);
-		FileOutputStream fos = new FileOutputStream(file);
-		try {
-			byte[] buffer = new byte[1024];
-			int bytesLen = 0;
-			while ((bytesLen = bis.read(buffer)) != -1) {
-				fos.write(buffer, 0, bytesLen);
-			}
-		} finally {
-			if (bis != null) {
-				bis.close();
-			}
-			if (is != null) {
-				is.close();
-			}
-			if (fos != null) {
-				fos.close();
-			}
-		}
-	}
 }
