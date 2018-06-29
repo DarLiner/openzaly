@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sql.SQLIndex;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 /**
@@ -35,9 +34,7 @@ import com.akaxin.site.storage.exception.UpgradeDatabaseException;
  * SQLite数据源连接管理
  * 		1.数据源加载
  * 		2.检测数据库中的表
- * 		3.初始化站点设置信息
- * 		4.添加后台管理扩展
- * 		5.设置初始管理员邀请码UIC
+ * 		3.自动化升级
  * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -107,22 +104,24 @@ public class SQLiteJDBCManager {
 		sqlitConnection = DriverManager.getConnection(dbUrl);
 	}
 
-	public static void checkDatabaseBeforeRun() throws SQLException, UpgradeDatabaseException {
-		int dbVersion = getDbVersion();
-		logger.info("SQLite current user-version : {}", dbVersion);
-
-		// 不是最新版本，启动需要创建表
-		if (dbVersion < SITE_DB_VERSION) {
-			int num = checkDatabaseTable();
-			if (num == SQLConst.SITE_TABLES_MAP.size()) {
-				// database index
-				checkDatabaseIndex();
-				// 版本设置为 SITE_DB_VERSION
-				setDbVersion(SITE_DB_VERSION);
-				logger.info("create all database tables finish, currentuser-version:{}", getDbVersion());
-			}
-		}
-	}
+	// public static void checkDatabaseBeforeRun() throws SQLException,
+	// UpgradeDatabaseException {
+	// int dbVersion = getDbVersion();
+	// logger.info("SQLite current user-version : {}", dbVersion);
+	//
+	// // 不是最新版本，启动需要创建表
+	// if (dbVersion < SITE_DB_VERSION) {
+	// int num = checkDatabaseTable();
+	// if (num == SQLConst.SITE_TABLES_MAP.size()) {
+	// // database index
+	// checkDatabaseIndex();
+	// // 版本设置为 SITE_DB_VERSION
+	// setDbVersion(SITE_DB_VERSION);
+	// logger.info("create all database tables finish, currentuser-version:{}",
+	// getDbVersion());
+	// }
+	// }
+	// }
 
 	public static int getDbVersion() throws SQLException {
 		PreparedStatement pst = sqlitConnection.prepareStatement("PRAGMA user_version");
@@ -139,22 +138,22 @@ public class SQLiteJDBCManager {
 		pst.executeUpdate();
 	}
 
-	public static int checkDatabaseTable() {
-		int num = 0;
-		for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
-			int result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
-			num += result;
-			logger.info("create table:{} {}", tableName, result == 1 ? "OK" : "false");
-		}
-		return num;
-	}
+	// public static int checkDatabaseTable() {
+	// int num = 0;
+	// for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
+	// int result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
+	// num += result;
+	// logger.info("create table:{} {}", tableName, result == 1 ? "OK" : "false");
+	// }
+	// return num;
+	// }
 
-	private static void checkDatabaseIndex() {
-		for (String indexSql : SQLIndex.DB_INDEXS_SQL) {
-			boolean result = createIndex(indexSql);
-			logger.info("create index result:{} sql:{}", result, indexSql);
-		}
-	}
+	// private static void checkDatabaseIndex() {
+	// for (String indexSql : SQLIndex.DB_INDEXS_SQL) {
+	// boolean result = createIndex(indexSql);
+	// logger.info("create index result:{} sql:{}", result, indexSql);
+	// }
+	// }
 
 	private static boolean existTable(String tableName) {
 		if (StringUtils.isBlank(tableName)) {

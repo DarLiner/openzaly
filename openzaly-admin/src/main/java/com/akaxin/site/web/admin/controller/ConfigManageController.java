@@ -166,10 +166,10 @@ public class ConfigManageController extends AbstractController {
 				case ConfigKey.SITE_MANAGER_VALUE:
 					model.put("subgenus_admin", res);
 					break;
-				case ConfigKey.ALLOW_ADD_FRIENDS_VALUE:
+				case ConfigKey.CONFIG_FRIEND_REQUEST_VALUE:
 					model.put("add_friends_status", res);
 					break;
-				case ConfigKey.ALLOW_ADD_GROUPS_VALUE:
+				case ConfigKey.CONFIG_CREATE_GROUP_VALUE:
 					model.put("add_groups_status", res);
 					break;
 				}
@@ -232,11 +232,11 @@ public class ConfigManageController extends AbstractController {
 			}
 
 			if (StringUtils.isNotEmpty(dataMap.get("add_friends_status"))) {
-				configMap.put(ConfigProto.ConfigKey.ALLOW_ADD_FRIENDS_VALUE, dataMap.get("add_friends_status"));
+				configMap.put(ConfigProto.ConfigKey.CONFIG_FRIEND_REQUEST_VALUE, dataMap.get("add_friends_status"));
 			}
 
 			if (StringUtils.isNotEmpty(dataMap.get("add_groups_status"))) {
-				configMap.put(ConfigProto.ConfigKey.ALLOW_ADD_GROUPS_VALUE, dataMap.get("add_groups_status"));
+				configMap.put(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE, dataMap.get("add_groups_status"));
 			}
 
 			if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {

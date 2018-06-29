@@ -107,6 +107,21 @@ public class GroupNotice {
 		this.groupMsgNotice(siteUserId, groupId, noticeText.toString());
 	}
 
+	// 扫描二维码加群，需要发送 XXX 通过群组二维码加入群聊
+	public void addGroupMemberByTokenNotice(String groupId, String siteUserId) {
+		SimpleUserBean userBean = UserProfileDao.getInstance().getSimpleProfileById(siteUserId, true);
+
+		if (userBean == null || StringUtils.isEmpty(userBean.getUserName())) {
+			logger.error("add group member by token notice error, user={}", userBean);
+			return;
+		}
+
+		StringBuilder noticeText = new StringBuilder();
+		noticeText.append(userBean.getUserName());
+		noticeText.append(NoticeText.USER_ADD_GROUP_QR_CODE);
+		this.groupMsgNotice(siteUserId, groupId, noticeText.toString());
+	}
+
 	/**
 	 * 往群组中发送通知消息<eg:王小王加入了群聊天>
 	 * 

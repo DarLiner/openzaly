@@ -27,7 +27,7 @@ import com.akaxin.site.storage.dao.SiteUICDao;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-31 12:11:17
  */
-public class UicServiceDao implements IUicDao {
+public class UicDaoService implements IUicDao {
 
 	@Override
 	public boolean addUic(UicBean bean) throws SQLException {

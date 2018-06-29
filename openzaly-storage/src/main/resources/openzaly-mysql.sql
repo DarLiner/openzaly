@@ -161,8 +161,10 @@ CREATE TABLE IF NOT EXISTS site_user_uic(id INTEGER PRIMARY KEY NOT NULL AUTO_IN
             
 CREATE TABLE IF NOT EXISTS site_expire_token(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             token VARCHAR(100) UNIQUE NOT NULL,
-            btype INTEGER,
-            status INTEGER,
+            bid VARCHAR(100),       -- 业务id，siteUserId | siteGroupId
+            btype INTEGER,          -- 业务类型，群组邀请码等
+            status INTEGER,         -- 是否可用状态
+            content TEXT,       
             create_time BIGINT,
             expire_time BIGINT,
             INDEX(token)

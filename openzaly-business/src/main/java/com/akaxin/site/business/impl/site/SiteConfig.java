@@ -262,17 +262,17 @@ public class SiteConfig {
 	public static boolean allowAddFriends() {
 		Map<Integer, String> map = getConfigMap();
 		if (map != null) {
-			String value = map.get(ConfigProto.ConfigKey.ALLOW_ADD_FRIENDS_VALUE);
-			return !String.valueOf(ConfigProto.AllowAddFriends.NO_ADD_FRIENDS_VALUE).equals(value);
+			String value = map.get(ConfigProto.ConfigKey.CONFIG_FRIEND_REQUEST_VALUE);
+			return !String.valueOf(ConfigProto.ConfigFriendRequest.ConfigFriendRequest_NO_VALUE).equals(value);
 		}
 		return true;
 	}
 
-	public static boolean allowAddGroups() {
+	public static boolean allowCreateGroups() {
 		Map<Integer, String> map = getConfigMap();
 		if (map != null) {
-			String value = map.get(ConfigProto.ConfigKey.ALLOW_ADD_GROUPS_VALUE);
-			return !String.valueOf(ConfigProto.AllowAddGroups.NO_ADD_GROUPS_VALUE).equals(value);
+			String value = map.get(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE);
+			return !String.valueOf(ConfigProto.ConfigCreateGroup.ConfigCreateGroup_NO_VALUE).equals(value);
 		}
 		return true;
 	}
