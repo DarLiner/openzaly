@@ -10,7 +10,9 @@ public interface SQLConst {
 
 	int SITE_DB_VERSION_9 = 9;// 0.9.5
 
-	int SITE_DB_VERSION_10 = 10;// 0.9.5
+	int SITE_DB_VERSION_10 = 10;// 0.10.6
+
+	int SITE_DB_VERSION_11 = 11;// 1.0.7
 
 	String SITE_CONFIG_INFO = "site_config_info";
 	String SITE_USER_PROFILE = "site_user_profile";
@@ -26,6 +28,6 @@ public interface SQLConst {
 	String SITE_USER_DEVICE = "site_user_device";
 	String SITE_PLUGIN_MANAGER = "site_plugin_manager";
 	String SITE_USER_UIC = "site_user_uic";// 用户邀请码存放信息表名称
-	
+
 	String SITE_EXPIRE_TOKEN = "site_expire_token";
 }

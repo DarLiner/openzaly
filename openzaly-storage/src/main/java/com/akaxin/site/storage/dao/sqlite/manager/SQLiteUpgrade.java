@@ -51,7 +51,7 @@ public class SQLiteUpgrade {
 			SqlLog.info("openzaly start with first init sqlite database");
 			SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
 			doInitWork(SQLiteJDBCManager.getConnection());
-			SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_10);
+			SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_11);
 		} else {
 			SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
 			doUpgradeWork(config);
@@ -134,6 +134,9 @@ public class SQLiteUpgrade {
 					restoreDatabase(fileName);
 				}
 
+			} else if (dbVersion == 10) {
+				doInitWork(SQLiteJDBCManager.getConnection());
+				SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_11);
 			}
 
 			break;
