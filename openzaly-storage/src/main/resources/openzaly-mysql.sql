@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS site_user_uic(id INTEGER PRIMARY KEY NOT NULL AUTO_IN
             status INTEGER,
             create_time BIGINT,
             use_time BIGINT
-            )ENGINE=InnoDB DEFAULT CHhARSET=utf8 COMMENT '站点邀请码表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点邀请码表';
             
 CREATE TABLE IF NOT EXISTS site_expire_token(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             token VARCHAR(100) UNIQUE NOT NULL,
