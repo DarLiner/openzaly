@@ -923,6 +923,10 @@ public class ApiGroupService extends AbstractRequest {
 			if (!checkAddMemberPermission(siteUserId, bean)) {
 				throw new ZalyException2(ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE);
 			}
+			
+			if(UserGroupDao.getInstance().isGroupMember(siteUserId, siteGroupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE);
+			}
 
 			// 加人入群
 			int currentSize = UserGroupDao.getInstance().getGroupMemberCount(siteGroupId);

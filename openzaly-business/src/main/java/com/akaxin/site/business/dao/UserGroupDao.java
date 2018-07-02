@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -252,6 +253,18 @@ public class UserGroupDao {
 		messageDao.updateGroupPointer(siteGroupId, siteUserId, null, maxPointer);
 		int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
 		return groupDao.addGroupMember(siteUserId, siteGroupId, status);
+	}
+
+	public boolean isGroupMember(String siteUserId, String groupId) {
+		try {
+			GroupMemberBean bean = groupDao.getGroupMember(siteUserId, groupId);
+			if (bean != null && StringUtils.isNotEmpty(bean.getUserId())) {
+				return true;
+			}
+		} catch (SQLException e) {
+			logger.error("is group member error.", e);
+		}
+		return false;
 	}
 
 	public GroupProfileBean getGroupProfile(String groupId) {

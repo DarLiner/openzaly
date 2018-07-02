@@ -77,6 +77,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_GROUP_NOTALLOW("error.alert", "站点不支持创建群组功能"), //
 	ERROR2_GROUP_TOKEN_INVALID("error.alert", "群二维码已失效"), //
 	ERROR2_GROUP_TOKEN_EXPIRED("error.alert", "群二维码已过期"), //
+	ERROR2_GROUP_ISMEMBER("error.group.ismember", "用户已经是群成员"), //
 
 	ERROR2_LOGGIN_USERID_EMPTY("error.alert", "用户身份为空"), // 用户身份校验失败
 	ERROR2_LOGGIN_USERTOKEN_EMPTY("error.alert", "用户身份token为空"), // 用户usertoken
