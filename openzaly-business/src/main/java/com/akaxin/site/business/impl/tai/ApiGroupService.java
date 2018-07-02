@@ -925,7 +925,7 @@ public class ApiGroupService extends AbstractRequest {
 			}
 			
 			if(UserGroupDao.getInstance().isGroupMember(siteUserId, siteGroupId)) {
-				throw new ZalyException2(ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE);
+				throw new ZalyException2(ErrorCode2.ERROR2_GROUP_ISMEMBER);
 			}
 
 			// 加人入群
