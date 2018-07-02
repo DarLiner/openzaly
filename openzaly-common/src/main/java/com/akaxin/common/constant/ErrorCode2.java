@@ -86,6 +86,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_LOGGIN_ERRORSIGN("error.alert", "用户身份校验失败，请重新登陆"), // 用户身份校验失败
 	ERROR2_LOGGIN_NOREGISTER("error.login.need_register", ""), // 用户需要在该站点注册
 	ERROR2_LOGGIN_SEALUPUSER("error.alert", "当前用户无权登陆"), // 用户需要在该站点注册
+	ERROR2_LOGGIN_UPDATENEWPUBK("error.alert", "更新用户新身份失败"), // 用户通过手机号修改公钥，这里更新失败
 
 	// ERROR2_IMAUTH_FAIL("error.alert", "im连接认证失败"), // 用户需要在该站点注册
 

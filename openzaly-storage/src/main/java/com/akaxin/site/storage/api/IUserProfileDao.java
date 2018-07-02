@@ -30,9 +30,13 @@ public interface IUserProfileDao {
 
 	public UserProfileBean getUserProfileById(String siteUserId) throws SQLException;
 
-	public UserProfileBean getUserProfileByGlobalUserId(String userId) throws SQLException;
+	public UserProfileBean getUserProfileByGlobalUserId(String globalUserId) throws SQLException;
+
+	public UserProfileBean getUserProfileByFullPhoneId(String fullPhoneId) throws SQLException;
 
 	public int updateProfile(UserProfileBean userBean) throws SQLException;
+
+	int updateUserIdPubk(String siteUserId, String globalUserId, String userIdPubk) throws SQLException;
 
 	public int updateUserStatus(String siteUserId, int status) throws SQLException;
 
@@ -52,4 +56,5 @@ public interface IUserProfileDao {
 	int getUserNum(long now, int day) throws SQLException;
 
 	boolean delUser(String siteUserId) throws SQLException;
+
 }

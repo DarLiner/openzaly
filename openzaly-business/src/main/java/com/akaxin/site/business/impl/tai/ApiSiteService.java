@@ -43,6 +43,7 @@ import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.akaxin.proto.site.ApiSiteRegisterProto;
+import com.akaxin.site.business.bean.PlatformPhoneBean;
 import com.akaxin.site.business.dao.SiteConfigDao;
 import com.akaxin.site.business.dao.SiteLoginDao;
 import com.akaxin.site.business.dao.UserFriendDao;
@@ -50,8 +51,8 @@ import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.notice.User2Notice;
+import com.akaxin.site.business.impl.site.PlatformUserPhone;
 import com.akaxin.site.business.impl.site.SiteConfig;
-import com.akaxin.site.business.impl.site.UserPhone;
 import com.akaxin.site.business.impl.site.UserUic;
 import com.akaxin.site.storage.api.IUserDeviceDao;
 import com.akaxin.site.storage.bean.ApplyFriendBean;
@@ -146,7 +147,7 @@ public class ApiSiteService extends AbstractRequest {
 			String userUic = request.getUserUic();
 			String applyInfo = request.getApplyInfo();
 			String phoneToken = request.getPhoneToken();
-			String phoneId = null;// 通过phoneCod
+			String fullPhoneId = null;// 通过phoneToken 查询的 counrtyCode:phoneId
 			String siteUserId = UUID.randomUUID().toString();// siteUserId保证各站不同
 			String siteLoginId = request.getSiteLoginId();// 站点账号
 
@@ -164,11 +165,12 @@ public class ApiSiteService extends AbstractRequest {
 			ConfigProto.RealNameConfig realNameConfig = SiteConfig.getRealNameConfig();
 			switch (realNameConfig) {
 			case REALNAME_YES:
-				logger.debug("注册方式：实名注册");
 				if (StringUtils.isNotBlank(phoneToken)) {
-					phoneId = UserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
-					logger.debug("实名注册，站点获取手机号：{}", phoneId);
-					if (!StringUtils.isNotBlank(phoneId)) {
+					PlatformPhoneBean bean = PlatformUserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
+					fullPhoneId = bean.getFullPhoneId();
+					logger.debug("user realname register，get phoneid from platform：{}", fullPhoneId);
+
+					if (StringUtils.isEmpty(fullPhoneId)) {
 						throw new ZalyException2(ErrorCode2.ERROR_REGISTER_PHONEID);
 					}
 				} else {
@@ -199,7 +201,7 @@ public class ApiSiteService extends AbstractRequest {
 			regBean.setUserNameInLatin(StringHelper.toLatinPinYin(userName));
 			regBean.setApplyInfo(applyInfo);
 			regBean.setUserPhoto(userPhoto);
-			regBean.setPhoneId(phoneId);
+			regBean.setPhoneId(fullPhoneId);
 			regBean.setUserStatus(UserProto.UserStatus.NORMAL_VALUE);
 			regBean.setRegisterTime(System.currentTimeMillis());
 
@@ -305,6 +307,7 @@ public class ApiSiteService extends AbstractRequest {
 			String userDeviceIdSignBase64 = loginRequest.getUserDeviceIdSignBase64();
 			String userDeviceName = loginRequest.getUserDeviceName();
 			String userToken = loginRequest.getUserToken();
+			String phoneToken = loginRequest.getPhoneToken();
 			LogUtils.requestDebugLog(logger, command, loginRequest.toString());
 
 			if (StringUtils.isAnyEmpty(userIdPubk, userIdSignBase64)) {
@@ -335,72 +338,75 @@ public class ApiSiteService extends AbstractRequest {
 			logger.debug("deviceSignResult={}", userSignResult);
 
 			// 用户身份校验成功，方可执行登陆操作
-			if (userSignResult) {
-				String globalUserId = UserIdUtils.getV1GlobalUserId(userIdPubk);
-				// 判断用户，是否已经注册,从主库中查找
-				SimpleUserBean subean = UserProfileDao.getInstance().getSimpleProfileByGlobalUserId(globalUserId, true);
-				if (subean == null || StringUtils.isEmpty(subean.getUserId())) {
-					logger.info("login site: new user need to register before login site");
-					errCode = ErrorCode2.ERROR2_LOGGIN_NOREGISTER;// 未注册,告知用户执行注册行为
-					return commandResponse.setErrCode(errCode);
-				}
+			if (!userSignResult) {
+				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_ERRORSIGN);
+			}
 
-				if (subean.getUserStatus() == UserProto.UserStatus.SEALUP_VALUE) {
-					logger.info("login site:	 user no permision as seal up");
-					errCode = ErrorCode2.ERROR2_LOGGIN_SEALUPUSER;// 禁封用户禁止登陆
-					return commandResponse.setErrCode(errCode);
-				}
+			// 登陆去平台实名机制校验
+			String globalUserId = verifyPlatformPhoneAndGetGlobalUserId(userIdPubk, phoneToken);
 
-				String siteUserId = subean.getUserId();
-				String deviceId = HashCrypto.MD5(userDeviceIdPubk);
+			// 判断用户，是否已经注册,从主库中查找
+			SimpleUserBean subean = UserProfileDao.getInstance().getSimpleProfileByGlobalUserId(globalUserId, true);
+			if (subean == null || StringUtils.isEmpty(subean.getUserId())) {
+				logger.info("login site: new user need to register before login site");
+				errCode = ErrorCode2.ERROR2_LOGGIN_NOREGISTER;// 未注册,告知用户执行注册行为
+				return commandResponse.setErrCode(errCode);
+			}
 
-				// 保存设备信息
-				UserDeviceBean deviceBean = new UserDeviceBean();
-				deviceBean.setDeviceId(deviceId);
-				deviceBean.setDeviceName(userDeviceName);
-				deviceBean.setSiteUserId(siteUserId);
-				deviceBean.setUserDevicePubk(userDeviceIdPubk);
-				deviceBean.setUserToken(userToken);
-				deviceBean.setActiveTime(System.currentTimeMillis());
-				deviceBean.setAddTime(System.currentTimeMillis());
+			if (subean.getUserStatus() == UserProto.UserStatus.SEALUP_VALUE) {
+				logger.info("login site:	 user no permision as sealed up");
+				errCode = ErrorCode2.ERROR2_LOGGIN_SEALUPUSER;// 禁封用户禁止登陆
+				return commandResponse.setErrCode(errCode);
+			}
 
-				boolean loginResult = SiteLoginDao.getInstance().updateUserDevice(deviceBean);
+			String siteUserId = subean.getUserId();
+			String deviceId = HashCrypto.MD5(userDeviceIdPubk);
 
-				if (!loginResult) {// 更新失败，则重新保存数据
-					loginResult = SiteLoginDao.getInstance().saveUserDevice(deviceBean);
-					// 在新增设备情况下，控制设备数量
-					limitUserDevice(siteUserId);
-				}
+			// 保存设备信息
+			UserDeviceBean deviceBean = new UserDeviceBean();
+			deviceBean.setDeviceId(deviceId);
+			deviceBean.setDeviceName(userDeviceName);
+			deviceBean.setSiteUserId(siteUserId);
+			deviceBean.setUserDevicePubk(userDeviceIdPubk);
+			deviceBean.setUserToken(userToken);
+			deviceBean.setActiveTime(System.currentTimeMillis());
+			deviceBean.setAddTime(System.currentTimeMillis());
 
-				logger.debug("login site: save device result={} deviceBean={}", loginResult, deviceBean.toString());
+			boolean loginResult = SiteLoginDao.getInstance().updateUserDevice(deviceBean);
 
-				if (loginResult) {
-					// 生成session
-					String sessionId = UUID.randomUUID().toString();
+			if (!loginResult) {// 更新失败，则重新保存数据
+				loginResult = SiteLoginDao.getInstance().saveUserDevice(deviceBean);
+				// 在新增设备情况下，控制设备数量
+				limitUserDevice(siteUserId);
+			}
 
-					UserSessionBean sessionBean = new UserSessionBean();
-					sessionBean.setLoginTime(System.currentTimeMillis());
-					sessionBean.setSiteUserId(siteUserId);
-					sessionBean.setOnline(true);
-					sessionBean.setSessionId(sessionId);
-					sessionBean.setDeviceId(deviceId);
-					sessionBean.setLoginTime(System.currentTimeMillis());// 上次登陆(auth)时间
+			logger.debug("login site: save device result={} deviceBean={}", loginResult, deviceBean.toString());
 
-					loginResult = loginResult && SiteLoginDao.getInstance().saveUserSession(sessionBean);
+			if (!loginResult) {
+				// 身份校验失败
+				throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_UPDATE_DEVICE);
+			}
 
-					if (loginResult) {
-						ApiSiteLoginProto.ApiSiteLoginResponse response = ApiSiteLoginProto.ApiSiteLoginResponse
-								.newBuilder().setSiteUserId(siteUserId).setUserSessionId(sessionId).build();
-						commandResponse.setParams(response.toByteArray());
-						errCode = ErrorCode2.SUCCESS;
-					} else {
-						errCode = ErrorCode2.ERROR2_LOGGIN_UPDATE_SESSION;
-					}
-				} else {
-					errCode = ErrorCode2.ERROR2_LOGGIN_UPDATE_DEVICE;
-				}
+			// 生成session
+			String sessionId = UUID.randomUUID().toString();
+
+			UserSessionBean sessionBean = new UserSessionBean();
+			sessionBean.setLoginTime(System.currentTimeMillis());
+			sessionBean.setSiteUserId(siteUserId);
+			sessionBean.setOnline(true);
+			sessionBean.setSessionId(sessionId);
+			sessionBean.setDeviceId(deviceId);
+			sessionBean.setLoginTime(System.currentTimeMillis());// 上次登陆(auth)时间
+
+			loginResult = loginResult && SiteLoginDao.getInstance().saveUserSession(sessionBean);
+
+			if (loginResult) {
+				ApiSiteLoginProto.ApiSiteLoginResponse response = ApiSiteLoginProto.ApiSiteLoginResponse.newBuilder()
+						.setSiteUserId(siteUserId).setUserSessionId(sessionId).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
 			} else {
-				errCode = ErrorCode2.ERROR2_LOGGIN_ERRORSIGN;
+				errCode = ErrorCode2.ERROR2_LOGGIN_UPDATE_SESSION;
 			}
 		} catch (ZalyException2 e) {
 			errCode = e.getErrCode();
@@ -410,6 +416,58 @@ public class ApiSiteService extends AbstractRequest {
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode(errCode);
+	}
+
+	private String verifyPlatformPhoneAndGetGlobalUserId(String userIdPubk, String phoneToken) throws ZalyException2 {
+
+		if (StringUtils.isEmpty(phoneToken)) {
+			logger.debug("api.site.login with phoneToken={}", phoneToken);
+			return UserIdUtils.getV1GlobalUserId(userIdPubk);
+		}
+
+		// 登陆去平台校验实名机制
+		ConfigProto.RealNameConfig realNameConfig = SiteConfig.getRealNameConfig();
+
+		if (ConfigProto.RealNameConfig.REALNAME_YES == realNameConfig) {
+			PlatformPhoneBean bean = PlatformUserPhone.getInstance().getPhoneIdFromPlatform(phoneToken);
+			String fullPhoneId = bean.getFullPhoneId();
+			String platformUserIdPubk = bean.getUserIdPubk();
+			logger.debug("get platform realname phone info bean={}", bean);
+
+			if (StringUtils.isEmpty(fullPhoneId)) {
+				return UserIdUtils.getV1GlobalUserId(userIdPubk);
+			}
+
+			if (!userIdPubk.equals(platformUserIdPubk)) {
+				logger.error("api.site.login equals={} userIdPubk={} platformUserIdPubk={}", false, userIdPubk,
+						platformUserIdPubk);
+				return UserIdUtils.getV1GlobalUserId(userIdPubk);
+			}
+
+			// 手机号查询用户身份
+			UserProfileBean profile = UserProfileDao.getInstance().getUserProfileByFullPhoneId(fullPhoneId);
+
+			if (profile != null && StringUtils.isNoneEmpty(platformUserIdPubk, profile.getUserIdPubk())) {
+
+				if (platformUserIdPubk.equals(profile.getUserIdPubk())) {
+					logger.debug("new site realname login verifyPlatformPhone success");
+					return UserIdUtils.getV1GlobalUserId(platformUserIdPubk);
+				} else {
+					// 更新数据
+					String globalUserId = UserIdUtils.getV1GlobalUserId(platformUserIdPubk);
+					boolean updateRes = UserProfileDao.getInstance().updateUserIdPubk(profile.getSiteUserId(),
+							globalUserId, userIdPubk);
+
+					if (!updateRes) {
+						throw new ZalyException2(ErrorCode2.ERROR2_LOGGIN_UPDATENEWPUBK);
+					}
+				}
+
+			}
+
+		}
+
+		return UserIdUtils.getV1GlobalUserId(userIdPubk);
 	}
 
 	// 控制用户的设备数量

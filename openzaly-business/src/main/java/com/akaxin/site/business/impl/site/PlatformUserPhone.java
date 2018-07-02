@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.common.constant.CommandConst;
 import com.akaxin.proto.platform.ApiPhoneConfirmTokenProto;
+import com.akaxin.site.business.bean.PlatformPhoneBean;
 import com.akaxin.site.message.platform.PlatformClient;
 
 /**
@@ -28,36 +29,39 @@ import com.akaxin.site.message.platform.PlatformClient;
  * @author Sam{@link an.guoyue254@gmail.com}
  * @since 2018-01-14 22:30:25
  */
-public class UserPhone {
-	private static final Logger logger = LoggerFactory.getLogger(UserPhone.class);
+public class PlatformUserPhone {
+	private static final Logger logger = LoggerFactory.getLogger(PlatformUserPhone.class);
 
-	private UserPhone() {
+	private PlatformUserPhone() {
 
 	}
 
 	static class SingletonHolder {
-		private static UserPhone instance = new UserPhone();
+		private static PlatformUserPhone instance = new PlatformUserPhone();
 	}
 
-	public static UserPhone getInstance() {
+	public static PlatformUserPhone getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	public String getPhoneIdFromPlatform(String phoneToken) {
+	public PlatformPhoneBean getPhoneIdFromPlatform(String phoneToken) {
 		try {
+			PlatformPhoneBean bean = null;
 			ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest request = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest
 					.newBuilder().setPhoneToken(phoneToken).build();
 			logger.debug("realname get phone from platform : phoneToken={} {}", phoneToken, request.getPhoneToken());
-			
-			byte[] responseBytes = PlatformClient.syncWrite(CommandConst.API_PHONE_CONFIRETOKEN,
-					request.toByteArray());
+
+			byte[] responseBytes = PlatformClient.syncWrite(CommandConst.API_PHONE_CONFIRETOKEN, request.toByteArray());
 
 			if (responseBytes != null) {
+				bean = new PlatformPhoneBean();
 				ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse resposne = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenResponse
 						.parseFrom(responseBytes);
-				String phoneCode = resposne.getCountryCode() + ":" + resposne.getPhoneId();
-				logger.debug("get phoncode={} from platform", phoneCode);
-				return phoneCode;
+				bean.setPhoneId(resposne.getPhoneId());
+				bean.setCountryCode(resposne.getCountryCode());
+				bean.setUserIdPubk(resposne.getUserIdPubk());
+				logger.debug("get user phoneBean={} from platform", bean);
+				return bean;
 			}
 		} catch (Exception e) {
 			logger.error("get phoneid from platform error.", e);

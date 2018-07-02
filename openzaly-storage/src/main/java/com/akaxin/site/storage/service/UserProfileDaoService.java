@@ -88,8 +88,18 @@ public class UserProfileDaoService implements IUserProfileDao {
 	}
 
 	@Override
+	public UserProfileBean getUserProfileByFullPhoneId(String fullPhoneId) throws SQLException {
+		return SiteUserProfileDao.getInstance().queryUserProfileByFullPhoneId(fullPhoneId);
+	}
+
+	@Override
 	public int updateProfile(UserProfileBean userBean) throws SQLException {
 		return SiteUserProfileDao.getInstance().updateUserProfile(userBean);
+	}
+
+	@Override
+	public int updateUserIdPubk(String siteUserId, String globalUserId, String userIdPubk) throws SQLException {
+		return SiteUserProfileDao.getInstance().updateUserIdPubk(siteUserId, globalUserId, userIdPubk);
 	}
 
 	@Override
