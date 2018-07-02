@@ -184,7 +184,7 @@
         </div>
         
         <div class="weui-cell weui-cell_switch">
-            <div class="weui-cell__bd">允许用户添加群组</div>
+            <div class="weui-cell__bd">允许用户创建群组</div>
             <div class="weui-cell__ft" th:switch="${add_groups_status}">
                 <input class="weui-switch add_groups_status" key-data='ADD_GROUPS_STATUS' type="checkbox" value="1" checked="checked" th:case="1">
                 <input class="weui-switch add_groups_status" key-data='ADD_GROUPS_STATUS' type="checkbox" value="0" th:case="0">
@@ -194,6 +194,22 @@
 
     <!-- 登陆站点权限设置 -->
 	<div class="weui-cells">
+	   <a class="weui-cell weui-cell_access group_qrcode_expire_time" th:attr="data=${group_qrcode_expire_time}" href="javascript:;">
+            <div class="weui-cell__bd">
+                <p>群二维码过期时间</p>
+            </div>
+            <div th:switch="${group_qrcode_expire_time}">
+                <div class="weui-cell__ft group_qrcode_expire_time—txt" th:case="1">
+                    1天
+                </div>
+                <div class="weui-cell__ft group_qrcode_expire_time—txt" th:case="7">
+                    1周
+                </div>
+                <div class="weui-cell__ft group_qrcode_expire_time—txt" th:case="14">
+                    2周
+                </div>
+            </div>
+        </a>
 	    <a class="weui-cell weui-cell_access site_push" th:attr="data=${push_client_status}" href="javascript:;">
 	        <div class="weui-cell__bd">
 	            <p>消息通知</p>
@@ -349,7 +365,9 @@
         var openSecret = $('.open_secret').prop('checked');
         
         var addFriends = $('.add_friends_status').prop('checked');
-        var addGroups = $('.add_groups_status').prop('checked');
+        var addGroups = $('.add_groups_status').prop('checked');//创建群组
+        //二维码过期时间
+        var groupQrcodeExpireTime = $(".group_qrcode_expire_time").attr("data");
 
         if(addFriends){
         	   addFriends = '1';
@@ -429,7 +447,8 @@
             'push_client_status': pushClientStatus,
             'log_level': logLevel,
             'add_friends_status':addFriends,
-            'add_groups_status':addGroups
+            'add_groups_status':addGroups,//create group
+            'group_qrcode_expire_time':groupQrcodeExpireTime
         };
         var reqUri = $(this).attr('url-data');
         $.confirm({
@@ -541,6 +560,42 @@
                     onClick: function () {
                         $(".site_push—txt").html("不显示文本内容");
                         $(".site_push").attr("data", "1");
+                    }
+                }
+            ]
+        });
+    });
+    
+    //group qrcode expire time
+    $(document).on("click", '.group_qrcode_expire_time', function () {
+        $.actions({
+            title: "修改群二维码过期时间",
+            onClose: function () {
+                console.log("close");
+            },
+            actions: [{
+                text: "1天",
+                className: "color-primary weui-dialog__btn",
+                onClick: function () {
+                    $(".group_qrcode_expire_time—txt").html("1天");
+                    $(".group_qrcode_expire_time").attr("data", "1");
+                }
+            },
+
+                {
+                    text: "1周",
+                    className: 'color-primary weui-dialog__btn',
+                    onClick: function () {
+                    	   $(".group_qrcode_expire_time—txt").html("1周");
+                        $(".group_qrcode_expire_time").attr("data", "7");
+                    }
+                },
+                {
+                    text: "2周",
+                    className: "color-primary weui-dialog__btn",
+                    onClick: function () {
+                        	$(".group_qrcode_expire_time—txt").html("2周");
+                        $(".group_qrcode_expire_time").attr("data", "14");
                     }
                 }
             ]

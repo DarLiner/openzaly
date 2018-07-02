@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>编辑扩展</title>
+    <title>编辑小程序</title>
     </title>
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css"/>
@@ -136,7 +136,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_api_url" type="text" th:value="${api_url}" pattern="[a-z0-9]*"
-                   placeholder="纯网页扩展可以不填" style="text-align: right;">
+                   placeholder="纯网页小程序可以不填" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -145,7 +145,7 @@
         </div>
         <div class="weui-cell__bd">
             <input class="weui-input plugin_url_page" type="text" th:value="${url_page}" pattern="[a-z0-9]*"
-                   placeholder="纯网页扩展请填写页面完整URL" style="text-align: right;">
+                   placeholder="纯网页小程序请填写页面完整URL" style="text-align: right;">
         </div>
     </div>
     <div class="weui-cell">
@@ -187,14 +187,14 @@
 
         <a class="weui-cell weui-cell_access position" href="javascript:;" th:attr="data=${position}">
             <div class="weui-cell__bd">
-                <p>扩展位置</p>
+                <p>小程序位置</p>
             </div>
-            <div class="weui-cell__ft position-txt" th:if="${position} == 0">首页扩展</div>
-            <div class="weui-cell__ft position-txt" th:unless="${position} == 0">消息帧扩展</div>
+            <div class="weui-cell__ft position-txt" th:if="${position} == 0">首页小程序</div>
+            <div class="weui-cell__ft position-txt" th:unless="${position} == 0">消息帧小程序</div>
         </a>
         <a class="weui-cell weui-cell_access per_status" href="javascript:;" th:attr="data=${per_status}">
             <div class="weui-cell__bd">
-                <p>扩展状态</p>
+                <p>小程序状态</p>
             </div>
             <div class="weui-cell__ft per_status-txt" th:if="${per_status} == 0">仅管理员可用</div>
             <div class="weui-cell__ft per_status-txt" th:unless="${per_status} == 0">所有用户可用</div>
@@ -248,7 +248,7 @@
            url-data="/plugin/editPlugin"
            href="javascript:" id="addPluginButton" th:attr="plugin-id=${plugin_id}">确定</a>
         <a class="weui-btn  weui-btn_warn delete-plugin" url-data="/plugin/delPlugin" href="javascript:"
-           id="addPluginButton" th:attr="plugin-id=${plugin_id}">删除扩展</a>
+           id="addPluginButton" th:attr="plugin-id=${plugin_id}">删除小程序</a>
     </div>
 
 
@@ -418,7 +418,7 @@
 
 
             if (!position || position.length < 1) {
-                $.toptip('请选择扩展位置', 'error');
+                $.toptip('请选择小程序位置', 'error');
                 return false;
             }
 

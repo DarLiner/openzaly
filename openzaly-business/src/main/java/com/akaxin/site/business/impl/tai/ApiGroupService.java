@@ -854,7 +854,7 @@ public class ApiGroupService extends AbstractRequest {
 				int status = existsToken.getStatus();
 				expireTime = existsToken.getExpireTime();
 			} else {
-				int day = 1;
+				int day = SiteConfig.getGroupQRExpireDay();
 
 				ExpireToken tokenBean = new ExpireToken();
 				tokenBean.setBid(siteGroupId);
@@ -934,7 +934,7 @@ public class ApiGroupService extends AbstractRequest {
 			} else {
 				errCode = ErrorCode2.ERROR_GROUP_MAXMEMBERCOUNT;
 			}
-			
+
 		} catch (ZalyException2 e) {
 			errCode = e.getErrCode();
 			LogUtils.requestErrorLog(logger, command, e);
