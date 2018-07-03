@@ -46,9 +46,10 @@ public class PlatformUserPhone {
 
 	public PlatformPhoneBean getPhoneIdFromPlatform(String phoneToken) {
 		try {
+			String siteAddress = SiteConfig.getSiteAddress();
 			PlatformPhoneBean bean = null;
 			ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest request = ApiPhoneConfirmTokenProto.ApiPhoneConfirmTokenRequest
-					.newBuilder().setPhoneToken(phoneToken).build();
+					.newBuilder().setPhoneToken(phoneToken).setSiteAddress(siteAddress).build();
 			logger.debug("realname get phone from platform : phoneToken={} {}", phoneToken, request.getPhoneToken());
 
 			byte[] responseBytes = PlatformClient.syncWrite(CommandConst.API_PHONE_CONFIRETOKEN, request.toByteArray());
