@@ -419,7 +419,7 @@ public class ApiSiteService extends AbstractRequest {
 	}
 
 	private String verifyPlatformPhoneAndGetGlobalUserId(String userIdPubk, String phoneToken) throws ZalyException2 {
-
+		phoneToken = null;
 		if (StringUtils.isEmpty(phoneToken)) {
 			logger.debug("api.site.login with phoneToken={}", phoneToken);
 			return UserIdUtils.getV1GlobalUserId(userIdPubk);
