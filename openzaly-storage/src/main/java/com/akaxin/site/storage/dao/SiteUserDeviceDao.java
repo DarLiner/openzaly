@@ -377,17 +377,19 @@ public class SiteUserDeviceDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int limitDeviceNum(String siteUserId, int limit) throws SQLException {
-		return Math.max(deleteDeviceAsLimit(siteUserId, limit), deleteSessionAsLimit(siteUserId, limit));
+	public int limitDeviceNum(String siteUserId, int limitNum) throws SQLException {
+		long limitTime = System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000l;
+		return Math.max(deleteDeviceAsLimit(siteUserId, limitNum, limitTime),
+				deleteSessionAsLimit(siteUserId, limitNum, limitTime));
 	}
 
-	private int deleteDeviceAsLimit(String siteUserId, int limit) throws SQLException {
+	private int deleteDeviceAsLimit(String siteUserId, int limitNum, long limitTime) throws SQLException {
 		long startTime = System.currentTimeMillis();
-		// String sql = "DELETE FROM " + USER_DEVICE_TABLE + " WHERE site_user_id='?'
-		// ORDER BY active_time DESC LIMIT ?,10000;";
+		// delete device
 		String sql = "DELETE FROM " + USER_DEVICE_TABLE
 				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT d.device_id FROM (SELECT device_id FROM "
-				+ USER_DEVICE_TABLE + " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?) as d)";
+				+ USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? AND active_time>? ORDER BY active_time DESC LIMIT ?) as d)";
 		int num = 0;
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -396,7 +398,8 @@ public class SiteUserDeviceDao {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, siteUserId);
 			ps.setString(2, siteUserId);
-			ps.setInt(3, limit);
+			ps.setLong(3, limitTime);
+			ps.setInt(4, limitNum);
 
 			num = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -409,14 +412,13 @@ public class SiteUserDeviceDao {
 		return num;
 	}
 
-	private int deleteSessionAsLimit(String siteUserId, int limit) throws SQLException {
+	private int deleteSessionAsLimit(String siteUserId, int limitNum, long limitTime) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		// 删除site_user_session中设备
-		// String sql = "DELETE FROM " + USER_SESSION_TABLE + " WHERE site_user_id='?'
-		// ORDER BY login_time DESC LIMIT ?,10000;";
 		String sql = "DELETE FROM " + USER_SESSION_TABLE
 				+ " WHERE site_user_id=? AND device_id NOT IN (SELECT s.device_id FROM (SELECT device_id FROM "
-				+ USER_DEVICE_TABLE + " WHERE site_user_id=? ORDER BY active_time DESC LIMIT ?) as s);";
+				+ USER_DEVICE_TABLE
+				+ " WHERE site_user_id=? AND active_time>? ORDER BY active_time DESC LIMIT ?) as s);";
 
 		int num = 0;
 		Connection conn = null;
@@ -426,7 +428,8 @@ public class SiteUserDeviceDao {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, siteUserId);
 			ps.setString(2, siteUserId);
-			ps.setInt(3, limit);
+			ps.setLong(3, limitTime);
+			ps.setInt(4, limitNum);
 
 			num = ps.executeUpdate();
 		} catch (SQLException e) {
