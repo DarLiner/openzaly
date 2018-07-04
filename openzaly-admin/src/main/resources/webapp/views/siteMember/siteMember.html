@@ -119,6 +119,7 @@
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
     $(function () {
+    	    $('#member-lists').html("");
         loadSiteMember();
     });
 
@@ -279,7 +280,7 @@
         var imgSrc = imageLocalPath;
         if (type == 'Android') {
         	   imgSrc = "http://akaxin/img" + imageLocalPath;
-        } 
+        }
         var html = '<img src="' + imgSrc + '" style="height:50px; width:50px;border-radius:50%" />';
         $('#'+imageid).html(html);
     }
