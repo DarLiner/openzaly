@@ -178,8 +178,8 @@
         <div class="weui-cell weui-cell_switch">
             <div class="weui-cell__bd">是否允许用户添加好友</div>
             <div class="weui-cell__ft" th:switch="${add_friends_status}">
-                <input class="weui-switch add_friends_status" key-data='ADD_FRIENDS_STATUS' type="checkbox" value="1" checked="checked" th:case="1">
-                <input class="weui-switch add_friends_status" key-data='ADD_FRIENDS_STATUS' type="checkbox" value="0" th:case="0">
+                <input class="weui-switch add_friends_status" key-data='ADD_FRIENDS_STATUS' type="checkbox" value="0" checked="checked" th:case="0">
+                <input class="weui-switch add_friends_status" key-data='ADD_FRIENDS_STATUS' type="checkbox" value="1" th:case="1">
             </div>
         </div>
         
