@@ -88,6 +88,7 @@ public class UserSquareController extends AbstractController {
 					if (siteUserId != bean.getUserId()) {
 						memberMap.put("site_user_id", bean.getUserId());
 						memberMap.put("site_user_name", bean.getUserName());
+						memberMap.put("site_user_photo", bean.getUserPhoto());
 						UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
 								bean.getUserId());
 						memberMap.put("site_user_relation", String.valueOf(userRelation.getNumber()));
