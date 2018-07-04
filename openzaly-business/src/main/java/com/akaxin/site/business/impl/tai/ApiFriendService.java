@@ -217,13 +217,13 @@ public class ApiFriendService extends AbstractRequest {
 			String siteFriendId = request.getSiteFriendId();
 			String applyReason = request.getApplyReason();
 			LogUtils.requestDebugLog(logger, command, request.toString());
-			
-			if(!SiteConfig.allowAddFriends()) {
-				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_NOTALLOW);
-			}
 
 			if (StringUtils.isAnyEmpty(siteUserId, siteFriendId)) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			if (!SiteConfig.allowAddFriends(siteUserId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_FRIEND_NOTALLOW);
 			}
 
 			if (siteUserId.equals(siteFriendId)) {

@@ -260,7 +260,10 @@ public class SiteConfig {
 		return ConfigProto.U2EncryptionConfig.U2_CLOSE;
 	}
 
-	public static boolean allowAddFriends() {
+	public static boolean allowAddFriends(String siteUserId) {
+		if (isSiteManager(siteUserId)) {
+			return true;
+		}
 		Map<Integer, String> map = getConfigMap();
 		if (map != null) {
 			String value = map.get(ConfigProto.ConfigKey.CONFIG_FRIEND_REQUEST_VALUE);
@@ -269,7 +272,11 @@ public class SiteConfig {
 		return true;
 	}
 
-	public static boolean allowCreateGroups() {
+	public static boolean allowCreateGroups(String siteUserId) {
+		if (isSiteManager(siteUserId)) {
+			return true;
+		}
+
 		Map<Integer, String> map = getConfigMap();
 		if (map != null) {
 			String value = map.get(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE);

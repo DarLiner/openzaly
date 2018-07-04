@@ -136,14 +136,13 @@ public class ApiGroupService extends AbstractRequest {
 			List<String> groupMemberIds = Lists.newArrayList(groupMembers);// copy a new list
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
-			if (!SiteConfig.allowCreateGroups()) {
-				throw new ZalyException(ErrorCode2.ERROR2_GROUP_NOTALLOW);
-			}
-
 			if (StringUtils.isAnyEmpty(siteUserId, groupName) || groupMemberIds == null) {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
 
+			if (!SiteConfig.allowCreateGroups(siteUserId)) {
+				throw new ZalyException(ErrorCode2.ERROR2_GROUP_NOTALLOW);
+			}
 			// 检查用户是否被封禁，或者不存在
 			for (String groupMemberId : groupMemberIds) {
 				SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(groupMemberId);
@@ -923,8 +922,8 @@ public class ApiGroupService extends AbstractRequest {
 			if (!checkAddMemberPermission(siteUserId, bean)) {
 				throw new ZalyException2(ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE);
 			}
-			
-			if(UserGroupDao.getInstance().isGroupMember(siteUserId, siteGroupId)) {
+
+			if (UserGroupDao.getInstance().isGroupMember(siteUserId, siteGroupId)) {
 				throw new ZalyException2(ErrorCode2.ERROR2_GROUP_ISMEMBER);
 			}
 
