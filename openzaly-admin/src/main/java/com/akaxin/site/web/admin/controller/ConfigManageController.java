@@ -106,8 +106,8 @@ public class ConfigManageController extends AbstractController {
 			model.put("u2_encryption_status", "1");
 			model.put("push_client_status", "0");
 			model.put("log_level", "INFO");
-			model.put("add_friends_status", "1");
-			model.put("add_groups_status", "1");
+			model.put("add_friends_status", "0");// 0表示允许
+			model.put("create_groups_status", "0");// 0默认为允许
 			model.put("group_qrcode_expire_time", "14");// 群二维码默认两周
 
 			Map<Integer, String> map = configManageService.getSiteConfig();
@@ -171,7 +171,7 @@ public class ConfigManageController extends AbstractController {
 					model.put("add_friends_status", res);
 					break;
 				case ConfigKey.CONFIG_CREATE_GROUP_VALUE:
-					model.put("add_groups_status", res);
+					model.put("create_groups_status", res);
 					break;
 				case ConfigKey.GROUP_QR_EXPIRE_TIME_VALUE:
 					model.put("group_qrcode_expire_time", res);
@@ -239,8 +239,8 @@ public class ConfigManageController extends AbstractController {
 				configMap.put(ConfigProto.ConfigKey.CONFIG_FRIEND_REQUEST_VALUE, dataMap.get("add_friends_status"));
 			}
 
-			if (StringUtils.isNotEmpty(dataMap.get("add_groups_status"))) {
-				configMap.put(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE, dataMap.get("add_groups_status"));
+			if (StringUtils.isNotEmpty(dataMap.get("create_groups_status"))) {
+				configMap.put(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE, dataMap.get("create_groups_status"));
 			}
 
 			if (StringUtils.isNotEmpty(dataMap.get("group_qrcode_expire_time"))) {

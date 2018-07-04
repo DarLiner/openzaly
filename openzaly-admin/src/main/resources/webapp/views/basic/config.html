@@ -54,7 +54,7 @@
 </head>
 
 <body ontouchstart="">
-	<div class="weui-cells__title weui-cell">
+	<div class="weui-cells__title weui-cell" style="margin-top: 0px;">
 	    站点基本设置<a href="https://github.com/akaxincom/faq/blob/master/basic_config.md" class="weui-cell_link">-设置说明</a>
 	</div>
 	<div class="weui-cells weui-cells_form">
@@ -176,7 +176,7 @@
 	
 	<div class="weui-cells">
         <div class="weui-cell weui-cell_switch">
-            <div class="weui-cell__bd">允许用户添加好友</div>
+            <div class="weui-cell__bd">是否允许用户添加好友</div>
             <div class="weui-cell__ft" th:switch="${add_friends_status}">
                 <input class="weui-switch add_friends_status" key-data='ADD_FRIENDS_STATUS' type="checkbox" value="1" checked="checked" th:case="1">
                 <input class="weui-switch add_friends_status" key-data='ADD_FRIENDS_STATUS' type="checkbox" value="0" th:case="0">
@@ -184,10 +184,10 @@
         </div>
         
         <div class="weui-cell weui-cell_switch">
-            <div class="weui-cell__bd">允许用户创建群组</div>
-            <div class="weui-cell__ft" th:switch="${add_groups_status}">
-                <input class="weui-switch add_groups_status" key-data='ADD_GROUPS_STATUS' type="checkbox" value="1" checked="checked" th:case="1">
-                <input class="weui-switch add_groups_status" key-data='ADD_GROUPS_STATUS' type="checkbox" value="0" th:case="0">
+            <div class="weui-cell__bd">是否允许用户创建群组</div>
+            <div class="weui-cell__ft" th:switch="${create_groups_status}">
+                <input class="weui-switch create_groups_status" key-data='CREATE_GROUPS_STATUS' type="checkbox" value="0" checked="checked" th:case="0">
+                <input class="weui-switch create_groups_status" key-data='CREATE_GROUPS_STATUS' type="checkbox" value="1" th:case="1">
             </div>
         </div>
     </div>  
@@ -365,20 +365,20 @@
         var openSecret = $('.open_secret').prop('checked');
         
         var addFriends = $('.add_friends_status').prop('checked');
-        var addGroups = $('.add_groups_status').prop('checked');//创建群组
+        var createGroups = $('.create_groups_status').prop('checked');//创建群组
         //二维码过期时间
         var groupQrcodeExpireTime = $(".group_qrcode_expire_time").attr("data");
 
         if(addFriends){
-        	   addFriends = '1';
+        	   addFriends = '0';//表示允许
         } else {
-        	   addFriends = '0';
+        	   addFriends = '1';
         }
         
-        if(addGroups){
-            	addGroups = '1';
+        if(createGroups){
+        	   createGroups = '0';//表示允许
         } else {
-            	addGroups = '0';
+        	   createGroups = '1';
         }
 	     
         
@@ -447,7 +447,7 @@
             'push_client_status': pushClientStatus,
             'log_level': logLevel,
             'add_friends_status':addFriends,
-            'add_groups_status':addGroups,//create group
+            'create_groups_status':createGroups,//create group
             'group_qrcode_expire_time':groupQrcodeExpireTime
         };
         var reqUri = $(this).attr('url-data');
