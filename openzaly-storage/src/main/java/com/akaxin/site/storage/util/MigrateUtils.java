@@ -58,6 +58,7 @@ public class MigrateUtils {
 			// Setp2. check mysql database and tables and return conn
 			try {
 				mysqlConnection = InitDatabaseConnection.initAndGetConnection(prop);
+				mysqlConnection.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
 			} catch (Exception e) {
 				throw new MigrateDatabaseException("init and get mysql database connection error,msg={}",
 						e.getMessage());
