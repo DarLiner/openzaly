@@ -102,7 +102,11 @@ CREATE TABLE IF NOT EXISTS site_group_profile(id INTEGER PRIMARY KEY NOT NULL AU
             close_invite_group_chat BOOLEAN,
             create_time BIGINT,
             INDEX (site_group_id)
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '群组资料表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '群组资料表';
+            
+ALTER TABLE site_group_profile CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+ALTER TABLE site_group_profile MODIFY COLUMN group_name VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;            
 
 CREATE TABLE IF NOT EXISTS site_group_message(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             site_group_id VARCHAR(50) NOT NULL, 
