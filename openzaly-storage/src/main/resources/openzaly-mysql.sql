@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL AUT
             
 ALTER TABLE site_user_profile CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-ALTER TABLE site_user_profile MODIFY COLUMN user_name VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE site_user_profile MODIFY COLUMN user_name VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
             
 
 CREATE TABLE IF NOT EXISTS site_user_session(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
