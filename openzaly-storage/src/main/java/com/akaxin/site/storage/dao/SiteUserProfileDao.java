@@ -136,7 +136,7 @@ public class SiteUserProfileDao {
 	public String querySiteUserIdPhone(String phoneId) throws SQLException {
 		long startTime = System.currentTimeMillis();
 		String siteUserId = null;
-		String sql = "SELECT site_user_id FROM " + SQLConst.SITE_USER_PROFILE + " WHERE phone_id=?;";
+		String sql = "SELECT site_user_id FROM " + SQLConst.SITE_USER_PROFILE + " WHERE phone_id=? order by id desc;";
 
 		Connection conn = null;
 		PreparedStatement pst = null;
