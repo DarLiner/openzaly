@@ -143,7 +143,11 @@ CREATE TABLE IF NOT EXISTS site_user_device(id INTEGER PRIMARY KEY NOT NULL AUTO
             active_time BIGINT,
             add_time BIGINT,
             UNIQUE INDEX(site_user_id,device_id)
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户设备表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '用户设备表';
+            
+ALTER TABLE site_user_device CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+ALTER TABLE site_user_device MODIFY COLUMN device_name VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;            
 
 CREATE TABLE IF NOT EXISTS site_plugin_manager(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             name VARCHAR(50) UNIQUE NOT NULL,
@@ -157,7 +161,11 @@ CREATE TABLE IF NOT EXISTS site_plugin_manager(id INTEGER PRIMARY KEY NOT NULL A
             display_mode INTEGER,
             permission_status INTEGER,
             add_time BIGINT
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '站点扩展表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '站点扩展表';
+
+ALTER TABLE site_plugin_manager CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+ALTER TABLE site_plugin_manager MODIFY COLUMN name VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci UNIQUE NOT NULL;
 
 CREATE TABLE IF NOT EXISTS site_user_uic(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
             uic VARCHAR(20) UNIQUE NOT NULL,
