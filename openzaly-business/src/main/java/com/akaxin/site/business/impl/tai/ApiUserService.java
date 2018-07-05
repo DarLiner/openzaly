@@ -76,12 +76,17 @@ public class ApiUserService extends AbstractRequest {
 			String siteFriendId = null;
 			if (id.length() > 100) {
 				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
-//				String globalUserId = UserIdUtils.getV1GlobalUserId(id);
-//				logger.info("api.user.search globalUserId={} pubk={}", globalUserId, id);
-//				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalUserId);
+				// String globalUserId = UserIdUtils.getV1GlobalUserId(id);
+				// logger.info("api.user.search globalUserId={} pubk={}", globalUserId, id);
+				// siteFriendId =
+				// UserProfileDao.getInstance().getSiteUserIdByGlobalUserId(globalUserId);
 			} else if (ValidatorPattern.isPhoneId(id)) {
-				String phoneId = "+86:" + id;
+				String phoneId = "+86_" + id;
 				siteFriendId = UserProfileDao.getInstance().getSiteUserIdByPhone(phoneId);
+				if (StringUtils.isEmpty(siteFriendId)) {
+					phoneId = "+86:" + id;
+					siteFriendId = UserProfileDao.getInstance().getSiteUserIdByPhone(phoneId);
+				}
 			} else {
 				// siteLoginId
 				String lowercaseLoginId = id.trim().toLowerCase();

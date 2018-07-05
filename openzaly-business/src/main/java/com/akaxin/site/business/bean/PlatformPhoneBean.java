@@ -41,13 +41,13 @@ public class PlatformPhoneBean {
 	}
 
 	/**
-	 * @return the countryCode:phoneId
+	 * @return the countryCode_phoneId
 	 */
 	public String getFullPhoneId() {
 		if (StringUtils.isNotEmpty(this.countryCode)) {
-			return this.countryCode + ":" + phoneId;
+			return this.countryCode + "_" + phoneId;
 		}
-		return "+86:" + phoneId;
+		return "+86_" + phoneId;
 	}
 
 	/**
