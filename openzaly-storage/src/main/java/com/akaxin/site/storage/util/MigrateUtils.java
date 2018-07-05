@@ -58,16 +58,16 @@ public class MigrateUtils {
 			// Setp2. check mysql database and tables and return conn
 			try {
 				mysqlConnection = InitDatabaseConnection.initAndGetConnection(prop);
-//				mysqlConnection.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
+				// mysqlConnection.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
 			} catch (Exception e) {
 				throw new MigrateDatabaseException("init and get mysql database connection error,msg={}",
 						e.getMessage());
 			}
-			
+
 			try {
 				SQLiteUnique.clearUnique(sqliteConnection);
 			} catch (SQLException e) {
-				logger.error("clear unique field error,but we try to do migrate work",e);
+				logger.error("clear unique field error,but we try to do migrate work", e);
 			}
 
 			if (sqliteConnection != null && mysqlConnection != null) {
@@ -157,13 +157,17 @@ public class MigrateUtils {
 	}
 
 	private static void siteUserSessionRS(PreparedStatement ps, ResultSet rs) throws SQLException {
-		ps.setInt(1, rs.getInt(1));
-		ps.setString(2, rs.getString(2));
-		ps.setString(3, rs.getString(3));
-		ps.setBoolean(4, rs.getBoolean(4));
-		ps.setString(5, rs.getString(5));
-		ps.setLong(6, rs.getLong(6));
-		ps.executeUpdate();
+		try {
+			ps.setInt(1, rs.getInt(1));
+			ps.setString(2, rs.getString(2));
+			ps.setString(3, rs.getString(3));
+			ps.setBoolean(4, rs.getBoolean(4));
+			ps.setString(5, rs.getString(5));
+			ps.setLong(6, rs.getLong(6));
+			ps.executeUpdate();
+		} catch (Exception e) {
+			logger.error("ignore migrate site_user_session error", e);
+		}
 	}
 
 	// table 4:site_user_friend
