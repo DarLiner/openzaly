@@ -177,7 +177,7 @@ public class Command {
 		String v = this.getField(CommandConst.CLIENT_VERSION, String.class);
 		if (StringUtils.isNotEmpty(v)) {
 			String[] vstr = v.split("\\.");
-			if (vstr.length == 3) {
+			if (vstr.length >= 3) {
 				return Integer.parseInt(vstr[2]);
 			}
 		}
