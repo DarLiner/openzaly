@@ -22,7 +22,11 @@ CREATE TABLE IF NOT EXISTS site_user_profile(id INTEGER PRIMARY KEY NOT NULL AUT
             user_status INTEGER,
             mute BOOLEAN,
             register_time BIGINT
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户资料表';
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '用户资料表';
+            
+ALTER TABLE site_user_profile CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+ALTER TABLE site_user_profile MODIFY COLUMN user_name VARCHAR(50) NOT NULL CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
             
 
 CREATE TABLE IF NOT EXISTS site_user_session(id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
