@@ -622,6 +622,7 @@ public class ApiGroupService extends AbstractRequest {
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			if (pageNum == 0 && pageSize == 0) {
+				pageNum = 1;
 				pageSize = 100;
 			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
