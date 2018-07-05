@@ -102,7 +102,7 @@ public class DataSourceManager {
 		try {
 			switch (config.getDb()) {
 			case PERSONAL:
-				return SQLiteUpgrade.upgradeSqliteDB(config);
+				return SQLiteUpgrade.doUpgrade(config, true);
 			case TEAM:
 				throw new UpgradeDatabaseException("database upgrade can't support mysql");
 			}

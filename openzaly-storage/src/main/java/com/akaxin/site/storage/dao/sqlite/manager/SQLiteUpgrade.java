@@ -42,8 +42,16 @@ public class SQLiteUpgrade {
 	private SQLiteUpgrade() {
 	}
 
+	public static int doUpgrade(DBConfig config) throws SQLException, UpgradeDatabaseException {
+		return upgradeSqliteDB(config, false);
+	}
+
+	public static int doUpgrade(DBConfig config, boolean clear) throws SQLException, UpgradeDatabaseException {
+		return upgradeSqliteDB(config, clear);
+	}
+
 	// upgrade db,return current db user-version
-	public static int upgradeSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
+	private static int upgradeSqliteDB(DBConfig config, boolean clear) throws SQLException, UpgradeDatabaseException {
 		// 数据库文件
 		File file = new File(config.getDbDir(), DB_FILE_PATH);
 
@@ -54,6 +62,9 @@ public class SQLiteUpgrade {
 			SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_11);
 		} else {
 			SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
+			if (clear) {
+				SQLiteUnique.clearUnique(SQLiteJDBCManager.getConnection());
+			}
 			doUpgradeWork(config);
 		}
 

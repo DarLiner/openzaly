@@ -18,6 +18,7 @@ import com.akaxin.site.storage.dao.config.JdbcConst;
 import com.akaxin.site.storage.dao.mysql.manager.InitDatabaseConnection;
 import com.akaxin.site.storage.dao.mysql.manager.MysqlManager;
 import com.akaxin.site.storage.dao.sqlite.manager.SQLiteJDBCManager;
+import com.akaxin.site.storage.dao.sqlite.manager.SQLiteUnique;
 import com.akaxin.site.storage.exception.MigrateDatabaseException;
 import com.akaxin.site.storage.exception.NeedInitMysqlException;
 
@@ -60,6 +61,12 @@ public class MigrateUtils {
 			} catch (Exception e) {
 				throw new MigrateDatabaseException("init and get mysql database connection error,msg={}",
 						e.getMessage());
+			}
+			
+			try {
+				SQLiteUnique.clearUnique(sqliteConnection);
+			} catch (SQLException e) {
+				logger.error("clear unique field error,but we try to do migrate work",e);
 			}
 
 			if (sqliteConnection != null && mysqlConnection != null) {

@@ -55,7 +55,7 @@ public class SQLiteJDBCManager {
 
 	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
 		// try to upgrade
-		SQLiteUpgrade.upgradeSqliteDB(config);
+		SQLiteUpgrade.doUpgrade(config);
 
 		// reload sqlite driver
 		loadDatabaseDriver(config.getDbDir());
