@@ -118,8 +118,17 @@
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
+    
     $(function () {
     	    $('#member-lists').html("");
+        loadSiteMember();
+    });
+    
+    var page = 0;
+    var loading = false;
+    
+    // 下拉加载更多数据
+    $(document.body).infinite().on("infinite", function () {
         loadSiteMember();
     });
 
@@ -220,12 +229,6 @@
         });
     });
 
-    var page = 0;
-    var loading = false;
-    $(document.body).infinite().on("infinite", function () {
-        loadSiteMember();
-    });
-
     function loadSiteMember() {
         if (loading) {
             $('.loadmore_site_member').addClass('weui-loadmore_line');
@@ -236,15 +239,15 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var params = {
-            "page": page.toString()
+            "pageNum": page.toString()
         };
         reqUrl(reqUri, JSON.stringify(params), 'addMemberToList');
-        loading = true;
+        /* loading = true;
         if (loading == true) {
             $(".weui-loadmore__tips").html("到底啦");
         } else {
             $(".weui-loadmore__tips").html("加载更多");
-        }
+        } */
     }
 
     function addMemberToList(results) {
