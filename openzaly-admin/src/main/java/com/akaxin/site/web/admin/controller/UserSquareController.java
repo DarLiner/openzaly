@@ -93,10 +93,8 @@ public class UserSquareController extends AbstractController {
 					}
 					data.add(memberMap);
 				}
-			} else {
-				// 没有数据标志
-				nodata = false;
-			}
+				nodata = true;
+			} 
 			results.put("Data", data);
 
 		} catch (Exception e) {
