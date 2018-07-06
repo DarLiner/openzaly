@@ -93,7 +93,7 @@ public class UserSquareController extends AbstractController {
 					}
 					data.add(memberMap);
 				}
-				nodata = true;
+				nodata = false;
 			} 
 			results.put("Data", data);
 
