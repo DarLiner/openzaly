@@ -50,6 +50,7 @@ public class InitDatabaseConnection extends AbstractPoolManager {
 		String password = trimToNull(pro, JdbcConst.MYSQL_PASSWORD);
 		Class.forName(MYSQL_JDBC_DRIVER);
 		conn = DriverManager.getConnection(jdbcUrl, userName, password);
+		conn.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
 		return conn;
 	}
 
@@ -61,6 +62,7 @@ public class InitDatabaseConnection extends AbstractPoolManager {
 		String password = trimToNull(pro, JdbcConst.MYSQL_PASSWORD);
 		Class.forName(MYSQL_JDBC_DRIVER);
 		conn = DriverManager.getConnection(jdbcUrl, userName, password);
+		conn.prepareStatement("SET NAMES utf8mb4;").executeUpdate();
 		return conn;
 	}
 

@@ -35,10 +35,6 @@
             padding: 15px;
         }
 
-        .margin_top_30px {
-            margin-top: 30px;
-        }
-
         .basic-second-title {
             text-align: center;
             color: #1E88E5;
@@ -83,7 +79,7 @@
             padding: 0 1.32em;
             line-height: 2.3;
         }
-
+        
         .weui-dialog__btn {
             color: #1E88E5;
         }
@@ -111,17 +107,28 @@
 </head>
 
 <body ontouchstart=''>
-<div class="weui-cells margin_top_30px" id='member-lists'>
-</div>
 
+<div class="weui-cells" id='member-lists' style="margin-top: 0px;">
+</div>
 
 <input type='hidden' id='init_url' url-data="/userSquare/pullMemberList"/>
 <input type='hidden' id='site_user_id' th:attr="data=${site_user_id},user-name=${site_user_name}"/>
+
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.3/weui.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.js"></script>
 <script type="text/javascript">
+    
     $(function () {
+    	    $('#member-lists').html("");
+        loadSiteMember();
+    });
+    
+    var page = 0;
+    var loading = false;
+    
+    // 下拉加载更多数据
+    $(document.body).infinite().on("infinite", function () {
         loadSiteMember();
     });
 
@@ -222,12 +229,6 @@
         });
     });
 
-    var page = 0;
-    var loading = false;
-    $(document.body).infinite().on("infinite", function () {
-        loadSiteMember();
-    });
-
     function loadSiteMember() {
         if (loading) {
             $('.loadmore_site_member').addClass('weui-loadmore_line');
@@ -238,33 +239,53 @@
         page = page + 1;
         var reqUri = $('#init_url').attr('url-data');
         var params = {
-            "page": page.toString()
+            "pageNum": page.toString()
         };
         reqUrl(reqUri, JSON.stringify(params), 'addMemberToList');
-        loading = true;
+        /* loading = true;
         if (loading == true) {
             $(".weui-loadmore__tips").html("到底啦");
         } else {
             $(".weui-loadmore__tips").html("加载更多");
-        }
+        } */
     }
 
     function addMemberToList(results) {
         results = eval("(" + results + ")");
         var data = results.Data;
-        var html = '';
         var currentSiteUserId = $('#site_user_id').attr('data');
         $.each(data, function (index, user) {
+            	var imageid = user.site_user_photo;
             if (currentSiteUserId != user.site_user_id) {
+                var html = '<div class="weui-cell">'
+                    +'<div class="weui-cell__hd user-photo" id="'+imageid+'"><img src="#" style="height:55px; width:55px;border-radius:50%" /></div>';
+                    //+'<div class="weui-cell__bd"><p>' + user.site_user_name + '</p><p>' + user.site_user_name + '</p></div>';
                 if (user.site_user_relation == 1) {
-                    var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><p style="color:#9b9b9b;font-size:14px;">添加成功</p></div>';
+                    html +='<div class="weui-cell__bd"><p>' + user.site_user_name + '</p><p style="color:#9b9b9b;font-size:12px;">TA是你的好友～</p></div>';
+                    html +='<p style="color:#9b9b9b;font-size:14px;"><i class="weui-icon-success-no-circle"></i></p>';
                 } else {
-                    var html = '<div class="weui-cell"><div class="weui-cell__hd"></div><div class="weui-cell__bd"><p>' + user.site_user_name + '</p></div><a href="javascript:;" name="add-member-friend" data="' + user.site_user_id + '" class="add-member-friend weui-btn  basic-weui-btn weui-btn_mini weui-btn_primary basic-color"  url-data="/userSquare/applyFriend">添加好友</a></div>';
+                    html +='<div class="weui-cell__bd"><p>' + user.site_user_name + '</p><p style="color:#9b9b9b;font-size:12px;">点击添加好友</p></div>'
+                    + '<a href="javascript:;" class="weui-btn basic-weui-btn weui-btn_mini add-member-friend" data="' + user.site_user_id + '"  url-data="/userSquare/applyFriend">添加好友</a>';
                 }
+                html += '</div>'; 
                 $('#member-lists').append(html);
+                
+                if(imageid!=null && imageid!=""){
+                    reqImageDownload(imageid, "reloadUserPhoto");
+                }
             }
         });
         loading = results.loading;
+    }
+    
+    function reloadUserPhoto(success, imageid, imageLocalPath) {
+        var type = getOsType();
+        var imgSrc = imageLocalPath;
+        if (type == 'Android') {
+        	   imgSrc = "http://akaxin/img" + imageLocalPath;
+        }
+        var html = '<img src="' + imgSrc + '" style="height:50px; width:50px;border-radius:50%" />';
+        $('#'+imageid).html(html);
     }
 
     function applyFriend(result) {

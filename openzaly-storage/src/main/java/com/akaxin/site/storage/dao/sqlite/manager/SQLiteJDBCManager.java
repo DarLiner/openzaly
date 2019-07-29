@@ -20,21 +20,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.akaxin.proto.core.ConfigProto;
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.proto.core.UicProto;
-import com.akaxin.site.storage.bean.UicBean;
-import com.akaxin.site.storage.dao.SiteConfigDao;
-import com.akaxin.site.storage.dao.SiteUICDao;
 import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sql.SQLConst;
-import com.akaxin.site.storage.dao.sql.SQLIndex;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
 
 /**
@@ -42,9 +34,7 @@ import com.akaxin.site.storage.exception.UpgradeDatabaseException;
  * SQLite数据源连接管理
  * 		1.数据源加载
  * 		2.检测数据库中的表
- * 		3.初始化站点设置信息
- * 		4.添加后台管理扩展
- * 		5.设置初始管理员邀请码UIC
+ * 		3.自动化升级
  * </pre>
  * 
  * @author Sam{@link an.guoyue254@gmail.com}
@@ -63,25 +53,17 @@ public class SQLiteJDBCManager {
 
 	}
 
-	// init db
 	public static void initSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
+		// try to upgrade
+		SQLiteUpgrade.doUpgrade(config);
 
-		// 尝试升级，如果需要会尝试自动升级
-		SQLiteUpgrade.upgradeSqliteDB(config);
-
-		// 关闭升级使用的connection，重新加载一次Driver
+		// reload sqlite driver
 		loadDatabaseDriver(config.getDbDir());
 
 		if (getDbVersion() < SITE_DB_VERSION) {
 			throw new UpgradeDatabaseException("openzaly-server need to upgrade before run it");
 		}
 
-		initSiteConfig(config.getConfigMap());
-		addSitePlugin(1, PluginArgs.SITE_ADMIN_NAME, config.getAdminApi(), config.getSiteServer(),
-				config.getAdminIcon());
-		addSitePlugin(2, PluginArgs.FRIEND_SQUARE_NAME, PluginArgs.FRIEND_SQUARE_API, config.getSiteServer(),
-				config.getParam(PluginArgs.FRIEND_SQUARE, String.class));
-		initAdminUic(config.getAdminUic());
 	}
 
 	// 指定目录，加载默认数据库dbDir目录下存放默认数据库
@@ -122,22 +104,24 @@ public class SQLiteJDBCManager {
 		sqlitConnection = DriverManager.getConnection(dbUrl);
 	}
 
-	public static void checkDatabaseBeforeRun() throws SQLException, UpgradeDatabaseException {
-		int dbVersion = getDbVersion();
-		logger.info("SQLite current user-version : {}", dbVersion);
-
-		// 不是最新版本，启动需要创建表
-		if (dbVersion < SITE_DB_VERSION) {
-			int num = checkDatabaseTable();
-			if (num == SQLConst.SITE_TABLES_MAP.size()) {
-				// database index
-				checkDatabaseIndex();
-				// 版本设置为 SITE_DB_VERSION
-				setDbVersion(SITE_DB_VERSION);
-				logger.info("create all database tables finish, currentuser-version:{}", getDbVersion());
-			}
-		}
-	}
+	// public static void checkDatabaseBeforeRun() throws SQLException,
+	// UpgradeDatabaseException {
+	// int dbVersion = getDbVersion();
+	// logger.info("SQLite current user-version : {}", dbVersion);
+	//
+	// // 不是最新版本，启动需要创建表
+	// if (dbVersion < SITE_DB_VERSION) {
+	// int num = checkDatabaseTable();
+	// if (num == SQLConst.SITE_TABLES_MAP.size()) {
+	// // database index
+	// checkDatabaseIndex();
+	// // 版本设置为 SITE_DB_VERSION
+	// setDbVersion(SITE_DB_VERSION);
+	// logger.info("create all database tables finish, currentuser-version:{}",
+	// getDbVersion());
+	// }
+	// }
+	// }
 
 	public static int getDbVersion() throws SQLException {
 		PreparedStatement pst = sqlitConnection.prepareStatement("PRAGMA user_version");
@@ -154,22 +138,22 @@ public class SQLiteJDBCManager {
 		pst.executeUpdate();
 	}
 
-	public static int checkDatabaseTable() {
-		int num = 0;
-		for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
-			int result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
-			num += result;
-			logger.info("create table:{} {}", tableName, result == 1 ? "OK" : "false");
-		}
-		return num;
-	}
+	// public static int checkDatabaseTable() {
+	// int num = 0;
+	// for (String tableName : SQLConst.SITE_TABLES_MAP.keySet()) {
+	// int result = createTable(tableName, SQLConst.SITE_TABLES_MAP.get(tableName));
+	// num += result;
+	// logger.info("create table:{} {}", tableName, result == 1 ? "OK" : "false");
+	// }
+	// return num;
+	// }
 
-	private static void checkDatabaseIndex() {
-		for (String indexSql : SQLIndex.DB_INDEXS_SQL) {
-			boolean result = createIndex(indexSql);
-			logger.info("create index result:{} sql:{}", result, indexSql);
-		}
-	}
+	// private static void checkDatabaseIndex() {
+	// for (String indexSql : SQLIndex.DB_INDEXS_SQL) {
+	// boolean result = createIndex(indexSql);
+	// logger.info("create index result:{} sql:{}", result, indexSql);
+	// }
+	// }
 
 	private static boolean existTable(String tableName) {
 		if (StringUtils.isBlank(tableName)) {
@@ -219,126 +203,6 @@ public class SQLiteJDBCManager {
 			logger.error("create index sql=" + indexSQL + " error.,", e);
 		}
 		return result;
-	}
-
-	private static void initSiteConfig(Map<Integer, String> configMap) {
-		try {
-			Map<Integer, String> oldMap = SiteConfigDao.getInstance().queryConfig();
-			if (oldMap != null) {
-				if (oldMap.get(ConfigProto.ConfigKey.SITE_ADMIN_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.SITE_ADMIN_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.SITE_ADDRESS_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.PIC_PATH_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.PIC_PATH_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.GROUP_MEMBERS_COUNT_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.REALNAME_STATUS_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.INVITE_CODE_STATUS_VALUE);
-				}
-				if (oldMap.get(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE) != null) {
-					configMap.remove(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE);
-				}
-			}
-			SiteConfigDao.getInstance().updateConfig(configMap, true);
-		} catch (SQLException e) {
-			logger.error("init site config error.");
-		}
-	}
-
-	private static void addSitePlugin(int id, String siteName, String urlPage, String apiUrl, String siteIcon) {
-		boolean result = false;
-		String updateSql = "UPDATE site_plugin_manager SET "//
-				+ "name=?,"//
-				+ "url_page=?,"//
-				+ "api_url=?,"//
-				+ "auth_key=?"//
-				+ " WHERE id=?;";//
-		String insertSql = "INSERT INTO site_plugin_manager("//
-				+ "id,"//
-				+ "name,"//
-				+ "icon,"//
-				+ "url_page,"//
-				+ "api_url,"//
-				+ "auth_key,"//
-				+ "allowed_ip,"//
-				+ "position,"//
-				+ "sort,"//
-				+ "display_mode,"//
-				+ "permission_status,"//
-				+ "add_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
-		try {
-			PreparedStatement pst = sqlitConnection.prepareStatement(updateSql);
-			pst.setString(1, siteName);
-			pst.setString(2, urlPage);
-			pst.setString(3, apiUrl);
-			pst.setString(4, "");
-			pst.setInt(5, id);
-
-			result = (pst.executeUpdate() > 0);
-			logger.info("update site plugin result={} SQL={} name={} url_page={} url_api={}", result, updateSql,
-					siteName, urlPage, apiUrl);
-		} catch (SQLException e) {
-			logger.error("update site plugin error", e);
-		}
-
-		try {
-			if (!result) {
-				PreparedStatement pst = sqlitConnection.prepareStatement(insertSql);
-				pst.setInt(1, id);
-				pst.setString(2, siteName);
-				pst.setString(3, siteIcon);
-				pst.setString(4, urlPage);
-				pst.setString(5, apiUrl);
-				if (id == 1) {// 默认为后台管理
-					pst.setString(6, "");// authkey
-					pst.setString(7, "127.0.0.1");// allowed_ip
-					pst.setInt(8, PluginProto.PluginPosition.HOME_PAGE_VALUE);// position
-					pst.setInt(9, 0);// sort
-					pst.setInt(10, PluginProto.PluginDisplayMode.NEW_PAGE_VALUE); // display_mode
-					pst.setInt(11, PluginProto.PermissionStatus.DISABLED_VALUE); // permission_status
-					pst.setLong(12, System.currentTimeMillis()); // add_time
-				} else {
-					pst.setString(6, "");// authkey
-					pst.setString(7, "127.0.0.1");// allowed_ip
-					pst.setInt(8, PluginProto.PluginPosition.HOME_PAGE_VALUE);// position
-					pst.setInt(9, 1);// sort
-					pst.setInt(10, PluginProto.PluginDisplayMode.NEW_PAGE_VALUE); // display_mode
-					pst.setInt(11, PluginProto.PermissionStatus.AVAILABLE_VALUE); // permission_status
-					pst.setLong(12, System.currentTimeMillis()); // add_time
-				}
-				result = (pst.executeUpdate() > 0);
-				logger.info("insert site plugin result={} SQL={} name={} url_page={} url_api={}", result, insertSql,
-						siteName, urlPage, apiUrl);
-			}
-		} catch (SQLException e) {
-			logger.error("insert site plugin error", e);
-		}
-	}
-
-	private static void initAdminUic(String uic) {
-		boolean result = false;
-		try {
-			UicBean bean = new UicBean();
-			bean.setUic(uic);
-			bean.setStatus(UicProto.UicStatus.UNUSED_VALUE);
-			bean.setCreateTime(System.currentTimeMillis());
-			result = SiteUICDao.getInstance().addUIC(bean);
-		} catch (SQLException e) {
-			logger.warn("add new uic to db error,you can ignore it");
-		}
-		if (result) {
-			logger.info("init addmin uic success");
-		} else {
-			logger.warn("init admin uic fail");
-		}
 	}
 
 	public static Connection getConnection() {

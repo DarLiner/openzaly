@@ -17,23 +17,99 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import com.akaxin.site.storage.dao.config.DBConfig;
 import com.akaxin.site.storage.dao.sql.SQLConst;
 import com.akaxin.site.storage.exception.UpgradeDatabaseException;
+import com.akaxin.site.storage.util.FileUtils;
+import com.akaxin.site.storage.util.SqlLog;
 
+/**
+ * sqlite 数据库升级
+ * 
+ * @author Sam{@link an.guoyue254@gmail.com}
+ * @since 2018-06-28 11:47:07
+ */
 public class SQLiteUpgrade {
 	private static final Logger logger = LoggerFactory.getLogger(SQLiteUpgrade.class);
+
+	private static final String DB_FILE_PATH = "openzalyDB.sqlite3";
+	private static final String OPENZALY_SQLITE_SQL = "openzaly-sqlite.sql";
 
 	private SQLiteUpgrade() {
 	}
 
-	// upgrade db,return current db user-version
-	public static int upgradeSqliteDB(DBConfig config) throws SQLException, UpgradeDatabaseException {
-		SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
-		SQLiteJDBCManager.checkDatabaseBeforeRun();
+	public static int doUpgrade(DBConfig config) throws SQLException, UpgradeDatabaseException {
+		return upgradeSqliteDB(config, false);
+	}
 
+	public static int doUpgrade(DBConfig config, boolean clear) throws SQLException, UpgradeDatabaseException {
+		return upgradeSqliteDB(config, clear);
+	}
+
+	// upgrade db,return current db user-version
+	private static int upgradeSqliteDB(DBConfig config, boolean clear) throws SQLException, UpgradeDatabaseException {
+		// 数据库文件
+		File file = new File(config.getDbDir(), DB_FILE_PATH);
+
+		if (!file.exists()) {
+			SqlLog.info("openzaly start with first init sqlite database");
+			SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
+			doInitWork(SQLiteJDBCManager.getConnection());
+			SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_11);
+		} else {
+			SQLiteJDBCManager.loadDatabaseDriver(config.getDbDir());
+			if (clear) {
+				SQLiteUnique.clearUnique(SQLiteJDBCManager.getConnection());
+			}
+			doUpgradeWork(config);
+		}
+
+		return SQLiteJDBCManager.getDbVersion();
+	}
+
+	/**
+	 * 通过sql脚本初始化数据库表
+	 * 
+	 * @param conn
+	 * @throws SQLException
+	 */
+	private static void doInitWork(Connection conn) throws SQLException {
+		try {
+			// 生成临时sql文件加载数据库sql执行脚本,
+			File sqlFile = new File(OPENZALY_SQLITE_SQL);
+			if (!sqlFile.exists()) {
+				FileUtils.writeResourceToFile("/" + OPENZALY_SQLITE_SQL, sqlFile);
+			}
+
+			// 初始化数据库表
+			File file = new File(OPENZALY_SQLITE_SQL);
+			if (!file.exists()) {
+				throw new FileNotFoundException("init mysql with sql script file is not exists");
+			}
+
+			FileSystemResource rc = new FileSystemResource(file);
+			EncodedResource encodeRes = new EncodedResource(rc, "GBK");
+			ScriptUtils.executeSqlScript(conn, encodeRes);
+			SqlLog.info("openzaly init sqlite with sql-script finish");
+
+			file.delete();
+		} catch (Exception e) {
+			throw new SQLException(e);
+		}
+	}
+
+	private static void doUpgradeWork(DBConfig config) throws UpgradeDatabaseException, SQLException {
+		int times = 5;
 		while (true) {
+			// 做一个简单的频率控制，防止升级出现死循环
+			if (times-- <= 0) {
+				break;
+			}
+
 			int dbVersion = SQLiteJDBCManager.getDbVersion();
 			if (dbVersion < 9) {
 				// 1.首先备份
@@ -69,11 +145,13 @@ public class SQLiteUpgrade {
 					restoreDatabase(fileName);
 				}
 
+			} else if (dbVersion == 10) {
+				doInitWork(SQLiteJDBCManager.getConnection());
+				SQLiteJDBCManager.setDbVersion(SQLConst.SITE_DB_VERSION_11);
 			}
 
 			break;
 		}
-		return SQLiteJDBCManager.getDbVersion();
 	}
 
 	private static String backupDatabaseFile(String dbDir, int oldVersion) {
@@ -140,7 +218,7 @@ public class SQLiteUpgrade {
 					}
 				}
 				// 2.check all tables
-				SQLiteJDBCManager.checkDatabaseTable();
+				doInitWork(conn);
 
 				// 3. migrate
 				String migSql1 = "INSERT INTO " + SQLConst.SITE_USER_PROFILE
@@ -205,7 +283,7 @@ public class SQLiteUpgrade {
 			}
 
 			// 2.check all tables
-			SQLiteJDBCManager.checkDatabaseTable();
+			doInitWork(conn);
 
 			// 3. migrate
 			String sql_mig = "INSERT INTO " + SQLConst.SITE_USER_MESSAGE

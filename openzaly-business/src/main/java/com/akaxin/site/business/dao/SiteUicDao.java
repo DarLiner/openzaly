@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
 
 import com.akaxin.site.storage.api.IUicDao;
 import com.akaxin.site.storage.bean.UicBean;
-import com.akaxin.site.storage.service.UicServiceDao;
+import com.akaxin.site.storage.service.UicDaoService;
 
 public class SiteUicDao {
 	private static final Logger logger = LoggerFactory.getLogger(SiteUicDao.class);
-	private IUicDao uicDao = new UicServiceDao();
+	private IUicDao uicDao = new UicDaoService();
 	private static SiteUicDao instance = new SiteUicDao();
 
 	public static SiteUicDao getInstance() {

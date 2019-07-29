@@ -139,12 +139,32 @@ public class UserProfileDao {
 		return userBean;
 	}
 
+	public UserProfileBean getUserProfileByFullPhoneId(String fullPhoneId) {
+		UserProfileBean userBean = null;
+		try {
+			userBean = userProfileDao.getUserProfileByFullPhoneId(fullPhoneId);
+		} catch (SQLException e) {
+			logger.error("get user profile by full phone id error.", e);
+		}
+		return userBean;
+	}
+
 	public boolean updateUserProfile(UserProfileBean userBean) {
 		int result = 0;
 		try {
 			result = userProfileDao.updateProfile(userBean);
 		} catch (SQLException e) {
 			logger.error("update user profile error.", e);
+		}
+		return result > 0;
+	}
+
+	public boolean updateUserIdPubk(String siteUserId, String globalUserId, String userIdPubk) {
+		int result = 0;
+		try {
+			result = userProfileDao.updateUserIdPubk(siteUserId, globalUserId, userIdPubk);
+		} catch (SQLException e) {
+			logger.error("update globalUserId and userIdPubk error.", e);
 		}
 		return result > 0;
 	}

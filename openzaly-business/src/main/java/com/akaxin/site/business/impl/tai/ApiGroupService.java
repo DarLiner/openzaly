@@ -16,6 +16,7 @@
 package com.akaxin.site.business.impl.tai;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,12 +28,16 @@ import com.akaxin.common.constant.CommandConst;
 import com.akaxin.common.constant.ErrorCode2;
 import com.akaxin.common.constant.IErrorCode;
 import com.akaxin.common.exceptions.ZalyException;
+import com.akaxin.common.exceptions.ZalyException2;
 import com.akaxin.common.logs.LogUtils;
 import com.akaxin.proto.core.GroupProto;
+import com.akaxin.proto.core.TokenProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiGroupAddMemberProto;
+import com.akaxin.proto.site.ApiGroupApplyTokenProto;
 import com.akaxin.proto.site.ApiGroupCreateProto;
 import com.akaxin.proto.site.ApiGroupDeleteProto;
+import com.akaxin.proto.site.ApiGroupJoinByTokenProto;
 import com.akaxin.proto.site.ApiGroupListProto;
 import com.akaxin.proto.site.ApiGroupMembersProto;
 import com.akaxin.proto.site.ApiGroupMuteProto;
@@ -44,10 +49,12 @@ import com.akaxin.proto.site.ApiGroupSettingProto;
 import com.akaxin.proto.site.ApiGroupUpdateProfileProto;
 import com.akaxin.proto.site.ApiGroupUpdateSettingProto;
 import com.akaxin.site.business.constant.GroupConfig;
+import com.akaxin.site.business.dao.ExpireTokenDao;
 import com.akaxin.site.business.dao.UserGroupDao;
 import com.akaxin.site.business.dao.UserProfileDao;
 import com.akaxin.site.business.impl.AbstractRequest;
 import com.akaxin.site.business.impl.site.SiteConfig;
+import com.akaxin.site.storage.bean.ExpireToken;
 import com.akaxin.site.storage.bean.GroupMemberBean;
 import com.akaxin.site.storage.bean.GroupProfileBean;
 import com.akaxin.site.storage.bean.SimpleGroupBean;
@@ -133,6 +140,9 @@ public class ApiGroupService extends AbstractRequest {
 				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
 			}
 
+			if (!SiteConfig.allowCreateGroups(siteUserId)) {
+				throw new ZalyException(ErrorCode2.ERROR2_GROUP_NOTALLOW);
+			}
 			// 检查用户是否被封禁，或者不存在
 			for (String groupMemberId : groupMemberIds) {
 				SimpleUserBean bean = UserProfileDao.getInstance().getSimpleProfileById(groupMemberId);
@@ -612,6 +622,7 @@ public class ApiGroupService extends AbstractRequest {
 			int pageNum = request.getPageNumber();
 			int pageSize = request.getPageSize();
 			if (pageNum == 0 && pageSize == 0) {
+				pageNum = 1;
 				pageSize = 100;
 			}
 			LogUtils.requestDebugLog(logger, command, request.toString());
@@ -781,11 +792,11 @@ public class ApiGroupService extends AbstractRequest {
 			LogUtils.requestDebugLog(logger, command, request.toString());
 
 			if (StringUtils.isAnyEmpty(siteUserId, groupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_PARAMETER);
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
 			}
 
 			if (!checkGroupStatus(groupId)) {
-				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
+				throw new ZalyException2(ErrorCode2.ERROR_GROUP_DELETED);
 			}
 
 			UserGroupBean bean = new UserGroupBean();
@@ -798,11 +809,10 @@ public class ApiGroupService extends AbstractRequest {
 			}
 
 		} catch (Exception e) {
-			if (e instanceof ZalyException) {
-				errCode = ((ZalyException) e).getErrCode();
-			} else {
-				errCode = ErrorCode2.ERROR_SYSTEMERROR;
-			}
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
 			LogUtils.requestErrorLog(logger, command, e);
 		}
 		return commandResponse.setErrCode(errCode);
@@ -812,5 +822,131 @@ public class ApiGroupService extends AbstractRequest {
 	private boolean checkGroupStatus(String groupId) {
 		int status = UserGroupDao.getInstance().getGroupStatus(groupId);
 		return status == 1;
+	}
+
+	/**
+	 * api.group.qrcode 获取群的二维码
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public CommandResponse applyToken(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupApplyTokenProto.ApiGroupApplyTokenRequest request = ApiGroupApplyTokenProto.ApiGroupApplyTokenRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteGroupId = request.getSiteGroupId();
+
+			if (StringUtils.isAnyEmpty(siteUserId, siteGroupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			String groupToken = null;
+			long expireTime = 0;
+
+			// 查找一天之内的是否存在token
+			long time = System.currentTimeMillis() - 24 * 60 * 60 * 1000l;
+			ExpireToken existsToken = ExpireTokenDao.getInstance().getExpireTokenByBid(siteGroupId, time);
+
+			if (existsToken != null && StringUtils.isNotEmpty(existsToken.getToken())) {
+				int status = existsToken.getStatus();
+				expireTime = existsToken.getExpireTime();
+			} else {
+				int day = SiteConfig.getGroupQRExpireDay();
+
+				ExpireToken tokenBean = new ExpireToken();
+				tokenBean.setBid(siteGroupId);
+				tokenBean.setBtype(TokenProto.TokenType.GROUP_TOKEN_VALUE);
+				tokenBean.setStatus(TokenProto.GroupTokenStatus.GROUP_TOKEN_AVAILABLE_VALUE);
+				String nToken = TokenProto.TokenType.GROUP_TOKEN_VALUE + UUID.randomUUID().toString().replace("-", "");
+				tokenBean.setToken(nToken);
+				long nowTime = System.currentTimeMillis();
+				tokenBean.setCreateTime(nowTime);
+				tokenBean.setExpireTime(nowTime + day * 24 * 60 * 60 * 1000l);
+				if (ExpireTokenDao.getInstance().addToken(tokenBean)) {
+					groupToken = tokenBean.getToken();
+					expireTime = tokenBean.getExpireTime();
+				}
+			}
+
+			if (StringUtils.isNotEmpty(groupToken) && expireTime > 0) {
+				ApiGroupApplyTokenProto.ApiGroupApplyTokenResponse response = ApiGroupApplyTokenProto.ApiGroupApplyTokenResponse
+						.newBuilder().setExpireTime(expireTime).setToken(groupToken).build();
+				commandResponse.setParams(response.toByteArray());
+				errCode = ErrorCode2.SUCCESS;
+			}
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse.setErrCode(errCode);
+	}
+
+	public CommandResponse joinByToken(Command command) {
+		CommandResponse commandResponse = new CommandResponse().setAction(CommandConst.ACTION_RES);
+		IErrorCode errCode = ErrorCode2.ERROR;
+		try {
+			ApiGroupJoinByTokenProto.ApiGroupJoinByTokenRequest request = ApiGroupJoinByTokenProto.ApiGroupJoinByTokenRequest
+					.parseFrom(command.getParams());
+			String siteUserId = command.getSiteUserId();
+			String siteGroupId = request.getSiteGroupId();
+			String token = request.getToken();
+
+			if (StringUtils.isAnyEmpty(siteGroupId, token)) {
+				throw new ZalyException2(ErrorCode2.ERROR_PARAMETER);
+			}
+
+			// 群是否存在
+			if (!checkGroupStatus(siteGroupId)) {
+				throw new ZalyException(ErrorCode2.ERROR_GROUP_DELETED);
+			}
+
+			ExpireToken expireToken = ExpireTokenDao.getInstance().getExpireToken(token);
+
+			if (expireToken == null || StringUtils.isEmpty(expireToken.getToken())) {
+				throw new ZalyException2(ErrorCode2.ERROR2_GROUP_TOKEN_INVALID);
+			}
+
+			if (System.currentTimeMillis() > expireToken.getExpireTime()) {
+				throw new ZalyException2(ErrorCode2.ERROR2_GROUP_TOKEN_EXPIRED);
+			}
+
+			GroupProfileBean bean = UserGroupDao.getInstance().getGroupProfile(siteGroupId);
+
+			// 校验权限
+			if (!checkAddMemberPermission(siteUserId, bean)) {
+				throw new ZalyException2(ErrorCode2.ERROR_GROUP_INVITE_CHAT_CLOSE);
+			}
+
+			if (UserGroupDao.getInstance().isGroupMember(siteUserId, siteGroupId)) {
+				throw new ZalyException2(ErrorCode2.ERROR2_GROUP_ISMEMBER);
+			}
+
+			// 加人入群
+			int currentSize = UserGroupDao.getInstance().getGroupMemberCount(siteGroupId);
+			int maxSize = SiteConfig.getMaxGroupMemberSize();
+			if (currentSize < maxSize) {
+				if (UserGroupDao.getInstance().addGroupMemberByToken(siteGroupId, siteUserId)) {
+					errCode = ErrorCode2.SUCCESS;
+				}
+			} else {
+				errCode = ErrorCode2.ERROR_GROUP_MAXMEMBERCOUNT;
+			}
+
+		} catch (ZalyException2 e) {
+			errCode = e.getErrCode();
+			LogUtils.requestErrorLog(logger, command, e);
+		} catch (Exception e) {
+			errCode = ErrorCode2.ERROR_SYSTEMERROR;
+			LogUtils.requestErrorLog(logger, command, e);
+		}
+
+		return commandResponse.setErrCode(errCode);
 	}
 }

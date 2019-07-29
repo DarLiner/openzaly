@@ -98,6 +98,7 @@ public class ConfigManageController extends AbstractController {
 				model.put("manager_type", "site_manager");
 			}
 
+			// 设置默认值
 			model.put("uic_status", "0");
 			model.put("pic_size", "1");
 			model.put("pic_path", "/akaxin");
@@ -105,6 +106,10 @@ public class ConfigManageController extends AbstractController {
 			model.put("u2_encryption_status", "1");
 			model.put("push_client_status", "0");
 			model.put("log_level", "INFO");
+			model.put("add_friends_status", "0");// 0表示允许
+			model.put("create_groups_status", "0");// 0默认为允许
+			model.put("group_qrcode_expire_time", "14");// 群二维码默认两周
+
 			Map<Integer, String> map = configManageService.getSiteConfig();
 			Set<Integer> integers = map.keySet();
 			String site_prot = "";
@@ -161,6 +166,15 @@ public class ConfigManageController extends AbstractController {
 					break;
 				case ConfigKey.SITE_MANAGER_VALUE:
 					model.put("subgenus_admin", res);
+					break;
+				case ConfigKey.CONFIG_FRIEND_REQUEST_VALUE:
+					model.put("add_friends_status", res);
+					break;
+				case ConfigKey.CONFIG_CREATE_GROUP_VALUE:
+					model.put("create_groups_status", res);
+					break;
+				case ConfigKey.GROUP_QR_EXPIRE_TIME_VALUE:
+					model.put("group_qrcode_expire_time", res);
 					break;
 				}
 
@@ -220,6 +234,20 @@ public class ConfigManageController extends AbstractController {
 			if (StringUtils.isNotEmpty(dataMap.get("u2_encryption_status"))) {
 				configMap.put(ConfigProto.ConfigKey.U2_ENCRYPTION_STATUS_VALUE, dataMap.get("u2_encryption_status"));
 			}
+
+			if (StringUtils.isNotEmpty(dataMap.get("add_friends_status"))) {
+				configMap.put(ConfigProto.ConfigKey.CONFIG_FRIEND_REQUEST_VALUE, dataMap.get("add_friends_status"));
+			}
+
+			if (StringUtils.isNotEmpty(dataMap.get("create_groups_status"))) {
+				configMap.put(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE, dataMap.get("create_groups_status"));
+			}
+
+			if (StringUtils.isNotEmpty(dataMap.get("group_qrcode_expire_time"))) {
+				configMap.put(ConfigProto.ConfigKey.GROUP_QR_EXPIRE_TIME_VALUE,
+						dataMap.get("group_qrcode_expire_time"));
+			}
+
 			if (StringUtils.isNotEmpty(dataMap.get("push_client_status"))) {
 				configMap.put(ConfigProto.ConfigKey.PUSH_CLIENT_STATUS_VALUE, dataMap.get("push_client_status"));
 			}

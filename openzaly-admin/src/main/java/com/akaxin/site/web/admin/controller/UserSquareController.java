@@ -69,6 +69,7 @@ public class UserSquareController extends AbstractController {
 	public Map<String, Object> getMemberList(HttpServletRequest request, @RequestBody byte[] bodyParam) {
 		Map<String, Object> results = new HashMap<String, Object>();
 		boolean nodata = true;
+		int pageSize = 20;
 		try {
 			PluginProto.ProxyPluginPackage pluginPackage = PluginProto.ProxyPluginPackage.parseFrom(bodyParam);
 			Map<Integer, String> headerMap = pluginPackage.getPluginHeaderMap();
@@ -76,25 +77,24 @@ public class UserSquareController extends AbstractController {
 
 			Map<String, String> ReqMap = GsonUtils.fromJson(pluginPackage.getData(), Map.class);
 
-			int pageNum = Integer.valueOf(ReqMap.get("page"));
-			List<SimpleUserBean> userList = userService.getUserList(pageNum, 20);
+			int pageNum = Integer.valueOf(ReqMap.get("pageNum"));
+			List<SimpleUserBean> userList = userService.getUserList(pageNum, pageSize);
 			List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 			if (userList != null && userList.size() > 0) {
-				if (20 == userList.size()) {
-					nodata = false;
-				}
 				for (SimpleUserBean bean : userList) {
 					Map<String, String> memberMap = new HashMap<String, String>();
 					if (siteUserId != bean.getUserId()) {
 						memberMap.put("site_user_id", bean.getUserId());
 						memberMap.put("site_user_name", bean.getUserName());
+						memberMap.put("site_user_photo", bean.getUserPhoto());
 						UserProto.UserRelation userRelation = UserFriendDao.getInstance().getUserRelation(siteUserId,
 								bean.getUserId());
 						memberMap.put("site_user_relation", String.valueOf(userRelation.getNumber()));
 					}
 					data.add(memberMap);
 				}
-			}
+				nodata = false;
+			} 
 			results.put("Data", data);
 
 		} catch (Exception e) {

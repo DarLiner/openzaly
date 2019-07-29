@@ -25,4 +25,6 @@ public interface NoticeText {
 	public String USER_ADD_FRIEND = "我通过了你的好友验证，现在可以开始聊天了";
 	public String USER_ADD_GROUP = " 加入了群聊";
 
+	public String USER_ADD_GROUP_QR_CODE = " 通过群组二维码加入群聊";
+
 }

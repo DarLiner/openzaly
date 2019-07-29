@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -257,6 +258,55 @@ public class SiteConfig {
 			logger.error("get u2 encry status error", e);
 		}
 		return ConfigProto.U2EncryptionConfig.U2_CLOSE;
+	}
+
+	public static boolean allowAddFriends(String siteUserId) {
+		if (isSiteManager(siteUserId)) {
+			return true;
+		}
+		Map<Integer, String> map = getConfigMap();
+		if (map != null) {
+			String value = map.get(ConfigProto.ConfigKey.CONFIG_FRIEND_REQUEST_VALUE);
+			return !String.valueOf(ConfigProto.ConfigFriendRequest.ConfigFriendRequest_NO_VALUE).equals(value);
+		}
+		return true;
+	}
+
+	public static boolean allowCreateGroups(String siteUserId) {
+		if (isSiteManager(siteUserId)) {
+			return true;
+		}
+
+		Map<Integer, String> map = getConfigMap();
+		if (map != null) {
+			String value = map.get(ConfigProto.ConfigKey.CONFIG_CREATE_GROUP_VALUE);
+			return !String.valueOf(ConfigProto.ConfigCreateGroup.ConfigCreateGroup_NO_VALUE).equals(value);
+		}
+		return true;
+	}
+
+	/**
+	 * <pre>
+	 * 1天
+	 * 7天
+	 * 14天
+	 * </pre>
+	 * 
+	 * @return
+	 */
+	public static int getGroupQRExpireDay() {
+		int expireDay = 14;
+		Map<Integer, String> map = getConfigMap();
+		if (map != null) {
+			String value = map.get(ConfigProto.ConfigKey.GROUP_QR_EXPIRE_TIME_VALUE);
+			if (NumberUtils.isDigits(value)) {
+				int day = Integer.valueOf(value);
+				if (day == 1 || day == 7 || day == 14) {
+					return day;
+				}
+			}
+		}
+		return expireDay;
 	}
 
 	public static String getSiteLogo() {

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -220,20 +221,48 @@ public class UserGroupDao {
 
 	public boolean addDefaultGroupMember(String defaultGroupId, String siteUserId) {
 		try {
-			// 1.获取当前，群消息最大游标
-			long maxPointer = messageDao.queryMaxGroupPointer(defaultGroupId);
-			// 2.设置个人默认游标
-			// 3.增加群成员
-			messageDao.updateGroupPointer(defaultGroupId, siteUserId, null, maxPointer);
-			int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
-			if (!groupDao.addGroupMember(siteUserId, defaultGroupId, status)) {
-				return false;
+			if (addGroupMember(defaultGroupId, siteUserId)) {
+				// 添加完用户，向群消息中添加GroupMsgNotice
+				new GroupNotice().addDefaultGroupMemberNotice(defaultGroupId, siteUserId);
+				return true;
 			}
-			// 添加完用户，向群消息中添加GroupMsgNotice
-			new GroupNotice().addDefaultGroupMemberNotice(defaultGroupId, siteUserId);
-			return true;
 		} catch (Exception e) {
 			logger.error("add group member error.", e);
+		}
+		return false;
+	}
+
+	public boolean addGroupMemberByToken(String siteGroupId, String siteUserId) {
+		try {
+			if (addGroupMember(siteGroupId, siteUserId)) {
+				// 添加完用户，向群消息中添加GroupMsgNotice
+				new GroupNotice().addGroupMemberByTokenNotice(siteGroupId, siteUserId);
+				return true;
+			}
+		} catch (Exception e) {
+			logger.error("add group member by token error.", e);
+		}
+		return false;
+	}
+
+	private boolean addGroupMember(String siteGroupId, String siteUserId) throws SQLException {
+		// 1.获取当前，群消息最大游标
+		long maxPointer = messageDao.queryMaxGroupPointer(siteGroupId);
+		// 2.设置个人默认游标
+		// 3.增加群成员
+		messageDao.updateGroupPointer(siteGroupId, siteUserId, null, maxPointer);
+		int status = GroupProto.GroupMemberRole.MEMBER_VALUE;
+		return groupDao.addGroupMember(siteUserId, siteGroupId, status);
+	}
+
+	public boolean isGroupMember(String siteUserId, String groupId) {
+		try {
+			GroupMemberBean bean = groupDao.getGroupMember(siteUserId, groupId);
+			if (bean != null && StringUtils.isNotEmpty(bean.getUserId())) {
+				return true;
+			}
+		} catch (SQLException e) {
+			logger.error("is group member error.", e);
 		}
 		return false;
 	}

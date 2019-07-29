@@ -66,13 +66,18 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_FRIEND_APPLYSELF("error.alert", "用户不能添加自己为好友"), //
 	ERROR2_FRIEND_APPLYCOUNT("error.alert", "添加好友最多为5次"), //
 	ERROR2_FRIEND_sealUped("error.alert", "你已经被封禁,无法执行操作"), //
+	ERROR2_FRIEND_NOTALLOW("error.alert", "站点不支持添加好友功能"), //
 
 	ERROR_GROUP_DELETED("error.group.deleted", "该群聊不存在"), //
 	ERROR_GROUP_WHEN_CREATE("error.alert", "创建群聊出错，请稍后重试"), //
 	ERROR_GROUP_QUERY_PROFILE("error.alert", "查询用户资料出错，请返回重试"), //
-	ERROR_GROUP_INVITE_CHAT_CLOSE("error.alert", "群主已关闭邀请群聊功能"), //
-	ERROR_GROUP_MAXMEMBERCOUNT("error.alert", "超过群人数上限"), // 添加群成员，人数超过上限
+	ERROR_GROUP_INVITE_CHAT_CLOSE("error.alert", "此群组只允许管理员邀请加入"), //
+	ERROR_GROUP_MAXMEMBERCOUNT("error.alert", "群人数已达到上限"), // 添加群成员，人数超过上限
 	ERROR_GROUP_MEMBERLESS3("error.alert", "创建群成员少于三人"), //
+	ERROR2_GROUP_NOTALLOW("error.alert", "站点不支持创建群组功能"), //
+	ERROR2_GROUP_TOKEN_INVALID("error.alert", "群二维码已失效"), //
+	ERROR2_GROUP_TOKEN_EXPIRED("error.alert", "群二维码已过期"), //
+	ERROR2_GROUP_ISMEMBER("error.group.ismember", "用户已经是群成员"), //
 
 	ERROR2_LOGGIN_USERID_EMPTY("error.alert", "用户身份为空"), // 用户身份校验失败
 	ERROR2_LOGGIN_USERTOKEN_EMPTY("error.alert", "用户身份token为空"), // 用户usertoken
@@ -82,6 +87,7 @@ public enum ErrorCode2 implements IErrorCode {
 	ERROR2_LOGGIN_ERRORSIGN("error.alert", "用户身份校验失败，请重新登陆"), // 用户身份校验失败
 	ERROR2_LOGGIN_NOREGISTER("error.login.need_register", ""), // 用户需要在该站点注册
 	ERROR2_LOGGIN_SEALUPUSER("error.alert", "当前用户无权登陆"), // 用户需要在该站点注册
+	ERROR2_LOGGIN_UPDATENEWPUBK("error.alert", "更新用户新身份失败"), // 用户通过手机号修改公钥，这里更新失败
 
 	// ERROR2_IMAUTH_FAIL("error.alert", "im连接认证失败"), // 用户需要在该站点注册
 

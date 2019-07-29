@@ -696,6 +696,30 @@ public final class ConfigProto {
      * <code>DEFAULT_USER_GROUPS = 22;</code>
      */
     DEFAULT_USER_GROUPS(22),
+    /**
+     * <pre>
+     *是否允许添加还有
+     * </pre>
+     *
+     * <code>CONFIG_FRIEND_REQUEST = 23;</code>
+     */
+    CONFIG_FRIEND_REQUEST(23),
+    /**
+     * <pre>
+     *是否允许添加群组
+     * </pre>
+     *
+     * <code>CONFIG_CREATE_GROUP = 24;</code>
+     */
+    CONFIG_CREATE_GROUP(24),
+    /**
+     * <pre>
+     *群二维码过期时间
+     * </pre>
+     *
+     * <code>GROUP_QR_EXPIRE_TIME = 25;</code>
+     */
+    GROUP_QR_EXPIRE_TIME(25),
     UNRECOGNIZED(-1),
     ;
 
@@ -883,6 +907,30 @@ public final class ConfigProto {
      * <code>DEFAULT_USER_GROUPS = 22;</code>
      */
     public static final int DEFAULT_USER_GROUPS_VALUE = 22;
+    /**
+     * <pre>
+     *是否允许添加还有
+     * </pre>
+     *
+     * <code>CONFIG_FRIEND_REQUEST = 23;</code>
+     */
+    public static final int CONFIG_FRIEND_REQUEST_VALUE = 23;
+    /**
+     * <pre>
+     *是否允许添加群组
+     * </pre>
+     *
+     * <code>CONFIG_CREATE_GROUP = 24;</code>
+     */
+    public static final int CONFIG_CREATE_GROUP_VALUE = 24;
+    /**
+     * <pre>
+     *群二维码过期时间
+     * </pre>
+     *
+     * <code>GROUP_QR_EXPIRE_TIME = 25;</code>
+     */
+    public static final int GROUP_QR_EXPIRE_TIME_VALUE = 25;
 
 
     public final int getNumber() {
@@ -926,6 +974,9 @@ public final class ConfigProto {
         case 20: return INVITE_CODE_STATUS;
         case 21: return DEFAULT_USER_FRIENDS;
         case 22: return DEFAULT_USER_GROUPS;
+        case 23: return CONFIG_FRIEND_REQUEST;
+        case 24: return CONFIG_CREATE_GROUP;
+        case 25: return GROUP_QR_EXPIRE_TIME;
         default: return null;
       }
     }
@@ -1111,6 +1162,323 @@ public final class ConfigProto {
     }
 
     // @@protoc_insertion_point(enum_scope:core.PushClientStatus)
+  }
+
+  /**
+   * <pre>
+   * 是否允许用户加好友(发送好友请求)
+   * 默认值为YES
+   * enum的0值必须为默认值
+   * https://developers.google.com/protocol-buffers/docs/proto3#enum
+   * </pre>
+   *
+   * Protobuf enum {@code core.ConfigFriendRequest}
+   */
+  public enum ConfigFriendRequest
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>ConfigFriendRequest_YES = 0;</code>
+     */
+    ConfigFriendRequest_YES(0),
+    /**
+     * <code>ConfigFriendRequest_NO = 1;</code>
+     */
+    ConfigFriendRequest_NO(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>ConfigFriendRequest_YES = 0;</code>
+     */
+    public static final int ConfigFriendRequest_YES_VALUE = 0;
+    /**
+     * <code>ConfigFriendRequest_NO = 1;</code>
+     */
+    public static final int ConfigFriendRequest_NO_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ConfigFriendRequest valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ConfigFriendRequest forNumber(int value) {
+      switch (value) {
+        case 0: return ConfigFriendRequest_YES;
+        case 1: return ConfigFriendRequest_NO;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ConfigFriendRequest>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ConfigFriendRequest> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ConfigFriendRequest>() {
+            public ConfigFriendRequest findValueByNumber(int number) {
+              return ConfigFriendRequest.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(6);
+    }
+
+    private static final ConfigFriendRequest[] VALUES = values();
+
+    public static ConfigFriendRequest valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ConfigFriendRequest(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.ConfigFriendRequest)
+  }
+
+  /**
+   * <pre>
+   * 是否允许用户创建群组
+   * 默认值为YES
+   * enum的0值必须为默认值
+   * https://developers.google.com/protocol-buffers/docs/proto3#enum
+   * </pre>
+   *
+   * Protobuf enum {@code core.ConfigCreateGroup}
+   */
+  public enum ConfigCreateGroup
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>ConfigCreateGroup_YES = 0;</code>
+     */
+    ConfigCreateGroup_YES(0),
+    /**
+     * <code>ConfigCreateGroup_NO = 1;</code>
+     */
+    ConfigCreateGroup_NO(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>ConfigCreateGroup_YES = 0;</code>
+     */
+    public static final int ConfigCreateGroup_YES_VALUE = 0;
+    /**
+     * <code>ConfigCreateGroup_NO = 1;</code>
+     */
+    public static final int ConfigCreateGroup_NO_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ConfigCreateGroup valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ConfigCreateGroup forNumber(int value) {
+      switch (value) {
+        case 0: return ConfigCreateGroup_YES;
+        case 1: return ConfigCreateGroup_NO;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ConfigCreateGroup>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ConfigCreateGroup> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ConfigCreateGroup>() {
+            public ConfigCreateGroup findValueByNumber(int number) {
+              return ConfigCreateGroup.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(7);
+    }
+
+    private static final ConfigCreateGroup[] VALUES = values();
+
+    public static ConfigCreateGroup valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ConfigCreateGroup(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.ConfigCreateGroup)
+  }
+
+  /**
+   * Protobuf enum {@code core.ConfigGroupQRExpireTime}
+   */
+  public enum ConfigGroupQRExpireTime
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>EXPIRE_1_DAY = 0;</code>
+     */
+    EXPIRE_1_DAY(0),
+    /**
+     * <code>EXPIRE_7_DAYS = 1;</code>
+     */
+    EXPIRE_7_DAYS(1),
+    /**
+     * <code>EXPIRE_14_DAYS = 2;</code>
+     */
+    EXPIRE_14_DAYS(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>EXPIRE_1_DAY = 0;</code>
+     */
+    public static final int EXPIRE_1_DAY_VALUE = 0;
+    /**
+     * <code>EXPIRE_7_DAYS = 1;</code>
+     */
+    public static final int EXPIRE_7_DAYS_VALUE = 1;
+    /**
+     * <code>EXPIRE_14_DAYS = 2;</code>
+     */
+    public static final int EXPIRE_14_DAYS_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ConfigGroupQRExpireTime valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ConfigGroupQRExpireTime forNumber(int value) {
+      switch (value) {
+        case 0: return EXPIRE_1_DAY;
+        case 1: return EXPIRE_7_DAYS;
+        case 2: return EXPIRE_14_DAYS;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ConfigGroupQRExpireTime>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ConfigGroupQRExpireTime> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ConfigGroupQRExpireTime>() {
+            public ConfigGroupQRExpireTime findValueByNumber(int number) {
+              return ConfigGroupQRExpireTime.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.akaxin.proto.core.ConfigProto.getDescriptor().getEnumTypes().get(8);
+    }
+
+    private static final ConfigGroupQRExpireTime[] VALUES = values();
+
+    public static ConfigGroupQRExpireTime valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ConfigGroupQRExpireTime(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:core.ConfigGroupQRExpireTime)
   }
 
   public interface SiteConfigOrBuilder extends
@@ -4015,7 +4383,7 @@ public final class ConfigProto {
       "\001\022\023\n\017REALNAME_YES_NO\020\002*+\n\020InviteCodeConf" +
       "ig\022\n\n\006UIC_NO\020\000\022\013\n\007UIC_YES\020\001*\'\n\020SiteStatu" +
       "sConfig\022\t\n\005CLOSE\020\000\022\010\n\004OPEN\020\001*/\n\022U2Encryp" +
-      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\312\003" +
+      "tionConfig\022\014\n\010U2_CLOSE\020\000\022\013\n\007U2_OPEN\020\001*\230\004" +
       "\n\tConfigKey\022\020\n\014SITE_ADDRESS\020\000\022\r\n\tSITE_PO",
       "RT\020\001\022\r\n\tSITE_NAME\020\002\022\r\n\tSITE_LOGO\020\003\022\020\n\014SI" +
       "TE_VERSION\020\004\022\025\n\021SITE_INTRODUCTION\020\005\022\023\n\017R" +
@@ -4027,10 +4395,18 @@ public final class ConfigProto {
       "PATH\020\020\022\026\n\022PUSH_CLIENT_STATUS\020\021\022\r\n\tLOG_LE" +
       "VEL\020\022\022\020\n\014SITE_MANAGER\020\023\022\026\n\022INVITE_CODE_S" +
       "TATUS\020\024\022\030\n\024DEFAULT_USER_FRIENDS\020\025\022\027\n\023DEF",
-      "AULT_USER_GROUPS\020\026*L\n\020PushClientStatus\022\013" +
-      "\n\007PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUS" +
-      "H_DISPLAY_TEXT\020\002B$\n\025com.akaxin.proto.cor" +
-      "eB\013ConfigProtob\006proto3"
+      "AULT_USER_GROUPS\020\026\022\031\n\025CONFIG_FRIEND_REQU" +
+      "EST\020\027\022\027\n\023CONFIG_CREATE_GROUP\020\030\022\030\n\024GROUP_" +
+      "QR_EXPIRE_TIME\020\031*L\n\020PushClientStatus\022\013\n\007" +
+      "PUSH_NO\020\000\022\024\n\020PUSH_HIDDEN_TEXT\020\001\022\025\n\021PUSH_" +
+      "DISPLAY_TEXT\020\002*N\n\023ConfigFriendRequest\022\033\n" +
+      "\027ConfigFriendRequest_YES\020\000\022\032\n\026ConfigFrie" +
+      "ndRequest_NO\020\001*H\n\021ConfigCreateGroup\022\031\n\025C" +
+      "onfigCreateGroup_YES\020\000\022\030\n\024ConfigCreateGr" +
+      "oup_NO\020\001*R\n\027ConfigGroupQRExpireTime\022\020\n\014E" +
+      "XPIRE_1_DAY\020\000\022\021\n\rEXPIRE_7_DAYS\020\001\022\022\n\016EXPI",
+      "RE_14_DAYS\020\002B$\n\025com.akaxin.proto.coreB\013C" +
+      "onfigProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
