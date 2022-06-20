@@ -41,7 +41,7 @@
 		<slf4j_version>1.7.25</slf4j_version>
 		<guava_version>23.6-jre</guava_version>
 		<sqlite.version>3.21.0.1</sqlite.version>
-		<mysql.version>8.0.11</mysql.version>
+		<mysql.version>8.0.28</mysql.version>
 	</properties>
 
 	<build>
